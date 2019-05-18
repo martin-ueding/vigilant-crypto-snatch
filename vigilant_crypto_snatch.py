@@ -4,6 +4,7 @@
 # Copyright © 2019 Martin Ueding <dev@martin-ueding.de>
 
 import argparse
+import time
 
 import bitstamp.client
 import sqlalchemy
@@ -80,8 +81,22 @@ def main():
     print(greeting)
 
     engine = sqlalchemy.create_engine('sqlite:///values.sqlite')
+    Base.metadata.create_all(engine)
     Session = sqlalchemy.orm.sessionmaker(bind=engine)
     session = Session()
+
+
+    public_client = bitstamp.client.Public()
+
+    while True:
+        ticker = public_client.ticker()
+
+        price = Price(timestamp=int(ticker['timestamp']), last=ticker['last'])
+        print(price)
+        session.add(price)
+        session.commit()
+
+        time.sleep(5)
 
 
 def _parse_args():
