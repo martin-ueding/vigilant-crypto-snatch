@@ -7,6 +7,7 @@ import argparse
 
 import bitstamp.client
 import sqlalchemy
+import sqlalchemy.ext.declarative
 
 
 greeting = r"""
@@ -62,10 +63,25 @@ MMMMMMMMMMMMMMMWMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMXXMMMMMMMMMWWWMM
 """.strip()
 
 
+Base = sqlalchemy.ext.declarative.declarative_base()
+
+
+class Price(Base):
+    __tablename__ = 'prices'
+
+    id = sqlalchemy.Column(sqlalchemy.Integer, primary_key=True)
+    timestamp = sqlalchemy.Column(sqlalchemy.Integer)
+    last = sqlalchemy.Column(sqlalchemy.Float)
+
+
 def main():
     options = _parse_args()
 
     print(greeting)
+
+    engine = sqlalchemy.create_engine('sqlite:///values.sqlite')
+    Session = sqlalchemy.orm.sessionmaker(bind=engine)
+    session = Session()
 
 
 def _parse_args():
