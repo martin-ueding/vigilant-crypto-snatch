@@ -1,0 +1,37 @@
+Pseudo code example for 1h
+
+if {1 - current_price divided by price_one_hour_ago >= 0.05}
+
+  trigger market buy via POST
+  
+  https://www.bitstamp.net/api/v2/buy/market/{currency_pair}/
+ 
+  Request parameters
+  key	API key.
+  signature	Signature.
+  nonce	Nonce.
+  amount	Amount. amount measured in BTC, so would be Amount Euro you wish to buy for (x_euro) divided by current_price --> x_euro/current_price
+  
+  
+  
+ 
+ 
+else
+  continue to next if
+  
+
+
+after all ifs, wait 1 min to trigger the next run
+
+
+
+thoughts on safty mechanism:
+
+  id	Order ID.
+  datetime	Date and time.
+  type	0 (buy) or 1 (sell).
+  price	Price.
+  amount	Amount.
+  
+  Safty mechanism: if this if condition is executed it should not be execuded for the next x runs because the order would then be triggered every minute but we only want one order!
+  we can probably write the responses of orders in a DB (enhanced with our parameters like 0.05 dip 1h) and check for orders during the last x days and then skip those if conditions
