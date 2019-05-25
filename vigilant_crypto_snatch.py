@@ -8,8 +8,10 @@ import datetime
 import os
 import sys
 import time
+import pprint
 
 import bitstamp.client
+import requests
 import sqlalchemy
 import sqlalchemy.ext.declarative
 import yaml
@@ -119,7 +121,20 @@ def load_config():
     return config
 
 
-def search_historical(session, timestamp):
+def retrieve_historical(then, api_key):
+    timestamp = then.timestamp()
+    print(timestamp)
+
+    url = 'https://min-api.cryptocompare.com/data/histominute?api_key={}&fsym=BTC&tsym=EUR&limit=1&toTs={}'.format(
+        api_key,
+        timestamp)
+    r = requests.get(url)
+    j = r.json()
+    pprint.pprint(j)
+    return j['Data'][-1]['close']
+
+
+def search_historical(session, timestamp, api_key):
     try:
         q = session.query(Price).filter(Price.timestamp > timestamp).order_by(Price.timestamp)[0]
         print('Found', q)
@@ -130,8 +145,12 @@ def search_historical(session, timestamp):
     except sqlalchemy.orm.exc.NoResultFound:
         pass
 
-    # TODO
-    return 10000
+    close = retrieve_historical(timestamp, api_key)
+
+    price = Price(timestamp=timestamp, last=close)
+    session.add(price)
+    session.commit()
+    return close
 
 
 def main():
@@ -156,7 +175,7 @@ def main():
 
         for trigger in config['triggers']:
             then = now - datetime.timedelta(minutes=trigger['minutes'])
-            then_price = search_historical(session, then)
+            then_price = search_historical(session, then, config['cryptocompare']['api_key'])
             
             critical = then_price * (1 - trigger['drop'] / 100)
             print('We had {} and look for a drop by {} %. That is {}.'.format(then_price, trigger['drop'], critical))
