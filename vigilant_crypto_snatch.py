@@ -4,11 +4,14 @@
 # Copyright © 2019 Martin Ueding <dev@martin-ueding.de>
 
 import argparse
+import os
 import time
+import sys
 
 import bitstamp.client
 import sqlalchemy
 import sqlalchemy.ext.declarative
+import yaml
 
 
 greeting = r"""
@@ -75,12 +78,39 @@ class Price(Base):
     last = sqlalchemy.Column(sqlalchemy.Float)
 
 
+class Trade(Base):
+    __tablename__ = 'trades'
+
+
+    id = sqlalchemy.Column(sqlalchemy.Integer, primary_key=True)
+    timestamp = sqlalchemy.Column(sqlalchemy.Integer)
+    minutes = sqlalchemy.Column(sqlalchemy.Integer)
+    drop = sqlalchemy.Column(sqlalchemy.Integer)
+    btc = sqlalchemy.Column(sqlalchemy.Float)
+    eur = sqlalchemy.Column(sqlalchemy.Float)
+
+
 def main():
     options = _parse_args()
 
-    print(greeting)
+    if options.greeting:
+        print(greeting)
+        print()
 
-    engine = sqlalchemy.create_engine('sqlite:///values.sqlite')
+    db_path = os.path.expanduser('~/.local/share/vigilant-crypto-snatch/db.sqlite')
+    config_path = os.path.expanduser('~/.config/vigilant-crypto-snatch.yml')
+
+    if not os.path.isfile(config_path):
+        print('Please create the configuration file at {}.'.format(config_path))
+        sys.exit(1)
+
+    if not os.path.isdir(os.path.dirname(db_path)):
+        os.makedirs(os.path.dirname(db_path))
+    assert os.path.isdir(os.path.dirname(db_path))
+
+    db_url = 'sqlite:///{}'.format(db_path)
+    print(db_url)
+    engine = sqlalchemy.create_engine(db_url)
     Base.metadata.create_all(engine)
     Session = sqlalchemy.orm.sessionmaker(bind=engine)
     session = Session()
@@ -107,6 +137,7 @@ def _parse_args():
     :rtype: Namespace
     '''
     parser = argparse.ArgumentParser(description='')
+    parser.add_argument('--greeting', action='store_true', help='Show an unnecessary long greeting message during startup.')
     options = parser.parse_args()
 
     return options
