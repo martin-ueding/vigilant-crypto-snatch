@@ -121,6 +121,8 @@ def load_config():
         config = yaml.safe_load(f)
     return config
 
+# If the DB doesn't have the requested data, it requests it from Cryptocompare via their API. You have to use your own API key. It's to be inserted into the sample_config!!!!!!
+	
 def retrieve_historical(then, api_key):
     timestamp = then.timestamp()
     print(timestamp)
