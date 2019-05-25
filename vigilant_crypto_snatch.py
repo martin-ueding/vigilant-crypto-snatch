@@ -4,9 +4,10 @@
 # Copyright © 2019 Martin Ueding <dev@martin-ueding.de>
 
 import argparse
+import datetime
 import os
-import time
 import sys
+import time
 
 import bitstamp.client
 import sqlalchemy
@@ -74,16 +75,18 @@ class Price(Base):
     __tablename__ = 'prices'
 
     id = sqlalchemy.Column(sqlalchemy.Integer, primary_key=True)
-    timestamp = sqlalchemy.Column(sqlalchemy.Integer)
+    timestamp = sqlalchemy.Column(sqlalchemy.DateTime)
     last = sqlalchemy.Column(sqlalchemy.Float)
+
+    def __str__(self):
+        return '{}: {} EUR/BTC'.format(self.timestamp, self.last)
 
 
 class Trade(Base):
     __tablename__ = 'trades'
 
-
     id = sqlalchemy.Column(sqlalchemy.Integer, primary_key=True)
-    timestamp = sqlalchemy.Column(sqlalchemy.Integer)
+    timestamp = sqlalchemy.Column(sqlalchemy.DateTime)
     minutes = sqlalchemy.Column(sqlalchemy.Integer)
     drop = sqlalchemy.Column(sqlalchemy.Integer)
     btc = sqlalchemy.Column(sqlalchemy.Float)
@@ -102,21 +105,33 @@ def open_db_session():
     Base.metadata.create_all(engine)
     Session = sqlalchemy.orm.sessionmaker(bind=engine)
     session = Session()
-
     return session
 
 
 def load_config():
     config_path = os.path.expanduser('~/.config/vigilant-crypto-snatch.yml')
-
     if not os.path.isfile(config_path):
         print('Please create the configuration file at {}.'.format(config_path))
         sys.exit(1)
 
     with open(config_path) as f:
         config = yaml.safe_load(f)
-
     return config
+
+
+def search_historical(session, timestamp):
+    try:
+        q = session.query(Price).filter(Price.timestamp > timestamp).order_by(Price.timestamp)[0]
+        print('Found', q)
+        if q.timestamp < timestamp - datetime.timedelta(minutes=5):
+            return q.price
+        else:
+            print('Not old enough, retrieving from other API.')
+    except sqlalchemy.orm.exc.NoResultFound:
+        pass
+
+    # TODO
+    return 10000
 
 
 def main():
@@ -131,12 +146,36 @@ def main():
     public_client = bitstamp.client.Public()
 
     while True:
-        ticker = public_client.ticker()
+        ticker = public_client.ticker(base='btc', quote='eur')
+        now = datetime.datetime.fromtimestamp(int(ticker['timestamp']))
+        price = Price(timestamp=now, last=ticker['last'])
+        print('Currently:', price)
 
-        price = Price(timestamp=int(ticker['timestamp']), last=ticker['last'])
-        print(price)
         session.add(price)
         session.commit()
+
+        for trigger in config['triggers']:
+            then = now - datetime.timedelta(minutes=trigger['minutes'])
+            then_price = search_historical(session, then)
+            
+            critical = then_price * (1 - trigger['drop'] / 100)
+            print('We had {} and look for a drop by {} %. That is {}.'.format(then_price, trigger['drop'], critical))
+
+            if price.last < critical:
+                btc = trigger['eur'] / price.last
+                print('We currently have such a drop!')
+
+                trade_count = session.query(Trade).filter(Trade.minutes == trigger['minutes'], Trade.drop == trigger['drop'], Trade.timestamp > then).count()
+                print(trade_count)
+
+                if trade_count == 0:
+                    print('Buying {} BTC for {} EUR!'.format(btc, trigger['eur']))
+
+                    trade = Trade(timestamp=now, minutes=trigger['minutes'], drop=trigger['drop'], btc=btc, eur=trigger['eur'])
+                    session.add(trade)
+                    session.commit()
+                else:
+                    print('This trigger was already executed.')
 
         time.sleep(5)
 
