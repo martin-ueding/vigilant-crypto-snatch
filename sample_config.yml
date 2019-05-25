@@ -1,0 +1,3 @@
+triggers:
+  - { time: 60, drop: 5, eur: 10 }
+  - { time: 60, drop: 10, eur: 20 }
