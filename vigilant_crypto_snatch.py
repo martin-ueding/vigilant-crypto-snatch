@@ -90,20 +90,8 @@ class Trade(Base):
     eur = sqlalchemy.Column(sqlalchemy.Float)
 
 
-def main():
-    options = _parse_args()
-
-    if options.greeting:
-        print(greeting)
-        print()
-
+def open_db_session():
     db_path = os.path.expanduser('~/.local/share/vigilant-crypto-snatch/db.sqlite')
-    config_path = os.path.expanduser('~/.config/vigilant-crypto-snatch.yml')
-
-    if not os.path.isfile(config_path):
-        print('Please create the configuration file at {}.'.format(config_path))
-        sys.exit(1)
-
     if not os.path.isdir(os.path.dirname(db_path)):
         os.makedirs(os.path.dirname(db_path))
     assert os.path.isdir(os.path.dirname(db_path))
@@ -115,7 +103,31 @@ def main():
     Session = sqlalchemy.orm.sessionmaker(bind=engine)
     session = Session()
 
+    return session
 
+
+def load_config():
+    config_path = os.path.expanduser('~/.config/vigilant-crypto-snatch.yml')
+
+    if not os.path.isfile(config_path):
+        print('Please create the configuration file at {}.'.format(config_path))
+        sys.exit(1)
+
+    with open(config_path) as f:
+        config = yaml.safe_load(f)
+
+    return config
+
+
+def main():
+    options = _parse_args()
+
+    if options.greeting:
+        print(greeting)
+        print()
+
+    config = load_config()
+    session = open_db_session()
     public_client = bitstamp.client.Public()
 
     while True:
