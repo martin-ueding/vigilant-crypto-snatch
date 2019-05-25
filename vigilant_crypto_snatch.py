@@ -70,6 +70,7 @@ MMMMMMMMMMMMMMMWMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMXXMMMMMMMMMWWWMM
 
 Base = sqlalchemy.ext.declarative.declarative_base()
 
+# Define DB columns 
 
 class Price(Base):
     __tablename__ = 'prices'
@@ -92,7 +93,7 @@ class Trade(Base):
     btc = sqlalchemy.Column(sqlalchemy.Float)
     eur = sqlalchemy.Column(sqlalchemy.Float)
 
-
+	
 def open_db_session():
     db_path = os.path.expanduser('~/.local/share/vigilant-crypto-snatch/db.sqlite')
     if not os.path.isdir(os.path.dirname(db_path)):
@@ -118,7 +119,8 @@ def load_config():
         config = yaml.safe_load(f)
     return config
 
-
+# Look up the historical price for the drop calculation
+	
 def search_historical(session, timestamp):
     try:
         q = session.query(Price).filter(Price.timestamp > timestamp).order_by(Price.timestamp)[0]
@@ -145,6 +147,8 @@ def main():
     session = open_db_session()
     public_client = bitstamp.client.Public()
 
+	# actual loop that first fetches the current price and calculates the drop
+	
     while True:
         ticker = public_client.ticker(base='btc', quote='eur')
         now = datetime.datetime.fromtimestamp(int(ticker['timestamp']))
@@ -168,6 +172,8 @@ def main():
                 trade_count = session.query(Trade).filter(Trade.minutes == trigger['minutes'], Trade.drop == trigger['drop'], Trade.timestamp > then).count()
                 print(trade_count)
 
+				# security mechanism to prevent multiple buy orders for the same drop. If an order is excecuted for one trigger, then it's locked for a specific time before it can be executed again
+				
                 if trade_count == 0:
                     print('Buying {} BTC for {} EUR!'.format(btc, trigger['eur']))
 
@@ -177,7 +183,7 @@ def main():
                 else:
                     print('This trigger was already executed.')
 
-        time.sleep(5)
+        time.sleep(60)
 
 
 def _parse_args():
