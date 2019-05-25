@@ -1,5 +1,9 @@
 cryptocompare:
   api_key: 'your API key here'
+  
+  
+
+# Trigger config: time in minutes, drop in percent, amount to buy in Euro
 
 triggers:
   - { time: 60, drop: 5, eur: 10 }
