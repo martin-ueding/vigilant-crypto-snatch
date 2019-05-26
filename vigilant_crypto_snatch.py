@@ -103,7 +103,6 @@ def open_db_session():
     assert os.path.isdir(os.path.dirname(db_path))
 
     db_url = 'sqlite:///{}'.format(db_path)
-    print(db_url)
     engine = sqlalchemy.create_engine(db_url)
     Base.metadata.create_all(engine)
     Session = sqlalchemy.orm.sessionmaker(bind=engine)
@@ -121,30 +120,25 @@ def load_config():
         config = yaml.safe_load(f)
     return config
 
+
 def retrieve_historical(then, api_key):
     timestamp = then.timestamp()
-    print(timestamp)
-
     url = 'https://min-api.cryptocompare.com/data/histominute?api_key={}&fsym=BTC&tsym=EUR&limit=1&toTs={}'.format(
         api_key,
         timestamp)
     r = requests.get(url)
     j = r.json()
-    pprint.pprint(j)
     return j['Data'][-1]['close']
 
 	
-def search_historical(session, timestamp):
+def search_historical(session, timestamp, api_key):
     '''
     Look up the historical price for the drop calculation
     '''
     try:
         q = session.query(Price).filter(Price.timestamp > timestamp).order_by(Price.timestamp)[0]
-        print('Found', q)
         if q.timestamp < timestamp - datetime.timedelta(minutes=5):
             return q.price
-        else:
-            print('Not old enough, retrieving from other API.')
     except sqlalchemy.orm.exc.NoResultFound:
         pass
 
@@ -154,6 +148,44 @@ def search_historical(session, timestamp):
     session.add(price)
     session.commit()
     return close
+
+
+def check_for_drops(config, session, public_client):
+    '''
+    Actual loop that first fetches the current price and calculates the drop.
+    '''
+    ticker = public_client.ticker(base='btc', quote='eur')
+    now = datetime.datetime.fromtimestamp(int(ticker['timestamp']))
+    price = Price(timestamp=now, last=ticker['last'])
+    print('Currently:', price)
+
+    session.add(price)
+    session.commit()
+
+    for trigger in config['triggers']:
+        then = now - datetime.timedelta(minutes=trigger['minutes'])
+        then_price = search_historical(session, then, config['cryptocompare']['api_key'])
+        
+        critical = then_price * (1 - trigger['drop'] / 100)
+        print('We had {} and look for a drop by {} %. That is {}.'.format(then_price, trigger['drop'], critical))
+
+        if price.last < critical:
+            btc = trigger['eur'] / price.last
+            print('We currently have such a drop!')
+
+            trade_count = session.query(Trade).filter(Trade.minutes == trigger['minutes'], Trade.drop == trigger['drop'], Trade.timestamp > then).count()
+            print(trade_count)
+
+                            # security mechanism to prevent multiple buy orders for the same drop. If an order is excecuted for one trigger, then it's locked for a specific time before it can be executed again
+                            
+            if trade_count == 0:
+                print('Buying {} BTC for {} EUR!'.format(btc, trigger['eur']))
+
+                trade = Trade(timestamp=now, minutes=trigger['minutes'], drop=trigger['drop'], btc=btc, eur=trigger['eur'])
+                session.add(trade)
+                session.commit()
+            else:
+                print('This trigger was already executed.')
 
 
 def main():
@@ -167,43 +199,9 @@ def main():
     session = open_db_session()
     public_client = bitstamp.client.Public()
 
-	# actual loop that first fetches the current price and calculates the drop
-	
     while True:
-        ticker = public_client.ticker(base='btc', quote='eur')
-        now = datetime.datetime.fromtimestamp(int(ticker['timestamp']))
-        price = Price(timestamp=now, last=ticker['last'])
-        print('Currently:', price)
-
-        session.add(price)
-        session.commit()
-
-        for trigger in config['triggers']:
-            then = now - datetime.timedelta(minutes=trigger['minutes'])
-            then_price = search_historical(session, then, config['cryptocompare']['api_key'])
-            
-            critical = then_price * (1 - trigger['drop'] / 100)
-            print('We had {} and look for a drop by {} %. That is {}.'.format(then_price, trigger['drop'], critical))
-
-            if price.last < critical:
-                btc = trigger['eur'] / price.last
-                print('We currently have such a drop!')
-
-                trade_count = session.query(Trade).filter(Trade.minutes == trigger['minutes'], Trade.drop == trigger['drop'], Trade.timestamp > then).count()
-                print(trade_count)
-
-				# security mechanism to prevent multiple buy orders for the same drop. If an order is excecuted for one trigger, then it's locked for a specific time before it can be executed again
-				
-                if trade_count == 0:
-                    print('Buying {} BTC for {} EUR!'.format(btc, trigger['eur']))
-
-                    trade = Trade(timestamp=now, minutes=trigger['minutes'], drop=trigger['drop'], btc=btc, eur=trigger['eur'])
-                    session.add(trade)
-                    session.commit()
-                else:
-                    print('This trigger was already executed.')
-
-        time.sleep(60)
+        check_for_drops(config, session, public_client)
+        time.sleep(config['sleep'])
 
 
 def _parse_args():
