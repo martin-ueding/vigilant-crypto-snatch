@@ -122,6 +122,11 @@ def load_config():
 
 
 def retrieve_historical(then, api_key):
+    '''
+    If the DB doesn't have the requested data, it requests it from
+    Cryptocompare via their API. You have to use your own API key. It's to be
+    inserted into the sample_config!!
+    '''
     timestamp = then.timestamp()
     url = 'https://min-api.cryptocompare.com/data/histominute?api_key={}&fsym=BTC&tsym=EUR&limit=1&toTs={}'.format(
         api_key,

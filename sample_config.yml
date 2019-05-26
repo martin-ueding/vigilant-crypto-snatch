@@ -1,6 +1,46 @@
+# Get you free API key here: https://min-api.cryptocompare.com/pricing 
+# You need it to get historical BTC prices as long as they are not yet fetched via the bitstamp API calls
+
 cryptocompare:
   api_key: 'your API key here'
+  
+  
+
+# Trigger config: time in minutes, drop in percent, amount to buy in Euro
+# Be aware that more than one trigger can be triggered and adjust yours invested money accordingly
 
 triggers:
-  - { time: 60, drop: 5, eur: 10 }
-  - { time: 60, drop: 10, eur: 20 }
+  - { time: 60, drop: 5, eur: 30 }
+  - { time: 60, drop: 10, eur: 50 }
+  - { time: 60, drop: 15, eur: 70 }
+  - { time: 60, drop: 20, eur: 90 }
+  - { time: 60, drop: 25, eur: 100 }
+  - { time: 60, drop: 30, eur: 70 }
+  - { time: 60, drop: 35, eur: 70 }   
+
+  - { time: 240, drop: 5, eur: 30 }
+  - { time: 240, drop: 10, eur: 50 }
+  - { time: 240, drop: 15, eur: 70 }
+  - { time: 240, drop: 20, eur: 90 }
+  - { time: 240, drop: 25, eur: 100 }
+  - { time: 240, drop: 30, eur: 70 }
+
+  - { time: 720, drop: 10, eur: 50 }
+  - { time: 720, drop: 15, eur: 70 }
+  - { time: 720, drop: 20, eur: 90 }
+  - { time: 720, drop: 25, eur: 100 }
+  - { time: 720, drop: 30, eur: 70 }
+
+  - { time: 1440, drop: 5, eur: 20 }  
+  - { time: 1440, drop: 10, eur: 50 }
+  - { time: 1440, drop: 15, eur: 70 }
+  - { time: 1440, drop: 20, eur: 90 }
+  - { time: 1440, drop: 25, eur: 100 }
+  - { time: 1440, drop: 30, eur: 70 }
+ 
+  - { time: 48*60, drop: 10, eur: 50 }
+  - { time: 48*60, drop: 15, eur: 70 }
+  - { time: 48*60, drop: 20, eur: 90 }
+  - { time: 48*60, drop: 25, eur: 100 }
+  - { time: 48*60, drop: 30, eur: 70 }   
+  
