@@ -175,24 +175,37 @@ def check_for_drops(config, session, public_client, trading_client):
         print('We had {} and look for a drop by {} %. That is {}.'.format(then_price, trigger['drop'], critical))
 
         if price.last < critical:
-            btc = round(trigger['eur'] / price.last, 8)
-            print('We currently have such a drop!')
+            try_buy(trading_client, price.last, trigger, session, now, then)
 
-            trade_count = session.query(Trade).filter(Trade.minutes == trigger['minutes'], Trade.drop == trigger['drop'], Trade.timestamp > then).count()
-            print(trade_count)
 
-                            # security mechanism to prevent multiple buy orders for the same drop. If an order is excecuted for one trigger, then it's locked for a specific time before it can be executed again
-                            
-            if trade_count == 0:
-                print('Buying {} BTC for {} EUR!'.format(btc, trigger['eur']))
+def try_buy(trading_client, price, trigger, session, now, then):
+    btc = round(trigger['eur'] / price, 8)
+    print('We currently have such a drop!')
 
-                buy(trading_client, btc)
+    # Security mechanism to prevent multiple buy orders for the same drop. If
+    # an order is excecuted for one trigger, then it's locked for a specific
+    # time before it can be executed again.
+    trade_count = session.query(Trade).filter(Trade.minutes == trigger['minutes'], Trade.drop == trigger['drop'], Trade.timestamp > then).count()
+    if trade_count > 0:
+        print('This trigger was already executed.')
+        return
 
-                trade = Trade(timestamp=now, minutes=trigger['minutes'], drop=trigger['drop'], btc=btc, eur=trigger['eur'])
-                session.add(trade)
-                session.commit()
-            else:
-                print('This trigger was already executed.')
+    print('Buying {} BTC for {} EUR!'.format(btc, trigger['eur']))
+
+    try:
+        buy(trading_client, btc)
+    except bitstamp.client.BitstampError as e:
+        print('There was an error from the Bitstamp API:')
+        print(e)
+    else:
+        trade = Trade(
+            timestamp=now,
+            minutes=trigger['minutes'],
+            drop=trigger['drop'],
+            btc=btc,
+            eur=trigger['eur'])
+        session.add(trade)
+        session.commit()
 
 
 def buy(trading_client, btc):
