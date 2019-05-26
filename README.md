@@ -29,3 +29,8 @@ triggers.
 
 Then just call `./vigilant_crypto_snatch.py` in this directory and let it run.
 When you want to quit press <kbd>Ctrl</kbd>+<kbd>C</kbd>.
+
+All historical price data and performed transactions will be stored in an
+SQLite database at `~/.local/share/vigilant-crypto-snatch/db.sqlite`. You can
+just delete it to reset the data pool. If you want to take a look at it, try
+the GUI tool `sqliteman`.
