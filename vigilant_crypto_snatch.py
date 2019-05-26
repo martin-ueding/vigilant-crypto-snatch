@@ -6,9 +6,9 @@
 import argparse
 import datetime
 import os
+import pprint
 import sys
 import time
-import pprint
 
 import bitstamp.client
 import requests
@@ -175,7 +175,7 @@ def check_for_drops(config, session, public_client, trading_client):
         print('We had {} and look for a drop by {} %. That is {}.'.format(then_price, trigger['drop'], critical))
 
         if price.last < critical:
-            btc = trigger['eur'] / price.last
+            btc = round(trigger['eur'] / price.last, 8)
             print('We currently have such a drop!')
 
             trade_count = session.query(Trade).filter(Trade.minutes == trigger['minutes'], Trade.drop == trigger['drop'], Trade.timestamp > then).count()
