@@ -1,14 +1,27 @@
-# Get you free API key here: https://min-api.cryptocompare.com/pricing 
-# You need it to get historical BTC prices as long as they are not yet fetched via the bitstamp API calls
+# Sample configuration file. Copy this into
+# `~/.config/vigilant-crypto-snatch.yml` and customize it.
 
+# For the trading on Bitstamp.net you need to create an API key which has the
+# necessary permissions. Enter the details here.
+bitstamp:
+  username: ''
+  key: ''
+  secret: ''
+
+# Get you free API key from
+# [Cryptocompare](https://min-api.cryptocompare.com/pricing) to retrieve
+# historical BTC/EUR prices as long as they are not yet fetched via the
+# Bitstamp API calls.
 cryptocompare:
   api_key: 'your API key here'
   
-  
+# The time interval to wait between checks of the BTC/EUR prices. For testing
+# this can be rather short, for production a minute likely is plenty frequent.
+sleep: 60
 
-# Trigger config: time in minutes, drop in percent, amount to buy in Euro
-# Be aware that more than one trigger can be triggered and adjust yours invested money accordingly
-
+# Trigger config: time in minutes, drop in percent, amount to buy in EUR. Be
+# aware that more than one trigger can be triggered during one price update and
+# adjust your invested money accordingly.
 triggers:
   - { time: 60, drop: 5, eur: 30 }
   - { time: 60, drop: 10, eur: 50 }
@@ -43,4 +56,3 @@ triggers:
   - { time: 48*60, drop: 20, eur: 90 }
   - { time: 48*60, drop: 25, eur: 100 }
   - { time: 48*60, drop: 30, eur: 70 }   
-  
