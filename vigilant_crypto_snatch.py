@@ -155,7 +155,7 @@ def search_historical(session, timestamp, api_key):
     return close
 
 
-def check_for_drops(config, session, public_client):
+def check_for_drops(config, session, public_client, trading_client):
     '''
     Actual loop that first fetches the current price and calculates the drop.
     '''
@@ -186,11 +186,18 @@ def check_for_drops(config, session, public_client):
             if trade_count == 0:
                 print('Buying {} BTC for {} EUR!'.format(btc, trigger['eur']))
 
+                buy(trading_client, btc)
+
                 trade = Trade(timestamp=now, minutes=trigger['minutes'], drop=trigger['drop'], btc=btc, eur=trigger['eur'])
                 session.add(trade)
                 session.commit()
             else:
                 print('This trigger was already executed.')
+
+
+def buy(trading_client, btc):
+    response = trading_client.buy_market_order(btc, base='btc', quote='eur')
+    pprint.pprint(response)
 
 
 def main():
@@ -203,9 +210,13 @@ def main():
     config = load_config()
     session = open_db_session()
     public_client = bitstamp.client.Public()
+    trading_client = bitstamp.client.Trading(
+        username=config['bitstamp']['username'],
+        key=config['bitstamp']['key'],
+        secret=config['bitstamp']['secret'])
 
     while True:
-        check_for_drops(config, session, public_client)
+        check_for_drops(config, session, public_client, trading_client)
         time.sleep(config['sleep'])
 
 
