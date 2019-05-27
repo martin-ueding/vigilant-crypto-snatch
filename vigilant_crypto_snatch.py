@@ -128,7 +128,7 @@ def retrieve_historical(then, api_key):
     inserted into the sample_config!!
     '''
     timestamp = then.timestamp()
-    url = 'https://min-api.cryptocompare.com/data/histominute?api_key={}&fsym=BTC&tsym=EUR&limit=1&toTs={}'.format(
+    url = 'https://min-api.cryptocompare.com/data/histohour?api_key={}&fsym=BTC&tsym=EUR&limit=1&toTs={}'.format(
         api_key,
         timestamp)
     r = requests.get(url)
