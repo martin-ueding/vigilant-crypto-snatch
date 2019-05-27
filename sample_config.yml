@@ -15,44 +15,26 @@ bitstamp:
 cryptocompare:
   api_key: 'your API key here'
   
-# The time interval to wait between checks of the BTC/EUR prices. For testing
+# The minutes interval to wait between checks of the BTC/EUR prices. For testing
 # this can be rather short, for production a minute likely is plenty frequent.
 sleep: 60
 
-# Trigger config: time in minutes, drop in percent, amount to buy in EUR. Be
+# Trigger config: minutes in minutes, drop in percent, amount to buy in EUR. Be
 # aware that more than one trigger can be triggered during one price update and
 # adjust your invested money accordingly.
 triggers:
-  - { time: 60, drop: 5, eur: 30 }
-  - { time: 60, drop: 10, eur: 50 }
-  - { time: 60, drop: 15, eur: 70 }
-  - { time: 60, drop: 20, eur: 90 }
-  - { time: 60, drop: 25, eur: 100 }
-  - { time: 60, drop: 30, eur: 70 }
-  - { time: 60, drop: 35, eur: 70 }   
+  - { minutes: 60, drop: 5, eur: 30 }
+  - { minutes: 60, drop: 10, eur: 50 }
+  - { minutes: 60, drop: 15, eur: 70 }
+  - { minutes: 60, drop: 20, eur: 90 }
+  - { minutes: 60, drop: 25, eur: 100 }
+  - { minutes: 60, drop: 30, eur: 70 }
+  - { minutes: 60, drop: 35, eur: 70 }   
 
-  - { time: 240, drop: 5, eur: 30 }
-  - { time: 240, drop: 10, eur: 50 }
-  - { time: 240, drop: 15, eur: 70 }
-  - { time: 240, drop: 20, eur: 90 }
-  - { time: 240, drop: 25, eur: 100 }
-  - { time: 240, drop: 30, eur: 70 }
+  - { minutes: 240, drop: 5, eur: 30 }
+  - { minutes: 240, drop: 10, eur: 50 }
+  - { minutes: 240, drop: 15, eur: 70 }
+  - { minutes: 240, drop: 20, eur: 90 }
+  - { minutes: 240, drop: 25, eur: 100 }
+  - { minutes: 240, drop: 30, eur: 70 }
 
-  - { time: 720, drop: 10, eur: 50 }
-  - { time: 720, drop: 15, eur: 70 }
-  - { time: 720, drop: 20, eur: 90 }
-  - { time: 720, drop: 25, eur: 100 }
-  - { time: 720, drop: 30, eur: 70 }
-
-  - { time: 1440, drop: 5, eur: 20 }  
-  - { time: 1440, drop: 10, eur: 50 }
-  - { time: 1440, drop: 15, eur: 70 }
-  - { time: 1440, drop: 20, eur: 90 }
-  - { time: 1440, drop: 25, eur: 100 }
-  - { time: 1440, drop: 30, eur: 70 }
- 
-  - { time: 48*60, drop: 10, eur: 50 }
-  - { time: 48*60, drop: 15, eur: 70 }
-  - { time: 48*60, drop: 20, eur: 90 }
-  - { time: 48*60, drop: 25, eur: 100 }
-  - { time: 48*60, drop: 30, eur: 70 }   
