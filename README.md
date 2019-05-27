@@ -13,7 +13,7 @@ Yeah …
 This program is written in Python 3 and needs the following third party
 libraries:
 
-- bitstamp
+- BitstampClient
 - requests
 - sqlalchemy
 - yaml
