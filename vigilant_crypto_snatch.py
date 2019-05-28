@@ -254,7 +254,7 @@ def check_for_drops(config, session, public_client, trading_client):
             continue
         
         critical = then_price * (1 - trigger['drop'] / 100)
-        print('We had {} and look for a drop by {} %. That is {}.'.format(then_price, trigger['drop'], critical))
+        print('We had {} and look for a drop by {} %. That is {} for the {} minutes trigger.'.format(then_price, trigger['drop'], critical, trigger['minutes']))
 
         if price.last < critical:
             try_buy(trading_client, price.last, trigger, session, now, then)
