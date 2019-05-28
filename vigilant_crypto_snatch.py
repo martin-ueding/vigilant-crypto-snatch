@@ -70,9 +70,11 @@ MMMMMMMMMMMMMMMWMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMXXMMMMMMMMMWWWMM
 """.strip()
 
 
-Base = sqlalchemy.ext.declarative.declarative_base()
+###############################################################################
+#                                  Database                                   #
+###############################################################################
 
-# Define DB columns 
+Base = sqlalchemy.ext.declarative.declarative_base()
 
 class Price(Base):
     __tablename__ = 'prices'
@@ -110,15 +112,9 @@ def open_db_session():
     return session
 
 
-def load_config():
-    config_path = os.path.expanduser('~/.config/vigilant-crypto-snatch.yml')
-    if not os.path.isfile(config_path):
-        print('Please create the configuration file at {}.'.format(config_path))
-        sys.exit(1)
-
-    with open(config_path) as f:
-        config = yaml.safe_load(f)
-    return config
+###############################################################################
+#                                External APIs                                #
+###############################################################################
 
 
 def retrieve_historical(then, api_key):
@@ -155,29 +151,6 @@ def search_historical(session, timestamp, api_key):
     return close
 
 
-def check_for_drops(config, session, public_client, trading_client):
-    '''
-    Actual loop that first fetches the current price and calculates the drop.
-    '''
-    ticker = public_client.ticker(base='btc', quote='eur')
-    now = datetime.datetime.fromtimestamp(int(ticker['timestamp']))
-    price = Price(timestamp=now, last=ticker['last'])
-    print('Currently:', price)
-
-    session.add(price)
-    session.commit()
-
-    for trigger in config['triggers']:
-        then = now - datetime.timedelta(minutes=trigger['minutes'])
-        then_price = search_historical(session, then, config['cryptocompare']['api_key'])
-        
-        critical = then_price * (1 - trigger['drop'] / 100)
-        print('We had {} and look for a drop by {} %. That is {}.'.format(then_price, trigger['drop'], critical))
-
-        if price.last < critical:
-            try_buy(trading_client, price.last, trigger, session, now, then)
-
-
 def try_buy(trading_client, price, trigger, session, now, then):
     btc = round(trigger['eur'] / price, 8)
     print('We currently have such a drop!')
@@ -211,6 +184,45 @@ def try_buy(trading_client, price, trigger, session, now, then):
 def buy(trading_client, btc):
     response = trading_client.buy_market_order(btc, base='btc', quote='eur')
     pprint.pprint(response)
+
+
+###############################################################################
+#                                 Miscellanea                                 #
+###############################################################################
+
+
+def load_config():
+    config_path = os.path.expanduser('~/.config/vigilant-crypto-snatch.yml')
+    if not os.path.isfile(config_path):
+        print('Please create the configuration file at {}.'.format(config_path))
+        sys.exit(1)
+
+    with open(config_path) as f:
+        config = yaml.safe_load(f)
+    return config
+
+
+def check_for_drops(config, session, public_client, trading_client):
+    '''
+    Actual loop that first fetches the current price and calculates the drop.
+    '''
+    ticker = public_client.ticker(base='btc', quote='eur')
+    now = datetime.datetime.fromtimestamp(int(ticker['timestamp']))
+    price = Price(timestamp=now, last=ticker['last'])
+    print('Currently:', price)
+
+    session.add(price)
+    session.commit()
+
+    for trigger in config['triggers']:
+        then = now - datetime.timedelta(minutes=trigger['minutes'])
+        then_price = search_historical(session, then, config['cryptocompare']['api_key'])
+        
+        critical = then_price * (1 - trigger['drop'] / 100)
+        print('We had {} and look for a drop by {} %. That is {}.'.format(then_price, trigger['drop'], critical))
+
+        if price.last < critical:
+            try_buy(trading_client, price.last, trigger, session, now, then)
 
 
 def main():
