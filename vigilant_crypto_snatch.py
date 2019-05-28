@@ -117,6 +117,9 @@ def open_db_session():
 ###############################################################################
 
 
+class HistoricalError(RuntimeError): pass
+
+
 def retrieve_historical(then, api_key):
     '''
     If the DB doesn't have the requested data, it requests it from
@@ -127,8 +130,17 @@ def retrieve_historical(then, api_key):
     url = 'https://min-api.cryptocompare.com/data/histohour?api_key={}&fsym=BTC&tsym=EUR&limit=1&toTs={}'.format(
         api_key,
         timestamp)
+
     r = requests.get(url)
+    if r.status_code != 200:
+        write_log(['The historical API has not returned a success.', 'Status was {}.'.format(r.status_code)])
+        raise HistoricalError()
+
     j = r.json()
+    if len(j['Data']) == 0:
+        write_log(['There is no payload in from the historical API', str(j)])
+        raise HistoricalError()
+
     return j['Data'][-1]['close']
 
 	
@@ -168,8 +180,7 @@ def try_buy(trading_client, price, trigger, session, now, then):
     try:
         buy(trading_client, btc)
     except bitstamp.client.BitstampError as e:
-        print('There was an error from the Bitstamp API:')
-        print(e)
+        write_log(['There was an error from the Bitstamp API:', str(e)])
     else:
         trade = Trade(
             timestamp=now,
@@ -215,6 +226,7 @@ def write_log(lines):
         f.write(now.isoformat() + '\n')
         for line in lines:
             f.write('  ' + line.strip() + '\n')
+            print(line)
 
 
 def check_for_drops(config, session, public_client, trading_client):
@@ -231,7 +243,10 @@ def check_for_drops(config, session, public_client, trading_client):
 
     for trigger in config['triggers']:
         then = now - datetime.timedelta(minutes=trigger['minutes'])
-        then_price = search_historical(session, then, config['cryptocompare']['api_key'])
+        try:
+            then_price = search_historical(session, then, config['cryptocompare']['api_key'])
+        except HistoricalError:
+            continue
         
         critical = then_price * (1 - trigger['drop'] / 100)
         print('We had {} and look for a drop by {} %. That is {}.'.format(then_price, trigger['drop'], critical))
