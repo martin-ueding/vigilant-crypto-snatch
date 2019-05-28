@@ -235,7 +235,12 @@ def check_for_drops(config, session, public_client, trading_client):
     '''
     ticker = public_client.ticker(base='btc', quote='eur')
     now = datetime.datetime.fromtimestamp(int(ticker['timestamp']))
-    price = Price(timestamp=now, last=ticker['last'])
+    try:
+        price = Price(timestamp=now, last=ticker['last'])
+    except requests.exceptions.ChunkedEncodingError as e:
+        write_log(['Exception in Bitstamp Ticker reqest.', str(e)])
+        return
+
     print('Currently:', price)
 
     session.add(price)
