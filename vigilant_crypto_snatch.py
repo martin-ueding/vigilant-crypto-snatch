@@ -202,6 +202,21 @@ def load_config():
     return config
 
 
+def write_log(lines):
+    '''
+    Appends the given list of lines to the log file.
+
+    :param lines list(str):
+    '''
+    path = os.path.expanduser('~/.local/share/vigilant-crypto-snatch/log.txt')
+    now = datetime.datetime.now()
+
+    with open(path, 'a') as f:
+        f.write(now.isoformat() + '\n')
+        for line in lines:
+            f.write('  ' + line.strip() + '\n')
+
+
 def check_for_drops(config, session, public_client, trading_client):
     '''
     Actual loop that first fetches the current price and calculates the drop.
@@ -227,6 +242,8 @@ def check_for_drops(config, session, public_client, trading_client):
 
 def main():
     options = _parse_args()
+
+    write_log(['Starting up.'])
 
     if options.greeting:
         print(greeting)
