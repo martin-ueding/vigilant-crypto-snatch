@@ -25,7 +25,7 @@ XXX`.
 
 You first need to copy the `sample_config.yml` from this repository to
 `~/.config/vigilant-crypto-snatch.yml` and insert the API keys and your
-triggers.
+triggers. It is suggested to have the main skript also in this `~/.config/vigilant-crypto-snatch.yml` directory. You don't have to edit pathes then.
 
 Then just call `./vigilant_crypto_snatch.py` in this directory and let it run.
 When you want to quit press <kbd>Ctrl</kbd>+<kbd>C</kbd>.
