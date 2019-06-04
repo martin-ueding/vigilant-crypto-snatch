@@ -242,7 +242,7 @@ def check_for_drops(config, session, public_client, trading_client):
         return
     except requests.exceptions.HTTPError as e:
         write_log(['Exception in Bitstamp Ticker reqest.', str(e)])
-	return
+        return
 
     print('Currently:', price)
 
