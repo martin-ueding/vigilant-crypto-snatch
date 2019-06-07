@@ -150,7 +150,7 @@ def search_historical(session, timestamp, api_key):
     '''
     try:
         q = session.query(Price).filter(Price.timestamp < timestamp).order_by(Price.timestamp.desc())[0]
-        if q.timestamp > timestamp + datetime.timedelta(minutes=10):
+        if q.timestamp < timestamp + datetime.timedelta(minutes=10):
             return q.price
     except sqlalchemy.orm.exc.NoResultFound:
         pass
