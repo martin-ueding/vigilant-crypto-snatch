@@ -243,6 +243,18 @@ def check_for_drops(config, session, public_client, trading_client):
     except requests.exceptions.HTTPError as e:
         write_log(['Exception in Bitstamp Ticker reqest.', str(e)])
         return
+    except requests.exceptions.ChunkedEncodingError as e:
+        write_log(['Exception in Bitstamp Ticker reqest.', str(e)])
+        return
+    except urllib3.exceptions.ProtocolError as e:
+        write_log(['Exception in Bitstamp Ticker reqest.', str(e)])
+        return
+    except http.client.RemoteDisconnected as e:
+        write_log(['Exception in Bitstamp Ticker reqest.', str(e)])
+        return
+    except OpenSSL.SSL.SysCallError as e:
+        write_log(['Exception in Bitstamp Ticker reqest.', str(e)])
+        return
 
     print('Currently:', price)
 

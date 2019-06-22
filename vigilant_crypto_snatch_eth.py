@@ -149,8 +149,8 @@ def search_historical(session, timestamp, api_key):
     Look up the historical price for the drop calculation
     '''
     try:
-        q = session.query(Price).filter(Price.timestamp < timestamp).order_by(Price.timestamp.desc())[0]
-        if q.timestamp < timestamp + datetime.timedelta(minutes=10):
+        q = session.query(Price).filter(Price.timestamp > timestamp).order_by(Price.timestamp.desc())[0]
+        if q.timestamp < timestamp - datetime.timedelta(minutes=10):
             return q.price
     except sqlalchemy.orm.exc.NoResultFound:
         pass
@@ -241,6 +241,18 @@ def check_for_drops(config, session, public_client, trading_client):
         write_log(['Exception in Bitstamp Ticker reqest.', str(e)])
         return
     except requests.exceptions.HTTPError as e:
+        write_log(['Exception in Bitstamp Ticker reqest.', str(e)])
+        return
+    except requests.exceptions.ChunkedEncodingError as e:
+        write_log(['Exception in Bitstamp Ticker reqest.', str(e)])
+        return
+    except urllib3.exceptions.ProtocolError as e:
+        write_log(['Exception in Bitstamp Ticker reqest.', str(e)])
+        return
+    except http.client.RemoteDisconnected as e:
+        write_log(['Exception in Bitstamp Ticker reqest.', str(e)])
+        return
+    except OpenSSL.SSL.SysCallError as e:
         write_log(['Exception in Bitstamp Ticker reqest.', str(e)])
         return
 
