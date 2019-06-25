@@ -274,6 +274,27 @@ def check_for_drops(config, session, public_client, trading_client):
         if price.last < critical:
             try_buy(trading_client, price.last, trigger, session, now, then)
 
+			
+#Telegram Bot Notice
+
+def telegram_bot_sendtext(bot_message, config['telegram']['bot_chat'], config['telegram']['bot_http']):
+    
+    ##bot_token = '2222222222222222222222222222222222222222222222222222'   #Your Bot Token from Telegram 
+    ##bot_chatID = '111111111111111111111111111111111111111111111111111111'     #The Chat ID 
+    send_text = 'https://api.telegram.org/bot' + bot_http + '/sendMessage?chat_id=' + bot_chat + '&parse_mode=Markdown&text=' + bot_message
+
+    response = requests.get(send_text)
+
+    return response.json()
+
+def report():
+##    my_price = print()      ## Replace this with the current price 
+    my_message = 'Buying {} BTC for {} EUR on the {} because of a drop of {} %'.format(btc, trigger['eur'], trigger['minutes'], trigger['drop'])   ## Customize your message
+    telegram_bot_sendtext(my_message)
+
+#End Telegram Bot Notice - Standard Report can be placed with report() - Be sure to customize your message and price info 
+
+
 
 def main():
     options = _parse_args()

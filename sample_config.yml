@@ -15,6 +15,15 @@ bitstamp:
 cryptocompare:
   api_key: 'your API key here'
   
+  
+## Telegram API:
+## create your telegram bot like in this tutorial: https://www.christian-luetgens.de/homematic/telegram/botfather/Chat-Bot.htm
+## insert your bot details below:
+
+telegram:
+  bot_chat: 'Your ChatID here'
+  bot_http: 'Your Bot token here'
+
 # The minutes interval to wait between checks of the BTC/EUR prices. For testing
 # this can be rather short, for production a minute likely is plenty frequent.
 sleep: 60
