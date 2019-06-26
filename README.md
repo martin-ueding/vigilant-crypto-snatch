@@ -1,4 +1,4 @@
-# Vigilant Crypto Snatch
+﻿# Vigilant Crypto Snatch
 
 A little program that observes the current market price for the BTC/EUR pair
 and looks for drastic reductions (dips). In these cases the program will place
@@ -34,3 +34,8 @@ All historical price data and performed transactions will be stored in an
 SQLite database at `~/.local/share/vigilant-crypto-snatch/db.sqlite`. You can
 just delete it to reset the data pool. If you want to take a look at it, try
 the GUI tool `sqliteman`.
+
+## Telegram Bot
+
+Check the config for a tutorial on how to set up the bot.
+!!Currently you have to go into the main skript and put in your values there. It's planed to move those also into the config file!!!

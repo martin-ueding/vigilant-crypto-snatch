@@ -1,12 +1,12 @@
-# Sample configuration file. Copy this into
+# Sample configuration file. Copy this and the main script into
 # `~/.config/vigilant-crypto-snatch.yml` and customize it.
 
 # For the trading on Bitstamp.net you need to create an API key which has the
 # necessary permissions. Enter the details here.
 bitstamp:
-  username: ''
-  key: ''
-  secret: ''
+  username: 'username here'
+  key: 'key here'
+  secret: 'secret here'
 
 # Get you free API key from
 # [Cryptocompare](https://min-api.cryptocompare.com/pricing) to retrieve
