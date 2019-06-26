@@ -8,6 +8,10 @@ In case you wonder about the name: Dips means that the price dives. Submarines
 dive. The HMS Vigilant is a submarine. But also vigilance means to observe.
 Yeah …
 
+## License
+
+https://www.gnu.org/licenses/gpl-3.0.html
+
 ## Dependencies
 
 This program is written in Python 3 and needs the following third party
