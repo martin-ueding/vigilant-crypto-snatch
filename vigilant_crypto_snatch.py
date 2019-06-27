@@ -176,6 +176,10 @@ def try_buy(trading_client, price, trigger, session, now, then):
         return
 
     print('Buying {} BTC for {} EUR!'.format(btc, trigger['eur']))
+    #Return the print notice to screen and to telegram
+    buy_message = 'Buying {} BTC for {} EUR on the {} because of a drop of {} %'.format(btc, trigger['eur'], trigger['minutes'], trigger['drop'])   ## Customize your message
+    telegram_bot_sendtext(buy_message)
+
 
     try:
         buy(trading_client, btc)
