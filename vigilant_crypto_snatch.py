@@ -149,8 +149,8 @@ def search_historical(session, timestamp, api_key):
     Look up the historical price for the drop calculation
     '''
     try:
-        q = session.query(Price).filter(Price.timestamp > timestamp).order_by(Price.timestamp.desc())[0]
-        if q.timestamp < timestamp + datetime.timedelta(minutes=10):
+        q = session.query(Price).filter(Price.timestamp < timestamp).order_by(Price.timestamp.desc())[0]
+        if q.timestamp > timestamp - datetime.timedelta(minutes=10):
             return q.last
     except sqlalchemy.orm.exc.NoResultFound:
         pass
