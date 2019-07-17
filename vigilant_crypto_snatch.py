@@ -177,7 +177,7 @@ def try_buy(trading_client, price, trigger, session, now, then):
 
     print('Buying {} BTC for {} EUR!'.format(btc, trigger['eur']))
     #Return the print notice to screen and to telegram
-    buy_message = 'Buying {} BTC for {} EUR on the {} because of a drop of {} %'.format(btc, trigger['eur'], trigger['minutes'], trigger['drop'])   ## Customize your message
+    buy_message = 'Buying {} BTC for {} EUR via the {} minutes trigger because of a drop of {} %'.format(btc, trigger['eur'], trigger['minutes'], trigger['drop'])   ## Customize your message
     telegram_bot_sendtext(buy_message)
 
 
@@ -294,7 +294,7 @@ def telegram_bot_sendtext(bot_message):
 
 def report():
 ##    my_price = print()       Replace this with the current price 
-    my_message = 'Buying {} BTC for {} EUR on the {} because of a drop of {} %'.format(btc, trigger['eur'], trigger['minutes'], trigger['drop'])   ## Customize your message
+    my_message = 'Buying {} BTC for {} EUR via the {} minutes trigger because of a drop of {} %'.format(btc, trigger['eur'], trigger['minutes'], trigger['drop'])   ## Customize your message
     telegram_bot_sendtext(my_message)
 
 ##End Telegram Bot Notice - Standard Report can be placed with report() - Be sure to customize your message and price info 
