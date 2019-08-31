@@ -154,6 +154,8 @@ def search_historical(session, timestamp, api_key):
             return q.price
     except sqlalchemy.orm.exc.NoResultFound:
         pass
+    except IndexError:
+        pass
 
     close = retrieve_historical(timestamp, api_key)
 
