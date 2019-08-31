@@ -35,9 +35,7 @@ Then just call `./vigilant_crypto_snatch.py` in this directory and let it run.
 When you want to quit press <kbd>Ctrl</kbd>+<kbd>C</kbd>.
 
 All historical price data and performed transactions will be stored in an
-SQLite database at `~/.local/share/vigilant-crypto-snatch/db.sqlite`. Please use the included db.sqlite to start. The Skript won't start with an empty DB for now. The included DB just has a few entries dated back to 2015, so it doesn't interfer with your triggers. You can check with the tools mentioned below! You can
-just delete it to reset the data pool. If you want to take a look at it, try
-the GUI tool `sqliteman` or use https://sqlitebrowser.org/ on Windows.
+SQLite database at `~/.local/share/vigilant-crypto-snatch/db.sqlite`. 
 
 ## Telegram Bot
 
