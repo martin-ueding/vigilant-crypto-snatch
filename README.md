@@ -20,7 +20,7 @@ libraries:
 - BitstampClient
 - requests
 - sqlalchemy
-- yaml
+- pyyaml
 
 You can either install them with `apt install python3-XXX` or `pip3 install
 XXX`.
