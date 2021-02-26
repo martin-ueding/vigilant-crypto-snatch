@@ -1,7 +1,5 @@
 import datetime
 import pprint
-import sys
-import typing
 
 import bitstamp.client
 import requests
@@ -90,12 +88,13 @@ class KrakenMarketplace(Marketplace):
         price = vigilant.datamodel.Price(timestamp=now, last=float(ticker['last']))
         return price
 
-    def _make_pair(self, coin: str, fiat: str):
+    @classmethod
+    def _make_pair(cls, coin: str, fiat: str) -> str:
+        kraken_coin = coin
         if coin == 'btc':
-            coin = 'xbt'
-        pair = '{}{}'.format(coin.upper(), fiat.upper())
+            kraken_coin = 'xbt'
+        pair = '{}{}'.format(kraken_coin.upper(), fiat.upper())
         return pair
-
 
 
 class BuyError(Exception):
