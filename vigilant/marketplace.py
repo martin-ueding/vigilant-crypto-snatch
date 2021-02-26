@@ -22,6 +22,9 @@ class Marketplace(object):
     def get_spot_price(self, coin: str, fiat: str) -> vigilant.datamodel.Price:
         raise NotImplementedError()
 
+    def get_name(self):
+        raise NotImplementedError()
+
 
 class BitstampMarketplace(Marketplace):
     def __init__(self, username: str, key: str, secret: str):
@@ -48,6 +51,9 @@ class BitstampMarketplace(Marketplace):
             now = datetime.datetime.fromtimestamp(int(ticker['timestamp']))
             price = vigilant.datamodel.Price(timestamp=now, last=ticker['last'], coin=coin, fiat=fiat)
             return price
+
+    def get_name(self):
+        return "Bitstamp"
 
 
 class KrakenArgs(object):
@@ -87,6 +93,9 @@ class KrakenMarketplace(Marketplace):
         now = datetime.datetime.now()
         price = vigilant.datamodel.Price(timestamp=now, last=float(ticker['last']), coin=coin, fiat=fiat)
         return price
+
+    def get_name(self):
+        return "Kraken"
 
     @classmethod
     def _make_pair(cls, coin: str, fiat: str) -> str:

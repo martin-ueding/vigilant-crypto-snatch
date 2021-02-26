@@ -37,10 +37,10 @@ def check_for_drops(config, session, marketplace):
             print(f"We had {then_price} and look for a drop by {trigger['drop']} %. That is {critical} for the {trigger['minutes']} minutes trigger.")
 
             if price.last < critical:
-                try_buy(marketplace, price.last, trigger, session, price.timestamp, then, coin, fiat)
+                try_buy(config, marketplace, price.last, trigger, session, price.timestamp, then, coin, fiat)
 
 
-def try_buy(marketplace: vigilant.marketplace.Marketplace, price: float, trigger: dict, session, now, then, coin: str, fiat: str):
+def try_buy(config: dict, marketplace: vigilant.marketplace.Marketplace, price: float, trigger: dict, session, now, then, coin: str, fiat: str):
     volume_fiat = trigger['volume_fiat'] if 'volume_fiat' in trigger else trigger['eur']
     volume_coin = round(volume_fiat / price, 8)
     print('We currently have such a drop!')
@@ -60,8 +60,8 @@ def try_buy(marketplace: vigilant.marketplace.Marketplace, price: float, trigger
 
     print(f"Buying {volume_coin} {coin} for {volume_fiat} {fiat}!")
     # Return the print notice to screen and to telegram
-    buy_message = f"Buying {volume_coin} {coin} for {volume_fiat} {fiat} via the {trigger['minutes']} minutes trigger because of a drop of {trigger['drop']} %"
-    vigilant.telegram.telegram_bot_sendtext(buy_message)
+    buy_message = f"Buying {volume_coin} {coin} for {volume_fiat} {fiat} on {marketplace.get_name()} via the {trigger['minutes']} minutes trigger because of a drop of {trigger['drop']} %."
+    vigilant.telegram.telegram_bot_sendtext(config, buy_message)
 
     try:
         marketplace.place_order(coin, fiat, volume_coin)
