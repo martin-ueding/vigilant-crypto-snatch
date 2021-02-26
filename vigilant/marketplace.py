@@ -70,7 +70,7 @@ class KrakenMarketplace(Marketplace):
         args.volume = volume
         args.starttm = 0
         args.expiretm = 0
-        args.leverage = None
+        args.leverage = 'none'
         args.price = None
         args.userref = None
         args.viqc = None
