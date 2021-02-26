@@ -43,6 +43,8 @@ def main():
             config['bitstamp']['username'], config['bitstamp']['key'], config['bitstamp']['secret'])
     elif options.marketplace == 'kraken':
         marketplace = vigilant.marketplace.KrakenMarketplace()
+    else:
+        raise RuntimeError(f'Unknown market place {options.marketplace}!')
 
     while True:
         vigilant.drop.check_for_drops(config, session, marketplace)
@@ -50,14 +52,15 @@ def main():
 
 
 def _parse_args():
-    '''
+    """
     Parses the command line arguments.
 
     :return: Namespace with arguments.
     :rtype: Namespace
-    '''
+    """
     parser = argparse.ArgumentParser(description='')
-    parser.add_argument('--greeting', action='store_true', help='Show an unnecessary long greeting message during startup.')
+    parser.add_argument('--greeting', action='store_true',
+                        help='Show an unnecessary long greeting message during startup.')
     parser.add_argument('--marketplace', choices=['bitstamp', 'kraken'], default='kraken')
     options = parser.parse_args()
 
