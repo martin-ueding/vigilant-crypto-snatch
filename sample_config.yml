@@ -49,3 +49,6 @@ triggers:
   - { minutes: 240, drop: 25, eur: 100 }
   - { minutes: 240, drop: 30, eur: 70 }
 
+currency_pairs:
+  - ['BTC', 'EUR']
+  - ['ETH', 'EUR']

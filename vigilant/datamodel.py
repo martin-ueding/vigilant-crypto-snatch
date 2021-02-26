@@ -11,22 +11,26 @@ class Price(Base):
     __tablename__ = 'prices'
 
     id = sqlalchemy.Column(sqlalchemy.Integer, primary_key=True)
-    timestamp = sqlalchemy.Column(sqlalchemy.DateTime)
-    last = sqlalchemy.Column(sqlalchemy.Float)
+    timestamp = sqlalchemy.Column(sqlalchemy.DateTime, nullable=False)
+    last = sqlalchemy.Column(sqlalchemy.Float, nullable=False)
+    coin = sqlalchemy.Column(sqlalchemy.String, nullable=False)
+    fiat = sqlalchemy.Column(sqlalchemy.String, nullable=False)
 
     def __str__(self):
-        return '{}: {} EUR/BTC'.format(self.timestamp, self.last)
+        return f'{self.timestamp}: {self.last} {self.fiat}/{self.coin}'
 
 
 class Trade(Base):
     __tablename__ = 'trades'
 
     id = sqlalchemy.Column(sqlalchemy.Integer, primary_key=True)
-    timestamp = sqlalchemy.Column(sqlalchemy.DateTime)
-    minutes = sqlalchemy.Column(sqlalchemy.Integer)
-    drop = sqlalchemy.Column(sqlalchemy.Integer)
-    btc = sqlalchemy.Column(sqlalchemy.Float)
-    eur = sqlalchemy.Column(sqlalchemy.Float)
+    timestamp = sqlalchemy.Column(sqlalchemy.DateTime, nullable=False)
+    minutes = sqlalchemy.Column(sqlalchemy.Integer, nullable=False)
+    drop = sqlalchemy.Column(sqlalchemy.Integer, nullable=False)
+    volume_coin = sqlalchemy.Column(sqlalchemy.Float, nullable=False)
+    volume_fiat = sqlalchemy.Column(sqlalchemy.Float, nullable=False)
+    coin = sqlalchemy.Column(sqlalchemy.String, nullable=False)
+    fiat = sqlalchemy.Column(sqlalchemy.String, nullable=False)
 
 
 def open_db_session():

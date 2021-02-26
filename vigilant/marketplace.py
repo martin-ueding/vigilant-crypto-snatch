@@ -46,7 +46,7 @@ class BitstampMarketplace(Marketplace):
             raise TickerError(str(e))
         else:
             now = datetime.datetime.fromtimestamp(int(ticker['timestamp']))
-            price = vigilant.datamodel.Price(timestamp=now, last=ticker['last'])
+            price = vigilant.datamodel.Price(timestamp=now, last=ticker['last'], coin=coin, fiat=fiat)
             return price
 
 
@@ -85,15 +85,15 @@ class KrakenMarketplace(Marketplace):
         header, data = output
         ticker = {h: d for h, d in zip(header.split(';'), data.split(';'))}
         now = datetime.datetime.now()
-        price = vigilant.datamodel.Price(timestamp=now, last=float(ticker['last']))
+        price = vigilant.datamodel.Price(timestamp=now, last=float(ticker['last']), coin=coin, fiat=fiat)
         return price
 
     @classmethod
     def _make_pair(cls, coin: str, fiat: str) -> str:
         kraken_coin = coin
-        if coin == 'btc':
+        if coin == 'BTC':
             kraken_coin = 'xbt'
-        pair = '{}{}'.format(kraken_coin.upper(), fiat.upper())
+        pair = '{}{}'.format(kraken_coin, fiat)
         return pair
 
 
