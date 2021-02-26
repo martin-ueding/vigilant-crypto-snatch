@@ -38,8 +38,11 @@ def main():
     config = load_config()
     session = vigilant.datamodel.open_db_session()
 
-    marketplace = vigilant.marketplace.BitstampMarketplace(
-        config['bitstamp']['username'], config['bitstamp']['key'], config['bitstamp']['secret'])
+    if options.marketplace == 'bitstamp':
+        marketplace = vigilant.marketplace.BitstampMarketplace(
+            config['bitstamp']['username'], config['bitstamp']['key'], config['bitstamp']['secret'])
+    elif options.marketplace == 'kraken':
+        marketplace = vigilant.marketplace.KrakenMarketplace()
 
     while True:
         vigilant.drop.check_for_drops(config, session, marketplace)
@@ -55,6 +58,7 @@ def _parse_args():
     '''
     parser = argparse.ArgumentParser(description='')
     parser.add_argument('--greeting', action='store_true', help='Show an unnecessary long greeting message during startup.')
+    parser.add_argument('--marketplace', choices=['bitstamp', 'kraken'], default='kraken')
     options = parser.parse_args()
 
     return options

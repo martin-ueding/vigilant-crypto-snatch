@@ -28,6 +28,7 @@ def check_for_drops(config, session, marketplace):
         except vigilant.historical.HistoricalError:
             continue
 
+        assert trigger['drop'] > 0, "Drop triggers must have positive percentages!"
         critical = then_price * (1 - trigger['drop'] / 100)
         print(f"We had {then_price} and look for a drop by {trigger['drop']} %. That is {critical} for the {trigger['minutes']} minutes trigger.")
 

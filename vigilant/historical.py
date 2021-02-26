@@ -17,7 +17,7 @@ def retrieve_historical(then, api_key):
     Cryptocompare via their API. You have to use your own API key. It's to be
     inserted into the sample_config!!
     """
-    timestamp = then.timestamp()
+    timestamp = int(then.timestamp())
     url = 'https://min-api.cryptocompare.com/data/histohour?api_key={}&fsym=BTC&tsym=EUR&limit=1&toTs={}'.format(
         api_key,
         timestamp)
@@ -29,7 +29,7 @@ def retrieve_historical(then, api_key):
 
     j = r.json()
     if len(j['Data']) == 0:
-        vigilant.logging.write_log(['There is no payload in from the historical API', str(j)])
+        vigilant.logging.write_log(['There is no payload from the historical API', str(j)])
         raise HistoricalError()
 
     return j['Data'][-1]['close']

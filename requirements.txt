@@ -1,4 +1,6 @@
-requests
-sqlalchemy
-pyyaml
-clikraken
+requests~=2.24.0
+sqlalchemy~=1.3.23
+pyyaml~=5.4.1
+clikraken~=0.8.3.2
+BitstampClient~=2.2.8
+urllib3~=1.25.10
