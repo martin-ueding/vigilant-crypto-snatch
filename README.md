@@ -1,4 +1,6 @@
-﻿# Vigilant Crypto Snatch
+﻿# Complete new Readme comming in the next days
+ 
+ # Vigilant Crypto Snatch
 
 A little program that observes the current market price for the BTC/EUR pair
 and looks for drastic reductions (dips). In these cases the program will place
