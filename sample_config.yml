@@ -44,6 +44,15 @@ triggers:
   - { minutes: 240, drop: 20, eur: 90 }
   - { minutes: 240, drop: 25, eur: 100 }
   - { minutes: 240, drop: 30, eur: 70 }
+  
+# To implement a simple DCA stragety apart from the buys during drops you can modify a trigger like this:
+
+  - { minutes: 11720, drop: 0, eur: 300 }
+  
+# In this case the trigger will be fired every 7 days and makes a market buy no matter where the price is for 300 fiatunits.
+
+
+# Choose your currency pairs you want the skipt to run on. You can choose as many as you want but be carefull, the triggers are the same for all pairs!!!
 
 currency_pairs:
   - ['BTC', 'EUR']
