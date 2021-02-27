@@ -22,11 +22,11 @@ telegram:
   token: 'Your bot token here'
   chat_id: 'Your chat ID here'
 
-# The minutes interval to wait between checks of the BTC/EUR prices. For testing
+# The minutes interval to wait between checks of the COIN/FIAT prices. For testing
 # this can be rather short, for production a minute likely is plenty frequent.
 sleep: 60
 
-# Trigger config: minutes in minutes, drop in percent, amount to buy in EUR. Be
+# Trigger config: minutes in minutes, drop in percent, amount to buy in FIAT. Be
 # aware that more than one trigger can be triggered during one price update and
 # adjust your invested money accordingly. Use Point (.) to write drops like 4.5% not comma (,).
 triggers:
