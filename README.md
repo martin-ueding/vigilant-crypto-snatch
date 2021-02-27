@@ -1,6 +1,6 @@
  # Vigilant Crypto Snatch
 
-A little program that observes the current market price for the BTC/EUR pair
+A little program that observes the current market price for the your choice of currency pair on Kraken or Bitstamp
 and looks for drastic reductions (dips). In these cases the program will place
 a buy order.
 
@@ -50,7 +50,15 @@ secretsecretsecretsecretsecretsecretsecretsecretsecretsecretsecretsecretsecretse
 
 ### Start
 
-Then just call `while true; do ./vigilant_crypto_snatch.py; done` in the directory in which you cloned the project (e.g. /home/pi/vigilant-crypto-snatch) and let it run.
+To run on Bitstamp call  
+
+`while true; do ./vigilant_crypto_snatch.py --marketplace=Bitstamp; done`  
+
+to run on Kraken call
+
+`while true; do ./vigilant_crypto_snatch.py --marketplace=Kraken; done` 
+
+in the directory in which you cloned the project (e.g. /home/pi/vigilant-crypto-snatch) and let it run.
 When you want to quit press 
 
 <kbd>Ctrl</kbd>+<kbd>C</kbd>.
