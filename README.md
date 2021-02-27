@@ -39,8 +39,10 @@ To setup the Kraken API keys do the following:
 
 1) create the folder `clikraken` in `~/.config/`, so you get `~/.config/clikraken`. 
 2) create the file `settings.ini` and insert the following:
-      [clikraken])
-      trading_agreement=agree
+
+[clikraken]  
+trading_agreement=agree
+  
 3) create file kraken.key . The first line is the API key and the second the secret. Example:
 
 APIKEYAPIKEYAPIKEYAPIKEYAPIKEYAPIKEYAPIKEY
