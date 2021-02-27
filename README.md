@@ -43,9 +43,9 @@ To setup the Kraken API keys do the following:
 [clikraken]  
 trading_agreement=agree
   
-3) create file kraken.key . The first line is the API key and the second the secret. Example:
+3) create file kraken.key and open with text editor. The first line is the API key and the second the secret. Example:
 
-APIKEYAPIKEYAPIKEYAPIKEYAPIKEYAPIKEYAPIKEY
+APIKEYAPIKEYAPIKEYAPIKEYAPIKEYAPIKEYAPIKEY  
 secretsecretsecretsecretsecretsecretsecretsecretsecretsecretsecretsecretsecretsecretsecret
 
 ### Start
