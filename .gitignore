@@ -1,3 +1,4 @@
 .idea/
+config/
 venv/
 vigilant/__pycache__/
