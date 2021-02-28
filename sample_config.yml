@@ -28,22 +28,19 @@ sleep: 60
 
 # Trigger config: minutes in minutes, drop in percent, amount to buy in FIAT. Be
 # aware that more than one trigger can be triggered during one price update and
-# adjust your invested money accordingly. Use Point (.) to write drops like 4.5% not comma (,).
+# adjust your invested money accordingly. Create as many triggers as you want usung the same schematic as below. 
+# Use Point (.) to write drops like 4.5% not comma (,).
+# Be aware that if you run this for the very first time and a trigger meets the condition, it will be executed 
+# immidiatly! The simple DCA trigger below will also trigger no matter what. 
+# Use # in front of a trigger to disable it.
+
 triggers:
   - { minutes: 60, drop: 5, eur: 30 }
-  - { minutes: 60, drop: 10, eur: 50 }
-  - { minutes: 60, drop: 15, eur: 70 }
-  - { minutes: 60, drop: 20, eur: 90 }
-  - { minutes: 60, drop: 25, eur: 100 }
-  - { minutes: 60, drop: 30, eur: 70 }
-  - { minutes: 60, drop: 35, eur: 70 }   
-
+   
   - { minutes: 240, drop: 5, eur: 30 }
-  - { minutes: 240, drop: 10, eur: 50 }
-  - { minutes: 240, drop: 15, eur: 70 }
-  - { minutes: 240, drop: 20, eur: 90 }
-  - { minutes: 240, drop: 25, eur: 100 }
-  - { minutes: 240, drop: 30, eur: 70 }
+
+# If you get nonce errors on kraken consider using less triggers or modify the nonce: https://support.kraken.com/hc/en-us/articles/360001148063-Why-am-I-getting-Invalid-Nonce-Errors-
+
   
 # To implement a simple DCA stragety apart from the buys during drops you can modify a trigger like this:
 
@@ -56,4 +53,4 @@ triggers:
 
 currency_pairs:
   - ['BTC', 'EUR']
-  - ['ETH', 'EUR']
+#  - ['crypto', 'FIAT']
