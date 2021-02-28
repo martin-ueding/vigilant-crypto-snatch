@@ -54,11 +54,11 @@ secretsecretsecretsecretsecretsecretsecretsecretsecretsecretsecretsecretsecretse
 
 To run on Bitstamp call  
 
-`while true; do ./vigilant_crypto_snatch.py --marketplace=Bitstamp; done`  
+`while true; do ./vigilant_crypto_snatch.py --marketplace=bitstamp; done`  
 
 to run on Kraken call
 
-`while true; do ./vigilant_crypto_snatch.py --marketplace=Kraken; done` 
+`while true; do ./vigilant_crypto_snatch.py --marketplace=kraken; done` 
 
 in the directory in which you cloned the project (e.g. /home/pi/vigilant-crypto-snatch) and let it run.
 When you want to quit press 
