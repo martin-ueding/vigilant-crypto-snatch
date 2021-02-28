@@ -22,6 +22,10 @@ This program is written in Python 3 and uses several third party libraries. To i
 
 Use `git clone https://github.com/martin-ueding/vigilant-crypto-snatch` to clone the repository to your local machine.  
 
+Run:
+
+`sudo python3 -m pip install -r requirements.txt` 
+
 If you are running an old version of the skript, delete your old database from here: `~/.local/share/vigilant-crypto-snatch/db.sqlite` . The new format is incompatible with the old.
 
 ## Running
