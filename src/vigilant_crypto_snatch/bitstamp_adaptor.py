@@ -35,5 +35,5 @@ class BitstampMarketplace(marketplace.Marketplace):
             price = datamodel.Price(timestamp=now, last=ticker['last'], coin=coin, fiat=fiat)
             return price
 
-    def get_name(self):
+    def get_name(self) -> str:
         return "Bitstamp"

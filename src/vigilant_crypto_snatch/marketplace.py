@@ -8,7 +8,7 @@ class Marketplace(object):
     def get_spot_price(self, coin: str, fiat: str) -> datamodel.Price:
         raise NotImplementedError()
 
-    def get_name(self):
+    def get_name(self) -> str:
         raise NotImplementedError()
 
 

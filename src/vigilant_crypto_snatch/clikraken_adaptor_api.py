@@ -49,7 +49,7 @@ class KrakenMarketplace(marketplace.Marketplace):
         price = datamodel.Price(timestamp=now, last=float(ticker['last']), coin=coin, fiat=fiat)
         return price
 
-    def get_name(self):
+    def get_name(self) -> str:
         return "Kraken"
 
 
