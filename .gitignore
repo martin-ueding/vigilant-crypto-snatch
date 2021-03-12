@@ -1,4 +1,4 @@
 .idea/
 config/
 venv/
-vigilant/__pycache__/
+src/vigilant/__pycache__/

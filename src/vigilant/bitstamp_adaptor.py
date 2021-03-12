@@ -5,8 +5,8 @@ import bitstamp.client
 import requests
 import urllib3
 
-import vigilant.datamodel
-from vigilant.marketplace import Marketplace, BuyError, TickerError
+import src.vigilant.datamodel
+from src.vigilant.marketplace import Marketplace, BuyError, TickerError
 
 
 class BitstampMarketplace(Marketplace):
@@ -21,7 +21,7 @@ class BitstampMarketplace(Marketplace):
         except bitstamp.client.BitstampError as e:
             raise BuyError(str(e))
 
-    def get_spot_price(self, coin: str, fiat: str) -> vigilant.datamodel.Price:
+    def get_spot_price(self, coin: str, fiat: str) -> src.vigilant.datamodel.Price:
         try:
             ticker = self.public_client.ticker(base=coin, quote=fiat)
         except requests.exceptions.ChunkedEncodingError as e:
@@ -32,7 +32,7 @@ class BitstampMarketplace(Marketplace):
             raise TickerError(str(e))
         else:
             now = datetime.datetime.fromtimestamp(int(ticker['timestamp']))
-            price = vigilant.datamodel.Price(timestamp=now, last=ticker['last'], coin=coin, fiat=fiat)
+            price = src.vigilant.datamodel.Price(timestamp=now, last=ticker['last'], coin=coin, fiat=fiat)
             return price
 
     def get_name(self):
