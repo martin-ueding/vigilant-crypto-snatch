@@ -1,12 +1,14 @@
 import datetime
 
-import clikraken.api
+import clikraken.api.api_utils
+import clikraken.api.public.ticker
+import clikraken.api.private.place_order
 import clikraken.clikraken_utils
 import clikraken.global_vars
 
-import vigilant.capture
-import vigilant.datamodel
-from vigilant.marketplace import Marketplace
+from . import capture
+from . import datamodel
+from . import marketplace
 
 
 class KrakenArgs(object):
@@ -15,7 +17,7 @@ class KrakenArgs(object):
         self.csv = True
 
 
-class KrakenMarketplace(Marketplace):
+class KrakenMarketplace(marketplace.Marketplace):
     def __init__(self):
         clikraken.clikraken_utils.load_config()
         clikraken.api.api_utils.load_api_keyfile()
@@ -36,15 +38,15 @@ class KrakenMarketplace(Marketplace):
         args.validate = False
         clikraken.api.private.place_order.place_order(args)
 
-    def get_spot_price(self, coin: str, fiat: str) -> vigilant.datamodel.Price:
+    def get_spot_price(self, coin: str, fiat: str) -> datamodel.Price:
         args = KrakenArgs()
         args.pair = self._make_pair(coin, fiat)
-        with vigilant.capture.Capturing() as output:
+        with capture.Capturing() as output:
             clikraken.api.public.ticker.ticker(args)
         header, data = output
         ticker = {h: d for h, d in zip(header.split(';'), data.split(';'))}
         now = datetime.datetime.now()
-        price = vigilant.datamodel.Price(timestamp=now, last=float(ticker['last']), coin=coin, fiat=fiat)
+        price = datamodel.Price(timestamp=now, last=float(ticker['last']), coin=coin, fiat=fiat)
         return price
 
     def get_name(self):

@@ -1,12 +1,11 @@
-import vigilant.datamodel
-import vigilant.logging
+from . import datamodel
 
 
 class Marketplace(object):
     def place_order(self, coin: str, fiat: str, volume: float) -> None:
         raise NotImplementedError()
 
-    def get_spot_price(self, coin: str, fiat: str) -> vigilant.datamodel.Price:
+    def get_spot_price(self, coin: str, fiat: str) -> datamodel.Price:
         raise NotImplementedError()
 
     def get_name(self):

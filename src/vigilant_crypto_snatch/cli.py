@@ -8,13 +8,13 @@ import time
 
 import yaml
 
-import vigilant.bitstamp_adaptor
-import vigilant.datamodel
-import vigilant.drop
-import vigilant.greeting
-import vigilant.kraken_adaptor
-import vigilant.logging
-import vigilant.marketplace
+from . import bitstamp_adaptor
+from . import datamodel
+from . import drop
+from . import greeting
+from . import kraken_adaptor
+from . import logging
+from . import marketplace
 
 
 def load_config():
@@ -31,25 +31,25 @@ def load_config():
 def main():
     options = _parse_args()
 
-    vigilant.logging.write_log(['Starting up.'])
+    logging.write_log(['Starting up.'])
 
     if options.greeting:
-        print(vigilant.greeting.greeting)
+        print(greeting.greeting)
         print()
 
     config = load_config()
-    session = vigilant.datamodel.open_db_session()
+    session = datamodel.open_db_session()
 
     if options.marketplace == 'bitstamp':
-        marketplace = vigilant.bitstamp_adaptor.BitstampMarketplace(
+        marketplace = bitstamp_adaptor.BitstampMarketplace(
             config['bitstamp']['username'], config['bitstamp']['key'], config['bitstamp']['secret'])
     elif options.marketplace == 'kraken':
-        marketplace = vigilant.kraken_adaptor.KrakenMarketplace()
+        marketplace = kraken_adaptor.KrakenMarketplace()
     else:
         raise RuntimeError(f'Unknown market place {options.marketplace}!')
 
     while True:
-        vigilant.drop.check_for_drops(config, session, marketplace)
+        drop.check_for_drops(config, session, marketplace)
         time.sleep(config['sleep'])
 
 

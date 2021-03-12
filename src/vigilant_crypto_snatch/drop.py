@@ -1,10 +1,10 @@
 import datetime
 
-import vigilant.datamodel
-import vigilant.historical
-import vigilant.marketplace
-import vigilant.logging
-import vigilant.telegram
+from . import datamodel
+from . import historical
+from . import marketplace
+from . import logging
+from . import telegram
 
 
 def check_for_drops(config, session, marketplace):
@@ -17,8 +17,8 @@ def check_for_drops(config, session, marketplace):
         fiat = fiat.upper()
         try:
             price = marketplace.get_spot_price(coin, fiat)
-        except vigilant.marketplace.TickerError as e:
-            vigilant.logging.write_log(str(e))
+        except marketplace.TickerError as e:
+            logging.write_log(str(e))
             return
 
         print('Currently:', price)
@@ -28,8 +28,8 @@ def check_for_drops(config, session, marketplace):
         for trigger in config['triggers']:
             then = price.timestamp - datetime.timedelta(minutes=trigger['minutes'])
             try:
-                then_price = vigilant.historical.search_historical(session, then, config['cryptocompare']['api_key'], coin, fiat)
-            except vigilant.historical.HistoricalError:
+                then_price = historical.search_historical(session, then, config['cryptocompare']['api_key'], coin, fiat)
+            except historical.HistoricalError:
                 continue
 
             assert trigger['drop'] > 0, "Drop triggers must have positive percentages!"
@@ -40,7 +40,7 @@ def check_for_drops(config, session, marketplace):
                 try_buy(config, marketplace, price.last, trigger, session, price.timestamp, then, coin, fiat)
 
 
-def try_buy(config: dict, marketplace: vigilant.marketplace.Marketplace, price: float, trigger: dict, session, now, then, coin: str, fiat: str):
+def try_buy(config: dict, marketplace: marketplace.Marketplace, price: float, trigger: dict, session, now, then, coin: str, fiat: str):
     volume_fiat = trigger['volume_fiat'] if 'volume_fiat' in trigger else trigger['eur']
     volume_coin = round(volume_fiat / price, 8)
     print('We currently have such a drop!')
@@ -48,12 +48,12 @@ def try_buy(config: dict, marketplace: vigilant.marketplace.Marketplace, price: 
     # Security mechanism to prevent multiple buy orders for the same drop. If
     # an order is executed for one trigger, then it's locked for a specific
     # time before it can be executed again.
-    trade_count = session.query(vigilant.datamodel.Trade).filter(
-        vigilant.datamodel.Trade.minutes == trigger['minutes'],
-        vigilant.datamodel.Trade.drop == trigger['drop'],
-        vigilant.datamodel.Trade.timestamp > then,
-        vigilant.datamodel.Trade.coin == coin,
-        vigilant.datamodel.Trade.fiat == fiat).count()
+    trade_count = session.query(datamodel.Trade).filter(
+        datamodel.Trade.minutes == trigger['minutes'],
+        datamodel.Trade.drop == trigger['drop'],
+        datamodel.Trade.timestamp > then,
+        datamodel.Trade.coin == coin,
+        datamodel.Trade.fiat == fiat).count()
     if trade_count > 0:
         print('This trigger was already executed.')
         return
@@ -61,14 +61,14 @@ def try_buy(config: dict, marketplace: vigilant.marketplace.Marketplace, price: 
     print(f"Buying {volume_coin} {coin} for {volume_fiat} {fiat}!")
     # Return the print notice to screen and to telegram
     buy_message = f"Buying {volume_coin} {coin} for {volume_fiat} {fiat} on {marketplace.get_name()} via the {trigger['minutes']} minutes trigger because of a drop of {trigger['drop']} %."
-    vigilant.telegram.telegram_bot_sendtext(config, buy_message)
+    telegram.telegram_bot_sendtext(config, buy_message)
 
     try:
         marketplace.place_order(coin, fiat, volume_coin)
-    except vigilant.marketplace.BuyError as e:
-        vigilant.logging.write_log(['There was an error from the Marketplace API:', str(e)])
+    except marketplace.BuyError as e:
+        logging.write_log(['There was an error from the Marketplace API:', str(e)])
     else:
-        trade = vigilant.datamodel.Trade(
+        trade = datamodel.Trade(
             timestamp=now,
             minutes=trigger['minutes'],
             drop=trigger['drop'],

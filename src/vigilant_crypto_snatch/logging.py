@@ -2,12 +2,7 @@ import datetime
 import os
 
 
-def write_log(lines):
-    """
-    Appends the given list of lines to the log file.
-
-    :param lines list(str):
-    """
+def write_log(lines: str) -> None:
     now = datetime.datetime.now()
 
     path = os.path.expanduser('~/.local/share/vigilant-crypto-snatch/log.txt')

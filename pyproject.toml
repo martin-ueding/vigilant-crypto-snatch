@@ -4,6 +4,9 @@ version = "1.0.0"
 description = ""
 authors = ["Martin Ueding <mu@martin-ueding.de>"]
 
+[tool.poetry.scripts]
+vigilant-crypto-snatch = "vigilant_crypto_snatch.cli:main"
+
 [tool.poetry.dependencies]
 python = "^3.7"
 requests = "^2.25.1"
@@ -11,6 +14,7 @@ sqlalchemy = "^1.3.23"
 pyyaml = "^5.4.1"
 clikraken = "^0.8.3"
 BitstampClient = "^2.2.8"
+urllib3 = "^1.26.3"
 
 [tool.poetry.dev-dependencies]
 
