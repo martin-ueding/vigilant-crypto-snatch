@@ -25,7 +25,7 @@ class KrakenMarketplace(marketplace.Marketplace):
 
     def place_order(self, coin: str, fiat: str, volume: float) -> None:
         args = KrakenArgs()
-        args.pair = self._make_pair(coin, fiat)
+        args.pair = make_asset_pair(coin, fiat)
         args.type = 'buy'
         args.ordertype = 'market'
         args.volume = volume

@@ -8,16 +8,14 @@ import time
 
 import yaml
 
-from . import bitstamp_adaptor
-from . import clikraken_adaptor_cli
+from . import marketplace_factory
 from . import datamodel
 from . import drop
 from . import greeting
-from . import clikraken_adaptor_api
 from . import logging
 
 
-def load_config():
+def load_config() -> dict:
     config_path = os.path.expanduser('~/.config/vigilant-crypto-snatch.yml')
     if not os.path.isfile(config_path):
         print(f"Please create the configuration file at {config_path}.")
@@ -40,28 +38,13 @@ def main():
     config = load_config()
     session = datamodel.open_db_session()
 
-    if options.marketplace == 'bitstamp':
-        marketplace = bitstamp_adaptor.BitstampMarketplace(
-            config['bitstamp']['username'], config['bitstamp']['key'], config['bitstamp']['secret'])
-    elif options.marketplace == 'kraken':
-        marketplace = clikraken_adaptor_api.KrakenMarketplace()
-    elif options.marketplace == 'kraken-cli':
-        marketplace = clikraken_adaptor_cli.KrakenMarketplace()
-    else:
-        raise RuntimeError(f'Unknown market place {options.marketplace}!')
-
+    market = marketplace_factory.make_marketplace(options.marketplace, config)
     while True:
-        drop.check_for_drops(config, session, marketplace)
+        drop.check_for_drops(config, session, market)
         time.sleep(config['sleep'])
 
 
-def _parse_args():
-    """
-    Parses the command line arguments.
-
-    :return: Namespace with arguments.
-    :rtype: Namespace
-    """
+def _parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(description='')
     parser.add_argument('--greeting', action='store_true',
                         help='Show an unnecessary long greeting message during startup.')
