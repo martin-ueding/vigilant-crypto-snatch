@@ -1,8 +1,9 @@
 import datetime
 import os
+import typing
 
 
-def write_log(lines: str) -> None:
+def write_log(lines: typing.List[str]) -> None:
     now = datetime.datetime.now()
 
     path = os.path.expanduser('~/.local/share/vigilant-crypto-snatch/log.txt')

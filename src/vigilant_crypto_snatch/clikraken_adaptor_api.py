@@ -40,7 +40,7 @@ class KrakenMarketplace(marketplace.Marketplace):
 
     def get_spot_price(self, coin: str, fiat: str) -> datamodel.Price:
         args = KrakenArgs()
-        args.pair = self._make_pair(coin, fiat)
+        args.pair = make_asset_pair(coin, fiat)
         with capture.Capturing() as output:
             clikraken.api.public.ticker.ticker(args)
         header, data = output
@@ -52,10 +52,10 @@ class KrakenMarketplace(marketplace.Marketplace):
     def get_name(self):
         return "Kraken"
 
-    @classmethod
-    def _make_pair(cls, coin: str, fiat: str) -> str:
-        kraken_coin = coin
-        if coin == 'BTC':
-            kraken_coin = 'xbt'
-        pair = '{}{}'.format(kraken_coin, fiat)
-        return pair
+
+def make_asset_pair(coin: str, fiat: str) -> str:
+    kraken_coin = coin
+    if coin == 'BTC':
+        kraken_coin = 'XBT'
+    pair = '{}{}'.format(kraken_coin, fiat)
+    return pair

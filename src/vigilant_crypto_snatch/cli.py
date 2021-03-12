@@ -9,12 +9,12 @@ import time
 import yaml
 
 from . import bitstamp_adaptor
+from . import clikraken_adaptor_cli
 from . import datamodel
 from . import drop
 from . import greeting
-from . import kraken_adaptor
+from . import clikraken_adaptor_api
 from . import logging
-from . import marketplace
 
 
 def load_config():
@@ -44,7 +44,9 @@ def main():
         marketplace = bitstamp_adaptor.BitstampMarketplace(
             config['bitstamp']['username'], config['bitstamp']['key'], config['bitstamp']['secret'])
     elif options.marketplace == 'kraken':
-        marketplace = kraken_adaptor.KrakenMarketplace()
+        marketplace = clikraken_adaptor_api.KrakenMarketplace()
+    elif options.marketplace == 'kraken-cli':
+        marketplace = clikraken_adaptor_cli.KrakenMarketplace()
     else:
         raise RuntimeError(f'Unknown market place {options.marketplace}!')
 
@@ -63,7 +65,7 @@ def _parse_args():
     parser = argparse.ArgumentParser(description='')
     parser.add_argument('--greeting', action='store_true',
                         help='Show an unnecessary long greeting message during startup.')
-    parser.add_argument('--marketplace', choices=['bitstamp', 'kraken'], default='kraken')
+    parser.add_argument('--marketplace', choices=['bitstamp', 'kraken', 'kraken-cli'], default='kraken')
     options = parser.parse_args()
 
     return options
