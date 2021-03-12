@@ -6,9 +6,7 @@ A little program that observes the current market price for your choice of curre
 
 Use `git clone https://github.com/martin-ueding/vigilant-crypto-snatch/tree/docker-implementation` to clone the repository to your local machine.
 
-Then install the python libraries that are needed to run this software. You can do so in a virtual environment if you want. The easy way is to do it system wide:
-
-	sudo python3 -m pip install -r requirements.txt
+Make sure that you have [Poetry](https://python-poetry.org/) installed. Once you have that, install the project with `poetry install`.
 
 If you are running an old version of the script, delete your old database from here: `~/.local/share/vigilant-crypto-snatch/db.sqlite` . The new format is incompatible with the old.
 
@@ -45,17 +43,8 @@ Then on the website create an API key which has the permission to trade. You wil
 
 ## Running
 
-To run on Bitstamp call  
+From this directory you can just do `poetry run vigilant-crypto-snatch [options]` to run it. You can pass additional options, if you want. With the `--help` option you will see an up-to-date list of options.
 
-`while true; do ./vigilant_crypto_snatch.py --marketplace=bitstamp; done`  
-
-to run on Kraken call
-
-`while true; do ./vigilant_crypto_snatch.py --marketplace=kraken; done` 
-
-If you want to use it with Docker, you can run the `docker-compose up -d` command. Docker is not needed to run.
-
-in the directory in which you cloned the project (e.g. /home/pi/vigilant-crypto-snatch) and let it run.
 When you want to quit press 
 
 <kbd>Ctrl</kbd>+<kbd>C</kbd>.
