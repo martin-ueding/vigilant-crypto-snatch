@@ -12,15 +12,10 @@ Yeah …
 
 https://www.gnu.org/licenses/gpl-3.0.html
 
-## Dependencies
-
-This program is written in Python 3 and uses several third party libraries. To install use:
-
-`sudo python3 -m pip install -r requirements.txt` 
 
 ## Installation
 
-Use `git clone https://github.com/martin-ueding/vigilant-crypto-snatch` to clone the repository to your local machine.  
+Use `git clone https://github.com/martin-ueding/vigilant-crypto-snatch/tree/docker-implementation` to clone the repository to your local machine.  
 
 Run:
 
@@ -63,6 +58,8 @@ To run on Bitstamp call
 to run on Kraken call
 
 `while true; do ./vigilant_crypto_snatch.py --marketplace=kraken; done` 
+
+Run the `docker-compose up -d` command.
 
 in the directory in which you cloned the project (e.g. /home/pi/vigilant-crypto-snatch) and let it run.
 When you want to quit press 
