@@ -8,9 +8,11 @@ import time
 
 import yaml
 
+import vigilant.bitstamp_adaptor
 import vigilant.datamodel
 import vigilant.drop
 import vigilant.greeting
+import vigilant.kraken_adaptor
 import vigilant.logging
 import vigilant.marketplace
 
@@ -39,10 +41,10 @@ def main():
     session = vigilant.datamodel.open_db_session()
 
     if options.marketplace == 'bitstamp':
-        marketplace = vigilant.marketplace.BitstampMarketplace(
+        marketplace = vigilant.bitstamp_adaptor.BitstampMarketplace(
             config['bitstamp']['username'], config['bitstamp']['key'], config['bitstamp']['secret'])
     elif options.marketplace == 'kraken':
-        marketplace = vigilant.marketplace.KrakenMarketplace()
+        marketplace = vigilant.kraken_adaptor.KrakenMarketplace()
     else:
         raise RuntimeError(f'Unknown market place {options.marketplace}!')
 
