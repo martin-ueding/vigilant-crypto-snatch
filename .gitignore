@@ -2,3 +2,7 @@
 config/
 venv/
 src/vigilant/__pycache__/
+__pycache__
+*.pyc
+dist
+*.egg-info
