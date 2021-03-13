@@ -16,7 +16,7 @@ class HistoricalError(RuntimeError):
 
 
 def retrieve_historical(then, api_key: str, coin: str, fiat: str) -> float:
-    logger.info(f'Retrieving historical price at {then} for {fiat}/{coin} …')
+    logger.debug(f'Retrieving historical price at {then} for {fiat}/{coin} …')
     timestamp = int(then.timestamp())
     url = f'https://min-api.cryptocompare.com/data/histohour?api_key={api_key}&fsym={coin.upper()}&tsym={fiat.upper()}&limit=1&toTs={timestamp}'
 
@@ -39,7 +39,7 @@ def search_historical(session, timestamp, api_key: str, coin: str, fiat: str) ->
             datamodel.Price.fiat == fiat,
         ).order_by(datamodel.Price.timestamp.desc())[0]
         if q.timestamp > timestamp - datetime.timedelta(minutes=10):
-            logger.info(f'Found historical price for {timestamp} in database: {q.last} {fiat}/{coin}.')
+            logger.debug(f'Found historical price for {timestamp} in database: {q.last} {fiat}/{coin}.')
             return q.last
     except sqlalchemy.orm.exc.NoResultFound:
         pass
@@ -47,7 +47,7 @@ def search_historical(session, timestamp, api_key: str, coin: str, fiat: str) ->
         pass
 
     close = retrieve_historical(timestamp, api_key, coin, fiat)
-    logger.info(f'Received historical price at {timestamp} to be {close} {fiat}/{coin}.')
+    logger.debug(f'Received historical price at {timestamp} to be {close} {fiat}/{coin}.')
     price = datamodel.Price(timestamp=timestamp, last=close, coin=coin, fiat=fiat)
     session.add(price)
     session.commit()
@@ -62,7 +62,7 @@ def search_current(session, market: marketplace.Marketplace, coin: str, fiat: st
             datamodel.Price.coin == coin,
             datamodel.Price.fiat == fiat,
         ).order_by(datamodel.Price.timestamp.desc())[0]
-        logger.info(f'Found spot price at in database: {q.last} {fiat}/{coin}.')
+        logger.debug(f'Found spot price at in database: {q.last} {fiat}/{coin}.')
         return q.last
     except sqlalchemy.orm.exc.NoResultFound:
         pass
@@ -70,7 +70,7 @@ def search_current(session, market: marketplace.Marketplace, coin: str, fiat: st
         pass
 
     price = market.get_spot_price(coin, fiat)
-    logger.info(f'Retrieved spot price from {market.get_name()}: {price.last} {fiat}/{coin}.')
+    logger.debug(f'Retrieved spot price from {market.get_name()}: {price.last} {fiat}/{coin}.')
     session.add(price)
     session.commit()
     return price.last

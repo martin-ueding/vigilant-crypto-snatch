@@ -28,7 +28,7 @@ def main():
 
     config = load_config()
     session = datamodel.open_db_session()
-    telegram.telegram_bot_sendtext(config, 'Hi!')
+    telegram.telegram_bot_sendtext(config, 'Starting up …')
 
     market = marketplace_factory.make_marketplace(options.marketplace, config)
 

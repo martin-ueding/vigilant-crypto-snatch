@@ -22,7 +22,7 @@ def check_for_drops(config: dict, session, market: marketplace.Marketplace) -> N
             volume_fiat=trigger_spec['volume_fiat'],
             drop=trigger_spec['drop'],
             minutes=trigger_spec['minutes'])
-        logger.info(f'Constructed trigger: {trigger.get_name()}')
+        logger.debug(f'Constructed trigger: {trigger.get_name()}')
         active_triggers.append(trigger)
     for timer_spec in config['timers']:
         trigger = triggers.TrueTrigger(
@@ -31,12 +31,12 @@ def check_for_drops(config: dict, session, market: marketplace.Marketplace) -> N
             fiat=timer_spec['fiat'].upper(),
             volume_fiat=timer_spec['volume_fiat'],
             minutes=timer_spec['minutes'])
-        logger.info(f'Constructed trigger: {trigger.get_name()}')
+        logger.debug(f'Constructed trigger: {trigger.get_name()}')
         active_triggers.append(trigger)
 
     while True:
         for trigger in active_triggers:
-            logger.info(f'Checking trigger “{trigger.get_name()}” …')
+            logger.debug(f'Checking trigger “{trigger.get_name()}” …')
             try:
                 if trigger.has_cooled_off(session) and trigger.is_triggered(session, config):
                     logger.info(f'Trigger “{trigger.get_name()}” fired, try buying …')
@@ -46,7 +46,7 @@ def check_for_drops(config: dict, session, market: marketplace.Marketplace) -> N
             except marketplace.BuyError as e:
                 notify_and_continue(e, config)
 
-        logger.info(f'All triggers checked, sleeping for {config["sleep"]} seconds …')
+        logger.debug(f'All triggers checked, sleeping for {config["sleep"]} seconds …')
         time.sleep(config['sleep'])
 
 
