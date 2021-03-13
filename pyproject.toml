@@ -16,6 +16,7 @@ pyyaml = "^5.4.1"
 clikraken = "^0.8.3"
 BitstampClient = "^2.2.8"
 urllib3 = "^1.26.3"
+coloredlogs = "^15.0"
 
 [tool.poetry.dev-dependencies]
 

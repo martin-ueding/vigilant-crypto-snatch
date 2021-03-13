@@ -1,80 +1,76 @@
 import datetime
+import logging
+import time
 
 from . import datamodel
-from . import historical
 from . import marketplace
-from . import logging
 from . import telegram
+from . import triggers
+from . import historical
 
 
-def check_for_drops(config, session, market: marketplace.Marketplace):
-    """
-    Actual loop that first fetches the current price and calculates the drop.
-    """
-    currency_pairs = config.get('currency_pairs', [('BTC', 'EUR')])
-    for coin, fiat in currency_pairs:
-        coin = coin.upper()
-        fiat = fiat.upper()
-        try:
-            price = market.get_spot_price(coin, fiat)
-        except marketplace.TickerError as e:
-            logging.write_log([str(e)])
-            return
+logger = logging.getLogger(__name__)
 
-        print('Currently:', price)
-        session.add(price)
-        session.commit()
 
-        for trigger in config['triggers']:
-            then = price.timestamp - datetime.timedelta(minutes=trigger['minutes'])
+def check_for_drops(config: dict, session, market: marketplace.Marketplace) -> None:
+    active_triggers = []
+    for trigger_spec in config['triggers']:
+        trigger = triggers.DropTrigger(
+            market=market,
+            coin=trigger_spec['coin'].upper(),
+            fiat=trigger_spec['fiat'].upper(),
+            volume_fiat=trigger_spec['volume_fiat'],
+            drop=trigger_spec['drop'],
+            minutes=trigger_spec['minutes'])
+        logger.info(f'Constructed trigger: {trigger.get_name()}')
+        active_triggers.append(trigger)
+    for timer_spec in config['timers']:
+        trigger = triggers.TrueTrigger(
+            market=market,
+            coin=timer_spec['coin'].upper(),
+            fiat=timer_spec['fiat'].upper(),
+            volume_fiat=timer_spec['volume_fiat'],
+            minutes=timer_spec['minutes'])
+        logger.info(f'Constructed trigger: {trigger.get_name()}')
+        active_triggers.append(trigger)
+
+    while True:
+        for trigger in active_triggers:
+            logger.info(f'Checking trigger “{trigger.get_name()}” …')
             try:
-                then_price = historical.search_historical(session, then, config['cryptocompare']['api_key'], coin, fiat)
-            except historical.HistoricalError:
-                continue
+                if trigger.has_cooled_off(session) and trigger.is_triggered(session, config):
+                    logger.info(f'Trigger “{trigger.get_name()}” fired, try buying …')
+                    buy(config, trigger, session)
+            except marketplace.TickerError as e:
+                notify_and_continue(e, config)
+            except marketplace.BuyError as e:
+                notify_and_continue(e, config)
 
-            assert trigger['drop'] > 0, "Drop triggers must have positive percentages!"
-            critical = then_price * (1 - trigger['drop'] / 100)
-            print(f"We had {then_price} and look for a drop by {trigger['drop']} %. That is {critical} for the {trigger['minutes']} minutes trigger.")
-
-            if price.last < critical:
-                try_buy(config, market, price.last, trigger, session, price.timestamp, then, coin, fiat)
+        logger.info(f'All triggers checked, sleeping for {config["sleep"]} seconds …')
+        time.sleep(config['sleep'])
 
 
-def try_buy(config: dict, market: marketplace.Marketplace, price: float, trigger: dict, session, now, then, coin: str, fiat: str):
-    volume_fiat = trigger['volume_fiat'] if 'volume_fiat' in trigger else trigger['eur']
-    volume_coin = round(volume_fiat / price, 8)
-    print('We currently have such a drop!')
+def notify_and_continue(exception: Exception, config: dict) -> None:
+    logger.error(f'{type(exception)}: {exception}')
+    telegram.telegram_bot_sendtext(config, f'An exception of type {type(exception)} has occurred: {exception}')
 
-    # Security mechanism to prevent multiple buy orders for the same drop. If
-    # an order is executed for one trigger, then it's locked for a specific
-    # time before it can be executed again.
-    trade_count = session.query(datamodel.Trade).filter(
-        datamodel.Trade.minutes == trigger['minutes'],
-        datamodel.Trade.drop == trigger['drop'],
-        datamodel.Trade.timestamp > then,
-        datamodel.Trade.coin == coin,
-        datamodel.Trade.fiat == fiat).count()
-    if trade_count > 0:
-        print('This trigger was already executed.')
-        return
 
-    print(f"Buying {volume_coin} {coin} for {volume_fiat} {fiat}!")
-    # Return the print notice to screen and to telegram
-    buy_message = f"Buying {volume_coin} {coin} for {volume_fiat} {fiat} on {market.get_name()} via the {trigger['minutes']} minutes trigger because of a drop of {trigger['drop']} %."
-    telegram.telegram_bot_sendtext(config, buy_message)
+def buy(config: dict, trigger: triggers.Trigger, session):
+    price = historical.search_current(session, trigger.market, trigger.coin, trigger.fiat)
+    volume_coin = round(trigger.volume_fiat / price, 8)
 
-    try:
-        market.place_order(coin, fiat, volume_coin)
-    except marketplace.BuyError as e:
-        logging.write_log(['There was an error from the Marketplace API:', str(e)])
-    else:
-        trade = datamodel.Trade(
-            timestamp=now,
-            minutes=trigger['minutes'],
-            drop=trigger['drop'],
-            volume_coin=volume_coin,
-            volume_fiat=volume_fiat,
-            coin=coin,
-            fiat=fiat)
-        session.add(trade)
-        session.commit()
+    buy_message = f'{volume_coin} {trigger.coin} for {trigger.volume_fiat} {trigger.fiat} on {trigger.market.get_name()} due to “{trigger.get_name()}”'
+    print(f'Trying to buy {buy_message} …')
+
+    trigger.market.place_order(trigger.coin, trigger.fiat, volume_coin)
+    trade = datamodel.Trade(
+        timestamp=datetime.datetime.now(),
+        trigger_name=trigger.get_name(),
+        volume_coin=volume_coin,
+        volume_fiat=trigger.volume_fiat,
+        coin=trigger.coin,
+        fiat=trigger.fiat)
+    session.add(trade)
+    session.commit()
+
+    telegram.telegram_bot_sendtext(config, f'Bought {buy_message}.')

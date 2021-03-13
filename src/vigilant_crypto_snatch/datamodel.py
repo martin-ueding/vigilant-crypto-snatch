@@ -25,8 +25,7 @@ class Trade(Base):
 
     id = sqlalchemy.Column(sqlalchemy.Integer, primary_key=True)
     timestamp = sqlalchemy.Column(sqlalchemy.DateTime, nullable=False)
-    minutes = sqlalchemy.Column(sqlalchemy.Integer, nullable=False)
-    drop = sqlalchemy.Column(sqlalchemy.Integer, nullable=False)
+    trigger_name = sqlalchemy.Column(sqlalchemy.String, nullable=False)
     volume_coin = sqlalchemy.Column(sqlalchemy.Float, nullable=False)
     volume_fiat = sqlalchemy.Column(sqlalchemy.Float, nullable=False)
     coin = sqlalchemy.Column(sqlalchemy.String, nullable=False)

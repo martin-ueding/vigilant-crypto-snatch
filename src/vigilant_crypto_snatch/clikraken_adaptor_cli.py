@@ -2,13 +2,15 @@ import csv
 import datetime
 import subprocess
 import typing
+import logging
+import shlex
 
 from . import clikraken_adaptor_api
 from . import datamodel
-from . import logging
 from . import marketplace
 
 
+logger = logging.getLogger(__name__)
 _delimiter = ';'
 
 
@@ -22,9 +24,10 @@ class KrakenMarketplace(marketplace.Marketplace):
                    'place',
                    '-p', clikraken_adaptor_api.make_asset_pair(coin, fiat),
                    '-t', 'market',
-                   str(volume)]
-        output = run_command(command, marketplace.TickerError)
-        logging.write_log(output.split('\n'))
+                   'buy',
+                   f'{volume:.20f}']
+        output = run_command(command, marketplace.BuyError)
+        logging.info(output.split('\n'))
 
     def get_spot_price(self, coin: str, fiat: str) -> datamodel.Price:
         command = ['clikraken',
@@ -43,19 +46,21 @@ class KrakenMarketplace(marketplace.Marketplace):
 
 
 def run_command(command: typing.List[str], exception: typing.Type[Exception]) -> str:
+    logger.debug(f'Running {shlex.join(command)} …')
     try:
         run = subprocess.run(command, check=True, capture_output=True)
     except subprocess.CalledProcessError as e:
         raise exception(e)
 
-    output = run.stdout.decode()
-
-    if 'ERROR' in output:
-        raise marketplace.TickerError(output)
-    if len(output.strip()) == 0:
+    stdout = run.stdout.decode().strip()
+    stderr = run.stderr.decode().strip()
+    if 'ERROR' in stdout:
+        raise exception(stdout)
+    if 'ERROR' in stderr:
+        raise exception(stderr)
+    if len(stdout.strip()) == 0:
         raise exception('No output from clikraken!')
-
-    return output
+    return stdout
 
 
 def csv_to_dict(line: str) -> typing.Dict[str, str]:

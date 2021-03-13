@@ -4,22 +4,24 @@
 import argparse
 import os
 import sys
-import time
-import typing
+import logging
 
+import coloredlogs
 import yaml
 
 from . import marketplace_factory
 from . import datamodel
 from . import drop
 from . import greeting
-from . import logging
+from . import telegram
 
 
 def main():
     options = _parse_args()
+    logging.basicConfig(level=options.loglevel.upper())
+    coloredlogs.install()
 
-    logging.write_log(['Starting up.'])
+    logging.info('Starting up …')
 
     if options.greeting:
         print(greeting.greeting)
@@ -27,18 +29,11 @@ def main():
 
     config = load_config()
     session = datamodel.open_db_session()
+    telegram.telegram_bot_sendtext(config, 'Hi!')
 
     market = marketplace_factory.make_marketplace(options.marketplace, config)
 
-    def do_work():
-        drop.check_for_drops(config, session, market)
-
-    while True:
-        if options.restart:
-            error_wrapper(do_work)
-        else:
-            do_work()
-        time.sleep(config['sleep'])
+    drop.check_for_drops(config, session, market)
 
 
 def _parse_args() -> argparse.Namespace:
@@ -48,6 +43,7 @@ def _parse_args() -> argparse.Namespace:
     parser.add_argument('--marketplace', choices=['bitstamp', 'kraken', 'kraken-cli'], default='kraken')
     parser.add_argument('--restart', action='store_true',
                         help='Ignore errors and continue running. This is a bit dangerous.')
+    parser.add_argument('--loglevel', choices=['debug', 'info', 'warning', 'error', 'critical'], default='info')
     options = parser.parse_args()
 
     return options
@@ -62,15 +58,6 @@ def load_config() -> dict:
     with open(config_path) as f:
         config = yaml.safe_load(f)
     return config
-
-
-def error_wrapper(func: typing.Callable) -> None:
-    try:
-        func()
-    except KeyboardInterrupt:
-        raise
-    except Exception as e:
-        logging.write_log([str(e)])
 
 
 if __name__ == '__main__':
