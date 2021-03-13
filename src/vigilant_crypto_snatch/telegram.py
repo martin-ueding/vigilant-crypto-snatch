@@ -7,8 +7,8 @@ logger = logging.getLogger('vigilant_crypto_snatch')
 
 
 class TelegramBot(logging.Handler):
-    def __init__(self, token: str):
-        super().__init__(logging.INFO)
+    def __init__(self, token: str, level: str):
+        super().__init__(level.upper())
         self.token = token
         self.get_chat_id()
 

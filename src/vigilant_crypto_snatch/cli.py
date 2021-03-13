@@ -23,7 +23,7 @@ def main():
     config = load_config()
 
     if 'telegram' in config:
-        telegram_handler = telegram.TelegramBot(config['telegram']['token'])
+        telegram_handler = telegram.TelegramBot(config['telegram']['token'], config['telegram']['level'])
         logger.addHandler(telegram_handler)
 
     coloredlogs.install(level=options.loglevel.upper())
@@ -37,12 +37,9 @@ def main():
 
 
 def _parse_args() -> argparse.Namespace:
-    parser = argparse.ArgumentParser(description='')
-    parser.add_argument('--greeting', action='store_true',
-                        help='Show an unnecessary long greeting message during startup.')
+    parser = argparse.ArgumentParser(description='https://martin-ueding.github.io/vigilant-crypto-snatch/configuration/')
     parser.add_argument('--marketplace', choices=['bitstamp', 'kraken', 'kraken-cli'], default='kraken')
-    parser.add_argument('--restart', action='store_true',
-                        help='Ignore errors and continue running. This is a bit dangerous.')
+    parser.add_argument('--restart', action='store_true')
     parser.add_argument('--loglevel', choices=['debug', 'info', 'warning', 'error', 'critical'], default='info')
     options = parser.parse_args()
 

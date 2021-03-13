@@ -6,11 +6,11 @@ Unfortunately we need to configure a few things before you can start automatic t
 
 In order to find a drop in the price, we need to know the historic price at a given point. We use Crypto Compare for that as they provide a free API. Go to [their website](https://min-api.cryptocompare.com/pricing) and create an API key.
 
-![](screenshot-cryptocompare-plans.png)
+> ![](screenshot-cryptocompare-plans.png)
 
 And retrieve your API key:
 
-![](screenshot-cryptocompare-api-key.png)
+> ![](screenshot-cryptocompare-api-key.png)
 
 In the configuration file then add the following:
 
@@ -106,4 +106,9 @@ It will give you an access token that you can use for the API. Enter that token 
 ```yaml
 telegram:
   token: 'Your bot token here'
+  level: info
 ```
+
+You will need to write a message to the bot in order to open a direct conversation with it. This is necessary such that the bot can reply to you.
+
+The `level` specified the messages that you want to receive. `info` gives sensible information, if you only want to receive information when something goes wrong, use `warning`. See the section in [running](running.md) for more details.
