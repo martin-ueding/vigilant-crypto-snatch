@@ -448,6 +448,13 @@
 <p>Unfortunately we need to configure a few things before you can start automatic trading with this software. Most configuration is done in a YAML file at <code>~/.config/vigilant-crypto-snatch.yml</code>. Create this file and open it in a text editor. We will talk you through the neccessary steps to fill it.</p>
 <h2 id="historic-price-api">Historic price API</h2>
 <p>In order to find a drop in the price, we need to know the historic price at a given point. We use Crypto Compare for that as they provide a free API. Go to <a href="https://min-api.cryptocompare.com/pricing">their website</a> and create an API key.</p>
+<blockquote>
+<p><img alt="" src="../screenshot-cryptocompare-plans.png" /></p>
+</blockquote>
+<p>And retrieve your API key:</p>
+<blockquote>
+<p><img alt="" src="../screenshot-cryptocompare-api-key.png" /></p>
+</blockquote>
 <p>In the configuration file then add the following:</p>
 <div class="highlight"><pre><span></span><code><span class="nt">cryptocompare</span><span class="p">:</span>
   <span class="nt">api_key</span><span class="p">:</span> <span class="s">&#39;your</span><span class="nv"> </span><span class="s">API</span><span class="nv"> </span><span class="s">key</span><span class="nv"> </span><span class="s">here&#39;</span>
@@ -455,7 +462,9 @@
 <h2 id="marketplaces">Marketplaces</h2>
 <p>We currently support two marketplaces, <a href="https://bitstamp.net/">Bitstamp</a> and <a href="https://kraken.com">Kraken</a>. You only have to configure one of them, but you can also configure both. When you start the program, you can just choose which marketplace you want to use today.</p>
 <h3 id="bitstamp">Bitstamp</h3>
-<p>In order to use Bitstamp, you need to set up an API key with them that has the correct permissions to trade with. Put this API key into the configuration file.</p>
+<p>In order to use Bitstamp, you need to set up an API key with them that has the correct permissions to trade with. Go to the <em>settings</em> menu and create a new key.</p>
+<p><img alt="" src="../screenshot-bitstamp-api-key.png" /></p>
+<p>Put this API key into the configuration file.</p>
 <div class="highlight"><pre><span></span><code><span class="nt">bitstamp</span><span class="p">:</span>
   <span class="nt">username</span><span class="p">:</span> <span class="s">&#39;username</span><span class="nv"> </span><span class="s">here&#39;</span>
   <span class="nt">key</span><span class="p">:</span> <span class="s">&#39;key</span><span class="nv"> </span><span class="s">here&#39;</span>
@@ -492,11 +501,20 @@ secret
 </code></pre></div>
 <h2 id="telegram-notifications">Telegram notifications</h2>
 <p>Optionally you can set up notifications via Telegram. This is not required, but a nice extra to allow monitoring from anywhere.</p>
-<p>Follow <a href="https://www.christian-luetgens.de/homematic/telegram/botfather/Chat-Bot.htm">this tutorial</a> to create a bot. Then enter the details here:</p>
+<p>First you have to create a bot by talking to <a href="https://t.me/botfather">@botfather</a>. It will lead you through a couple of steps:</p>
+<ol>
+<li>Type <code>/start</code> to initiate the bot creation.</li>
+<li>Then type <code>/newbot</code> to create your bot.</li>
+<li>It will ask you for the name of the bot. You can just use “vigilant-crypto-snatch” or something else.</li>
+<li>Next it will ask for a username of the bot. This is a technical thing, so it doesn't need to be pretty. It needs to be unique and end with <code>bot</code>. So perhaps use something like <code>vigilant_0f8704a83991_bot</code>, where you just make up your own random letters.</li>
+</ol>
+<p>It will give you an access token that you can use for the API. Enter that token into the configuration file:</p>
 <div class="highlight"><pre><span></span><code><span class="nt">telegram</span><span class="p">:</span>
   <span class="nt">token</span><span class="p">:</span> <span class="s">&#39;Your</span><span class="nv"> </span><span class="s">bot</span><span class="nv"> </span><span class="s">token</span><span class="nv"> </span><span class="s">here&#39;</span>
-  <span class="nt">chat_id</span><span class="p">:</span> <span class="s">&#39;Your</span><span class="nv"> </span><span class="s">chat</span><span class="nv"> </span><span class="s">ID</span><span class="nv"> </span><span class="s">here&#39;</span>
+  <span class="nt">level</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">info</span>
 </code></pre></div>
+<p>You will need to write a message to the bot in order to open a direct conversation with it. This is necessary such that the bot can reply to you.</p>
+<p>The <code>level</code> specified the messages that you want to receive. <code>info</code> gives sensible information, if you only want to receive information when something goes wrong, use <code>warning</code>. See the section in <a href="../running/">running</a> for more details.</p>
                 
               
               

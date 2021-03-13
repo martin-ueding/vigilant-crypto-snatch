@@ -211,9 +211,45 @@
         
       
       
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          Running
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
       <a href="./" class="md-nav__link md-nav__link--active">
         Running
       </a>
+      
+        
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#notifications" class="md-nav__link">
+    Notifications
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#telegram-notifications" class="md-nav__link">
+    Telegram notifications
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
       
     </li>
   
@@ -267,6 +303,28 @@
     
   
   
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#notifications" class="md-nav__link">
+    Notifications
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#telegram-notifications" class="md-nav__link">
+    Telegram notifications
+  </a>
+  
+</li>
+      
+    </ul>
+  
 </nav>
                   </div>
                 </div>
@@ -280,8 +338,47 @@
                 
                 <h1 id="running">Running</h1>
 <p>If you have installed it system-wide, you can just execute <code>vigilant-crypto-snatch [options]</code> to run it. You can pass additional options, if you want. With the <code>--help</code> option you will see an up-to-date list of options.</p>
-<p>When you want to quit press <kbd>Ctrl</kbd>+<kbd>C</kbd>.</p>
+<p>When you want to quit, just press <kbd>Ctrl</kbd>+<kbd>C</kbd>.</p>
 <p>All historical price data and performed transactions will be stored in a SQLite database at <code>~/.local/share/vigilant-crypto-snatch/db.sqlite</code>. We sometimes change the database format between major releases. In that case it is easiest to delete the database and let the script create the new one. As there are only so few users, we don't offer proper database migrations.</p>
+<h2 id="notifications">Notifications</h2>
+<p>The program can emit a lot of status output while running. You can specify a <em>log level</em> with <code>--loglevel LEVEL</code>, where <code>LEVEL</code> can be <code>critical</code>, <code>error</code>, <code>warning</code>, <code>info</code> or <code>debug</code>. The <code>info</code> level is the default and does not fill the terminal with tons of output. You can set it to <code>debug</code> if you want to have more output and want to diagnose your triggers.</p>
+<h2 id="telegram-notifications">Telegram notifications</h2>
+<p>If the Telegram bot token is set up correctly, you will receive messages like this:</p>
+<blockquote>
+<p><img alt="" src="../telegram-output.png" /></p>
+</blockquote>
+<p>The severity of messages is color-coded with an emoji according to this mapping:</p>
+<table>
+<thead>
+<tr>
+<th align="center">Symbol</th>
+<th align="left">Severity</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="center">🔴</td>
+<td align="left">Critical</td>
+</tr>
+<tr>
+<td align="center">🟠</td>
+<td align="left">Error</td>
+</tr>
+<tr>
+<td align="center">🟡</td>
+<td align="left">Warning</td>
+</tr>
+<tr>
+<td align="center">🟢</td>
+<td align="left">Info</td>
+</tr>
+<tr>
+<td align="center">🔵</td>
+<td align="left">Debug</td>
+</tr>
+</tbody>
+</table>
+<p>The logging level is set to <em>Info</em> by default. You must not set it to <em>Debug</em> as sending a Telegram message will produce more debug messages. The program will crash with an infinite recursion.</p>
                 
               
               
