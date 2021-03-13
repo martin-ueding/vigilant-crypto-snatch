@@ -46,7 +46,7 @@ class DropTrigger(Trigger):
         return price < critical
 
     def get_name(self) -> str:
-        return f"Drop {self.drop} % in {self.minutes} minutes"
+        return f'Drop {self.drop} % in {self.minutes} minutes'
 
 
 class TrueTrigger(Trigger):
@@ -54,4 +54,4 @@ class TrueTrigger(Trigger):
         return True
 
     def get_name(self) -> str:
-        return "Always buy"
+        return f'Always buy every {self.minutes} minutes'

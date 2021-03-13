@@ -42,15 +42,5 @@ triggers:
 # If you get nonce errors on kraken consider using less triggers or modify the nonce: https://support.kraken.com/hc/en-us/articles/360001148063-Why-am-I-getting-Invalid-Nonce-Errors-
 
   
-# To implement a simple DCA stragety apart from the buys during drops you can modify a trigger like this:
 
-  - { minutes: 11720, drop: 0.0001, eur: 300 }
-  
-# In this case the trigger will be fired every 7 days and makes a market buy no matter where the price is for 300 fiatunits.
-
-
-# Choose your currency pairs you want the skipt to run on. You can choose as many as you want but be carefull, the triggers are the same for all pairs!!!
-
-currency_pairs:
-  - ['BTC', 'EUR']
 #  - ['crypto', 'FIAT']
