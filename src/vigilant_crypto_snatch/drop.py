@@ -2,6 +2,9 @@ import copy
 import datetime
 import logging
 import time
+import sys
+
+import sqlalchemy.exc
 
 from . import datamodel
 from . import marketplace
@@ -58,6 +61,9 @@ def check_for_drops(config: dict, session, market: marketplace.Marketplace, opti
                     notify_and_continue(e, logging.ERROR)
                 except marketplace.BuyError as e:
                     notify_and_continue(e, logging.CRITICAL)
+                except sqlalchemy.exc.OperationalError as e:
+                    logger.critical(f'Something went wrong with the database. Perhaps it is easiest to just delete the database file. The original exception was this: {repr(e)}')
+                    sys.exit(1)
                 except KeyboardInterrupt:
                     raise
                 except Exception as e:
