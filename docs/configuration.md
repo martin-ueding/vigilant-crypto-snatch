@@ -27,7 +27,7 @@ We currently support two marketplaces, [Bitstamp](https://bitstamp.net/) and [Kr
 
 In order to use Bitstamp, you need to set up an API key with them that has the correct permissions to trade with. Go to the *settings* menu and create a new key.
 
-![](screenshot-bitstamp-api-key.png)
+> ![](screenshot-bitstamp-api-key.png)
 
 Put this API key into the configuration file.
 
@@ -78,8 +78,10 @@ Say we want to have three triggers, two for Bitcoin and one for Etherum. When it
 triggers:
   - { coin: btc, fiat: eur, minutes: 60, drop: 5, volume_fiat: 25.00 }
   - { coin: btc, fiat: eur, minutes: 1400, drop: 15, volume_fiat: 100.00 }
-  - { coin: eth, fiat: eur, minutes: 60, drop: 5, volume_fiat: 25.00 }
+  - { coin: eth, fiat: eur, minutes: 60, drop: 4.5, volume_fiat: 25.00 }
 ```
+
+You can specify a decimal number for the drop percentage, just be aware that it must contain a decimal point instead of a decimal comma.
 
 ### Timers
 
