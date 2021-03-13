@@ -24,5 +24,12 @@ class TelegramBot(logging.Handler):
         response = requests.get(send_text)
         return response.json()
 
+    def format(self, record: logging.LogRecord) -> str:
+        emoji = prefixes[record.levelname]
+        return f'{emoji} {record.getMessage()}'
+
     def emit(self, record: logging.LogRecord) -> None:
-        self.send_message(record.getMessage())
+        self.send_message(self.format(record))
+
+
+prefixes = {'CRITICAL': '🔴', 'ERROR': '🟠', 'WARNING': '🟡', 'INFO': '🟢', 'DEBUG': '🔵'}
