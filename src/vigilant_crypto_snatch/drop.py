@@ -42,12 +42,18 @@ def check_for_drops(config: dict, session, market: marketplace.Marketplace, opti
     longest_cooldown = max(trigger.minutes for trigger in active_triggers)
     logger.debug(f'Longest cooldown for any trigger is {longest_cooldown} minutes.')
     last_cleaning = None
+    last_checkin = datetime.datetime.now()
 
     try:
         while True:
             if len(active_triggers) == 0:
                 logger.critical('All triggers have been disabled, shutting down. You need to manually restart the program after fixing the errors.')
                 return
+
+            now = datetime.datetime.now()
+            if now.hour == 6 and last_checkin < now - datetime.timedelta(hours=2):
+                logger.info("Hey there, I'm still there! 🤖")
+                last_checkin = now
 
             for trigger in copy.copy(active_triggers):
                 logger.debug(f'Checking trigger “{trigger.get_name()}” …')
