@@ -4,12 +4,11 @@ import time
 
 from . import datamodel
 from . import marketplace
-from . import telegram
 from . import triggers
 from . import historical
 
 
-logger = logging.getLogger(__name__)
+logger = logging.getLogger('vigilant_crypto_snatch')
 
 
 def check_for_drops(config: dict, session, market: marketplace.Marketplace) -> None:
@@ -51,8 +50,7 @@ def check_for_drops(config: dict, session, market: marketplace.Marketplace) -> N
 
 
 def notify_and_continue(exception: Exception, config: dict) -> None:
-    logger.error(f'{type(exception)}: {exception}')
-    telegram.telegram_bot_sendtext(config, f'An exception of type {type(exception)} has occurred: {exception}')
+    logger.error(f'An exception of type {type(exception)} has occurred: {exception}')
 
 
 def buy(config: dict, trigger: triggers.Trigger, session):
@@ -73,4 +71,4 @@ def buy(config: dict, trigger: triggers.Trigger, session):
     session.add(trade)
     session.commit()
 
-    telegram.telegram_bot_sendtext(config, f'Bought {buy_message}.')
+    logger.info(f'Bought {buy_message}.')

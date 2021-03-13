@@ -12,24 +12,25 @@ import yaml
 from . import marketplace_factory
 from . import datamodel
 from . import drop
-from . import greeting
 from . import telegram
+
+
+logger = logging.getLogger('vigilant_crypto_snatch')
 
 
 def main():
     options = _parse_args()
+    config = load_config()
+
+    if 'telegram' in config:
+        telegram_handler = telegram.TelegramBot(config['telegram']['token'])
+        logger.addHandler(telegram_handler)
+
     coloredlogs.install(level=options.loglevel.upper())
 
-    logging.info('Starting up …')
+    logger.info('Starting up …')
 
-    if options.greeting:
-        print(greeting.greeting)
-        print()
-
-    config = load_config()
     session = datamodel.open_db_session()
-    telegram.telegram_bot_sendtext(config, 'Starting up …')
-
     market = marketplace_factory.make_marketplace(options.marketplace, config)
 
     drop.check_for_drops(config, session, market)

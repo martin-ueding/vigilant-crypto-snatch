@@ -6,6 +6,12 @@ Unfortunately we need to configure a few things before you can start automatic t
 
 In order to find a drop in the price, we need to know the historic price at a given point. We use Crypto Compare for that as they provide a free API. Go to [their website](https://min-api.cryptocompare.com/pricing) and create an API key.
 
+![](screenshot-cryptocompare-plans.png)
+
+And retrieve your API key:
+
+![](screenshot-cryptocompare-api-key.png)
+
 In the configuration file then add the following:
 
 ```yaml
@@ -19,7 +25,11 @@ We currently support two marketplaces, [Bitstamp](https://bitstamp.net/) and [Kr
 
 ### Bitstamp
 
-In order to use Bitstamp, you need to set up an API key with them that has the correct permissions to trade with. Put this API key into the configuration file.
+In order to use Bitstamp, you need to set up an API key with them that has the correct permissions to trade with. Go to the *settings* menu and create a new key.
+
+![](screenshot-bitstamp-api-key.png)
+
+Put this API key into the configuration file.
 
 ```yaml
 bitstamp:
@@ -84,10 +94,16 @@ timers:
 
 Optionally you can set up notifications via Telegram. This is not required, but a nice extra to allow monitoring from anywhere.
 
-Follow [this tutorial](https://www.christian-luetgens.de/homematic/telegram/botfather/Chat-Bot.htm) to create a bot. Then enter the details here:
+First you have to create a bot by talking to [@botfather](https://t.me/botfather). It will lead you through a couple of steps:
+
+1. Type `/start` to initiate the bot creation.
+2. Then type `/newbot` to create your bot.
+3. It will ask you for the name of the bot. You can just use “vigilant-crypto-snatch” or something else.
+4. Next it will ask for a username of the bot. This is a technical thing, so it doesn't need to be pretty. It needs to be unique and end with `bot`. So perhaps use something like `vigilant_0f8704a83991_bot`, where you just make up your own random letters.
+
+It will give you an access token that you can use for the API. Enter that token into the configuration file:
 
 ```yaml
 telegram:
   token: 'Your bot token here'
-  chat_id: 'Your chat ID here'
 ```

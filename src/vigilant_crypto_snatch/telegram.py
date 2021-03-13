@@ -3,16 +3,26 @@ import logging
 import requests
 
 
-logger = logging.getLogger(__name__)
+logger = logging.getLogger('vigilant_crypto_snatch')
 
 
-def telegram_bot_sendtext(config: dict, bot_message: str):
-    if 'telegram' not in config:
-        return
+class TelegramBot(logging.Handler):
+    def __init__(self, token: str):
+        super().__init__(logging.INFO)
+        self.token = token
+        self.get_chat_id()
 
-    logger.debug('Sending message to Telegram …')
-    bot_token = config['telegram']['token']
-    bot_chat_id = config['telegram']['chat_id']
-    send_text = f'https://api.telegram.org/bot{bot_token}/sendMessage?chat_id={bot_chat_id}&parse_mode=Markdown&text={bot_message}'
-    response = requests.get(send_text)
-    return response.json()
+    def get_chat_id(self) -> None:
+        response = requests.get(f'https://api.telegram.org/bot{self.token}/getUpdates')
+        response.raise_for_status()
+        data = response.json()
+        self.chat_id = int(data['result'][-1]['message']['chat']['id'])
+
+    def send_message(self, message: str) -> dict:
+        logger.debug('Sending message to Telegram …')
+        send_text = f'https://api.telegram.org/bot{self.token}/sendMessage?chat_id={self.chat_id}&parse_mode=Markdown&text={message}'
+        response = requests.get(send_text)
+        return response.json()
+
+    def emit(self, record: logging.LogRecord) -> None:
+        self.send_message(record.getMessage())

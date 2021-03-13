@@ -8,7 +8,7 @@ from . import datamodel
 from . import marketplace
 
 
-logger = logging.getLogger(__name__)
+logger = logging.getLogger('vigilant_crypto_snatch')
 
 
 class HistoricalError(RuntimeError):
