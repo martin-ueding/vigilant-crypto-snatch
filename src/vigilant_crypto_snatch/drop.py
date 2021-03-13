@@ -42,9 +42,9 @@ def check_for_drops(config: dict, session, market: marketplace.Marketplace) -> N
                         logger.info(f'Trigger “{trigger.get_name()}” fired, try buying …')
                         buy(config, trigger, session)
                 except marketplace.TickerError as e:
-                    notify_and_continue(e, config)
+                    notify_and_continue(e, logging.ERROR)
                 except marketplace.BuyError as e:
-                    notify_and_continue(e, config)
+                    notify_and_continue(e, logging.CRITICAL)
 
             logger.debug(f'All triggers checked, sleeping for {config["sleep"]} seconds …')
             time.sleep(config['sleep'])
@@ -52,8 +52,8 @@ def check_for_drops(config: dict, session, market: marketplace.Marketplace) -> N
         logger.info('User interrupted, shutting down.')
 
 
-def notify_and_continue(exception: Exception, config: dict) -> None:
-    logger.error(f'An exception of type {type(exception)} has occurred: {exception}')
+def notify_and_continue(exception: Exception, severity: int) -> None:
+    logger.log(severity, f'An exception of type {type(exception)} has occurred: {exception}')
 
 
 def buy(config: dict, trigger: triggers.Trigger, session):
