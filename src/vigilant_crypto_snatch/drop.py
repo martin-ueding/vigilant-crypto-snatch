@@ -57,9 +57,6 @@ def buy(config: dict, trigger: triggers.Trigger, session):
     price = historical.search_current(session, trigger.market, trigger.coin, trigger.fiat)
     volume_coin = round(trigger.volume_fiat / price, 8)
 
-    buy_message = f'{volume_coin} {trigger.coin} for {trigger.volume_fiat} {trigger.fiat} on {trigger.market.get_name()} due to “{trigger.get_name()}”'
-    print(f'Trying to buy {buy_message} …')
-
     trigger.market.place_order(trigger.coin, trigger.fiat, volume_coin)
     trade = datamodel.Trade(
         timestamp=datetime.datetime.now(),
@@ -71,4 +68,5 @@ def buy(config: dict, trigger: triggers.Trigger, session):
     session.add(trade)
     session.commit()
 
+    buy_message = f'{volume_coin} {trigger.coin} for {trigger.volume_fiat} {trigger.fiat} on {trigger.market.get_name()} due to “{trigger.get_name()}”'
     logger.info(f'Bought {buy_message}.')
