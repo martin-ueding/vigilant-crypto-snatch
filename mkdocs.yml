@@ -9,6 +9,7 @@ nav:
   - running.md
   - developing.md
   - license.md
+  - donation.md
 
 markdown_extensions:
   - pymdownx.highlight
