@@ -18,8 +18,7 @@ from . import telegram
 
 def main():
     options = _parse_args()
-    logging.basicConfig(level=options.loglevel.upper())
-    coloredlogs.install()
+    coloredlogs.install(level=options.loglevel.upper())
 
     logging.info('Starting up …')
 
