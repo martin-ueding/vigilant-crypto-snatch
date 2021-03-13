@@ -25,7 +25,7 @@ class KrakenMarketplace(marketplace.Marketplace):
                    '-p', clikraken_adaptor_api.make_asset_pair(coin, fiat),
                    '-t', 'market',
                    'buy',
-                   f'{volume:.20f}']
+                   f'{volume:.8f}']
         output = run_command(command, marketplace.BuyError)
         logging.info(output.split('\n'))
 
