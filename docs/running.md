@@ -10,7 +10,7 @@ All historical price data and performed transactions will be stored in a SQLite 
 
 The program can emit a lot of status output while running. You can specify a *log level* with `--loglevel LEVEL`, where `LEVEL` can be `critical`, `error`, `warning`, `info` or `debug`. The `info` level is the default and does not fill the terminal with tons of output. You can set it to `debug` if you want to have more output and want to diagnose your triggers.
 
-## Telegram notifications
+### Telegram
 
 If the Telegram bot token is set up correctly, you will receive messages like this:
 
@@ -27,6 +27,12 @@ Symbol | Severity
 🔵 | Debug
 
 The logging level is set to *Info* by default. You must not set it to *Debug* as sending a Telegram message will produce more debug messages. The program will crash with an infinite recursion.
+
+## Keepalive mode
+
+We have tried to handle various error conditions that can happen. For instance the API of the marketplace could reject the query. During development we have tried to trigger various errors and handle them. From production runs we know that sometimes there API outages, internet connection glitches and the like. In these cases exception types that we haven't handled yet are raised. These crash normally crash the program, and we would like to ask you to [file a bug report](https://github.com/martin-ueding/vigilant-crypto-snatch/issues) then.
+
+In order to have it stay running in production you can use the `--keepalive` flag. It will just catch *all* exception types. This may hide some actual errors. So please still report these errors as tickets.
 
 ## Nonce rejections with Kraken
 

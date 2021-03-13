@@ -11,7 +11,7 @@ from . import historical
 logger = logging.getLogger('vigilant_crypto_snatch')
 
 
-def check_for_drops(config: dict, session, market: marketplace.Marketplace) -> None:
+def check_for_drops(config: dict, session, market: marketplace.Marketplace, options) -> None:
     active_triggers = []
     for trigger_spec in config['triggers']:
         trigger = triggers.DropTrigger(
@@ -45,6 +45,12 @@ def check_for_drops(config: dict, session, market: marketplace.Marketplace) -> N
                     notify_and_continue(e, logging.ERROR)
                 except marketplace.BuyError as e:
                     notify_and_continue(e, logging.CRITICAL)
+                except KeyboardInterrupt:
+                    raise
+                except Exception as e:
+                    logger.critical(f'Unhandled exception type: {repr(e)}. Please report this to Martin!')
+                    if not options.keepalive:
+                        raise
 
             logger.debug(f'All triggers checked, sleeping for {config["sleep"]} seconds …')
             time.sleep(config['sleep'])

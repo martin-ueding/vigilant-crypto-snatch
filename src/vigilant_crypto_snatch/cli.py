@@ -33,13 +33,13 @@ def main():
     session = datamodel.open_db_session()
     market = marketplace_factory.make_marketplace(options.marketplace, config)
 
-    drop.check_for_drops(config, session, market)
+    drop.check_for_drops(config, session, market, options)
 
 
 def _parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(description='https://martin-ueding.github.io/vigilant-crypto-snatch/configuration/')
     parser.add_argument('--marketplace', choices=['bitstamp', 'kraken', 'kraken-cli'], default='kraken')
-    parser.add_argument('--restart', action='store_true')
+    parser.add_argument('--keepalive', action='store_true')
     parser.add_argument('--loglevel', choices=['debug', 'info', 'warning', 'error', 'critical'], default='info')
     options = parser.parse_args()
 
