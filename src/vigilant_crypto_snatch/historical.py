@@ -62,7 +62,7 @@ def search_current(session, market: marketplace.Marketplace, coin: str, fiat: st
             datamodel.Price.coin == coin,
             datamodel.Price.fiat == fiat,
         ).order_by(datamodel.Price.timestamp.desc())[0]
-        logger.debug(f'Found spot price at in database: {q.last} {fiat}/{coin}.')
+        logger.debug(f'Found spot price in database: {q.last} {fiat}/{coin}.')
         return q.last
     except sqlalchemy.orm.exc.NoResultFound:
         pass
