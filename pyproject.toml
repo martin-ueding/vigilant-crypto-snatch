@@ -19,6 +19,7 @@ urllib3 = "^1.26.3"
 coloredlogs = "^15.0"
 
 [tool.poetry.dev-dependencies]
+mkdocs_material = "^7.0.5"
 
 [build-system]
 requires = ["poetry>=0.12"]
