@@ -33,20 +33,23 @@ def check_for_drops(config: dict, session, market: marketplace.Marketplace) -> N
         logger.debug(f'Constructed trigger: {trigger.get_name()}')
         active_triggers.append(trigger)
 
-    while True:
-        for trigger in active_triggers:
-            logger.debug(f'Checking trigger “{trigger.get_name()}” …')
-            try:
-                if trigger.has_cooled_off(session) and trigger.is_triggered(session, config):
-                    logger.info(f'Trigger “{trigger.get_name()}” fired, try buying …')
-                    buy(config, trigger, session)
-            except marketplace.TickerError as e:
-                notify_and_continue(e, config)
-            except marketplace.BuyError as e:
-                notify_and_continue(e, config)
+    try:
+        while True:
+            for trigger in active_triggers:
+                logger.debug(f'Checking trigger “{trigger.get_name()}” …')
+                try:
+                    if trigger.has_cooled_off(session) and trigger.is_triggered(session, config):
+                        logger.info(f'Trigger “{trigger.get_name()}” fired, try buying …')
+                        buy(config, trigger, session)
+                except marketplace.TickerError as e:
+                    notify_and_continue(e, config)
+                except marketplace.BuyError as e:
+                    notify_and_continue(e, config)
 
-        logger.debug(f'All triggers checked, sleeping for {config["sleep"]} seconds …')
-        time.sleep(config['sleep'])
+            logger.debug(f'All triggers checked, sleeping for {config["sleep"]} seconds …')
+            time.sleep(config['sleep'])
+    except KeyboardInterrupt:
+        logger.info('User interrupted, shutting down.')
 
 
 def notify_and_continue(exception: Exception, config: dict) -> None:
