@@ -14,25 +14,27 @@ logger = logging.getLogger('vigilant_crypto_snatch')
 
 def check_for_drops(config: dict, session, market: marketplace.Marketplace, options) -> None:
     active_triggers = []
-    for trigger_spec in config['triggers']:
-        trigger = triggers.DropTrigger(
-            market=market,
-            coin=trigger_spec['coin'].upper(),
-            fiat=trigger_spec['fiat'].upper(),
-            volume_fiat=trigger_spec['volume_fiat'],
-            drop=trigger_spec['drop'],
-            minutes=trigger_spec['minutes'])
-        logger.debug(f'Constructed trigger: {trigger.get_name()}')
-        active_triggers.append(trigger)
-    for timer_spec in config['timers']:
-        trigger = triggers.TrueTrigger(
-            market=market,
-            coin=timer_spec['coin'].upper(),
-            fiat=timer_spec['fiat'].upper(),
-            volume_fiat=timer_spec['volume_fiat'],
-            minutes=timer_spec['minutes'])
-        logger.debug(f'Constructed trigger: {trigger.get_name()}')
-        active_triggers.append(trigger)
+    if 'triggers' in config and config['triggers'] is not None:
+        for trigger_spec in config['triggers']:
+            trigger = triggers.DropTrigger(
+                market=market,
+                coin=trigger_spec['coin'].upper(),
+                fiat=trigger_spec['fiat'].upper(),
+                volume_fiat=trigger_spec['volume_fiat'],
+                drop=trigger_spec['drop'],
+                minutes=trigger_spec['minutes'])
+            logger.debug(f'Constructed trigger: {trigger.get_name()}')
+            active_triggers.append(trigger)
+    if 'timers' in config and config['timers'] is not None:
+        for timer_spec in config['timers']:
+            trigger = triggers.TrueTrigger(
+                market=market,
+                coin=timer_spec['coin'].upper(),
+                fiat=timer_spec['fiat'].upper(),
+                volume_fiat=timer_spec['volume_fiat'],
+                minutes=timer_spec['minutes'])
+            logger.debug(f'Constructed trigger: {trigger.get_name()}')
+            active_triggers.append(trigger)
 
     longest_cooldown = max(trigger.minutes for trigger in active_triggers)
     logger.debug(f'Longest cooldown for any trigger is {longest_cooldown} minutes.')
