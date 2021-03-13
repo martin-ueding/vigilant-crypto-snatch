@@ -8,6 +8,7 @@ import sqlalchemy.ext.declarative
 
 Base = sqlalchemy.ext.declarative.declarative_base()
 logger = logging.getLogger('vigilant_crypto_snatch')
+db_path = os.path.expanduser('~/.local/share/vigilant-crypto-snatch/db.sqlite')
 
 
 class Price(Base):
@@ -36,7 +37,6 @@ class Trade(Base):
 
 
 def open_db_session() -> sqlalchemy.orm.Session:
-    db_path = os.path.expanduser('~/.local/share/vigilant-crypto-snatch/db.sqlite')
     if not os.path.isdir(os.path.dirname(db_path)):
         os.makedirs(os.path.dirname(db_path))
     assert os.path.isdir(os.path.dirname(db_path))

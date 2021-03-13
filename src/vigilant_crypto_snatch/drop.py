@@ -62,7 +62,7 @@ def check_for_drops(config: dict, session, market: marketplace.Marketplace, opti
                 except marketplace.BuyError as e:
                     notify_and_continue(e, logging.CRITICAL)
                 except sqlalchemy.exc.OperationalError as e:
-                    logger.critical(f'Something went wrong with the database. Perhaps it is easiest to just delete the database file. The original exception was this: {repr(e)}')
+                    logger.critical(f'Something went wrong with the database. Perhaps it is easiest to just delete the database file at `{datamodel.db_path}`. The original exception was this: {repr(e)}')
                     sys.exit(1)
                 except KeyboardInterrupt:
                     raise
