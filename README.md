@@ -4,11 +4,11 @@ A little program that observes the current market price for your choice of curre
 
 ## Installation
 
-Use `git clone https://github.com/martin-ueding/vigilant-crypto-snatch/tree/docker-implementation` to clone the repository to your local machine.
+The project is [published on PyPI](https://pypi.org/project/vigilant-crypto-snatch/), so you can just install it with PIP. Most likely the easiest way to install is the following:
 
-Make sure that you have [Poetry](https://python-poetry.org/) installed. Once you have that, install the project with `poetry install`.
-
-If you are running an old version of the script, delete your old database from here: `~/.local/share/vigilant-crypto-snatch/db.sqlite` . The new format is incompatible with the old.
+```bash
+sudo pip3 install vigilant-crypto-snatch
+```
 
 ## Configuration
 
@@ -49,7 +49,13 @@ When you want to quit press
 
 <kbd>Ctrl</kbd>+<kbd>C</kbd>.
 
-All historical price data and performed transactions will be stored in a SQLite database at `~/.local/share/vigilant-crypto-snatch/db.sqlite`. 
+All historical price data and performed transactions will be stored in a SQLite database at `~/.local/share/vigilant-crypto-snatch/db.sqlite`. We sometimes change the database format between major releases. In that case it is easiest to delete the database and let the script create the new one. As there are only so few users, we don't offer proper database migrations.
+
+## Developing
+
+Use `git clone https://github.com/martin-ueding/vigilant-crypto-snatch/tree/docker-implementation` to clone the repository to your local machine.
+
+Make sure that you have [Poetry](https://python-poetry.org/) installed. Once you have that, install the project with `poetry install`.
 
 ## The Name
 
