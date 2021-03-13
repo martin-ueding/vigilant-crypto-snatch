@@ -1,8 +1,9 @@
 [tool.poetry]
 name = "vigilant-crypto-snatch"
-version = "1.0.0"
+version = "1.1.0"
 description = ""
 authors = ["Martin Ueding <mu@martin-ueding.de>"]
+license = "MIT"
 
 [tool.poetry.scripts]
 vigilant-crypto-snatch = "vigilant_crypto_snatch.cli:main"
