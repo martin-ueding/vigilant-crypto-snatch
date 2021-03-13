@@ -2,3 +2,10 @@ site_name: Vigilant Crypto Snatch
 
 theme:
   name: material
+
+nav:
+  - index.md
+  - configuration.md
+  - running.md
+  - developing.md
+  - license.md

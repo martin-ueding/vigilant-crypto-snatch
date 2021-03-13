@@ -1,17 +1,13 @@
-# Welcome to MkDocs
+# Welcome
 
-For full documentation visit [mkdocs.org](https://www.mkdocs.org).
+*Vigiliant Crypto Snatch* is a little program that observes the current market price for your choice of currency pairs, looks for drastic reductions (dips) and then places buy orders.
 
-## Commands
+The basic idea is to use the [Dollar Cost Average](https://en.wikipedia.org/wiki/Dollar_cost_averaging) effect in a bit more clever way. By buying in fixed time intervals for a certain amount of fiat currency, one can profit from a sideways moving market with fluctuations. We can try to improve on this by also actively looking for reductions in the price to buy more cryptocurrency for the same fiat amount.
 
-* `mkdocs new [dir-name]` - Create a new project.
-* `mkdocs serve` - Start the live-reloading docs server.
-* `mkdocs build` - Build the documentation site.
-* `mkdocs -h` - Print help message and exit.
+The project is [published on PyPI](https://pypi.org/project/vigilant-crypto-snatch/), so you can just install it with PIP. Most likely the easiest way to install is the following:
 
-## Project layout
+```bash
+sudo python3 -m pip install vigilant-crypto-snatch
+```
 
-    mkdocs.yml    # The configuration file.
-    docs/
-        index.md  # The documentation homepage.
-        ...       # Other markdown pages, images and other files.
+In case you wonder about the name: Dips means that the price dives. Submarines dive. The HMS Vigilant is a submarine of the British Navy. But also vigilance means to observe.
