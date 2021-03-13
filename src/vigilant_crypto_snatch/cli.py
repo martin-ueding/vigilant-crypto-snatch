@@ -38,7 +38,7 @@ def main():
 
 def _parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(description='https://martin-ueding.github.io/vigilant-crypto-snatch/configuration/')
-    parser.add_argument('--marketplace', choices=['bitstamp', 'kraken', 'kraken-cli'], default='kraken')
+    parser.add_argument('--marketplace', choices=['bitstamp', 'kraken', 'kraken-api'], default='kraken')
     parser.add_argument('--keepalive', action='store_true')
     parser.add_argument('--loglevel', choices=['debug', 'info', 'warning', 'error', 'critical'], default='info')
     options = parser.parse_args()
