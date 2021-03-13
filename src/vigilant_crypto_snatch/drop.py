@@ -1,3 +1,4 @@
+import copy
 import datetime
 import logging
 import time
@@ -33,14 +34,24 @@ def check_for_drops(config: dict, session, market: marketplace.Marketplace, opti
         logger.debug(f'Constructed trigger: {trigger.get_name()}')
         active_triggers.append(trigger)
 
+    longest_cooldown = max(trigger.minutes for trigger in active_triggers)
+    logger.debug(f'Longest cooldown for any trigger is {longest_cooldown} minutes.')
+    last_cleaning = None
+
     try:
         while True:
-            for trigger in active_triggers:
+            if len(active_triggers) == 0:
+                logger.critical('All triggers have been disabled, shutting down. You need to manually restart the program after fixing the errors.')
+                return
+
+            for trigger in copy.copy(active_triggers):
                 logger.debug(f'Checking trigger “{trigger.get_name()}” …')
                 try:
                     if trigger.has_cooled_off(session) and trigger.is_triggered(session, config):
+                        trigger.trials += 1
                         logger.info(f'Trigger “{trigger.get_name()}” fired, try buying …')
                         buy(config, trigger, session)
+                        trigger.reset_trials()
                 except marketplace.TickerError as e:
                     notify_and_continue(e, logging.ERROR)
                 except marketplace.BuyError as e:
@@ -51,6 +62,14 @@ def check_for_drops(config: dict, session, market: marketplace.Marketplace, opti
                     logger.critical(f'Unhandled exception type: {repr(e)}. Please report this to Martin!')
                     if not options.keepalive:
                         raise
+
+                if trigger.trials > 3:
+                    logger.warning(f'Disabling trigger “{trigger.get_name()}” after repeated failures.')
+                    active_triggers.remove(trigger)
+
+            if last_cleaning is None or last_cleaning < datetime.datetime.now() - datetime.timedelta(minutes=60):
+                datamodel.garbage_collect_db(session, datetime.datetime.now() - 2 * datetime.timedelta(minutes=longest_cooldown))
+                last_cleaning = datetime.datetime.now()
 
             logger.debug(f'All triggers checked, sleeping for {config["sleep"]} seconds …')
             time.sleep(config['sleep'])

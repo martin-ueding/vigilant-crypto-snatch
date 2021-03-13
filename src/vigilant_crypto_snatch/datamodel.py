@@ -1,3 +1,5 @@
+import datetime
+import logging
 import os
 
 import sqlalchemy.orm
@@ -5,6 +7,7 @@ import sqlalchemy.ext.declarative
 
 
 Base = sqlalchemy.ext.declarative.declarative_base()
+logger = logging.getLogger('vigilant_crypto_snatch')
 
 
 class Price(Base):
@@ -32,7 +35,7 @@ class Trade(Base):
     fiat = sqlalchemy.Column(sqlalchemy.String, nullable=False)
 
 
-def open_db_session():
+def open_db_session() -> sqlalchemy.orm.Session:
     db_path = os.path.expanduser('~/.local/share/vigilant-crypto-snatch/db.sqlite')
     if not os.path.isdir(os.path.dirname(db_path)):
         os.makedirs(os.path.dirname(db_path))
@@ -44,3 +47,13 @@ def open_db_session():
     Session = sqlalchemy.orm.sessionmaker(bind=engine)
     session = Session()
     return session
+
+
+def garbage_collect_db(session: sqlalchemy.orm.Session, cutoff: datetime.datetime) -> None:
+    logger.debug(f'Start cleaning of database before {cutoff} …')
+
+    q = session.query(Price).filter(Price.timestamp < cutoff)
+    logger.debug(f'Found {q.count()} old prices, which are going to get deleted.')
+    for elem in q:
+        session.delete(elem)
+    session.commit()

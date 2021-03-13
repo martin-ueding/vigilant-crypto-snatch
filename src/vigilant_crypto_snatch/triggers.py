@@ -12,6 +12,7 @@ class Trigger(object):
         self.fiat = fiat
         self.volume_fiat = volume_fiat
         self.minutes = minutes
+        self.reset_trials()
 
     def is_triggered(self, session, config) -> bool:
         raise NotImplementedError()
@@ -27,6 +28,10 @@ class Trigger(object):
             datamodel.Trade.coin == self.coin,
             datamodel.Trade.fiat == self.fiat).count()
         return trade_count == 0
+
+    def reset_trials(self):
+        self.trials = 0
+
 
 
 class DropTrigger(Trigger):
