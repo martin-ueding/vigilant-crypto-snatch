@@ -1,22 +1,32 @@
 # Configuration
 
-You first need to copy the `sample_config.yml` from this repository to `~/.config/vigilant-crypto-snatch.yml`.
-
-In there you need to configure a couple of things. All steps are detailed below.
-
-- Create an API key for CryptoCompare such that the program can retrieve historical crypto prices.
-- Decide on triggers.
-- Choose the time interval for checking your triggers.
-- Configure a marketplace.
-- *Optionally* set up a Telegram bot to receive notifications.
+Unfortunately we need to configure a few things before you can start automatic trading with this software. Most configuration is done in a YAML file at `~/.config/vigilant-crypto-snatch.yml`. Create this file and open it in a text editor. We will talk you through the neccessary steps to fill it.
 
 ## Historic price API
 
+In order to find a drop in the price, we need to know the historic price at a given point. We use Crypto Compare for that as they provide a free API. Go to [their website](https://min-api.cryptocompare.com/pricing) and create an API key.
+
+In the configuration file then add the following:
+
+```yaml
+cryptocompare:
+  api_key: 'your API key here'
+```
+
 ## Marketplaces
+
+We currently support two marketplaces, [Bitstamp](https://bitstamp.net/) and [Kraken](https://kraken.com). You only have to configure one of them, but you can also configure both. When you start the program, you can just choose which marketplace you want to use today.
 
 ### Bitstamp
 
 In order to use Bitstamp, you need to set up an API key with them that has the correct permissions to trade with. Put this API key into the configuration file.
+
+```yaml
+bitstamp:
+  username: 'username here'
+  key: 'key here'
+  secret: 'secret here'
+```
 
 ### Kraken
 
@@ -29,13 +39,55 @@ trading_agreement=agree
 
 Then on the website create an API key which has the permission to trade. You will have an API key and an associated secret. In the file `~/.config/clikraken/settings.ini` you have two lines, the first will be API key and the second will be the secret, like this:
 
-	APIKEY 
-	secret
+```
+APIKEY
+secret
+```
+
+There is nothing to add to our main configuration file.
 
 ## Triggers
 
+You can define as many triggers as you would like. First you should set the polling interval that the main loop should use. It will wait this many seconds before checking again. For testing we found that 5 seconds is a good value, for production use 60 seconds should be absolutely sufficient.
+
+```yaml
+sleep: 60
+```
+
+We have two types of triggers: Drop triggers and just timers.
+
+All timers have a cooldown such that they are not executed again and again. The cooldown is the same as the checking interval.
+
 ### Drop triggers
+
+The drop trigger will fire when the price has dropped by a certain percentage compared to a reference at an earlier time. You can choose the delay and the drop percentage as you like. It might make sense to have larger drops when the time period is longer.
+
+Say we want to have three triggers, two for Bitcoin and one for Etherum. When it drops by 5 % within 60 minutes, we want to buy for 25 EUR. If it drops by 15 % within 24 hours, we want to buy for 100 EUR. And for Etherum I just want the first trigger. In the configuration it would look like this:
+
+```yaml
+triggers:
+  - { coin: btc, fiat: eur, minutes: 60, drop: 5, volume_fiat: 25.00 }
+  - { coin: btc, fiat: eur, minutes: 1400, drop: 15, volume_fiat: 100.00 }
+  - { coin: eth, fiat: eur, minutes: 60, drop: 5, volume_fiat: 25.00 }
+```
 
 ### Timers
 
+If the market is steadily rising, there won't be drops. We still want to make use of the *dollar cost average* effect. For this we want to have a simple timer that doesn't have any other dependencies. If we want to buy Bitcoin for 75 EUR every 14 days, we can use this:
+
+```yaml
+timers:
+  - { coin: btc, fiat: eur, minutes: 20160, volume_fiat: 75.00 }
+```
+
 ## Telegram notifications
+
+Optionally you can set up notifications via Telegram. This is not required, but a nice extra to allow monitoring from anywhere.
+
+Follow [this tutorial](https://www.christian-luetgens.de/homematic/telegram/botfather/Chat-Bot.htm) to create a bot. Then enter the details here:
+
+```yaml
+telegram:
+  token: 'Your bot token here'
+  chat_id: 'Your chat ID here'
+```

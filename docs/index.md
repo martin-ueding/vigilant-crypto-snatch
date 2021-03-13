@@ -10,4 +10,6 @@ The project is [published on PyPI](https://pypi.org/project/vigilant-crypto-snat
 sudo python3 -m pip install vigilant-crypto-snatch
 ```
 
+Then you need to [configure](configuration.md) it. Then see the instructions for [running](running.md).
+
 In case you wonder about the name: Dips means that the price dives. Submarines dive. The HMS Vigilant is a submarine of the British Navy. But also vigilance means to observe.

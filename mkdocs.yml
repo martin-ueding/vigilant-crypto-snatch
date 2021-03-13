@@ -9,3 +9,7 @@ nav:
   - running.md
   - developing.md
   - license.md
+
+markdown_extensions:
+  - pymdownx.highlight
+  - pymdownx.superfences
