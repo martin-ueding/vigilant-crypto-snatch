@@ -1,4 +1,5 @@
 import logging
+import sys
 
 import requests
 
@@ -16,6 +17,10 @@ class TelegramBot(logging.Handler):
         response = requests.get(f'https://api.telegram.org/bot{self.token}/getUpdates')
         response.raise_for_status()
         data = response.json()
+        result = data['result']
+        if len(result) == 0:
+            logger.critical(f'Telegram bot has no chats. Did you write it a message? Response was: {data}.')
+            sys.exit(1)
         self.chat_id = int(data['result'][-1]['message']['chat']['id'])
 
     def send_message(self, message: str) -> dict:
