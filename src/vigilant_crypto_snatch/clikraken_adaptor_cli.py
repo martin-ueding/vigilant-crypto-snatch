@@ -46,7 +46,8 @@ class KrakenMarketplace(marketplace.Marketplace):
 
 
 def run_command(command: typing.List[str], exception: typing.Type[Exception]) -> str:
-    logger.debug(f'Running {shlex.join(command)} …')
+    escaped = ' '.join(map(shlex.quote, command))
+    logger.debug(f'Running `{escaped}` …')
     try:
         run = subprocess.run(command, check=True, capture_output=True)
     except subprocess.CalledProcessError as e:
