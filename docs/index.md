@@ -17,7 +17,8 @@ If you want to upgrade use:
 ```bash
 sudo python3 -m pip install vigilant-crypto-snatch --upgrade
 ```
-In case new config is needed, you gonna find out quickly anyway.
+
+We sometimes update the configuration options a bit and don't offer an automated migration path. You will likely get some errors on startup. Please consult the documentation to see how configuration works with the current version.
 
 In case you wonder about the name: Dips means that the price dives. Submarines dive. The HMS Vigilant is a submarine of the British Navy. But also vigilance means to observe.
 
