@@ -47,7 +47,7 @@ The Kraken API has it's own configuration files. First you have to create a file
 trading_agreement=agree
 ```
 
-Then on the website create an API key which has the permission to trade. You will have an API key and an associated secret. In the file `~/.config/clikraken/settings.ini` you have two lines, the first will be API key and the second will be the secret, like this:
+Then on the website create an API key which has the permission to trade. You will have an API key and an associated secret. In the file `~/.config/clikraken/kraken.key` you must have two lines, the first will be API key and the second will be the secret, like this:
 
 ```
 APIKEY
