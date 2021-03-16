@@ -27,7 +27,7 @@ class KrakenMarketplace(marketplace.Marketplace):
                    'buy',
                    f'{volume:.8f}']
         output = run_command(command, marketplace.BuyError)
-        logging.info(output.split('\n'))
+        logger.info(f"Output from clikraken: {output}")
 
     def get_spot_price(self, coin: str, fiat: str) -> datamodel.Price:
         command = ['clikraken',
