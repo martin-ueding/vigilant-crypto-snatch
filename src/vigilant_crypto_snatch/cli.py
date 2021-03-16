@@ -5,6 +5,7 @@ import argparse
 import os
 import sys
 import logging
+import datetime
 
 import coloredlogs
 import yaml
@@ -13,6 +14,8 @@ from . import marketplace_factory
 from . import datamodel
 from . import drop
 from . import telegram
+from . import historical
+from . import triggers
 
 
 logger = logging.getLogger('vigilant_crypto_snatch')
@@ -33,7 +36,13 @@ def main():
     session = datamodel.open_db_session()
     market = marketplace_factory.make_marketplace(options.marketplace, config)
 
-    drop.check_for_drops(config, session, market, options)
+    database_source = historical.DatabaseHistoricalSource(session, datetime.timedelta(minutes=5))
+    crypto_compare_source = historical.CryptoCompareHistoricalSource(config['cryptocompare']['api_key'])
+    market_source = historical.MarketSource(market)
+    caching_source = historical.CachingHistoricalSource(database_source, [market_source, crypto_compare_source], session)
+    active_triggers = triggers.make_triggers(config, session, caching_source, market)
+
+    drop.check_for_drops(config, session, options, active_triggers)
 
 
 def _parse_args() -> argparse.Namespace:

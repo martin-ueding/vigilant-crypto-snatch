@@ -1,12 +1,18 @@
 import datetime
+import logging
 
 from . import datamodel
 from . import historical
 from . import marketplace
 
 
+logger = logging.getLogger('vigilant_crypto_snatch')
+
+
 class Trigger(object):
-    def __init__(self, market: marketplace.Marketplace, coin: str, fiat: str, volume_fiat: float, minutes: int):
+    def __init__(self, session, source: historical.HistoricalSource, market: marketplace.Marketplace, coin: str, fiat: str, volume_fiat: float, minutes: int):
+        self.session = session
+        self.source = source
         self.market = market
         self.coin = coin
         self.fiat = fiat
@@ -33,7 +39,6 @@ class Trigger(object):
         self.trials = 0
 
 
-
 class DropTrigger(Trigger):
     def __init__(self, market: marketplace.Marketplace, coin: str, fiat: str, volume_fiat: float, minutes: int, drop: float):
         super().__init__(market, coin, fiat, volume_fiat, minutes)
@@ -41,14 +46,14 @@ class DropTrigger(Trigger):
         assert self.drop > 0, "Drop triggers must have positive percentages!"
 
     def is_triggered(self, session, config) -> bool:
-        price = historical.search_current(session, self.market, self.coin, self.fiat)
+        price = self.source.get_price(datetime.datetime.now(), self.coin, self.fiat)
         then = datetime.datetime.now() - datetime.timedelta(minutes=self.minutes)
         try:
-            then_price = historical.search_historical(session, then, config['cryptocompare']['api_key'], self.coin, self.fiat)
+            then_price = self.source.get_price(then, self.coin, self.fiat)
         except historical.HistoricalError:
             return False
-        critical = then_price * (1 - self.drop / 100)
-        return price < critical
+        critical = then_price.last * (1 - self.drop / 100)
+        return price.last < critical
 
     def get_name(self) -> str:
         return f'{self.coin} drop {self.drop} % in {self.minutes} minutes'
@@ -60,3 +65,33 @@ class TrueTrigger(Trigger):
 
     def get_name(self) -> str:
         return f'{self.coin} every {self.minutes} minutes'
+
+
+def make_triggers(config, session, source: historical.HistoricalSource, market):
+    active_triggers = []
+    if 'triggers' in config and config['triggers'] is not None:
+        for trigger_spec in config['triggers']:
+            trigger = DropTrigger(
+                session=session,
+                source=source,
+                market=market,
+                coin=trigger_spec['coin'].upper(),
+                fiat=trigger_spec['fiat'].upper(),
+                volume_fiat=trigger_spec['volume_fiat'],
+                drop=trigger_spec['drop'],
+                minutes=trigger_spec['minutes'])
+            logger.debug(f'Constructed trigger: {trigger.get_name()}')
+            active_triggers.append(trigger)
+    if 'timers' in config and config['timers'] is not None:
+        for timer_spec in config['timers']:
+            trigger = TrueTrigger(
+                session=session,
+                source=source,
+                market=market,
+                coin=timer_spec['coin'].upper(),
+                fiat=timer_spec['fiat'].upper(),
+                volume_fiat=timer_spec['volume_fiat'],
+                minutes=timer_spec['minutes'])
+            logger.debug(f'Constructed trigger: {trigger.get_name()}')
+            active_triggers.append(trigger)
+    return active_triggers

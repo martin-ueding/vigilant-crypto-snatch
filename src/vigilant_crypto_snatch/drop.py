@@ -3,8 +3,10 @@ import datetime
 import logging
 import time
 import sys
+import typing
 
 import sqlalchemy.exc
+from vigilant_crypto_snatch.triggers import make_triggers
 
 from . import datamodel
 from . import marketplace
@@ -15,30 +17,7 @@ from . import historical
 logger = logging.getLogger('vigilant_crypto_snatch')
 
 
-def check_for_drops(config: dict, session, market: marketplace.Marketplace, options) -> None:
-    active_triggers = []
-    if 'triggers' in config and config['triggers'] is not None:
-        for trigger_spec in config['triggers']:
-            trigger = triggers.DropTrigger(
-                market=market,
-                coin=trigger_spec['coin'].upper(),
-                fiat=trigger_spec['fiat'].upper(),
-                volume_fiat=trigger_spec['volume_fiat'],
-                drop=trigger_spec['drop'],
-                minutes=trigger_spec['minutes'])
-            logger.debug(f'Constructed trigger: {trigger.get_name()}')
-            active_triggers.append(trigger)
-    if 'timers' in config and config['timers'] is not None:
-        for timer_spec in config['timers']:
-            trigger = triggers.TrueTrigger(
-                market=market,
-                coin=timer_spec['coin'].upper(),
-                fiat=timer_spec['fiat'].upper(),
-                volume_fiat=timer_spec['volume_fiat'],
-                minutes=timer_spec['minutes'])
-            logger.debug(f'Constructed trigger: {trigger.get_name()}')
-            active_triggers.append(trigger)
-
+def check_for_drops(config: dict, session, options, active_triggers: typing.List[triggers.Trigger]) -> None:
     longest_cooldown = max(trigger.minutes for trigger in active_triggers)
     logger.debug(f'Longest cooldown for any trigger is {longest_cooldown} minutes.')
     last_cleaning = None
@@ -96,8 +75,8 @@ def notify_and_continue(exception: Exception, severity: int) -> None:
 
 
 def buy(config: dict, trigger: triggers.Trigger, session):
-    price = historical.search_current(session, trigger.market, trigger.coin, trigger.fiat)
-    volume_coin = round(trigger.volume_fiat / price, 8)
+    price = trigger.source.get_price(datetime.datetime.now(), trigger.coin, trigger.fiat)
+    volume_coin = round(trigger.volume_fiat / price.last, 8)
 
     trigger.market.place_order(trigger.coin, trigger.fiat, volume_coin)
     trade = datamodel.Trade(
