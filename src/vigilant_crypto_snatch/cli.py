@@ -47,7 +47,8 @@ def main():
     )
     active_triggers = triggers.make_triggers(config, session, caching_source, market)
 
-    drop.check_for_drops(config, session, options, active_triggers)
+    trigger_loop = drop.TriggerLoop(active_triggers, config["sleep"], options.keepalive)
+    trigger_loop.loop()
 
 
 def _parse_args() -> argparse.Namespace:

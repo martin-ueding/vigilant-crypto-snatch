@@ -16,77 +16,37 @@ from . import historical
 logger = logging.getLogger("vigilant_crypto_snatch")
 
 
-def check_for_drops(
-    config: dict, session, options, active_triggers: typing.List[triggers.Trigger]
-) -> None:
-    longest_cooldown = max(trigger.minutes for trigger in active_triggers)
-    logger.debug(f"Longest cooldown for any trigger is {longest_cooldown} minutes.")
-    last_cleaning = None
-    last_checkin = datetime.datetime.now()
+class TriggerLoop(object):
+    def __init__(self, active_triggers: typing.List[triggers.Trigger], sleep: int, keepalive: bool):
+        self.active_triggers = active_triggers
+        self.sleep = sleep
+        self.keepalive = keepalive
 
-    try:
-        while True:
-            if len(active_triggers) == 0:
-                logger.critical(
-                    "All triggers have been disabled, shutting down. You need to manually restart the program after fixing the errors."
-                )
-                return
+    def loop(self) -> None:
+        try:
+            while True:
+                self.loop_body()
+        except KeyboardInterrupt:
+            logger.info("User interrupted, shutting down.")
 
-            now = datetime.datetime.now()
-            if now.hour == 6 and last_checkin < now - datetime.timedelta(hours=2):
-                logger.info("Hey there, I'm still there! 🤖")
-                last_checkin = now
+    def loop_body(self) -> None:
+        for trigger in self.active_triggers:
+            process_trigger(trigger, self.keepalive)
+        self.clean_triggers()
+        logger.debug(f"All triggers checked, sleeping for {self.sleep} seconds …")
+        time.sleep(self.sleep)
 
-            for trigger in copy.copy(active_triggers):
-                logger.debug(f"Checking trigger “{trigger.get_name()}” …")
-                try:
-                    if trigger.has_cooled_off(session) and trigger.is_triggered(
-                        session, config
-                    ):
-                        trigger.trials += 1
-                        logger.info(
-                            f"Trigger “{trigger.get_name()}” fired, try buying …"
-                        )
-                        buy(config, trigger, session)
-                        trigger.reset_trials()
-                except marketplace.TickerError as e:
-                    notify_and_continue(e, logging.ERROR)
-                except marketplace.BuyError as e:
-                    notify_and_continue(e, logging.CRITICAL)
-                except sqlalchemy.exc.OperationalError as e:
-                    logger.critical(
-                        f"Something went wrong with the database. Perhaps it is easiest to just delete the database file at `{datamodel.db_path}`. The original exception was this: {repr(e)}"
-                    )
-                    sys.exit(1)
-                except KeyboardInterrupt:
-                    raise
-                except Exception as e:
-                    logger.critical(
-                        f"Unhandled exception type: {repr(e)}. Please report this to Martin!"
-                    )
-                    if not options.keepalive:
-                        raise
-
-                if trigger.trials > 3:
-                    logger.warning(
-                        f"Disabling trigger “{trigger.get_name()}” after repeated failures."
-                    )
-                    active_triggers.remove(trigger)
-
-            if (
-                last_cleaning is None
-                or last_cleaning
-                < datetime.datetime.now() - datetime.timedelta(minutes=60)
-            ):
-                # datamodel.garbage_collect_db(session, datetime.datetime.now() - 2 * datetime.timedelta(minutes=longest_cooldown))
-                last_cleaning = datetime.datetime.now()
-
-            logger.debug(
-                f'All triggers checked, sleeping for {config["sleep"]} seconds …'
+    def clean_triggers(self):
+        self.active_triggers = [
+            trigger for trigger in self.active_triggers if trigger.trials <= 3
+        ]
+        if not any(
+            isinstance(trigger, triggers.BuyTrigger) for trigger in self.active_triggers
+        ):
+            logger.critical(
+                "All triggers have been disabled, shutting down. You need to manually restart the program after fixing the errors."
             )
-            time.sleep(config["sleep"])
-    except KeyboardInterrupt:
-        logger.info("User interrupted, shutting down.")
+            sys.exit(1)
 
 
 def notify_and_continue(exception: Exception, severity: int) -> None:
@@ -95,23 +55,32 @@ def notify_and_continue(exception: Exception, severity: int) -> None:
     )
 
 
-def buy(config: dict, trigger: triggers.Trigger, session):
-    price = trigger.source.get_price(
-        datetime.datetime.now(), trigger.coin, trigger.fiat
-    )
-    volume_coin = round(trigger.volume_fiat / price.last, 8)
+def process_trigger(trigger: triggers.Trigger, keepalive: bool):
+    logger.debug(f"Checking trigger “{trigger.get_name()}” …")
+    try:
+        if trigger.has_cooled_off() and trigger.is_triggered():
+            trigger.trials += 1
+            trigger.fire()
+            trigger.reset_trials()
+    except marketplace.TickerError as e:
+        notify_and_continue(e, logging.ERROR)
+    except marketplace.BuyError as e:
+        notify_and_continue(e, logging.CRITICAL)
+    except sqlalchemy.exc.OperationalError as e:
+        logger.critical(
+            f"Something went wrong with the database. Perhaps it is easiest to just delete the database file at `{datamodel.db_path}`. The original exception was this: {repr(e)}"
+        )
+        sys.exit(1)
+    except KeyboardInterrupt:
+        raise
+    except Exception as e:
+        logger.critical(
+            f"Unhandled exception type: {repr(e)}. Please report this to Martin!"
+        )
+        if not keepalive:
+            raise
 
-    trigger.market.place_order(trigger.coin, trigger.fiat, volume_coin)
-    trade = datamodel.Trade(
-        timestamp=datetime.datetime.now(),
-        trigger_name=trigger.get_name(),
-        volume_coin=volume_coin,
-        volume_fiat=trigger.volume_fiat,
-        coin=trigger.coin,
-        fiat=trigger.fiat,
-    )
-    session.add(trade)
-    session.commit()
-
-    buy_message = f"{volume_coin} {trigger.coin} for {trigger.volume_fiat} {trigger.fiat} on {trigger.market.get_name()} due to “{trigger.get_name()}”"
-    logger.info(f"Bought {buy_message}.")
+    if trigger.trials > 3:
+        logger.warning(
+            f"Disabling trigger “{trigger.get_name()}” after repeated failures."
+        )

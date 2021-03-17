@@ -1,6 +1,8 @@
 import datetime
 import logging
 
+import sqlalchemy.orm
+
 from . import datamodel
 from . import historical
 from . import marketplace
@@ -10,9 +12,26 @@ logger = logging.getLogger("vigilant_crypto_snatch")
 
 
 class Trigger(object):
+    def __init__(self):
+        self.trials = 0
+
+    def is_triggered(self) -> bool:
+        raise NotImplementedError()
+
+    def get_name(self) -> str:
+        raise NotImplementedError()
+
+    def fire(self) -> None:
+        raise NotImplementedError()
+
+    def reset_trials(self):
+        self.trials = 0
+
+
+class BuyTrigger(Trigger):
     def __init__(
         self,
-        session,
+        session: sqlalchemy.orm.session,
         source: historical.HistoricalSource,
         market: marketplace.Marketplace,
         coin: str,
@@ -20,6 +39,7 @@ class Trigger(object):
         volume_fiat: float,
         minutes: int,
     ):
+        super().__init__()
         self.session = session
         self.source = source
         self.market = market
@@ -29,16 +49,10 @@ class Trigger(object):
         self.minutes = minutes
         self.reset_trials()
 
-    def is_triggered(self, session, config) -> bool:
-        raise NotImplementedError()
-
-    def get_name(self) -> str:
-        raise NotImplementedError()
-
-    def has_cooled_off(self, session) -> bool:
+    def has_cooled_off(self) -> bool:
         then = datetime.datetime.now() - datetime.timedelta(minutes=self.minutes)
         trade_count = (
-            session.query(datamodel.Trade)
+            self.session.query(datamodel.Trade)
             .filter(
                 datamodel.Trade.trigger_name == self.get_name(),
                 datamodel.Trade.timestamp > then,
@@ -49,13 +63,32 @@ class Trigger(object):
         )
         return trade_count == 0
 
-    def reset_trials(self):
-        self.trials = 0
+    def fire(self) -> None:
+        logger.info(f"Trigger “{self.get_name()}” fired, try buying …")
+        price = self.source.get_price(datetime.datetime.now(), self.coin, self.fiat)
+        volume_coin = round(self.volume_fiat / price.last, 8)
+
+        trigger.market.place_order(self.coin, self.fiat, volume_coin)
+        trade = datamodel.Trade(
+            timestamp=datetime.datetime.now(),
+            trigger_name=trigger.get_name(),
+            volume_coin=volume_coin,
+            volume_fiat=trigger.volume_fiat,
+            coin=trigger.coin,
+            fiat=trigger.fiat,
+        )
+        self.session.add(trade)
+        self.session.commit()
+
+        buy_message = f"{volume_coin} {trigger.coin} for {trigger.volume_fiat} {trigger.fiat} on {trigger.market.get_name()} due to “{trigger.get_name()}”"
+        logger.info(f"Bought {buy_message}.")
 
 
-class DropTrigger(Trigger):
+class DropTrigger(BuyTrigger):
     def __init__(
         self,
+        session: sqlalchemy.orm.session,
+        source: historical.HistoricalSource,
         market: marketplace.Marketplace,
         coin: str,
         fiat: str,
@@ -63,7 +96,7 @@ class DropTrigger(Trigger):
         minutes: int,
         drop: float,
     ):
-        super().__init__(market, coin, fiat, volume_fiat, minutes)
+        super().__init__(session, source, market, coin, fiat, volume_fiat, minutes)
         self.drop = drop
         assert self.drop > 0, "Drop triggers must have positive percentages!"
 
@@ -81,16 +114,59 @@ class DropTrigger(Trigger):
         return f"{self.coin} drop {self.drop} % in {self.minutes} minutes"
 
 
-class TrueTrigger(Trigger):
-    def is_triggered(self, session, config) -> bool:
+class TrueTrigger(BuyTrigger):
+    def is_triggered(self) -> bool:
         return True
 
     def get_name(self) -> str:
         return f"{self.coin} every {self.minutes} minutes"
 
 
+class CheckinTrigger(Trigger):
+    def __init__(self):
+        super().__init__()
+        self.last_checkin = datetime.datetime.now()
+
+    def is_triggered(self) -> bool:
+        now = datetime.datetime.now()
+        return now.hour == 6
+
+    def has_cooled_off(self) -> bool:
+        now = datetime.datetime.now()
+        return self.last_checkin < now - datetime.timedelta(hours=2)
+
+    def get_name(self) -> str:
+        return "Checkin"
+
+
+class DatabaseCleaningTrigger(Trigger):
+    def __init__(self, session: sqlalchemy.orm.session, interval: datetime.timedelta):
+        super().__init__()
+        self.session = session
+        self.interval = interval
+        self.last_cleaning = None
+
+    def is_triggered(self) -> bool:
+        return True
+
+    def has_cooled_off(self) -> bool:
+        if self.last_cleaning is None:
+            return True
+        return self.last_cleaning < datetime.datetime.now() - self.interval
+
+    def fire(self) -> None:
+        datamodel.garbage_collect_db(
+            self.session,
+            datetime.datetime.now() - self.interval,
+        )
+
+    def get_name(self) -> str:
+        return "Database cleaning"
+
+
 def make_triggers(config, session, source: historical.HistoricalSource, market):
     active_triggers = []
+
     if "triggers" in config and config["triggers"] is not None:
         for trigger_spec in config["triggers"]:
             trigger = DropTrigger(
@@ -105,6 +181,7 @@ def make_triggers(config, session, source: historical.HistoricalSource, market):
             )
             logger.debug(f"Constructed trigger: {trigger.get_name()}")
             active_triggers.append(trigger)
+
     if "timers" in config and config["timers"] is not None:
         for timer_spec in config["timers"]:
             trigger = TrueTrigger(
@@ -118,4 +195,13 @@ def make_triggers(config, session, source: historical.HistoricalSource, market):
             )
             logger.debug(f"Constructed trigger: {trigger.get_name()}")
             active_triggers.append(trigger)
+
+    longest_cooldown = max(trigger.minutes for trigger in active_triggers)
+    active_triggers.append(CheckinTrigger())
+    active_triggers.append(
+        DatabaseCleaningTrigger(
+            session, 2 * datetime.timedelta(minutes=longest_cooldown)
+        )
+    )
+
     return active_triggers
