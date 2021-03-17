@@ -31,6 +31,12 @@ class MockHistorical(vigilant_crypto_snatch.historical.HistoricalSource):
 
 
 class MockMarketplace(vigilant_crypto_snatch.marketplace.Marketplace):
+    def place_order(self, coin: str, fiat: str, volume: float) -> None:
+        pass
+
+    def get_name(self) -> str:
+        return "Mock"
+
     def get_spot_price(
         self, coin: str, fiat: str
     ) -> vigilant_crypto_snatch.datamodel.Price:
