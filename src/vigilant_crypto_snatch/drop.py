@@ -61,7 +61,7 @@ def check_for_drops(config: dict, session, options, active_triggers: typing.List
                     active_triggers.remove(trigger)
 
             if last_cleaning is None or last_cleaning < datetime.datetime.now() - datetime.timedelta(minutes=60):
-                datamodel.garbage_collect_db(session, datetime.datetime.now() - 2 * datetime.timedelta(minutes=longest_cooldown))
+                # datamodel.garbage_collect_db(session, datetime.datetime.now() - 2 * datetime.timedelta(minutes=longest_cooldown))
                 last_cleaning = datetime.datetime.now()
 
             logger.debug(f'All triggers checked, sleeping for {config["sleep"]} seconds …')
