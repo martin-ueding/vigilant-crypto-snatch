@@ -7,12 +7,12 @@ import sqlalchemy.ext.declarative
 
 
 Base = sqlalchemy.ext.declarative.declarative_base()
-logger = logging.getLogger('vigilant_crypto_snatch')
-db_path = os.path.expanduser('~/.local/share/vigilant-crypto-snatch/db.sqlite')
+logger = logging.getLogger("vigilant_crypto_snatch")
+db_path = os.path.expanduser("~/.local/share/vigilant-crypto-snatch/db.sqlite")
 
 
 class Price(Base):
-    __tablename__ = 'prices'
+    __tablename__ = "prices"
 
     id = sqlalchemy.Column(sqlalchemy.Integer, primary_key=True)
     timestamp = sqlalchemy.Column(sqlalchemy.DateTime, nullable=False)
@@ -21,11 +21,11 @@ class Price(Base):
     fiat = sqlalchemy.Column(sqlalchemy.String, nullable=False)
 
     def __str__(self):
-        return f'{self.timestamp}: {self.last} {self.fiat}/{self.coin}'
+        return f"{self.timestamp}: {self.last} {self.fiat}/{self.coin}"
 
 
 class Trade(Base):
-    __tablename__ = 'trades'
+    __tablename__ = "trades"
 
     id = sqlalchemy.Column(sqlalchemy.Integer, primary_key=True)
     timestamp = sqlalchemy.Column(sqlalchemy.DateTime, nullable=False)
@@ -41,7 +41,7 @@ def open_db_session() -> sqlalchemy.orm.Session:
         os.makedirs(os.path.dirname(db_path))
     assert os.path.isdir(os.path.dirname(db_path))
 
-    db_url = 'sqlite:///{}'.format(db_path)
+    db_url = "sqlite:///{}".format(db_path)
     engine = sqlalchemy.create_engine(db_url)
     Base.metadata.create_all(engine)
     Session = sqlalchemy.orm.sessionmaker(bind=engine)
@@ -49,11 +49,13 @@ def open_db_session() -> sqlalchemy.orm.Session:
     return session
 
 
-def garbage_collect_db(session: sqlalchemy.orm.Session, cutoff: datetime.datetime) -> None:
-    logger.debug(f'Start cleaning of database before {cutoff} …')
+def garbage_collect_db(
+    session: sqlalchemy.orm.Session, cutoff: datetime.datetime
+) -> None:
+    logger.debug(f"Start cleaning of database before {cutoff} …")
 
     q = session.query(Price).filter(Price.timestamp < cutoff)
-    logger.debug(f'Found {q.count()} old prices, which are going to get deleted.')
+    logger.debug(f"Found {q.count()} old prices, which are going to get deleted.")
     for elem in q:
         session.delete(elem)
     session.commit()

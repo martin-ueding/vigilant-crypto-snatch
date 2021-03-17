@@ -21,17 +21,17 @@ class KrakenMarketplace(marketplace.Marketplace):
     def __init__(self):
         clikraken.clikraken_utils.load_config()
         clikraken.api.api_utils.load_api_keyfile()
-        clikraken.global_vars.CSV_SEPARATOR = ';'
+        clikraken.global_vars.CSV_SEPARATOR = ";"
 
     def place_order(self, coin: str, fiat: str, volume: float) -> None:
         args = KrakenArgs()
         args.pair = make_asset_pair(coin, fiat)
-        args.type = 'buy'
-        args.ordertype = 'market'
+        args.type = "buy"
+        args.ordertype = "market"
         args.volume = volume
         args.starttm = 0
         args.expiretm = 0
-        args.leverage = 'none'
+        args.leverage = "none"
         args.price = None
         args.userref = None
         args.viqc = None
@@ -44,9 +44,11 @@ class KrakenMarketplace(marketplace.Marketplace):
         with capture.Capturing() as output:
             clikraken.api.public.ticker.ticker(args)
         header, data = output
-        ticker = {h: d for h, d in zip(header.split(';'), data.split(';'))}
+        ticker = {h: d for h, d in zip(header.split(";"), data.split(";"))}
         now = datetime.datetime.now()
-        price = datamodel.Price(timestamp=now, last=float(ticker['last']), coin=coin, fiat=fiat)
+        price = datamodel.Price(
+            timestamp=now, last=float(ticker["last"]), coin=coin, fiat=fiat
+        )
         return price
 
     def get_name(self) -> str:
@@ -55,7 +57,7 @@ class KrakenMarketplace(marketplace.Marketplace):
 
 def make_asset_pair(coin: str, fiat: str) -> str:
     kraken_coin = coin
-    if coin == 'BTC':
-        kraken_coin = 'XBT'
-    pair = '{}{}'.format(kraken_coin, fiat)
+    if coin == "BTC":
+        kraken_coin = "XBT"
+    pair = "{}{}".format(kraken_coin, fiat)
     return pair
