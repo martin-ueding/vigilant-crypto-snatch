@@ -14,7 +14,7 @@
     
     
       
-        <title>Developing - Vigilant Crypto Snatch</title>
+        <title>Evaluation - Vigilant Crypto Snatch</title>
       
     
     
@@ -58,7 +58,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#developing" class="md-skip">
+        <a href="#evaluation" class="md-skip">
           Skip to content
         </a>
       
@@ -90,7 +90,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Developing
+              Evaluation
             
           </span>
         </div>
@@ -216,56 +216,11 @@
 
   
   
-    
   
-  
-    <li class="md-nav__item md-nav__item--active">
-      
-      <input class="md-nav__toggle md-toggle" data-md-toggle="toc" type="checkbox" id="__toc">
-      
-        
-      
-      
-        <label class="md-nav__link md-nav__link--active" for="__toc">
-          Developing
-          <span class="md-nav__icon md-icon"></span>
-        </label>
-      
-      <a href="./" class="md-nav__link md-nav__link--active">
+    <li class="md-nav__item">
+      <a href="../developing/" class="md-nav__link">
         Developing
       </a>
-      
-        
-<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
-  
-  
-    
-  
-  
-    <label class="md-nav__title" for="__toc">
-      <span class="md-nav__icon md-icon"></span>
-      Table of contents
-    </label>
-    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
-      
-        <li class="md-nav__item">
-  <a href="#updating-the-documentation" class="md-nav__link">
-    Updating the documentation
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#code-style" class="md-nav__link">
-    Code style
-  </a>
-  
-</li>
-      
-    </ul>
-  
-</nav>
-      
     </li>
   
 
@@ -318,28 +273,6 @@
     
   
   
-    <label class="md-nav__title" for="__toc">
-      <span class="md-nav__icon md-icon"></span>
-      Table of contents
-    </label>
-    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
-      
-        <li class="md-nav__item">
-  <a href="#updating-the-documentation" class="md-nav__link">
-    Updating the documentation
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#code-style" class="md-nav__link">
-    Code style
-  </a>
-  
-</li>
-      
-    </ul>
-  
 </nav>
                   </div>
                 </div>
@@ -351,26 +284,43 @@
               
                 
                 
-                <h1 id="developing">Developing</h1>
-<p>This project is written in Python. It uses <a href="https://python-poetry.org/">Poetry</a> to manage the project and its dependencies.</p>
-<p>Once you have obtained the source code via <code>git clone</code>, you can install the project into a virtual environment using <code>poetry install</code>. This will install all the dependencies and the package.</p>
-<p>You can of course use any Python development environment that you want. Martin can recommend <a href="https://www.jetbrains.com/pycharm/">PyCharm Community Edition</a>. Make sure to install the “Poetry” plugin to easily set up the virtual environment.</p>
-<p>In order to run in development mode, use Poetry:</p>
-<div class="highlight"><pre><span></span><code>poetry run vigilant-crypto-snatch <span class="o">[</span>more <span class="nb">command</span> line arguments<span class="o">]</span>
-</code></pre></div>
-<h2 id="updating-the-documentation">Updating the documentation</h2>
-<p>The documentation is created with <a href="https://squidfunk.github.io/mkdocs-material/">Material for MkDocs</a>. Just edit the Markdown files in <code>docs</code>.</p>
-<p>To locally view the documentation, use this:</p>
-<div class="highlight"><pre><span></span><code>poetry run mkdocs serve
-</code></pre></div>
-<p>To publish a new version to GitHub Pages, use this:</p>
-<div class="highlight"><pre><span></span><code>poetry run mkdocs gh-publish
-</code></pre></div>
-<h2 id="code-style">Code style</h2>
-<p>We try to develop this in a <em>Clean Code</em> way, with the least amount of coupling. We also follow the <a href="https://medium.com/@cjolowicz/hypermodern-python-d44485d9d769">Hypermodern Python</a> series for project layout and choice of tooling.</p>
-<p>Code formatting is done with <a href="https://github.com/psf/black">Black</a>:</p>
-<div class="highlight"><pre><span></span><code>poetry run black src/**.py test/**.py
-</code></pre></div>
+                <h1 id="evaluation">Evaluation</h1>
+<p>It is not inherently clear how triggers should be set. There are multiple variables that have to be tuned for <em>each</em> trigger:</p>
+<ul>
+<li>Time delay</li>
+<li>Cooloff (currently the same as time delay)</li>
+<li>Drop percentage</li>
+<li>Fiat volume</li>
+</ul>
+<p>We can try to verify a given strategy using historical data. Most historic data sources only provide one number per day, whereas Cryptocompare provides it much more fine grained via the free API:</p>
+<table>
+<thead>
+<tr>
+<th>Resolution</th>
+<th>Window</th>
+<th align="right">Ticks</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Minute</td>
+<td>1 day</td>
+<td align="right">1440</td>
+</tr>
+<tr>
+<td>Hourly</td>
+<td>3 months</td>
+<td align="right">2232</td>
+</tr>
+<tr>
+<td>Daily</td>
+<td>Full</td>
+<td align="right">∞</td>
+</tr>
+</tbody>
+</table>
+<p>Using a higher tier would allow longer windows for a given resolution. The number of ticks is rather low, this is something that we can sensibly download into the database.</p>
+<p>Then we just simulate the given triggers and see how they perform.</p>
                 
               
               
@@ -385,39 +335,6 @@
       
         
 <footer class="md-footer">
-  
-    <nav class="md-footer__inner md-grid" aria-label="Footer">
-      
-        <a href="../running/" class="md-footer__link md-footer__link--prev" rel="prev">
-          <div class="md-footer__button md-icon">
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"/></svg>
-          </div>
-          <div class="md-footer__title">
-            <div class="md-ellipsis">
-              <span class="md-footer__direction">
-                Previous
-              </span>
-              Running
-            </div>
-          </div>
-        </a>
-      
-      
-        <a href="../license/" class="md-footer__link md-footer__link--next" rel="next">
-          <div class="md-footer__title">
-            <div class="md-ellipsis">
-              <span class="md-footer__direction">
-                Next
-              </span>
-              License
-            </div>
-          </div>
-          <div class="md-footer__button md-icon">
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11H4z"/></svg>
-          </div>
-        </a>
-      
-    </nav>
   
   <div class="md-footer-meta md-typeset">
     <div class="md-footer-meta__inner md-grid">
