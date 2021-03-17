@@ -27,3 +27,13 @@ To publish a new version to GitHub Pages, use this:
 ```bash
 poetry run mkdocs gh-publish
 ```
+
+## Code style
+
+We try to develop this in a *Clean Code* way, with the least amount of coupling. We also follow the [Hypermodern Python](https://medium.com/@cjolowicz/hypermodern-python-d44485d9d769) series for project layout and choice of tooling.
+
+Code formatting is done with [Black](https://github.com/psf/black):
+
+```bash
+poetry run black src/**.py test/**.py
+```
