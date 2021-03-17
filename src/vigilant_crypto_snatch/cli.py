@@ -2,15 +2,12 @@
 # -*- coding: utf-8 -*-
 
 import argparse
-import os
-import sys
 import logging
 import datetime
 
 import coloredlogs
-import yaml
 
-from . import marketplace_factory
+from . import factory
 from . import datamodel
 from . import drop
 from . import telegram
@@ -23,7 +20,7 @@ logger = logging.getLogger("vigilant_crypto_snatch")
 
 def main():
     options = _parse_args()
-    config = load_config()
+    config = factory.load_config()
 
     if "telegram" in config:
         telegram_handler = telegram.TelegramBot(
@@ -35,8 +32,8 @@ def main():
 
     logger.info("Starting up …")
 
-    session = datamodel.open_db_session()
-    market = marketplace_factory.make_marketplace(options.marketplace, config)
+    session = factory.open_db_session()
+    market = factory.make_marketplace(options.marketplace, config)
 
     database_source = historical.DatabaseHistoricalSource(
         session, datetime.timedelta(minutes=5)
@@ -69,17 +66,6 @@ def _parse_args() -> argparse.Namespace:
     options = parser.parse_args()
 
     return options
-
-
-def load_config() -> dict:
-    config_path = os.path.expanduser("~/.config/vigilant-crypto-snatch.yml")
-    if not os.path.isfile(config_path):
-        print(f"Please create the configuration file at {config_path}.")
-        sys.exit(1)
-
-    with open(config_path) as f:
-        config = yaml.safe_load(f)
-    return config
 
 
 if __name__ == "__main__":

@@ -8,7 +8,6 @@ import sqlalchemy.ext.declarative
 
 Base = sqlalchemy.ext.declarative.declarative_base()
 logger = logging.getLogger("vigilant_crypto_snatch")
-db_path = os.path.expanduser("~/.local/share/vigilant-crypto-snatch/db.sqlite")
 
 
 class Price(Base):
@@ -34,19 +33,6 @@ class Trade(Base):
     volume_fiat = sqlalchemy.Column(sqlalchemy.Float, nullable=False)
     coin = sqlalchemy.Column(sqlalchemy.String, nullable=False)
     fiat = sqlalchemy.Column(sqlalchemy.String, nullable=False)
-
-
-def open_db_session() -> sqlalchemy.orm.Session:
-    if not os.path.isdir(os.path.dirname(db_path)):
-        os.makedirs(os.path.dirname(db_path))
-    assert os.path.isdir(os.path.dirname(db_path))
-
-    db_url = "sqlite:///{}".format(db_path)
-    engine = sqlalchemy.create_engine(db_url)
-    Base.metadata.create_all(engine)
-    Session = sqlalchemy.orm.sessionmaker(bind=engine)
-    session = Session()
-    return session
 
 
 def garbage_collect_db(

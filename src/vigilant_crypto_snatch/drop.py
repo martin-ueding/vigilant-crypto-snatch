@@ -6,7 +6,6 @@ import sys
 import typing
 
 import sqlalchemy.exc
-from vigilant_crypto_snatch.triggers import make_triggers
 
 from . import datamodel
 from . import marketplace
