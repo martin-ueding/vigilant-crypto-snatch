@@ -138,6 +138,9 @@ class CheckinTrigger(Trigger):
     def get_name(self) -> str:
         return "Checkin"
 
+    def fire(self) -> None:
+        logger.info("I am still here!")
+
 
 class DatabaseCleaningTrigger(Trigger):
     def __init__(self, session: sqlalchemy.orm.session, interval: datetime.timedelta):
