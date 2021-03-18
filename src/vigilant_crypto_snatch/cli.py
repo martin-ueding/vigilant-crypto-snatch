@@ -10,7 +10,7 @@ import click
 
 from . import factory
 from . import datamodel
-from . import drop
+from . import watch
 from . import telegram
 from . import historical
 from . import triggers
@@ -76,7 +76,7 @@ def watch(marketplace, keepalive):
     )
     active_triggers = triggers.make_triggers(config, session, caching_source, market)
 
-    trigger_loop = drop.TriggerLoop(active_triggers, config["sleep"], keepalive)
+    trigger_loop = watch.TriggerLoop(active_triggers, config["sleep"], keepalive)
     trigger_loop.loop()
 
 
