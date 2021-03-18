@@ -66,4 +66,4 @@ def open_memory_db_session() -> sqlalchemy.orm.session:
 
 
 def open_user_db_session() -> sqlalchemy.orm.session:
-    return open_db_session(user_db_path)
+    return open_db_session("/" + user_db_path)
