@@ -68,19 +68,19 @@ class BuyTrigger(Trigger):
         price = self.source.get_price(datetime.datetime.now(), self.coin, self.fiat)
         volume_coin = round(self.volume_fiat / price.last, 8)
 
-        trigger.market.place_order(self.coin, self.fiat, volume_coin)
+        self.market.place_order(self.coin, self.fiat, volume_coin)
         trade = datamodel.Trade(
             timestamp=datetime.datetime.now(),
-            trigger_name=trigger.get_name(),
+            trigger_name=self.get_name(),
             volume_coin=volume_coin,
-            volume_fiat=trigger.volume_fiat,
-            coin=trigger.coin,
-            fiat=trigger.fiat,
+            volume_fiat=self.volume_fiat,
+            coin=self.coin,
+            fiat=self.fiat,
         )
         self.session.add(trade)
         self.session.commit()
 
-        buy_message = f"{volume_coin} {trigger.coin} for {trigger.volume_fiat} {trigger.fiat} on {trigger.market.get_name()} due to “{trigger.get_name()}”"
+        buy_message = f"{volume_coin} {self.coin} for {self.volume_fiat} {self.fiat} on {self.market.get_name()} due to “{self.get_name()}”"
         logger.info(f"Bought {buy_message}.")
 
 

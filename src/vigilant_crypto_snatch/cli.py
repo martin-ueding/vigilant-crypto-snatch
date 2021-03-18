@@ -32,7 +32,7 @@ def main():
 
     logger.info("Starting up …")
 
-    session = factory.open_db_session()
+    session = datamodel.open_user_db_session()
     market = factory.make_marketplace(options.marketplace, config)
 
     database_source = historical.DatabaseHistoricalSource(

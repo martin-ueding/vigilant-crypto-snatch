@@ -17,7 +17,12 @@ logger = logging.getLogger("vigilant_crypto_snatch")
 
 
 class TriggerLoop(object):
-    def __init__(self, active_triggers: typing.List[triggers.Trigger], sleep: int, keepalive: bool):
+    def __init__(
+        self,
+        active_triggers: typing.List[triggers.Trigger],
+        sleep: int,
+        keepalive: bool,
+    ):
         self.active_triggers = active_triggers
         self.sleep = sleep
         self.keepalive = keepalive
@@ -68,7 +73,7 @@ def process_trigger(trigger: triggers.Trigger, keepalive: bool):
         notify_and_continue(e, logging.CRITICAL)
     except sqlalchemy.exc.OperationalError as e:
         logger.critical(
-            f"Something went wrong with the database. Perhaps it is easiest to just delete the database file at `{datamodel.db_path}`. The original exception was this: {repr(e)}"
+            f"Something went wrong with the database. Perhaps it is easiest to just delete the database file at `{datamodel.user_db_path}`. The original exception was this: {repr(e)}"
         )
         sys.exit(1)
     except KeyboardInterrupt:

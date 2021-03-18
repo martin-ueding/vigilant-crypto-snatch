@@ -5,9 +5,9 @@ import os
 import sqlalchemy.orm
 import sqlalchemy.ext.declarative
 
-
 Base = sqlalchemy.ext.declarative.declarative_base()
 logger = logging.getLogger("vigilant_crypto_snatch")
+user_db_path = os.path.expanduser("~/.local/share/vigilant-crypto-snatch/db.sqlite")
 
 
 class Price(Base):
@@ -45,3 +45,25 @@ def garbage_collect_db(
     for elem in q:
         session.delete(elem)
     session.commit()
+
+
+def open_db_session(db_path: str) -> sqlalchemy.orm.Session:
+    if db_path != "":
+        if not os.path.isdir(os.path.dirname(db_path)):
+            os.makedirs(os.path.dirname(db_path))
+        assert os.path.isdir(os.path.dirname(db_path))
+
+    db_url = f"sqlite://{db_path}"
+    engine = sqlalchemy.create_engine(db_url)
+    Base.metadata.create_all(engine)
+    Session = sqlalchemy.orm.sessionmaker(bind=engine)
+    session = Session()
+    return session
+
+
+def open_memory_db_session() -> sqlalchemy.orm.session:
+    return open_db_session("")
+
+
+def open_user_db_session() -> sqlalchemy.orm.session:
+    return open_db_session(user_db_path)
