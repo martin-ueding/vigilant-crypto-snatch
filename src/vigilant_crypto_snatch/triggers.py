@@ -1,5 +1,6 @@
 import datetime
 import logging
+import abc
 
 import sqlalchemy.orm
 
@@ -28,7 +29,7 @@ class Trigger(object):
         self.trials = 0
 
 
-class BuyTrigger(Trigger):
+class BuyTrigger(Trigger, abc.ABC):
     def __init__(
         self,
         session: sqlalchemy.orm.session,
