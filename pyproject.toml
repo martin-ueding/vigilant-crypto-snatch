@@ -6,7 +6,7 @@ authors = ["Martin Ueding <mu@martin-ueding.de>"]
 license = "MIT"
 
 [tool.poetry.scripts]
-vigilant-crypto-snatch = "vigilant_crypto_snatch.cli:main"
+vigilant-crypto-snatch = "vigilant_crypto_snatch.cli:cli"
 
 [tool.poetry.dependencies]
 python = "^3.7"
@@ -17,6 +17,7 @@ clikraken = "^0.8.3"
 BitstampClient = "^2.2.8"
 urllib3 = "^1.26.3"
 coloredlogs = "^15.0"
+click = "^7.1.2"
 
 [tool.poetry.dev-dependencies]
 mkdocs_material = "^7.0.5"

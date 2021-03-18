@@ -6,6 +6,7 @@ import logging
 import datetime
 
 import coloredlogs
+import click
 
 from . import factory
 from . import datamodel
@@ -13,13 +14,23 @@ from . import drop
 from . import telegram
 from . import historical
 from . import triggers
+from . import __version__
 
 
 logger = logging.getLogger("vigilant_crypto_snatch")
 
 
-def main():
-    options = _parse_args()
+@click.group()
+@click.version_option(version=__version__)
+@click.option(
+    "--loglevel",
+    default="info",
+    help="Controls the verbosity of logging.",
+    type=click.Choice(
+        ["debug", "info", "warning", "error", "critical"], case_sensitive=False
+    ),
+)
+def cli(loglevel):
     config = factory.load_config()
 
     if "telegram" in config:
@@ -28,12 +39,30 @@ def main():
         )
         logger.addHandler(telegram_handler)
 
-    coloredlogs.install(level=options.loglevel.upper())
+    coloredlogs.install(level=loglevel.upper())
 
+
+@cli.command()
+@click.option(
+    "--marketplace",
+    default="kraken",
+    help="Marketplace to place orders on.",
+    type=click.Choice(["bitstamp", "kraken", "kraken-api"], case_sensitive=True),
+)
+@click.option(
+    "--keepalive/--no-keepalive",
+    default=False,
+    help="Ignore all Exceptions and just report them.",
+)
+def watch(marketplace, keepalive):
+    """
+    Watches the market and automatically places buy orders.
+    """
     logger.info("Starting up …")
 
     session = datamodel.open_user_db_session()
-    market = factory.make_marketplace(options.marketplace, config)
+    config = factory.load_config()
+    market = factory.make_marketplace(marketplace, config)
 
     database_source = historical.DatabaseHistoricalSource(
         session, datetime.timedelta(minutes=5)
@@ -47,7 +76,7 @@ def main():
     )
     active_triggers = triggers.make_triggers(config, session, caching_source, market)
 
-    trigger_loop = drop.TriggerLoop(active_triggers, config["sleep"], options.keepalive)
+    trigger_loop = drop.TriggerLoop(active_triggers, config["sleep"], keepalive)
     trigger_loop.loop()
 
 
@@ -56,18 +85,9 @@ def _parse_args() -> argparse.Namespace:
         description="https://martin-ueding.github.io/vigilant-crypto-snatch/configuration/"
     )
     parser.add_argument(
-        "--marketplace", choices=["bitstamp", "kraken", "kraken-api"], default="kraken"
+        "--marketplace",
     )
     parser.add_argument("--keepalive", action="store_true")
-    parser.add_argument(
-        "--loglevel",
-        choices=["debug", "info", "warning", "error", "critical"],
-        default="info",
-    )
     options = parser.parse_args()
 
     return options
-
-
-if __name__ == "__main__":
-    main()
