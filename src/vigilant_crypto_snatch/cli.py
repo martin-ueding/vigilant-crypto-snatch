@@ -80,16 +80,3 @@ def watch(marketplace, keepalive):
 
     trigger_loop = watchloop.TriggerLoop(active_triggers, config["sleep"], keepalive)
     trigger_loop.loop()
-
-
-def _parse_args() -> argparse.Namespace:
-    parser = argparse.ArgumentParser(
-        description="https://martin-ueding.github.io/vigilant-crypto-snatch/configuration/"
-    )
-    parser.add_argument(
-        "--marketplace",
-    )
-    parser.add_argument("--keepalive", action="store_true")
-    options = parser.parse_args()
-
-    return options
