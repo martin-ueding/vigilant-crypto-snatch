@@ -8,10 +8,13 @@ logger = logging.getLogger("vigilant_crypto_snatch")
 
 
 class TelegramBot(logging.Handler):
-    def __init__(self, token: str, level: str):
+    def __init__(self, token: str, level: str, chat_id: None):
         super().__init__(level.upper())
         self.token = token
-        self.get_chat_id()
+        if chat_id is None:
+            self.get_chat_id()
+        else:
+            self.chat_id = chat_id
 
     def get_chat_id(self) -> None:
         response = requests.get(f"https://api.telegram.org/bot{self.token}/getUpdates")
@@ -24,6 +27,7 @@ class TelegramBot(logging.Handler):
             )
             sys.exit(1)
         self.chat_id = int(data["result"][-1]["message"]["chat"]["id"])
+        logger.info(f"Your Telegram chat ID is {self.chat_id}.")
 
     def send_message(self, message: str) -> dict:
         logger.debug("Sending message to Telegram …")

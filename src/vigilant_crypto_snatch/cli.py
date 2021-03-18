@@ -10,7 +10,7 @@ import click
 
 from . import factory
 from . import datamodel
-from . import watch
+from . import watchloop
 from . import telegram
 from . import historical
 from . import triggers
@@ -35,7 +35,9 @@ def cli(loglevel):
 
     if "telegram" in config:
         telegram_handler = telegram.TelegramBot(
-            config["telegram"]["token"], config["telegram"]["level"]
+            config["telegram"]["token"],
+            config["telegram"]["level"],
+            config["telegram"].get("chat_id", None),
         )
         logger.addHandler(telegram_handler)
 
@@ -76,7 +78,7 @@ def watch(marketplace, keepalive):
     )
     active_triggers = triggers.make_triggers(config, session, caching_source, market)
 
-    trigger_loop = watch.TriggerLoop(active_triggers, config["sleep"], keepalive)
+    trigger_loop = watchloop.TriggerLoop(active_triggers, config["sleep"], keepalive)
     trigger_loop.loop()
 
 
