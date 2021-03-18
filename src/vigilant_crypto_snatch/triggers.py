@@ -100,7 +100,7 @@ class DropTrigger(BuyTrigger):
         self.drop = drop
         assert self.drop > 0, "Drop triggers must have positive percentages!"
 
-    def is_triggered(self, session, config) -> bool:
+    def is_triggered(self) -> bool:
         price = self.source.get_price(datetime.datetime.now(), self.coin, self.fiat)
         then = datetime.datetime.now() - datetime.timedelta(minutes=self.minutes)
         try:

@@ -1,3 +1,5 @@
+import datetime
+
 import pytest
 
 from vigilant_crypto_snatch import datamodel
@@ -15,17 +17,33 @@ def true_trigger() -> triggers.TrueTrigger:
     return true_trigger
 
 
-def test_true_trigger_triggered(true_trigger: triggers.TrueTrigger) -> None:
+def test_triggered(true_trigger: triggers.TrueTrigger) -> None:
     # This trigger type must always be triggered.
     assert true_trigger.is_triggered()
 
 
-def test_true_trigger_cooled_off(true_trigger: triggers.TrueTrigger) -> None:
+def test_cooled_off(true_trigger: triggers.TrueTrigger) -> None:
     # There are no trades in the DB yet.
     assert true_trigger.has_cooled_off()
 
 
-def test_true_trigger_after_trade(true_trigger: triggers.TrueTrigger) -> None:
+def test_waiting(true_trigger: triggers.TrueTrigger) -> None:
+    session = true_trigger.session
+    trade = datamodel.Trade(
+        timestamp=datetime.datetime.now(),
+        trigger_name=true_trigger.get_name(),
+        volume_coin=1.0,
+        volume_fiat=1.0,
+        coin="BTC",
+        fiat="EUR",
+    )
+    session.add(trade)
+    session.commit()
+    assert not true_trigger.has_cooled_off()
+
+
+def test_trade(true_trigger: triggers.TrueTrigger) -> None:
     true_trigger.fire()
     session = true_trigger.session
     assert session.query(datamodel.Trade).count() == 1
+    assert true_trigger.market.orders == 1

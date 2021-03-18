@@ -19,9 +19,14 @@ def mock_price(then: datetime.datetime):
 
 
 class MockHistorical(vigilant_crypto_snatch.historical.HistoricalSource):
+    def __init__(self):
+        super().__init__()
+        self.calls = 0
+
     def get_price(
         self, then: datetime.datetime, coin: str, fiat: str
     ) -> vigilant_crypto_snatch.datamodel.Price:
+        self.calls += 1
         return vigilant_crypto_snatch.datamodel.Price(
             timestamp=then,
             last=mock_price(then),
@@ -31,8 +36,13 @@ class MockHistorical(vigilant_crypto_snatch.historical.HistoricalSource):
 
 
 class MockMarketplace(vigilant_crypto_snatch.marketplace.Marketplace):
+    def __init__(self):
+        super().__init__()
+        self.orders = 0
+        self.prices = 0
+
     def place_order(self, coin: str, fiat: str, volume: float) -> None:
-        pass
+        self.orders += 1
 
     def get_name(self) -> str:
         return "Mock"
@@ -40,6 +50,7 @@ class MockMarketplace(vigilant_crypto_snatch.marketplace.Marketplace):
     def get_spot_price(
         self, coin: str, fiat: str
     ) -> vigilant_crypto_snatch.datamodel.Price:
+        self.prices += 1
         then = datetime.datetime.now()
         return vigilant_crypto_snatch.datamodel.Price(
             timestamp=then,
