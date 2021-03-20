@@ -1,0 +1,3 @@
+![](close.svg)
+
+![](survey.svg)

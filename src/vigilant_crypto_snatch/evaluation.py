@@ -3,6 +3,7 @@ import logging
 import os
 import json
 import typing
+import subprocess
 
 import requests
 import pandas as pd
@@ -10,14 +11,18 @@ import matplotlib.pyplot as pl
 import tqdm
 import numpy as np
 
+from . import rendering
+
 logger = logging.getLogger("vigilant_crypto_snatch")
-report_dir = os.path.expanduser("~/.local/vigilant-crypto-snatch/report/")
 
 
 def make_report(coin: str, fiat: str, api_key: str):
     data = get_hourly_data(coin, fiat, api_key)
     plot_close(data)
     plot_drop_survey(data)
+    renderer = rendering.Renderer()
+    renderer.render_md('evaluation.md')
+    subprocess.call(['xdg-open', os.path.join(rendering.report_dir, 'evaluation.html')])
 
 
 def get_hourly_data(coin: str, fiat: str, api_key: str) -> pd.DataFrame:
@@ -56,11 +61,11 @@ def plot_close(data: pd.DataFrame) -> None:
     save_figure(fig, 'close')
 
 def save_figure(fig: pl.Figure, name: str) -> None:
-    os.makedirs(report_dir, exist_ok=True)
+    os.makedirs(rendering.report_dir, exist_ok=True)
     fig.tight_layout()
-    fig.savefig(os.path.join(report_dir, f"{name}.pdf"))
-    fig.savefig(os.path.join(report_dir, f"{name}.png"), dpi=300)
-    fig.savefig(os.path.join(report_dir, f"{name}.svg"))
+    fig.savefig(os.path.join(rendering.report_dir, f"{name}.pdf"))
+    fig.savefig(os.path.join(rendering.report_dir, f"{name}.png"), dpi=300)
+    fig.savefig(os.path.join(rendering.report_dir, f"{name}.svg"))
 
 
 def plot_drop_hist(data: pd.DataFrame) -> None:
