@@ -40,6 +40,7 @@ def load_config() -> dict:
         config = yaml.safe_load(f)
     return config
 
+
 def update_config(config: dict) -> None:
-    with open(config_path, 'w') as f:
+    with open(config_path, "w") as f:
         yaml.dump(config, f)
