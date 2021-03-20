@@ -41,6 +41,10 @@ def cli(loglevel):
         )
         logger.addHandler(telegram_handler)
 
+        if not 'chat_id' in config['telegram']:
+            config['telegram']['chat_id'] = telegram_handler.chat_id
+            factory.update_config(config)
+
     coloredlogs.install(level=loglevel.upper())
 
 
