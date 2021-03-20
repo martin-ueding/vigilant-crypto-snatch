@@ -12,7 +12,6 @@ from . import factory
 from . import datamodel
 from . import watchloop
 from . import telegram
-from . import evaluation
 from . import historical
 from . import triggers
 from . import __version__
@@ -96,4 +95,5 @@ def evaluate(coin: str, fiat: str) -> None:
     The COIN has to be a supported cryptocurrency like “BTC” or “ETH”. FIAT is the reference fiat currency like “EUR”. This is case insensitive.
     '''
     config = factory.load_config()
+    from . import evaluation
     evaluation.make_report(coin, fiat, config['cryptocompare']['api_key'])
