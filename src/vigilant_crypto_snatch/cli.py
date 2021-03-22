@@ -85,15 +85,17 @@ def watch(marketplace, keepalive):
     trigger_loop = watchloop.TriggerLoop(active_triggers, config["sleep"], keepalive)
     trigger_loop.loop()
 
+
 @cli.command()
-@click.argument('coin')
-@click.argument('fiat')
+@click.argument("coin")
+@click.argument("fiat")
 def evaluate(coin: str, fiat: str) -> None:
-    '''
+    """
     Evaluates the strategy on historic data.
 
     The COIN has to be a supported cryptocurrency like “BTC” or “ETH”. FIAT is the reference fiat currency like “EUR”. This is case insensitive.
-    '''
+    """
     config = factory.load_config()
     from . import evaluation
-    evaluation.make_report(coin, fiat, config['cryptocompare']['api_key'])
+
+    evaluation.make_report(coin, fiat, config["cryptocompare"]["api_key"])

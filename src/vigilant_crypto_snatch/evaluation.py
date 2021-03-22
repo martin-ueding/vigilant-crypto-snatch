@@ -18,11 +18,13 @@ logger = logging.getLogger("vigilant_crypto_snatch")
 
 def make_report(coin: str, fiat: str, api_key: str):
     data = get_hourly_data(coin, fiat, api_key)
+    data = make_dataframe_from_json(data)
+    data.to_pickle("data.pickle")
     plot_close(data)
     plot_drop_survey(data)
     renderer = rendering.Renderer()
-    renderer.render_md('evaluation.md')
-    subprocess.call(['xdg-open', os.path.join(rendering.report_dir, 'evaluation.html')])
+    renderer.render_md("evaluation.md")
+    subprocess.call(["xdg-open", os.path.join(rendering.report_dir, "evaluation.html")])
 
 
 def get_hourly_data(coin: str, fiat: str, api_key: str) -> pd.DataFrame:
@@ -35,7 +37,7 @@ def get_hourly_data(coin: str, fiat: str, api_key: str) -> pd.DataFrame:
         if mtime > datetime.datetime.now() - datetime.timedelta(days=1):
             logger.debug("Cached historic data is recent. Loading that.")
             with open(cache_file) as f:
-                return pd.DataFrame(json.load(f))
+                return json.load(f)
 
     logger.debug("Requesting historic data from Crypto Compare.")
     timestamp = int(datetime.datetime.now().timestamp())
@@ -49,16 +51,25 @@ def get_hourly_data(coin: str, fiat: str, api_key: str) -> pd.DataFrame:
     data = r.json()["Data"]
     with open(cache_file, "w") as f:
         json.dump(data, f)
-    return pd.DataFrame(data)
+    return data
+
+
+def make_dataframe_from_json(data: dict) -> pd.DataFrame:
+    df = pd.DataFrame(data)
+    df["datetime"] = list(map(datetime.datetime.fromtimestamp, df["time"]))
+    return df
 
 
 def plot_close(data: pd.DataFrame) -> None:
     fig, ax = pl.subplots()
-    ax.plot(data["time"], data["close"])
-    ax.set_title('Close Price')
-    ax.set_xlabel('Time')
-    ax.set_ylabel('Close')
-    save_figure(fig, 'close')
+    ax.plot(data["datetime"], data["close"])
+    ax.set_title("Close Price")
+    ax.set_xlabel("Time")
+    ax.set_ylabel("Close")
+    ax.tick_params(axis="x", rotation=30)
+    ax.grid(True)
+    save_figure(fig, "close")
+
 
 def save_figure(fig: pl.Figure, name: str) -> None:
     os.makedirs(rendering.report_dir, exist_ok=True)
@@ -93,18 +104,19 @@ def plot_drop_hist(data: pd.DataFrame) -> None:
 def plot_drop_survey(data):
     hours, drops, factor = drop_survey(data)
     fig, ax = pl.subplots()
-    img = ax.pcolormesh(hours, drops * 100, factor, cmap="turbo", shading='nearest')
+    img = ax.pcolormesh(hours, drops * 100, factor, cmap="turbo", shading="nearest")
     pl.colorbar(img, ax=ax)
     ax.set_title("BTC / EUR")
     ax.set_xlabel("Delay / h")
     ax.set_ylabel("Drop / %")
     save_figure(fig, "survey")
 
+
 def drop_survey(data: pd.DataFrame) -> typing.Tuple[np.array, np.array, np.array]:
     hours = np.arange(1, 24)
     drops = np.linspace(0.01, 0.30, 5)
     factor = np.zeros(hours.shape + drops.shape)
-    for i, hour in tqdm.tqdm(enumerate(hours)):
+    for i, hour in enumerate(tqdm.tqdm(hours)):
         for j, drop in enumerate(drops):
             factor[i, j] = compute_gains(data, hour, drop)[2]
     return hours, drops, factor.T

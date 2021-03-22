@@ -9,7 +9,7 @@ report_dir = os.path.expanduser("~/.local/vigilant-crypto-snatch/report/")
 
 class Renderer(object):
     def __init__(self):
-        loader = jinja2.PackageLoader('vigilant_crypto_snatch', 'templates')
+        loader = jinja2.PackageLoader("vigilant_crypto_snatch", "templates")
         self.env = jinja2.Environment(loader=loader)
 
     def render_md(self, filename, **kwargs):
@@ -19,10 +19,11 @@ class Renderer(object):
         self.render_html(filename_to_html(filename), inner_html)
 
     def render_html(self, filename, body, **kwargs):
-        template = self.env.get_template('site.html')
+        template = self.env.get_template("site.html")
         outer_html = template.render(body=body, **kwargs)
-        with open(os.path.join(report_dir, filename), 'w') as f:
+        with open(os.path.join(report_dir, filename), "w") as f:
             f.write(outer_html)
 
+
 def filename_to_html(filename: str) -> str:
-    return os.path.splitext(filename)[0] + '.html'
+    return os.path.splitext(filename)[0] + ".html"
