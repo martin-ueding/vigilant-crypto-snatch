@@ -1,10 +1,12 @@
 # Running
 
-If you have installed it system-wide, you can just execute `vigilant-crypto-snatch [options]` to run it. You can pass additional options, if you want. With the `--help` option you will see an up-to-date list of options.
+If you have installed it system-wide, you can just execute `vigilant-crypto-snatch [options]` to run it. You can pass additional options, if you want. With the `--help` option you will see an up-to-date list of options. 
 
 You can choose the marketplace that you want to use with the `--marketplace bitstamp` or `--marketplace kraken`.
 
 When you want to quit, just press <kbd>Ctrl</kbd>+<kbd>C</kbd>.
+
+To run the script in "buy mode" you need to use the `watch` option and to use the evaluation function you need the `evaluate` option. For more check out the respective section.
 
 All historical price data and performed transactions will be stored in a SQLite database at `~/.local/share/vigilant-crypto-snatch/db.sqlite`. We sometimes change the database format between major releases. In that case it is easiest to delete the database and let the script create the new one. As there are only so few users, we don't offer proper database migrations.
 
@@ -35,6 +37,12 @@ The logging level is set to *Info* by default. You must not set it to *Debug* as
 We have tried to handle various error conditions that can happen. For instance the API of the marketplace could reject the query. During development we have tried to trigger various errors and handle them. From production runs we know that sometimes there API outages, internet connection glitches and the like. In these cases exception types that we haven't handled yet are raised. These crash normally crash the program, and we would like to ask you to [file a bug report](https://github.com/martin-ueding/vigilant-crypto-snatch/issues) then.
 
 In order to have it stay running in production you can use the `--keepalive` flag. It will just catch *all* exception types. This may hide some actual errors. So please still report these errors as tickets.
+
+## Example
+
+An example for running the script with log level info, on kraken is:
+
+`vigilant-crypto-snatch --loglevel info watch --marketplace kraken --keepalive`
 
 ## Nonce rejections with Kraken
 
