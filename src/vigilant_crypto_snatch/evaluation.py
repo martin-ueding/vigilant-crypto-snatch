@@ -4,6 +4,8 @@ import os
 import json
 import typing
 import subprocess
+import platform
+import webbrowser
 
 import requests
 import pandas as pd
@@ -16,6 +18,17 @@ from . import rendering
 logger = logging.getLogger("vigilant_crypto_snatch")
 
 
+def open_file_with_default_application(path: str) -> None:
+    if platform.system() == 'Windows':
+        os.startfile(path)
+    elif platform.system() == "Darwin":
+        subprocess.run(['open', path])
+    elif platform.system() == "Linux":
+        subprocess.run(['xdg-open', path])
+    else:
+        raise RuntimeError(f"Unsupported platform {platform.system()}")
+
+
 def make_report(coin: str, fiat: str, api_key: str):
     data = get_hourly_data(coin, fiat, api_key)
     data = make_dataframe_from_json(data)
@@ -24,7 +37,7 @@ def make_report(coin: str, fiat: str, api_key: str):
     plot_drop_survey(data)
     renderer = rendering.Renderer()
     renderer.render_md("evaluation.md")
-    subprocess.call(["xdg-open", os.path.join(rendering.report_dir, "evaluation.html")])
+    webbrowser.open(os.path.join(rendering.report_dir))
 
 
 def get_hourly_data(coin: str, fiat: str, api_key: str) -> pd.DataFrame:
@@ -113,8 +126,8 @@ def plot_drop_survey(data):
 
 
 def drop_survey(data: pd.DataFrame) -> typing.Tuple[np.array, np.array, np.array]:
-    hours = np.arange(1, 24)
-    drops = np.linspace(0.01, 0.30, 5)
+    hours = np.arange(1, 49)
+    drops = np.linspace(0.0, 0.30, 30)
     factor = np.zeros(hours.shape + drops.shape)
     for i, hour in enumerate(tqdm.tqdm(hours)):
         for j, drop in enumerate(drops):

@@ -3,8 +3,9 @@ import os
 import jinja2
 import markdown
 
+from . import configuration
 
-report_dir = os.path.expanduser("~/.local/vigilant-crypto-snatch/report/")
+report_dir = os.path.join(configuration.dirs.user_data_dir, "report")
 
 
 class Renderer(object):

@@ -13,9 +13,10 @@ from . import datamodel
 from . import watchloop
 from . import telegram
 from . import historical
+from . import configuration
 from . import triggers
+from . import configuration
 from . import __version__
-
 
 logger = logging.getLogger("vigilant_crypto_snatch")
 
@@ -31,7 +32,7 @@ logger = logging.getLogger("vigilant_crypto_snatch")
     ),
 )
 def cli(loglevel):
-    config = factory.load_config()
+    config = configuration.load_config()
 
     if "telegram" in config:
         telegram_handler = telegram.TelegramBot(
@@ -67,7 +68,7 @@ def watch(marketplace, keepalive):
     logger.info("Starting up …")
 
     session = datamodel.open_user_db_session()
-    config = factory.load_config()
+    config = configuration.load_config()
     market = factory.make_marketplace(marketplace, config)
 
     database_source = historical.DatabaseHistoricalSource(
@@ -95,7 +96,7 @@ def evaluate(coin: str, fiat: str) -> None:
 
     The COIN has to be a supported cryptocurrency like “BTC” or “ETH”. FIAT is the reference fiat currency like “EUR”. This is case insensitive.
     """
-    config = factory.load_config()
+    config = configuration.load_config()
     from . import evaluation
 
     evaluation.make_report(coin, fiat, config["cryptocompare"]["api_key"])
