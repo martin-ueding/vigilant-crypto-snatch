@@ -19,12 +19,12 @@ logger = logging.getLogger("vigilant_crypto_snatch")
 
 
 def open_file_with_default_application(path: str) -> None:
-    if platform.system() == 'Windows':
+    if platform.system() == "Windows":
         os.startfile(path)
     elif platform.system() == "Darwin":
-        subprocess.run(['open', path])
+        subprocess.run(["open", path])
     elif platform.system() == "Linux":
-        subprocess.run(['xdg-open', path])
+        subprocess.run(["xdg-open", path])
     else:
         raise RuntimeError(f"Unsupported platform {platform.system()}")
 

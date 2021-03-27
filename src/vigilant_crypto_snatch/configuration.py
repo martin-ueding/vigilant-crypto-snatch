@@ -1,17 +1,26 @@
 import logging
 import os
 import sys
+import shutil
 
 import appdirs
 import yaml
 
 logger = logging.getLogger("vigilant_crypto_snatch")
 
-dirs = appdirs.AppDirs(appname="vigilant-crypto-snatch", appauthor="Martin Ueding", roaming=True)
+dirs = appdirs.AppDirs(
+    appname="vigilant-crypto-snatch", appauthor="Martin Ueding", roaming=True
+)
 config_path = os.path.join(dirs.user_config_dir, "config.yml")
+old_config_path = os.path.expanduser("~/.config/vigilant-crypto-snatch.yml")
 
 
 def load_config() -> dict:
+    if os.path.isfile(old_config_path) and not os.path.isfile(config_path):
+        logger.info(f"Moving configuration from {old_config_path} to {config_path}.")
+        os.makedirs(os.path.dirname(config_path), exist_ok=True)
+        shutil.move(old_config_path, config_path)
+
     if not os.path.isfile(config_path):
         logger.error(f"Please create the configuration file at {config_path}.")
         sys.exit(1)
