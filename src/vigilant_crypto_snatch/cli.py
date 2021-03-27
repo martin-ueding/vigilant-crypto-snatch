@@ -88,8 +88,8 @@ def watch(marketplace, keepalive):
 
 
 @cli.command()
-@click.argument("coin")
-@click.argument("fiat")
+@click.option("--coin", prompt='Enter Coin')
+@click.option("--fiat", prompt='Enter Fiat')
 def evaluate(coin: str, fiat: str) -> None:
     """
     Evaluates the strategy on historic data.
