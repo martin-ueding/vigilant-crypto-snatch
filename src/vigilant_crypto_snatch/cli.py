@@ -21,6 +21,22 @@ from . import __version__
 logger = logging.getLogger("vigilant_crypto_snatch")
 
 
+def init_logging(with_telegram: bool = False) -> None:
+    config = configuration.load_config()
+    if with_telegram and "telegram" in config:
+        telegram_handler = telegram.TelegramBot(
+            config["telegram"]["token"],
+            config["telegram"]["level"],
+            config["telegram"].get("chat_id", None),
+        )
+        logger.addHandler(telegram_handler)
+
+        if not "chat_id" in config["telegram"]:
+            config["telegram"]["chat_id"] = telegram_handler.chat_id
+            factory.update_config(config)
+    coloredlogs.install(level=loglevel.upper())
+
+
 @click.group()
 @click.version_option(version=__version__)
 @click.option(
@@ -32,21 +48,7 @@ logger = logging.getLogger("vigilant_crypto_snatch")
     ),
 )
 def cli(loglevel):
-    config = configuration.load_config()
-
-    if "telegram" in config:
-        telegram_handler = telegram.TelegramBot(
-            config["telegram"]["token"],
-            config["telegram"]["level"],
-            config["telegram"].get("chat_id", None),
-        )
-        logger.addHandler(telegram_handler)
-
-        if not "chat_id" in config["telegram"]:
-            config["telegram"]["chat_id"] = telegram_handler.chat_id
-            factory.update_config(config)
-
-    coloredlogs.install(level=loglevel.upper())
+    pass
 
 
 @cli.command()
@@ -65,6 +67,7 @@ def watch(marketplace, keepalive):
     """
     Watches the market and automatically places buy orders.
     """
+    init_logging(True)
     logger.info("Starting up …")
 
     session = datamodel.open_user_db_session()
@@ -88,14 +91,21 @@ def watch(marketplace, keepalive):
 
 
 @cli.command()
-@click.option("--coin", prompt='Enter Coin')
-@click.option("--fiat", prompt='Enter Fiat')
+@click.option(
+    "--coin",
+    default="BTC",
+    help="Cryptocurrency like BTC, ETC. Case insensitive. Defaults to BTC.",
+)
+@click.option(
+    "--fiat",
+    default="EUR",
+    help="Fiat currency like EUR, USD. Case inseneitive. Defaults to EUR.",
+)
 def evaluate(coin: str, fiat: str) -> None:
     """
     Evaluates the strategy on historic data.
-
-    The COIN has to be a supported cryptocurrency like “BTC” or “ETH”. FIAT is the reference fiat currency like “EUR”. This is case insensitive.
     """
+    init_logging(False)
     config = configuration.load_config()
     from . import evaluation
 
