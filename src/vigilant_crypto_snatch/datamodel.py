@@ -47,6 +47,16 @@ class Trade(Base):
             f")"
         )
 
+    def to_dict(self) -> dict:
+        return dict(
+            timestamp=self.timestamp,
+            trigger_name=self.trigger_name,
+            volume_coin=self.volume_coin,
+            volume_fiat=self.volume_fiat,
+            coin=self.coin,
+            fiat=self.fiat,
+        )
+
 
 def garbage_collect_db(
     session: sqlalchemy.orm.Session, cutoff: datetime.datetime
