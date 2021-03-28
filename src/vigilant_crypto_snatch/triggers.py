@@ -25,6 +25,9 @@ class Trigger(object):
     def fire(self) -> None:
         raise NotImplementedError()
 
+    def has_cooled_off(self) -> bool:
+        raise NotImplementedError()
+
     def reset_trials(self):
         self.trials = 0
 
