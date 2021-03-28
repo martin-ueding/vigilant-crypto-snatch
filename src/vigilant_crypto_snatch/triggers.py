@@ -16,16 +16,16 @@ class Trigger(object):
     def __init__(self):
         self.trials = 0
 
-    def is_triggered(self) -> bool:
+    def is_triggered(self, now: datetime.datetime) -> bool:
         raise NotImplementedError()
 
     def get_name(self) -> str:
         raise NotImplementedError()
 
-    def fire(self) -> None:
+    def fire(self, now: datetime.datetime) -> None:
         raise NotImplementedError()
 
-    def has_cooled_off(self) -> bool:
+    def has_cooled_off(self, now: datetime.datetime) -> bool:
         raise NotImplementedError()
 
     def reset_trials(self):
@@ -53,8 +53,8 @@ class BuyTrigger(Trigger, abc.ABC):
         self.minutes = minutes
         self.reset_trials()
 
-    def has_cooled_off(self) -> bool:
-        then = datetime.datetime.now() - datetime.timedelta(minutes=self.minutes)
+    def has_cooled_off(self, now: datetime.datetime) -> bool:
+        then = now - datetime.timedelta(minutes=self.minutes)
         trade_count = (
             self.session.query(datamodel.Trade)
             .filter(
@@ -67,14 +67,14 @@ class BuyTrigger(Trigger, abc.ABC):
         )
         return trade_count == 0
 
-    def fire(self) -> None:
+    def fire(self, now: datetime.datetime) -> None:
         logger.info(f"Trigger “{self.get_name()}” fired, try buying …")
-        price = self.source.get_price(datetime.datetime.now(), self.coin, self.fiat)
+        price = self.source.get_price(now, self.coin, self.fiat)
         volume_coin = round(self.volume_fiat / price.last, 8)
 
         self.market.place_order(self.coin, self.fiat, volume_coin)
         trade = datamodel.Trade(
-            timestamp=datetime.datetime.now(),
+            timestamp=now,
             trigger_name=self.get_name(),
             volume_coin=volume_coin,
             volume_fiat=self.volume_fiat,
@@ -104,9 +104,9 @@ class DropTrigger(BuyTrigger):
         self.drop = drop
         assert self.drop > 0, "Drop triggers must have positive percentages!"
 
-    def is_triggered(self) -> bool:
+    def is_triggered(self, now: datetime.datetime) -> bool:
         price = self.source.get_price(datetime.datetime.now(), self.coin, self.fiat)
-        then = datetime.datetime.now() - datetime.timedelta(minutes=self.minutes)
+        then = now - datetime.timedelta(minutes=self.minutes)
         try:
             then_price = self.source.get_price(then, self.coin, self.fiat)
         except historical.HistoricalError:
@@ -119,7 +119,7 @@ class DropTrigger(BuyTrigger):
 
 
 class TrueTrigger(BuyTrigger):
-    def is_triggered(self) -> bool:
+    def is_triggered(self, now: datetime.datetime) -> bool:
         return True
 
     def get_name(self) -> str:
@@ -131,18 +131,16 @@ class CheckinTrigger(Trigger):
         super().__init__()
         self.last_checkin = datetime.datetime.now()
 
-    def is_triggered(self) -> bool:
-        now = datetime.datetime.now()
+    def is_triggered(self, now: datetime.datetime) -> bool:
         return now.hour == 6
 
-    def has_cooled_off(self) -> bool:
-        now = datetime.datetime.now()
+    def has_cooled_off(self, now: datetime.datetime) -> bool:
         return self.last_checkin < now - datetime.timedelta(hours=2)
 
     def get_name(self) -> str:
         return "Checkin"
 
-    def fire(self) -> None:
+    def fire(self, now: datetime.datetime) -> None:
         logger.info("I am still here!")
 
 
@@ -153,18 +151,18 @@ class DatabaseCleaningTrigger(Trigger):
         self.interval = interval
         self.last_cleaning = None
 
-    def is_triggered(self) -> bool:
+    def is_triggered(self, now: datetime.datetime) -> bool:
         return True
 
-    def has_cooled_off(self) -> bool:
+    def has_cooled_off(self, now: datetime.datetime) -> bool:
         if self.last_cleaning is None:
             return True
-        return self.last_cleaning < datetime.datetime.now() - self.interval
+        return self.last_cleaning < now - self.interval
 
-    def fire(self) -> None:
+    def fire(self, now: datetime.datetime) -> None:
         datamodel.garbage_collect_db(
             self.session,
-            datetime.datetime.now() - self.interval,
+            now - self.interval,
         )
 
     def get_name(self) -> str:

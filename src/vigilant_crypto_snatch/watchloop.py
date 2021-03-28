@@ -63,9 +63,10 @@ def notify_and_continue(exception: Exception, severity: int) -> None:
 def process_trigger(trigger: triggers.Trigger, keepalive: bool):
     logger.debug(f"Checking trigger “{trigger.get_name()}” …")
     try:
-        if trigger.has_cooled_off() and trigger.is_triggered():
+        now = datetime.datetime.now()
+        if trigger.has_cooled_off(now) and trigger.is_triggered(now):
             trigger.trials += 1
-            trigger.fire()
+            trigger.fire(now)
             trigger.reset_trials()
     except marketplace.TickerError as e:
         notify_and_continue(e, logging.ERROR)
