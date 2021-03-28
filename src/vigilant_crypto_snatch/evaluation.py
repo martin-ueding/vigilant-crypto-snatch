@@ -81,10 +81,8 @@ class SimulationMarketplace(marketplace.Marketplace):
         return self.source.get_price(now, coin, fiat)
 
 
-def make_report(coin: str, fiat: str, api_key: str):
+def simulate_triggers(data: pd.DataFrame, coin: str, fiat: str) -> pd.DataFrame:
     session = datamodel.open_memory_db_session()
-    data = get_hourly_data(coin, fiat, api_key)
-    data = make_dataframe_from_json(data)
     source = InterpolatingSource(data)
     config = configuration.load_config()
     market = SimulationMarketplace(source)
@@ -94,6 +92,8 @@ def make_report(coin: str, fiat: str, api_key: str):
         row = data.loc[i]
         now = row["datetime"]
         for trigger in active_triggers:
+            if not (trigger.coin == coin and trigger.fiat == fiat):
+                continue
             try:
                 if trigger.is_triggered(now):
                     if trigger.has_cooled_off(now):
@@ -104,7 +104,20 @@ def make_report(coin: str, fiat: str, api_key: str):
                 pass
 
     all_trades = session.query(datamodel.Trade).all()
-    print(all_trades)
+    trade_df = pd.DataFrame([trade.to_dict() for trade in all_trades])
+    return trade_df
+
+
+def make_report(coin: str, fiat: str, api_key: str):
+    data = get_hourly_data(coin, fiat, api_key)
+    data = make_dataframe_from_json(data)
+    trade_df = simulate_triggers(data, coin, fiat)
+    print(trade_df)
+
+    data.to_json('prices.js')
+    trade_df.to_json('trades.js')
+
+
 
     sys.exit(0)
 
