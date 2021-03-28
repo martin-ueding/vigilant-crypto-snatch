@@ -38,14 +38,15 @@ class KrakenMarketplace(marketplace.Marketplace):
         args.validate = False
         clikraken.api.private.place_order.place_order(args)
 
-    def get_spot_price(self, coin: str, fiat: str) -> datamodel.Price:
+    def get_spot_price(
+        self, coin: str, fiat: str, now: datetime.datetime
+    ) -> datamodel.Price:
         args = KrakenArgs()
         args.pair = make_asset_pair(coin, fiat)
         with capture.Capturing() as output:
             clikraken.api.public.ticker.ticker(args)
         header, data = output
         ticker = {h: d for h, d in zip(header.split(";"), data.split(";"))}
-        now = datetime.datetime.now()
         price = datamodel.Price(
             timestamp=now, last=float(ticker["last"]), coin=coin, fiat=fiat
         )

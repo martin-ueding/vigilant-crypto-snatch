@@ -5,17 +5,52 @@ import json
 import typing
 import subprocess
 import platform
-import webbrowser
+import sys
 
 import requests
 import pandas as pd
 import matplotlib.pyplot as pl
 import tqdm
 import numpy as np
+import sqlalchemy.orm
+import scipy.interpolate
 
 from . import rendering
+from . import datamodel
+from . import configuration
+from . import historical
+from . import triggers
+from . import marketplace
 
 logger = logging.getLogger("vigilant_crypto_snatch")
+
+
+def make_interpolator(data: pd.DataFrame):
+    x = data["time"]
+    y = data["close"]
+    return scipy.interpolate.interp1d(x, y)
+
+
+class InterpolatingSource(historical.HistoricalSource):
+    def __init__(self, data: pd.DataFrame):
+        self.interpolator = make_interpolator(data)
+        self.start = np.min(data['datetime'])
+        self.end = np.max(data['datetime'])
+
+    def get_price(
+        self, then: datetime.datetime, coin: str, fiat: str
+    ) -> datamodel.Price:
+        try:
+            last = self.interpolator(then.timestamp())
+        except ValueError as e:
+            raise historical.HistoricalError(e)
+
+        return datamodel.Price(
+            timestamp=then,
+            last=last,
+            coin=coin,
+            fiat=fiat,
+        )
 
 
 def open_file_with_default_application(path: str) -> None:
@@ -29,30 +64,70 @@ def open_file_with_default_application(path: str) -> None:
         raise RuntimeError(f"Unsupported platform {platform.system()}")
 
 
+class SimulationMarketplace(marketplace.Marketplace):
+    def __init__(self, source: historical.HistoricalSource):
+        super().__init__()
+        self.source = source
+
+    def place_order(self, coin: str, fiat: str, volume: float) -> None:
+        pass
+
+    def get_name(self) -> str:
+        return "Simulation"
+
+    def get_spot_price(
+        self, coin: str, fiat: str, now: datetime.datetime
+    ) -> datamodel.Price:
+        return self.source.get_price(now, coin, fiat)
+
+
 def make_report(coin: str, fiat: str, api_key: str):
+    session = datamodel.open_memory_db_session()
     data = get_hourly_data(coin, fiat, api_key)
     data = make_dataframe_from_json(data)
-    data.to_pickle("data.pickle")
+    source = InterpolatingSource(data)
+    config = configuration.load_config()
+    market = SimulationMarketplace(source)
+    active_triggers = triggers.make_buy_triggers(config, session, source, market)
+
+    for i in data.index:
+        row = data.loc[i]
+        now = row["datetime"]
+        for trigger in active_triggers:
+            try:
+                if trigger.is_triggered(now):
+                    if trigger.has_cooled_off(now):
+                        trigger.fire(now)
+                    else:
+                        pass
+            except historical.HistoricalError as e:
+                pass
+
+    all_trades = session.query(datamodel.Trade).all()
+    print(all_trades)
+
+    sys.exit(0)
+
     plot_close(data)
     plot_drop_survey(data)
     renderer = rendering.Renderer()
     renderer.render_md("evaluation.md")
-    webbrowser.open(os.path.join(rendering.report_dir))
+    open_file_with_default_application(os.path.join(rendering.report_dir))
 
 
-def get_hourly_data(coin: str, fiat: str, api_key: str) -> pd.DataFrame:
+def get_hourly_data(coin: str, fiat: str, api_key: str) -> typing.List[dict]:
     cache_file = f"~/.cache/vigilant-crypto-snatch/hourly_{coin}_{fiat}.js"
     cache_file = os.path.expanduser(cache_file)
     os.makedirs(os.path.dirname(cache_file), exist_ok=True)
     if os.path.exists(cache_file):
-        logger.debug("Cached historic data exists.")
+        logger.info("Cached historic data exists.")
         mtime = datetime.datetime.fromtimestamp(os.path.getmtime(cache_file))
         if mtime > datetime.datetime.now() - datetime.timedelta(days=1):
-            logger.debug("Cached historic data is recent. Loading that.")
+            logger.info("Cached historic data is recent. Loading that.")
             with open(cache_file) as f:
                 return json.load(f)
 
-    logger.debug("Requesting historic data from Crypto Compare.")
+    logger.info("Requesting historic data from Crypto Compare.")
     timestamp = int(datetime.datetime.now().timestamp())
     url = (
         f"https://min-api.cryptocompare.com/data/histohour"
@@ -65,6 +140,21 @@ def get_hourly_data(coin: str, fiat: str, api_key: str) -> pd.DataFrame:
     with open(cache_file, "w") as f:
         json.dump(data, f)
     return data
+
+
+def json_to_database(
+    data: typing.List[dict], coin: str, fiat: str, session: sqlalchemy.orm.session
+) -> None:
+    logger.info(f"Writing {len(data)} prices to the DB …")
+    for elem in data:
+        price = datamodel.Price(
+            timestamp=datetime.datetime.fromtimestamp(elem["time"]),
+            last=elem["close"],
+            coin=coin,
+            fiat=fiat,
+        )
+        session.add(price)
+    session.commit()
 
 
 def make_dataframe_from_json(data: dict) -> pd.DataFrame:

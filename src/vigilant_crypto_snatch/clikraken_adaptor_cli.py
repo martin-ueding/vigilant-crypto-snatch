@@ -35,7 +35,9 @@ class KrakenMarketplace(marketplace.Marketplace):
         output = run_command(command, marketplace.BuyError)
         logger.info(f"Output from clikraken: {output}")
 
-    def get_spot_price(self, coin: str, fiat: str) -> datamodel.Price:
+    def get_spot_price(
+        self, coin: str, fiat: str, now: datetime.datetime
+    ) -> datamodel.Price:
         command = [
             "clikraken",
             "--csv",
@@ -48,7 +50,6 @@ class KrakenMarketplace(marketplace.Marketplace):
         output = run_command(command, marketplace.TickerError)
 
         ticker = csv_to_dict(output)
-        now = datetime.datetime.now()
         price = datamodel.Price(
             timestamp=now, last=float(ticker["last"]), coin=coin, fiat=fiat
         )

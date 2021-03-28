@@ -25,7 +25,9 @@ class BitstampMarketplace(marketplace.Marketplace):
         except bitstamp.client.BitstampError as e:
             raise marketplace.BuyError(str(e))
 
-    def get_spot_price(self, coin: str, fiat: str) -> datamodel.Price:
+    def get_spot_price(
+        self, coin: str, fiat: str, now: datetime.datetime
+    ) -> datamodel.Price:
         try:
             ticker = self.public_client.ticker(base=coin, quote=fiat)
         except requests.exceptions.ChunkedEncodingError as e:

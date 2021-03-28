@@ -1,6 +1,7 @@
 import datetime
 import logging
 import abc
+import typing
 
 import sqlalchemy.orm
 
@@ -105,7 +106,7 @@ class DropTrigger(BuyTrigger):
         assert self.drop > 0, "Drop triggers must have positive percentages!"
 
     def is_triggered(self, now: datetime.datetime) -> bool:
-        price = self.source.get_price(datetime.datetime.now(), self.coin, self.fiat)
+        price = self.source.get_price(now, self.coin, self.fiat)
         then = now - datetime.timedelta(minutes=self.minutes)
         try:
             then_price = self.source.get_price(then, self.coin, self.fiat)
@@ -169,9 +170,8 @@ class DatabaseCleaningTrigger(Trigger):
         return "Database cleaning"
 
 
-def make_triggers(config, session, source: historical.HistoricalSource, market):
+def make_buy_triggers(config, session, source, market) -> typing.List[Trigger]:
     active_triggers = []
-
     if "triggers" in config and config["triggers"] is not None:
         for trigger_spec in config["triggers"]:
             trigger = DropTrigger(
@@ -200,7 +200,13 @@ def make_triggers(config, session, source: historical.HistoricalSource, market):
             )
             logger.debug(f"Constructed trigger: {trigger.get_name()}")
             active_triggers.append(trigger)
+    return active_triggers
 
+
+def make_triggers(
+    config, session, source: historical.HistoricalSource, market
+) -> typing.List[Trigger]:
+    active_triggers = make_buy_triggers(config, session, source, market)
     longest_cooldown = max(trigger.minutes for trigger in active_triggers)
     active_triggers.append(CheckinTrigger())
     active_triggers.append(

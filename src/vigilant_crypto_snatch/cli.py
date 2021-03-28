@@ -21,9 +21,9 @@ from . import __version__
 logger = logging.getLogger("vigilant_crypto_snatch")
 
 
-def init_logging(with_telegram: bool = False) -> None:
+def add_telegram_logger() -> None:
     config = configuration.load_config()
-    if with_telegram and "telegram" in config:
+    if "telegram" in config:
         telegram_handler = telegram.TelegramBot(
             config["telegram"]["token"],
             config["telegram"]["level"],
@@ -34,7 +34,6 @@ def init_logging(with_telegram: bool = False) -> None:
         if not "chat_id" in config["telegram"]:
             config["telegram"]["chat_id"] = telegram_handler.chat_id
             factory.update_config(config)
-    coloredlogs.install(level=loglevel.upper())
 
 
 @click.group()
@@ -48,7 +47,7 @@ def init_logging(with_telegram: bool = False) -> None:
     ),
 )
 def cli(loglevel):
-    pass
+    coloredlogs.install(level=loglevel.upper())
 
 
 @cli.command()
@@ -67,7 +66,7 @@ def watch(marketplace, keepalive):
     """
     Watches the market and automatically places buy orders.
     """
-    init_logging(True)
+    add_telegram_logger()
     logger.info("Starting up …")
 
     session = datamodel.open_user_db_session()
@@ -105,7 +104,6 @@ def evaluate(coin: str, fiat: str) -> None:
     """
     Evaluates the strategy on historic data.
     """
-    init_logging(False)
     config = configuration.load_config()
     from . import evaluation
 

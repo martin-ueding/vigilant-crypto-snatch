@@ -34,6 +34,19 @@ class Trade(Base):
     coin = sqlalchemy.Column(sqlalchemy.String, nullable=False)
     fiat = sqlalchemy.Column(sqlalchemy.String, nullable=False)
 
+    def __repr__(self):
+        return (
+            f"Trade("
+            f"id={repr(self.id)}, "
+            f"timestamp={repr(self.timestamp)}, "
+            f"trigger_name={repr(self.trigger_name)}, "
+            f"volume_coin={repr(self.volume_coin)}, "
+            f"volume_fiat={repr(self.volume_fiat)}, "
+            f"coin={repr(self.coin)}, "
+            f"fiat={repr(self.fiat)}"
+            f")"
+        )
+
 
 def garbage_collect_db(
     session: sqlalchemy.orm.Session, cutoff: datetime.datetime
