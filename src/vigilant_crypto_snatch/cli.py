@@ -33,7 +33,7 @@ def add_telegram_logger() -> None:
 
         if not "chat_id" in config["telegram"]:
             config["telegram"]["chat_id"] = telegram_handler.chat_id
-            factory.update_config(config)
+            configuration.update_config(config)
 
 
 @click.group()
