@@ -32,7 +32,7 @@ class CryptoCompareHistoricalSource(HistoricalSource):
     ) -> datamodel.Price:
         logger.debug(f"Retrieving historical price at {when} for {fiat}/{coin} …")
         timestamp = int(when.timestamp())
-        kind = get_kind(when)
+        kind = self.get_kind(when)
         url = self.base_url(kind, coin, fiat) + "&limit=1&toTs={timestamp}"
         r = requests.get(url)
         if r.status_code != 200:
@@ -104,7 +104,7 @@ class MarketSource(HistoricalSource):
             raise HistoricalError(
                 f"Cannot retrieve price that far in the past ({then})."
             )
-        price = self.market.get_spot_price(coin, fiat)
+        price = self.market.get_spot_price(coin, fiat, then)
         logger.debug(
             f"Retrieved a price of {price.last} at {then} from {self.market.get_name()}."
         )
