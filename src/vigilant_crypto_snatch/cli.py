@@ -1,110 +1,78 @@
-#!/usr/bin/env python3
-# -*- coding: utf-8 -*-
-
 import argparse
 import logging
-import datetime
+import sys
 
 import coloredlogs
-import click
-
-from . import factory
-from . import datamodel
-from . import watchloop
-from . import telegram
-from . import historical
-from . import configuration
-from . import triggers
-from . import configuration
-from . import __version__
 
 logger = logging.getLogger("vigilant_crypto_snatch")
 
 
-def add_telegram_logger() -> None:
-    config = configuration.load_config()
-    if "telegram" in config:
-        telegram_handler = telegram.TelegramBot(
-            config["telegram"]["token"],
-            config["telegram"]["level"],
-            config["telegram"].get("chat_id", None),
-        )
-        logger.addHandler(telegram_handler)
-
-        if not "chat_id" in config["telegram"]:
-            config["telegram"]["chat_id"] = telegram_handler.chat_id
-            configuration.update_config(config)
-
-
-@click.group()
-@click.version_option(version=__version__)
-@click.option(
-    "--loglevel",
-    default="info",
-    help="Controls the verbosity of logging.",
-    type=click.Choice(
-        ["debug", "info", "warning", "error", "critical"], case_sensitive=False
-    ),
-)
-def cli(loglevel):
-    coloredlogs.install(level=loglevel.upper())
-
-
-@cli.command()
-@click.option(
-    "--marketplace",
-    default="kraken",
-    help="Marketplace to place orders on.",
-    type=click.Choice(["bitstamp", "kraken", "kraken-api"], case_sensitive=True),
-)
-@click.option(
-    "--keepalive/--no-keepalive",
-    default=False,
-    help="Ignore all Exceptions and just report them.",
-)
-def watch(marketplace, keepalive):
-    """
-    Watches the market and automatically places buy orders.
-    """
-    add_telegram_logger()
-    logger.info("Starting up …")
-
-    session = datamodel.open_user_db_session()
-    config = configuration.load_config()
-    market = factory.make_marketplace(marketplace, config)
-
-    database_source = historical.DatabaseHistoricalSource(
-        session, datetime.timedelta(minutes=5)
+def main():
+    parser = argparse.ArgumentParser(
+        description="""Vigiliant Crypto Snatch is a 
+    little program that observes the current market price for your choice of currency 
+    pairs, looks for drastic reductions (dips) and then places buy orders.""",
+        epilog="See https://martin-ueding.github.io/vigilant-crypto-snatch/ for the full documentation.",
     )
-    crypto_compare_source = historical.CryptoCompareHistoricalSource(
-        config["cryptocompare"]["api_key"]
+    parser.add_argument(
+        "--loglevel",
+        choices=["debug", "info", "warning", "error", "critical"],
+        default="info",
+        help="Controls the verbosity of logging. Default: %(default)s.",
     )
-    market_source = historical.MarketSource(market)
-    caching_source = historical.CachingHistoricalSource(
-        database_source, [market_source, crypto_compare_source], session
+    parser.set_defaults(func=None)
+
+    subcommands = parser.add_subparsers(title="subcommands")
+
+    evaluate = subcommands.add_parser(
+        "evaluate", help="Create a performance projection."
     )
-    active_triggers = triggers.make_triggers(config, session, caching_source, market)
+    evaluate.set_defaults(func=main_evaluate)
+    evaluate.add_argument(
+        "--fiat",
+        default="EUR",
+        help="Fiat currency like EUR, USD. Case inseneitive. Default: %(default)s.",
+    )
+    evaluate.add_argument(
+        "--coin",
+        default="BTC",
+        help="Cryptocurrency like BTC, ETC. Case insensitive. Default: %(default)s.",
+    )
 
-    trigger_loop = watchloop.TriggerLoop(active_triggers, config["sleep"], keepalive)
-    trigger_loop.loop()
+    watch = subcommands.add_parser(
+        "watch", help="Watch the market and execute defined triggers."
+    )
+    watch.set_defaults(func=main_watch)
+    watch.add_argument(
+        "--marketplace",
+        default="kraken",
+        choices=["bitstamp", "kraken", "kraken-api"],
+        help="Marketplace to place orders on. Default: %(default)s.",
+    )
+    watch.add_argument(
+        "--keepalive",
+        action="store_true",
+        default=False,
+        help="Ignore all Exceptions and just report them.",
+    )
+
+    options = parser.parse_args()
+    if options.func is None:
+        parser.print_help()
+        sys.exit(1)
+
+    coloredlogs.install(level=options.loglevel.upper())
+
+    options.func(options)
 
 
-@cli.command()
-@click.option(
-    "--coin",
-    default="BTC",
-    help="Cryptocurrency like BTC, ETC. Case insensitive. Defaults to BTC.",
-)
-@click.option(
-    "--fiat",
-    default="EUR",
-    help="Fiat currency like EUR, USD. Case inseneitive. Defaults to EUR.",
-)
-def evaluate(coin: str, fiat: str) -> None:
-    """
-    Evaluates the strategy on historic data.
-    """
-    config = configuration.load_config()
+def main_watch(options):
+    from . import watchloop
+
+    watchloop.main(options)
+
+
+def main_evaluate(options) -> None:
     from . import evaluation
 
-    evaluation.make_report(coin, fiat, config["cryptocompare"]["api_key"])
+    evaluation.main(options)

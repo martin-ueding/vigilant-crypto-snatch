@@ -3,6 +3,8 @@ import sys
 
 import requests
 
+from . import configuration
+
 
 logger = logging.getLogger("vigilant_crypto_snatch")
 
@@ -44,3 +46,18 @@ class TelegramBot(logging.Handler):
 
 
 prefixes = {"CRITICAL": "🔴", "ERROR": "🟠", "WARNING": "🟡", "INFO": "🟢", "DEBUG": "🔵"}
+
+
+def add_telegram_logger() -> None:
+    config = configuration.load_config()
+    if "telegram" in config:
+        telegram_handler = TelegramBot(
+            config["telegram"]["token"],
+            config["telegram"]["level"],
+            config["telegram"].get("chat_id", None),
+        )
+        logger.addHandler(telegram_handler)
+
+        if not "chat_id" in config["telegram"]:
+            config["telegram"]["chat_id"] = telegram_handler.chat_id
+            configuration.update_config(config)

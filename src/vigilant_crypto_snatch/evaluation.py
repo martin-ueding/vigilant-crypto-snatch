@@ -34,8 +34,8 @@ def make_interpolator(data: pd.DataFrame):
 class InterpolatingSource(historical.HistoricalSource):
     def __init__(self, data: pd.DataFrame):
         self.interpolator = make_interpolator(data)
-        self.start = np.min(data['datetime'])
-        self.end = np.max(data['datetime'])
+        self.start = np.min(data["datetime"])
+        self.end = np.max(data["datetime"])
 
     def get_price(
         self, then: datetime.datetime, coin: str, fiat: str
@@ -114,10 +114,8 @@ def make_report(coin: str, fiat: str, api_key: str):
     trade_df = simulate_triggers(data, coin, fiat)
     print(trade_df)
 
-    data.to_json('prices.js')
-    trade_df.to_json('trades.js')
-
-
+    data.to_json("prices.js")
+    trade_df.to_json("trades.js")
 
     sys.exit(0)
 
@@ -264,3 +262,8 @@ def compute_dca(df: pd.DataFrame, hours: int) -> typing.Tuple[float, float, floa
             btc += 1.0 / df["close"][i]
             eur += 1.0
     return btc, eur, btc / eur if eur > 0 else 0.0
+
+
+def main(options) -> None:
+    config = configuration.load_config()
+    make_report(options.coin, options.fiat, config["cryptocompare"]["api_key"])
