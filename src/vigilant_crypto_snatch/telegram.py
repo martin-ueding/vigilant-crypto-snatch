@@ -1,5 +1,6 @@
 import logging
 import sys
+import typing
 
 import requests
 
@@ -31,11 +32,14 @@ class TelegramBot(logging.Handler):
         self.chat_id = int(data["result"][-1]["message"]["chat"]["id"])
         logger.info(f"Your Telegram chat ID is {self.chat_id}.")
 
-    def send_message(self, message: str) -> dict:
+    def send_message(self, message: str) -> typing.Optional[dict]:
         logger.debug("Sending message to Telegram …")
         send_text = f"https://api.telegram.org/bot{self.token}/sendMessage?chat_id={self.chat_id}&parse_mode=Markdown&text={message}"
-        response = requests.get(send_text)
-        return response.json()
+        try:
+            response = requests.get(send_text)
+            return response.json()
+        except requests.exceptions.ConnectionError as e:
+            pass
 
     def format(self, record: logging.LogRecord) -> str:
         emoji = prefixes[record.levelname]
