@@ -5,7 +5,7 @@ The program has a hierarchical command line interface with multiple subcommands.
 The general structure of a call is this:
 
 ```
-vigilant-crypto-snatch [genereal options] subcommand [subcommand options]
+vigilant-crypto-snatch [general options] subcommand [subcommand options]
 ```
 
 The general options are the following:
