@@ -114,3 +114,19 @@ telegram:
 You will need to write a message to the bot in order to open a direct conversation with it. This is necessary such that the bot can reply to you.
 
 The `level` specified the messages that you want to receive. `info` gives sensible information, if you only want to receive information when something goes wrong, use `warning`. See the section in [running](running.md) for more details.
+
+If the Telegram bot token is set up correctly, you will receive messages like this:
+
+> ![](telegram-output.png)
+
+The severity of messages is color-coded with an emoji according to this mapping:
+
+Symbol | Severity
+:---: | :---
+🔴 | Critical
+🟠 | Error
+🟡 | Warning
+🟢 | Info
+🔵 | Debug
+
+The logging level is set to *Info* by default. You must not set it to *Debug* as sending a Telegram message will produce more debug messages. The program will crash with an infinite recursion.
