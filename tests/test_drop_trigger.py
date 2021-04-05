@@ -21,7 +21,7 @@ def drop_trigger() -> triggers.DropTrigger:
 
 def test_triggered(drop_trigger: triggers.DropTrigger) -> None:
     # The drop is so extreme that it can never be triggered.
-    assert not drop_trigger.is_triggered()
+    assert not drop_trigger.is_triggered(datetime.datetime.now())
     session = drop_trigger.session
     assert session.query(datamodel.Price).count() == 0
     assert drop_trigger.source.calls == 2
@@ -29,13 +29,14 @@ def test_triggered(drop_trigger: triggers.DropTrigger) -> None:
 
 def test_cooled_off(drop_trigger: triggers.DropTrigger) -> None:
     # There are no trades in the DB yet.
-    assert drop_trigger.has_cooled_off()
+    assert drop_trigger.has_cooled_off(datetime.datetime.now())
 
 
 def test_waiting(drop_trigger: triggers.DropTrigger) -> None:
+    now = datetime.datetime.now()
     session = drop_trigger.session
     trade = datamodel.Trade(
-        timestamp=datetime.datetime.now(),
+        timestamp=now,
         trigger_name=drop_trigger.get_name(),
         volume_coin=1.0,
         volume_fiat=1.0,
@@ -44,4 +45,4 @@ def test_waiting(drop_trigger: triggers.DropTrigger) -> None:
     )
     session.add(trade)
     session.commit()
-    assert not drop_trigger.has_cooled_off()
+    assert not drop_trigger.has_cooled_off(now)

@@ -19,18 +19,19 @@ def true_trigger() -> triggers.TrueTrigger:
 
 def test_triggered(true_trigger: triggers.TrueTrigger) -> None:
     # This trigger type must always be triggered.
-    assert true_trigger.is_triggered()
+    assert true_trigger.is_triggered(datetime.datetime.now())
 
 
 def test_cooled_off(true_trigger: triggers.TrueTrigger) -> None:
     # There are no trades in the DB yet.
-    assert true_trigger.has_cooled_off()
+    assert true_trigger.has_cooled_off(datetime.datetime.now())
 
 
 def test_waiting(true_trigger: triggers.TrueTrigger) -> None:
+    now = datetime.datetime.now()
     session = true_trigger.session
     trade = datamodel.Trade(
-        timestamp=datetime.datetime.now(),
+        timestamp=now,
         trigger_name=true_trigger.get_name(),
         volume_coin=1.0,
         volume_fiat=1.0,
@@ -39,11 +40,12 @@ def test_waiting(true_trigger: triggers.TrueTrigger) -> None:
     )
     session.add(trade)
     session.commit()
-    assert not true_trigger.has_cooled_off()
+    assert not true_trigger.has_cooled_off(now)
 
 
 def test_trade(true_trigger: triggers.TrueTrigger) -> None:
-    true_trigger.fire()
+    now = datetime.datetime.now()
+    true_trigger.fire(now)
     session = true_trigger.session
     assert session.query(datamodel.Trade).count() == 1
     assert true_trigger.market.orders == 1
