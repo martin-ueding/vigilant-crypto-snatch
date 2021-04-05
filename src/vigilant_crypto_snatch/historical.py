@@ -34,7 +34,10 @@ class CryptoCompareHistoricalSource(HistoricalSource):
         timestamp = int(when.timestamp())
         kind = self.get_kind(when)
         url = self.base_url(kind, coin, fiat) + "&limit=1&toTs={timestamp}"
-        r = requests.get(url)
+        try:
+            r = requests.get(url)
+        except requests.exceptions.ConnectionError as e:
+            raise HistoricalError(e)
         if r.status_code != 200:
             raise HistoricalError(
                 f"The historical API has not returned a success: {r.status_code}"
