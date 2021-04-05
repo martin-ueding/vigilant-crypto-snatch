@@ -128,9 +128,9 @@ class TrueTrigger(BuyTrigger):
 
 
 class CheckinTrigger(Trigger):
-    def __init__(self):
+    def __init__(self, now=datetime.datetime.now()):
         super().__init__()
-        self.last_checkin = datetime.datetime.now()
+        self.last_checkin = now
 
     def is_triggered(self, now: datetime.datetime) -> bool:
         return now.hour == 6
@@ -143,6 +143,7 @@ class CheckinTrigger(Trigger):
 
     def fire(self, now: datetime.datetime) -> None:
         logger.info("I am still here!")
+        self.last_checkin = now
 
 
 class DatabaseCleaningTrigger(Trigger):
