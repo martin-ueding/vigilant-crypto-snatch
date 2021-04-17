@@ -117,8 +117,6 @@ def make_report(coin: str, fiat: str, api_key: str):
     data.to_json("prices.js")
     trade_df.to_json("trades.js")
 
-    sys.exit(0)
-
     plot_close(data)
     plot_drop_survey(data)
     renderer = rendering.Renderer()
@@ -226,9 +224,7 @@ def plot_drop_survey(data):
     save_figure(fig, "survey")
 
 
-def drop_survey(data: pd.DataFrame) -> typing.Tuple[np.array, np.array, np.array]:
-    hours = np.arange(1, 49)
-    drops = np.linspace(0.0, 0.30, 30)
+def drop_survey(data: pd.DataFrame, hours, drops) -> typing.Tuple[np.array, np.array, np.array]:
     factor = np.zeros(hours.shape + drops.shape)
     for i, hour in enumerate(tqdm.tqdm(hours)):
         for j, drop in enumerate(drops):

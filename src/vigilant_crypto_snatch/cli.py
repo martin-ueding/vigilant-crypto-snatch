@@ -39,6 +39,9 @@ def main():
         help="Cryptocurrency like BTC, ETC. Case insensitive. Default: %(default)s.",
     )
 
+    evaluate2 = subcommands.add_parser('evaluate2')
+    evaluate2.set_defaults(func=main_streamlit)
+
     watch = subcommands.add_parser(
         "watch", help="Watch the market and execute defined triggers."
     )
@@ -76,3 +79,8 @@ def main_evaluate(options) -> None:
     from . import evaluation
 
     evaluation.main(options)
+
+
+def main_streamlit(options) -> None:
+    from . import streamlit_ui
+    streamlit_ui.main(options)
