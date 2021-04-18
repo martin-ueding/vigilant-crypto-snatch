@@ -24,23 +24,8 @@ def main():
 
     subcommands = parser.add_subparsers(title="subcommands")
 
-    evaluate = subcommands.add_parser(
-        "evaluate", help="Create a performance projection."
-    )
-    evaluate.set_defaults(func=main_evaluate)
-    evaluate.add_argument(
-        "--fiat",
-        default="EUR",
-        help="Fiat currency like EUR, USD. Case inseneitive. Default: %(default)s.",
-    )
-    evaluate.add_argument(
-        "--coin",
-        default="BTC",
-        help="Cryptocurrency like BTC, ETC. Case insensitive. Default: %(default)s.",
-    )
-
-    evaluate2 = subcommands.add_parser("evaluate2")
-    evaluate2.set_defaults(func=main_streamlit)
+    evaluate = subcommands.add_parser("evaluate")
+    evaluate.set_defaults(func=main_streamlit)
 
     watch = subcommands.add_parser(
         "watch", help="Watch the market and execute defined triggers."
@@ -73,12 +58,6 @@ def main_watch(options):
     from . import watchloop
 
     watchloop.main(options)
-
-
-def main_evaluate(options) -> None:
-    from . import evaluation
-
-    evaluation.main(options)
 
 
 def main_streamlit(options) -> None:
