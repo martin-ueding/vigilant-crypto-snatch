@@ -81,31 +81,12 @@ class SimulationMarketplace(marketplace.Marketplace):
         return self.source.get_price(now, coin, fiat)
 
 
-def simulate_triggers(data: pd.DataFrame, coin: str, fiat: str) -> pd.DataFrame:
+def foo():
+    config = configuration.load_config()
     session = datamodel.open_memory_db_session()
     source = InterpolatingSource(data)
-    config = configuration.load_config()
     market = SimulationMarketplace(source)
     active_triggers = triggers.make_buy_triggers(config, session, source, market)
-
-    for i in data.index:
-        row = data.loc[i]
-        now = row["datetime"]
-        for trigger in active_triggers:
-            if not (trigger.coin == coin and trigger.fiat == fiat):
-                continue
-            try:
-                if trigger.is_triggered(now):
-                    if trigger.has_cooled_off(now):
-                        trigger.fire(now)
-                    else:
-                        pass
-            except historical.HistoricalError as e:
-                pass
-
-    all_trades = session.query(datamodel.Trade).all()
-    trade_df = pd.DataFrame([trade.to_dict() for trade in all_trades])
-    return trade_df
 
 
 def make_report(coin: str, fiat: str, api_key: str):
@@ -224,7 +205,9 @@ def plot_drop_survey(data):
     save_figure(fig, "survey")
 
 
-def drop_survey(data: pd.DataFrame, hours, drops) -> typing.Tuple[np.array, np.array, np.array]:
+def drop_survey(
+    data: pd.DataFrame, hours, drops
+) -> typing.Tuple[np.array, np.array, np.array]:
     factor = np.zeros(hours.shape + drops.shape)
     for i, hour in enumerate(tqdm.tqdm(hours)):
         for j, drop in enumerate(drops):
