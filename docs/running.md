@@ -83,7 +83,17 @@ You simulate triggers on historical data. Just select the type of trigger and tu
 
 ![](trigger-parameters.png)
 
-You will get a plot which shows the amount of money you have invested as well as the value of the crypto assets aquired. With this you can get a sense on the gains.
+It will give you a summary which looks like this:
+
+> - 83 days simulated
+> - 18 trades
+> - 450.00 EUR invested
+> - 0.01189674 BTC acquired
+> - 552.74 EUR value
+> - 22.8 % gain in 83 days
+> - 147.0 % estimated yearly gain
+
+You will also get a plot which shows the amount of money you have invested as well as the value of the crypto assets aquired. With this you can get a sense on the gains.
 
 ![](trigger-plot.png)
 

@@ -75,8 +75,9 @@ def sub_trigger_simulation(sidebar_settings):
     source = evaluation.InterpolatingSource(sidebar_settings.data)
     market = evaluation.SimulationMarketplace(source)
 
+    active_triggers = []
     if trigger_type == "Drop":
-        active_triggers = [
+        active_triggers.append(
             triggers.DropTrigger(
                 session,
                 source,
@@ -87,9 +88,9 @@ def sub_trigger_simulation(sidebar_settings):
                 trigger_delay * 60,
                 trigger_percentage,
             )
-        ]
+        )
     elif trigger_type == "Time":
-        active_triggers = [
+        active_triggers.append(
             triggers.TrueTrigger(
                 session,
                 source,
@@ -99,7 +100,7 @@ def sub_trigger_simulation(sidebar_settings):
                 trigger_volume,
                 trigger_delay * 60,
             )
-        ]
+        )
 
     trades = simulate_triggers(
         sidebar_settings.data,
@@ -129,6 +130,24 @@ def sub_trigger_simulation(sidebar_settings):
         value.loc[i, "value_fiat"] = (
             value.loc[i, "cumsum_coin"] * sidebar_settings.data.loc[i, "close"]
         )
+
+    st.markdown('# Summary')
+    num_trigger_executions = len(trades)
+    cumsum_fiat = value["cumsum_fiat"].iat[-1]
+    cumsum_coin = value["cumsum_coin"].iat[-1]
+    value_fiat = value["value_fiat"].iat[-1]
+    gain = value_fiat / cumsum_fiat - 1
+    period = (sidebar_settings.data["datetime"].iat[-1] - sidebar_settings.data["datetime"].iat[0]).days
+    yearly_gain = np.power(gain + 1, 365/period) - 1
+    st.markdown(f'''
+    - {period} days simulated
+    - {num_trigger_executions} trades
+    - {cumsum_fiat:.2f} {sidebar_settings.fiat} invested
+    - {cumsum_coin:.8f} {sidebar_settings.coin} acquired
+    - {value_fiat:.2f} {sidebar_settings.fiat} value
+    - {gain*100:.1f} % gain in {period} days
+    - {yearly_gain*100:.1f} % estimated yearly gain
+    ''')
 
     value_long = value.rename(
         {"cumsum_fiat": "Invested", "value_fiat": "Value"}, axis=1
