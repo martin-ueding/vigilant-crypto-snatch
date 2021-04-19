@@ -10,6 +10,12 @@ The project is [published on PyPI](https://pypi.org/project/vigilant-crypto-snat
 sudo python3 -m pip install vigilant-crypto-snatch
 ```
 
+Unless you are on a really constrained system (like a Raspberry Pi), you will likely want to install the evaluation interface as well. For this add this extra:
+
+```bash
+sudo python3 -m pip install 'vigilant-crypto-snatch[evaluation]'
+```
+
 Then you need to [configure](configuration.md) it. Then see the instructions for [running](running.md).
 
 If you want to upgrade use:
