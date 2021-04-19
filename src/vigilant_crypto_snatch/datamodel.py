@@ -5,8 +5,9 @@ import os
 import sqlalchemy.orm
 import sqlalchemy.ext.declarative
 
+from . import logger
+
 Base = sqlalchemy.ext.declarative.declarative_base()
-logger = logging.getLogger("vigilant_crypto_snatch")
 user_db_path = os.path.expanduser("~/.local/share/vigilant-crypto-snatch/db.sqlite")
 
 

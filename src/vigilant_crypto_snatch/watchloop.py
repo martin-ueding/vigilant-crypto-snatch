@@ -1,4 +1,3 @@
-import copy
 import datetime
 import logging
 import time
@@ -14,9 +13,7 @@ from . import marketplace
 from . import triggers
 from . import historical
 from . import telegram
-
-
-logger = logging.getLogger("vigilant_crypto_snatch")
+from . import logger
 
 
 class TriggerLoop(object):

@@ -1,16 +1,9 @@
-import logging
-import os
-import sys
-
 from . import (
     marketplace,
     bitstamp_adaptor,
     clikraken_adaptor_api,
     clikraken_adaptor_cli,
 )
-
-
-logger = logging.getLogger("vigilant_crypto_snatch")
 
 
 def make_marketplace(marketplace_str: str, config: dict) -> marketplace.Marketplace:

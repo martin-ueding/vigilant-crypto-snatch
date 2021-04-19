@@ -1,4 +1,3 @@
-import logging
 import os
 import sys
 import shutil
@@ -6,7 +5,7 @@ import shutil
 import appdirs
 import yaml
 
-logger = logging.getLogger("vigilant_crypto_snatch")
+from . import logger
 
 dirs = appdirs.AppDirs(
     appname="vigilant-crypto-snatch", appauthor="Martin Ueding", roaming=True

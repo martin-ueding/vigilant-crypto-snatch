@@ -8,9 +8,9 @@ import shlex
 from . import clikraken_adaptor_api
 from . import datamodel
 from . import marketplace
+from . import logger
 
 
-logger = logging.getLogger("vigilant_crypto_snatch")
 _delimiter = ";"
 
 

@@ -5,9 +5,7 @@ import typing
 import requests
 
 from . import configuration
-
-
-logger = logging.getLogger("vigilant_crypto_snatch")
+from . import logger
 
 
 class TelegramBot(logging.Handler):

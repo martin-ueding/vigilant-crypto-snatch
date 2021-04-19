@@ -1,10 +1,7 @@
 import argparse
-import logging
 import sys
 
 import coloredlogs
-
-logger = logging.getLogger("vigilant_crypto_snatch")
 
 
 def main():

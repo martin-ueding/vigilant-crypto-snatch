@@ -1,16 +1,16 @@
 import sys
 
+import altair as alt
+import numpy as np
+import pandas as pd
 import streamlit as st
 import streamlit.cli as st_cli
-import altair as alt
-import pandas as pd
-import numpy as np
 
-from vigilant_crypto_snatch import evaluation
 from vigilant_crypto_snatch import configuration
 from vigilant_crypto_snatch import datamodel
-from vigilant_crypto_snatch import triggers
+from vigilant_crypto_snatch import evaluation
 from vigilant_crypto_snatch import historical
+from vigilant_crypto_snatch import triggers
 
 
 def sub_home(sidebar_settings):
@@ -61,14 +61,14 @@ def sub_drop_survey(sidebar_settings):
 def sub_trigger_simulation(sidebar_settings):
     st.title("Trigger simulation")
 
-    trigger_type = st.radio("Trigger type", ["Drop", "Time"])
+    st.markdown('# Parameters')
 
+    trigger_type = st.radio("Trigger type", ["Drop", "Time"])
     trigger_delay = st.slider("Delay / hours", min_value=1, max_value=14 * 24, value=24)
     if trigger_type == "Drop":
         trigger_percentage = st.slider("Drop / %", min_value=0, max_value=100, value=30)
-
-    trigger_volume = st.slider(
-        f"Volume / {sidebar_settings.fiat}", min_value=25, max_value=1000, value=25
+    trigger_volume = st.number_input(
+        f"Volume / {sidebar_settings.fiat}", min_value=25, max_value=None, value=25
     )
 
     session = datamodel.open_memory_db_session()
@@ -113,8 +113,6 @@ def sub_trigger_simulation(sidebar_settings):
         st.markdown("This trigger did not execute once.")
         st.stop()
 
-    st.dataframe(trades)
-
     value = pd.DataFrame(
         dict(
             datetime=sidebar_settings.data["datetime"],
@@ -145,7 +143,12 @@ def sub_trigger_simulation(sidebar_settings):
             color="variable",
         )
     )
+
+    st.markdown('# Diagram with gains')
     st.altair_chart(gain_chart, use_container_width=True)
+
+    st.markdown('# Table with trades')
+    st.dataframe(trades)
 
 
 def simulate_triggers(
@@ -182,7 +185,9 @@ def ui():
     coin = st.sidebar.selectbox("Coin", ["BTC", "ETH"])
     fiat = st.sidebar.selectbox("Fiat", ["EUR", "USD"])
 
-    data = evaluation.get_hourly_data(coin, fiat, config["cryptocompare"]["api_key"])
+    data = historical.get_hourly_data(
+        coin, fiat, config["cryptocompare"]["api_key"]
+    )
     data = evaluation.make_dataframe_from_json(data)
 
     sidebar_settings = Namespace()

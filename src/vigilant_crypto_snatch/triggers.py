@@ -8,9 +8,7 @@ import sqlalchemy.orm
 from . import datamodel
 from . import historical
 from . import marketplace
-
-
-logger = logging.getLogger("vigilant_crypto_snatch")
+from . import logger
 
 
 class Trigger(object):
