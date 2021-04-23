@@ -158,7 +158,7 @@ def sub_trigger_simulation(sidebar_settings):
         .mark_line()
         .encode(
             x=alt.X("datetime", title="Delay / hours"),
-            y=alt.Y("value", title="xx"),
+            y=alt.Y("value", title=f"{sidebar_settings.fiat}"),
             color="variable",
         )
     )
