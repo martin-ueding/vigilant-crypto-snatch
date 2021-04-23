@@ -83,7 +83,8 @@ class BuyTrigger(Trigger, abc.ABC):
         self.session.add(trade)
         self.session.commit()
 
-        buy_message = f"{volume_coin} {self.coin} for {self.volume_fiat} {self.fiat} on {self.market.get_name()} due to “{self.get_name()}”"
+        rate = self.volume_fiat / volume_coin
+        buy_message = f"{volume_coin} {self.coin} for {self.volume_fiat} {self.fiat} ({rate} {self.fiat}/{self.coin}) on {self.market.get_name()} due to “{self.get_name()}”"
         logger.info(f"Bought {buy_message}.")
 
 
