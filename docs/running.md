@@ -73,7 +73,7 @@ fileWatcherType = "none"
 
 Here you can just see the prices that we got from the historical API. This is nothing special, just a plot.
 
-![](price-plot.png)
+> ![](price-plot.png)
 
 These plots are slightly interactive, so you can make them fullscreen and they will render with higher quality.
 
@@ -81,7 +81,7 @@ These plots are slightly interactive, so you can make them fullscreen and they w
 
 You simulate triggers on historical data. Just select the type of trigger and tune the parameters to your liking.
 
-![](trigger-parameters.png)
+> ![](trigger-parameters.png)
 
 It will give you a summary which looks like this:
 
@@ -95,11 +95,11 @@ It will give you a summary which looks like this:
 
 You will also get a plot which shows the amount of money you have invested as well as the value of the crypto assets aquired. With this you can get a sense on the gains.
 
-![](trigger-plot.png)
+> ![](trigger-plot.png)
 
 You also have a table with the trades that were performed.
 
-![](trigger-table.png)
+> ![](trigger-table.png)
 
 In case the trigger has not been executed once, you will of course get a message.
 
@@ -109,11 +109,11 @@ Fiddling with individual triggers can be informative, but a more meta view could
 
 You can control the ranges of both with two-way sliders.
 
-![](drop-sliders.png)
+> ![](drop-sliders.png)
 
 Each time such a trigger is executed a fixed unit of fiat currency is invested. At the end of the time period the amount of crypto currency is normalized by the amount of fiat currency spent. This will show the most efficient triggers. It doesn't show how often these triggers have been used, or how much crypto currency you will have in the end.
 
-![](drop-heatmap.png)
+> ![](drop-heatmap.png)
 
 In the resulting heat map you can see colored areas where the most gains are in a dark red. In regions where the trigger has never been executed, you will just see black. These regions indicate that there was no such drop in the period looked at.
 

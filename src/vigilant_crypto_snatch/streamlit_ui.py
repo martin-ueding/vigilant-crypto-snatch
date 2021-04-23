@@ -60,19 +60,19 @@ def sub_drop_survey(sidebar_settings):
 
 def make_trigger_ui(session, source, market, sidebar_settings, i):
     trigger_type = st.radio("Trigger type", ["Drop", "Time"], key=f"trigger_type_{i}")
-    trigger_delay = st.slider(
-        "Delay / hours",
-        min_value=1,
-        max_value=14 * 24,
-        value=24,
-        key=f"trigger_delay_{i}",
-    )
     trigger_volume = st.number_input(
         f"Volume / {sidebar_settings.fiat}",
         min_value=25,
         max_value=None,
         value=25,
         key=f"trigger_volume_{i}",
+    )
+    trigger_delay = st.slider(
+        "Delay / hours",
+        min_value=1,
+        max_value=14 * 24,
+        value=24,
+        key=f"trigger_delay_{i}",
     )
 
     if trigger_type == "Drop":
@@ -128,12 +128,12 @@ def sub_trigger_simulation(sidebar_settings):
                 make_trigger_ui(session, source, market, sidebar_settings, i)
             )
 
-    st.markdown('# Run')
+    st.markdown("# Run")
 
     if not st.button("Go!"):
         st.stop()
 
-    st.markdown('Simulating triggers …')
+    st.markdown("Simulating triggers …")
     simulation_progress_bar = st.progress(0.0)
 
     trades = simulate_triggers(
@@ -149,61 +149,70 @@ def sub_trigger_simulation(sidebar_settings):
         st.markdown("This trigger did not execute once.")
         st.stop()
 
-    st.markdown('Accumulating value …')
+    st.markdown("Accumulating value …")
     cumsum_progress_bar = st.progress(0.0)
 
-    value = pd.DataFrame(
-        dict(
-            datetime=sidebar_settings.data["datetime"],
-            cumsum_coin=0.0,
-            cumsum_fiat=0.0,
-            value_fiat=0.0,
-        )
-    )
-
+    result = []
     for i, elem in enumerate(sidebar_settings.data["datetime"]):
-        selection = trades["timestamp"] <= elem
-        value.loc[i, "cumsum_coin"] = np.sum(trades["volume_coin"][selection])
-        value.loc[i, "cumsum_fiat"] = np.sum(trades["volume_fiat"][selection])
-        value.loc[i, "value_fiat"] = (
-            value.loc[i, "cumsum_coin"] * sidebar_settings.data.loc[i, "close"]
-        )
+        for t in active_triggers:
+            sel1 = trades["timestamp"] <= elem
+            sel2 = trades["trigger_name"] == t.get_name()
+            selection = sel1 & sel2
+            cumsum_coin = np.sum(trades["volume_coin"][selection])
+            cumsum_fiat = np.sum(trades["volume_fiat"][selection])
+            value_fiat = cumsum_coin * sidebar_settings.data.loc[i, "close"]
+            result.append(
+                dict(
+                    datetime=elem,
+                    trigger_name=t.get_name(),
+                    cumsum_coin=cumsum_coin,
+                    cumsum_fiat=cumsum_fiat,
+                    value_fiat=value_fiat,
+                )
+            )
         cumsum_progress_bar.progress((i + 1) / len(sidebar_settings.data["datetime"]))
+    value = pd.DataFrame(result)
 
     st.markdown("# Summary")
-    num_trigger_executions = len(trades)
-    cumsum_fiat = value["cumsum_fiat"].iat[-1]
-    cumsum_coin = value["cumsum_coin"].iat[-1]
-    value_fiat = value["value_fiat"].iat[-1]
-    gain = value_fiat / cumsum_fiat - 1
-    period = (
-        sidebar_settings.data["datetime"].iat[-1]
-        - sidebar_settings.data["datetime"].iat[0]
-    ).days
-    yearly_gain = np.power(gain + 1, 365 / period) - 1
-    st.markdown(
-        f"""
-    - {period} days simulated
-    - {num_trigger_executions} trades
-    - {cumsum_fiat:.2f} {sidebar_settings.fiat} invested
-    - {cumsum_coin:.8f} {sidebar_settings.coin} acquired
-    - {value_fiat:.2f} {sidebar_settings.fiat} value
-    - {gain*100:.1f} % gain in {period} days
-    - {yearly_gain*100:.1f} % estimated yearly gain
-    """
-    )
+
+    for t in active_triggers:
+        st.markdown(f"## {t.get_name()}")
+        sub_trades = trades[trades["trigger_name"] == t.get_name()]
+        sub_values = value[value["trigger_name"] == t.get_name()]
+        num_trigger_executions = len(sub_trades)
+        cumsum_fiat = sub_values["cumsum_fiat"].iat[-1]
+        cumsum_coin = sub_values["cumsum_coin"].iat[-1]
+        value_fiat = sub_values["value_fiat"].iat[-1]
+        gain = value_fiat / cumsum_fiat - 1
+        period = (
+            sidebar_settings.data["datetime"].iat[-1]
+            - sidebar_settings.data["datetime"].iat[0]
+        ).days
+        yearly_gain = np.power(gain + 1, 365 / period) - 1
+        st.markdown(
+            f"""
+        - {period} days simulated
+        - {num_trigger_executions} trades
+        - {cumsum_fiat:.2f} {sidebar_settings.fiat} invested
+        - {cumsum_coin:.8f} {sidebar_settings.coin} acquired
+        - {value_fiat:.2f} {sidebar_settings.fiat} value
+        - {gain*100:.1f} % gain in {period} days
+        - {yearly_gain*100:.1f} % estimated yearly gain
+        """
+        )
 
     value_long = value.rename(
         {"cumsum_fiat": "Invested", "value_fiat": "Value"}, axis=1
-    ).melt(["datetime"], ["Invested", "Value"])
+    ).melt(["datetime", "trigger_name"], ["Invested", "Value"])
 
     gain_chart = (
         alt.Chart(value_long)
         .mark_line()
         .encode(
-            x=alt.X("datetime", title="Delay / hours"),
+            x=alt.X("datetime", title="Time"),
             y=alt.Y("value", title=f"{sidebar_settings.fiat}"),
-            color="variable",
+            strokeDash=alt.StrokeDash("variable", title="Variable"),
+            color=alt.Color("trigger_name", title="Trigger"),
         )
     )
 
@@ -215,7 +224,12 @@ def sub_trigger_simulation(sidebar_settings):
 
 
 def simulate_triggers(
-    data: pd.DataFrame, coin: str, fiat: str, active_triggers, session, progress_callback = lambda n: None
+    data: pd.DataFrame,
+    coin: str,
+    fiat: str,
+    active_triggers,
+    session,
+    progress_callback=lambda n: None,
 ) -> pd.DataFrame:
     for i in data.index:
         row = data.loc[i]
@@ -231,7 +245,7 @@ def simulate_triggers(
                         pass
             except historical.HistoricalError as e:
                 pass
-        progress_callback((i+1) / len(data))
+        progress_callback((i + 1) / len(data))
 
     all_trades = session.query(datamodel.Trade).all()
     trade_df = pd.DataFrame([trade.to_dict() for trade in all_trades])
