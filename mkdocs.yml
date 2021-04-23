@@ -5,8 +5,10 @@ theme:
 
 nav:
   - index.md
+  - installation.md
   - configuration.md
   - running.md
+  - support.md
   - developing.md
   - license.md
   - donation.md
