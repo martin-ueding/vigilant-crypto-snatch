@@ -40,14 +40,26 @@ bitstamp:
 
 ### Kraken
 
-The Kraken API has it's own configuration files. First you have to create a file at `~/.config/clikraken/settings.ini` and insert the following there:
+The Kraken Python library that we use has it's own configuration files. First you have to create a file at `~/.config/clikraken/settings.ini` and insert the following there:
 
 ```ini
 [clikraken]
 trading_agreement=agree
 ```
 
-Then on the website create an API key which has the permission to trade. You will have an API key and an associated secret. In the file `~/.config/clikraken/kraken.key` you must have two lines, the first will be API key and the second will be the secret, like this:
+Then on the website create an API key which has the permission to trade. Navigate to the API settings:
+
+![](kraken-menu.png)
+
+There you need to create a new API key:
+
+![](kraken-api-keys.png)
+
+Be sure to select the _Create & Modify Orders_ permission such that the program can actually execute orders. Give the least amount of permissions, you certainly don't want _Withdraw Funds_.
+
+![](kraken-api-settings.png)
+
+You will get an API key and an associated secret. In the file `~/.config/clikraken/kraken.key` you must have two lines, the first will be API key and the second will be the secret, like this:
 
 ```
 APIKEY
@@ -72,7 +84,7 @@ All timers have a cooldown such that they are not executed again and again. The 
 
 The drop trigger will fire when the price has dropped by a certain percentage compared to a reference at an earlier time. You can choose the delay and the drop percentage as you like. It might make sense to have larger drops when the time period is longer.
 
-Say we want to have three triggers, two for Bitcoin and one for Etherum. When it drops by 5 % within 60 minutes, we want to buy for 25 EUR. If it drops by 15 % within 24 hours, we want to buy for 100 EUR. And for Etherum I just want the first trigger. In the configuration it would look like this:
+Say we want to have three triggers, two for Bitcoin and one for Etherum. When it drops by 5 % within 60 minutes, we want to buy for 25 EUR. If it drops by 15 % within 24 hours, we want to buy for 100 EUR. And for Etherum I just want the first trigger. This is an off-the-cuff example, think about the triggers that you want to have yourself. In the configuration it would look like this:
 
 ```yaml
 triggers:
