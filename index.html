@@ -217,6 +217,21 @@
   
   
     <li class="md-nav__item">
+      <a href="installation/" class="md-nav__link">
+        Installation
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
       <a href="configuration/" class="md-nav__link">
         Configuration
       </a>
@@ -234,6 +249,21 @@
     <li class="md-nav__item">
       <a href="running/" class="md-nav__link">
         Usage
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="support/" class="md-nav__link">
+        Support
       </a>
     </li>
   
@@ -325,17 +355,7 @@
                 <h1 id="welcome">Welcome</h1>
 <p><em>Vigiliant Crypto Snatch</em> is a little program that observes the current market price for your choice of currency pairs, looks for drastic reductions (dips) and then places buy orders.</p>
 <p>The basic idea is to use the <a href="https://en.wikipedia.org/wiki/Dollar_cost_averaging">Dollar Cost Average</a> effect in a bit more clever way. By buying in fixed time intervals for a certain amount of fiat currency, one can profit from a sideways moving market with fluctuations. We can try to improve on this by also actively looking for reductions in the price to buy more cryptocurrency for the same fiat amount.</p>
-<p>The project is <a href="https://pypi.org/project/vigilant-crypto-snatch/">published on PyPI</a>, so you can just install it with PIP. Most likely the easiest way to install is the following:</p>
-<div class="highlight"><pre><span></span><code>sudo python3 -m pip install vigilant-crypto-snatch
-</code></pre></div>
-<p>Unless you are on a really constrained system (like a Raspberry Pi), you will likely want to install the evaluation interface as well. For this add this extra:</p>
-<div class="highlight"><pre><span></span><code>sudo python3 -m pip install <span class="s1">&#39;vigilant-crypto-snatch[evaluation]&#39;</span>
-</code></pre></div>
-<p>Then you need to <a href="configuration/">configure</a> it. Then see the instructions for <a href="running/">running</a>.</p>
-<p>If you want to upgrade use:</p>
-<div class="highlight"><pre><span></span><code>sudo python3 -m pip install vigilant-crypto-snatch --upgrade
-</code></pre></div>
-<p>We sometimes update the configuration options a bit and don't offer an automated migration path. You will likely get some errors on startup. Please consult the documentation to see how configuration works with the current version.</p>
+<p>First you need to <a href="installation/">install</a> the software, then <a href="configuration/">configure</a> it. Finally see the instructions for <a href="running/">running</a>.</p>
 <p>In case you wonder about the name: Dips means that the price dives. Submarines dive. The HMS Vigilant is a submarine of the British Navy. But also vigilance means to observe.</p>
                 
               
@@ -356,13 +376,13 @@
     <nav class="md-footer__inner md-grid" aria-label="Footer">
       
       
-        <a href="configuration/" class="md-footer__link md-footer__link--next" rel="next">
+        <a href="installation/" class="md-footer__link md-footer__link--next" rel="next">
           <div class="md-footer__title">
             <div class="md-ellipsis">
               <span class="md-footer__direction">
                 Next
               </span>
-              Configuration
+              Installation
             </div>
           </div>
           <div class="md-footer__button md-icon">

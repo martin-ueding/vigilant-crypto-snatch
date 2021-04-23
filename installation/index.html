@@ -14,7 +14,7 @@
     
     
       
-        <title>Donation - Vigilant Crypto Snatch</title>
+        <title>Installation - Vigilant Crypto Snatch</title>
       
     
     
@@ -59,7 +59,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#donation" class="md-skip">
+        <a href="#installation" class="md-skip">
           Skip to content
         </a>
       
@@ -89,7 +89,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Donation
+              Installation
             
           </span>
         </div>
@@ -182,11 +182,51 @@
 
   
   
+    
   
-    <li class="md-nav__item">
-      <a href="../installation/" class="md-nav__link">
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" data-md-toggle="toc" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          Installation
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
         Installation
       </a>
+      
+        
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#upgrades" class="md-nav__link">
+    Upgrades
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
     </li>
   
 
@@ -272,58 +312,11 @@
 
   
   
-    
   
-  
-    <li class="md-nav__item md-nav__item--active">
-      
-      <input class="md-nav__toggle md-toggle" data-md-toggle="toc" type="checkbox" id="__toc">
-      
-      
-        
-      
-      
-        <label class="md-nav__link md-nav__link--active" for="__toc">
-          Donation
-          <span class="md-nav__icon md-icon"></span>
-        </label>
-      
-      <a href="./" class="md-nav__link md-nav__link--active">
+    <li class="md-nav__item">
+      <a href="../donation/" class="md-nav__link">
         Donation
       </a>
-      
-        
-<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
-  
-  
-  
-    
-  
-  
-    <label class="md-nav__title" for="__toc">
-      <span class="md-nav__icon md-icon"></span>
-      Table of contents
-    </label>
-    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
-      
-        <li class="md-nav__item">
-  <a href="#paypal" class="md-nav__link">
-    PayPal
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#bitcoin" class="md-nav__link">
-    Bitcoin
-  </a>
-  
-</li>
-      
-    </ul>
-  
-</nav>
-      
     </li>
   
 
@@ -354,15 +347,8 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#paypal" class="md-nav__link">
-    PayPal
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#bitcoin" class="md-nav__link">
-    Bitcoin
+  <a href="#upgrades" class="md-nav__link">
+    Upgrades
   </a>
   
 </li>
@@ -380,13 +366,22 @@
               
                 
                 
-                <h1 id="donation">Donation</h1>
-<p>If this project has been useful for you and you would like to give a gift as a contribution, we would be very grateful to receive it. We have a couple of options for you.</p>
-<h2 id="paypal">PayPal</h2>
-<p>You can send money via to Chris via <a href="https://www.paypal.me/paychristoph">PayPal</a>.</p>
-<h2 id="bitcoin">Bitcoin</h2>
-<p>There is also the possibility to send Bitcoin. Chris has set up a <a href="https://5nickers.de/donate/vigilant_donation.html">donation page</a>, which currently is only available via the TOR browser as there is no DNS for the Lightning node which processes the payments. You can make an on-chain or Lightning donation.</p>
-<p>You will be rewarded with a nice GIF at the end!</p>
+                <h1 id="installation">Installation</h1>
+<p>The project is <a href="https://pypi.org/project/vigilant-crypto-snatch/">published on PyPI</a>, so you can just install it with PIP. We have split some functionality into an <em>extra</em> such that you can install just the base trading part on a little system that is running the whole time (like a Raspberry Pi). On your main workstation you can install the full software such that you can use the evaluation interface.</p>
+<p>To install just the base package system wide, run this:</p>
+<div class="highlight"><pre><span></span><code>sudo python3 -m pip install vigilant-crypto-snatch
+</code></pre></div>
+<p>The evaluation interface is included when you run this:</p>
+<div class="highlight"><pre><span></span><code>sudo python3 -m pip install <span class="s1">&#39;vigilant-crypto-snatch[evaluation]&#39;</span>
+</code></pre></div>
+<p>If you don't want to install it system-wide, you can instead use <code>python3 -p pip install --user vigilant</code>. In that case you have to make sure that <code>~/.local/bin</code> is part of your <code>PATH</code> environment variable.</p>
+<p>Once you are done with the installation, go over to the <a href="../configuration/">configuration</a>.</p>
+<h2 id="upgrades">Upgrades</h2>
+<p>If you want to upgrade use:</p>
+<div class="highlight"><pre><span></span><code>sudo python3 -m pip install vigilant-crypto-snatch --upgrade
+</code></pre></div>
+<p>In case you have installed it differently, you will likely also need to upgrade in the same way.</p>
+<p>We sometimes update the configuration options a bit and don't offer an automated migration path. You will likely get some errors on startup. Please consult the documentation to see how configuration works with the current version.</p>
                 
               
               
@@ -405,7 +400,7 @@
   
     <nav class="md-footer__inner md-grid" aria-label="Footer">
       
-        <a href="../license/" class="md-footer__link md-footer__link--prev" rel="prev">
+        <a href=".." class="md-footer__link md-footer__link--prev" rel="prev">
           <div class="md-footer__button md-icon">
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"/></svg>
           </div>
@@ -414,11 +409,25 @@
               <span class="md-footer__direction">
                 Previous
               </span>
-              License
+              Welcome
             </div>
           </div>
         </a>
       
+      
+        <a href="../configuration/" class="md-footer__link md-footer__link--next" rel="next">
+          <div class="md-footer__title">
+            <div class="md-ellipsis">
+              <span class="md-footer__direction">
+                Next
+              </span>
+              Configuration
+            </div>
+          </div>
+          <div class="md-footer__button md-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11H4z"/></svg>
+          </div>
+        </a>
       
     </nav>
   
