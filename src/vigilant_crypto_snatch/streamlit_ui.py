@@ -58,27 +58,16 @@ def sub_drop_survey(sidebar_settings):
     )
 
 
-def sub_trigger_simulation(sidebar_settings):
-    st.title("Trigger simulation")
-
-    st.markdown('# Parameters')
-
-    trigger_type = st.radio("Trigger type", ["Drop", "Time"])
-    trigger_delay = st.slider("Delay / hours", min_value=1, max_value=14 * 24, value=24)
-    if trigger_type == "Drop":
-        trigger_percentage = st.slider("Drop / %", min_value=0, max_value=100, value=30)
+def make_trigger_ui(session, source, market, sidebar_settings, i):
+    trigger_type = st.radio("Trigger type", ["Drop", "Time"], key=f'trigger_type_{i}')
+    trigger_delay = st.slider("Delay / hours", min_value=1, max_value=14 * 24, value=24, key=f'trigger_delay_{i}')
     trigger_volume = st.number_input(
-        f"Volume / {sidebar_settings.fiat}", min_value=25, max_value=None, value=25
+        f"Volume / {sidebar_settings.fiat}", min_value=25, max_value=None, value=25, key=f'trigger_volume_{i}'
     )
 
-    session = datamodel.open_memory_db_session()
-    source = evaluation.InterpolatingSource(sidebar_settings.data)
-    market = evaluation.SimulationMarketplace(source)
-
-    active_triggers = []
     if trigger_type == "Drop":
-        active_triggers.append(
-            triggers.DropTrigger(
+        trigger_percentage = st.slider("Drop / %", min_value=0, max_value=100, value=30, key=f'trigger_percentage_{i}')
+        return triggers.DropTrigger(
                 session,
                 source,
                 market,
@@ -88,10 +77,9 @@ def sub_trigger_simulation(sidebar_settings):
                 trigger_delay * 60,
                 trigger_percentage,
             )
-        )
+
     elif trigger_type == "Time":
-        active_triggers.append(
-            triggers.TrueTrigger(
+        return triggers.TrueTrigger(
                 session,
                 source,
                 market,
@@ -100,7 +88,31 @@ def sub_trigger_simulation(sidebar_settings):
                 trigger_volume,
                 trigger_delay * 60,
             )
-        )
+
+
+def sub_trigger_simulation(sidebar_settings):
+    st.title("Trigger simulation")
+
+    session = datamodel.open_memory_db_session()
+    source = evaluation.InterpolatingSource(sidebar_settings.data)
+    market = evaluation.SimulationMarketplace(source)
+
+
+    number_of_triggers = st.number_input(
+        "Number of triggers", min_value=1, max_value=None, value=2
+    )
+
+    st.markdown('# Parameters')
+
+    cols = st.beta_columns(number_of_triggers)
+
+    active_triggers = []
+    for i, col in enumerate(cols):
+        with col:
+            active_triggers.append(make_trigger_ui(session, source, market, sidebar_settings, i))
+
+    if not st.button('Go!'):
+        st.stop()
 
     trades = simulate_triggers(
         sidebar_settings.data,
