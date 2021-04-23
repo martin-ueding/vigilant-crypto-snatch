@@ -59,35 +59,51 @@ def sub_drop_survey(sidebar_settings):
 
 
 def make_trigger_ui(session, source, market, sidebar_settings, i):
-    trigger_type = st.radio("Trigger type", ["Drop", "Time"], key=f'trigger_type_{i}')
-    trigger_delay = st.slider("Delay / hours", min_value=1, max_value=14 * 24, value=24, key=f'trigger_delay_{i}')
+    trigger_type = st.radio("Trigger type", ["Drop", "Time"], key=f"trigger_type_{i}")
+    trigger_delay = st.slider(
+        "Delay / hours",
+        min_value=1,
+        max_value=14 * 24,
+        value=24,
+        key=f"trigger_delay_{i}",
+    )
     trigger_volume = st.number_input(
-        f"Volume / {sidebar_settings.fiat}", min_value=25, max_value=None, value=25, key=f'trigger_volume_{i}'
+        f"Volume / {sidebar_settings.fiat}",
+        min_value=25,
+        max_value=None,
+        value=25,
+        key=f"trigger_volume_{i}",
     )
 
     if trigger_type == "Drop":
-        trigger_percentage = st.slider("Drop / %", min_value=0, max_value=100, value=30, key=f'trigger_percentage_{i}')
+        trigger_percentage = st.slider(
+            "Drop / %",
+            min_value=0,
+            max_value=100,
+            value=30,
+            key=f"trigger_percentage_{i}",
+        )
         return triggers.DropTrigger(
-                session,
-                source,
-                market,
-                sidebar_settings.coin,
-                sidebar_settings.fiat,
-                trigger_volume,
-                trigger_delay * 60,
-                trigger_percentage,
-            )
+            session,
+            source,
+            market,
+            sidebar_settings.coin,
+            sidebar_settings.fiat,
+            trigger_volume,
+            trigger_delay * 60,
+            trigger_percentage,
+        )
 
     elif trigger_type == "Time":
         return triggers.TrueTrigger(
-                session,
-                source,
-                market,
-                sidebar_settings.coin,
-                sidebar_settings.fiat,
-                trigger_volume,
-                trigger_delay * 60,
-            )
+            session,
+            source,
+            market,
+            sidebar_settings.coin,
+            sidebar_settings.fiat,
+            trigger_volume,
+            trigger_delay * 60,
+        )
 
 
 def sub_trigger_simulation(sidebar_settings):
@@ -97,22 +113,28 @@ def sub_trigger_simulation(sidebar_settings):
     source = evaluation.InterpolatingSource(sidebar_settings.data)
     market = evaluation.SimulationMarketplace(source)
 
-
     number_of_triggers = st.number_input(
         "Number of triggers", min_value=1, max_value=None, value=2
     )
 
-    st.markdown('# Parameters')
+    st.markdown("# Parameters")
 
     cols = st.beta_columns(number_of_triggers)
 
     active_triggers = []
     for i, col in enumerate(cols):
         with col:
-            active_triggers.append(make_trigger_ui(session, source, market, sidebar_settings, i))
+            active_triggers.append(
+                make_trigger_ui(session, source, market, sidebar_settings, i)
+            )
 
-    if not st.button('Go!'):
+    st.markdown('# Run')
+
+    if not st.button("Go!"):
         st.stop()
+
+    st.markdown('Simulating triggers …')
+    simulation_progress_bar = st.progress(0.0)
 
     trades = simulate_triggers(
         sidebar_settings.data,
@@ -120,11 +142,15 @@ def sub_trigger_simulation(sidebar_settings):
         sidebar_settings.fiat,
         active_triggers,
         session,
+        lambda p: simulation_progress_bar.progress(p),
     )
 
     if len(trades) == 0:
         st.markdown("This trigger did not execute once.")
         st.stop()
+
+    st.markdown('Accumulating value …')
+    cumsum_progress_bar = st.progress(0.0)
 
     value = pd.DataFrame(
         dict(
@@ -142,16 +168,21 @@ def sub_trigger_simulation(sidebar_settings):
         value.loc[i, "value_fiat"] = (
             value.loc[i, "cumsum_coin"] * sidebar_settings.data.loc[i, "close"]
         )
+        cumsum_progress_bar.progress((i + 1) / len(sidebar_settings.data["datetime"]))
 
-    st.markdown('# Summary')
+    st.markdown("# Summary")
     num_trigger_executions = len(trades)
     cumsum_fiat = value["cumsum_fiat"].iat[-1]
     cumsum_coin = value["cumsum_coin"].iat[-1]
     value_fiat = value["value_fiat"].iat[-1]
     gain = value_fiat / cumsum_fiat - 1
-    period = (sidebar_settings.data["datetime"].iat[-1] - sidebar_settings.data["datetime"].iat[0]).days
-    yearly_gain = np.power(gain + 1, 365/period) - 1
-    st.markdown(f'''
+    period = (
+        sidebar_settings.data["datetime"].iat[-1]
+        - sidebar_settings.data["datetime"].iat[0]
+    ).days
+    yearly_gain = np.power(gain + 1, 365 / period) - 1
+    st.markdown(
+        f"""
     - {period} days simulated
     - {num_trigger_executions} trades
     - {cumsum_fiat:.2f} {sidebar_settings.fiat} invested
@@ -159,7 +190,8 @@ def sub_trigger_simulation(sidebar_settings):
     - {value_fiat:.2f} {sidebar_settings.fiat} value
     - {gain*100:.1f} % gain in {period} days
     - {yearly_gain*100:.1f} % estimated yearly gain
-    ''')
+    """
+    )
 
     value_long = value.rename(
         {"cumsum_fiat": "Invested", "value_fiat": "Value"}, axis=1
@@ -175,15 +207,15 @@ def sub_trigger_simulation(sidebar_settings):
         )
     )
 
-    st.markdown('# Diagram with gains')
+    st.markdown("# Diagram with gains")
     st.altair_chart(gain_chart, use_container_width=True)
 
-    st.markdown('# Table with trades')
+    st.markdown("# Table with trades")
     st.dataframe(trades)
 
 
 def simulate_triggers(
-    data: pd.DataFrame, coin: str, fiat: str, active_triggers, session
+    data: pd.DataFrame, coin: str, fiat: str, active_triggers, session, progress_callback = lambda n: None
 ) -> pd.DataFrame:
     for i in data.index:
         row = data.loc[i]
@@ -199,6 +231,7 @@ def simulate_triggers(
                         pass
             except historical.HistoricalError as e:
                 pass
+        progress_callback((i+1) / len(data))
 
     all_trades = session.query(datamodel.Trade).all()
     trade_df = pd.DataFrame([trade.to_dict() for trade in all_trades])
@@ -216,9 +249,7 @@ def ui():
     coin = st.sidebar.selectbox("Coin", ["BTC", "ETH"])
     fiat = st.sidebar.selectbox("Fiat", ["EUR", "USD"])
 
-    data = historical.get_hourly_data(
-        coin, fiat, config["cryptocompare"]["api_key"]
-    )
+    data = historical.get_hourly_data(coin, fiat, config["cryptocompare"]["api_key"])
     data = evaluation.make_dataframe_from_json(data)
 
     sidebar_settings = Namespace()
