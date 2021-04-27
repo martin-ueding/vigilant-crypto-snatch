@@ -1,8 +1,10 @@
 # Changelog
 
+This is a list of changes, from new to older.
+
 ## 3.0 Series
 
-### Version 3.3.1
+### Version 3.4.0
 
 - Reflect change from `XBT` to `BTC` coding on Kraken.
 - Query balances on the marketplace at startup and after each trade. A notification is send such that you always know how much fiat money is left to trade.
