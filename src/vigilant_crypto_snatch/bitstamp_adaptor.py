@@ -43,5 +43,10 @@ class BitstampMarketplace(marketplace.Marketplace):
             )
             return price
 
+    def get_balance(self) -> dict:
+        balance = self.trading_client.account_balance()
+        out = {key[:3].upper(): value for key, value in sorted(balance.items()) if key.endswith('available')}
+        return out
+
     def get_name(self) -> str:
         return "Bitstamp"
