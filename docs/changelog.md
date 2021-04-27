@@ -8,6 +8,7 @@ This is a list of changes, from new to older.
 
 - Reflect change from `XBT` to `BTC` coding on Kraken.
 - Query balances on the marketplace at startup and after each trade. A notification is send such that you always know how much fiat money is left to trade.
+- In the trigger evaluation, triggers are moved to multiple rows if there are more than three of them.
 
 ### Version 3.3.0
 
