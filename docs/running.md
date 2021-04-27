@@ -79,23 +79,25 @@ These plots are slightly interactive, so you can make them fullscreen and they w
 
 ### Trigger simulation tool
 
-You simulate triggers on historical data. Just select the type of trigger and tune the parameters to your liking.
+You simulate triggers on historical data. You can limit the evaluation data to a given range. Unfortunately Streamlit doesn't support a range slider yet, so the numbers don't make so much sense. The actual date is shown right below and will be updated as you move the slider.
+
+> ![](triggers-date-range.png)
+
+You can simulate as many triggers as you like. Set the number that you want and then just select the type of trigger and tune the parameters to your liking.
 
 > ![](trigger-parameters.png)
 
-It will give you a summary which looks like this:
+It will give you a summary table looks like this:
 
-> - 83 days simulated
-> - 18 trades
-> - 450.00 EUR invested
-> - 0.01189674 BTC acquired
-> - 552.74 EUR value
-> - 22.8 % gain in 83 days
-> - 147.0 % estimated yearly gain
+![](triggers-summary-table.png)
+
+You can make this table full screen and also sort by any column. Just click on a column header and it will sort.
 
 You will also get a plot which shows the amount of money you have invested as well as the value of the crypto assets aquired. With this you can get a sense on the gains.
 
 > ![](trigger-plot.png)
+
+The plot is interactive, you can pan and zoom with the mouse.
 
 You also have a table with the trades that were performed.
 

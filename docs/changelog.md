@@ -11,6 +11,7 @@ This is a list of changes, from new to older.
 - In the trigger evaluation, triggers are moved to multiple rows if there are more than three of them.
 - Allow trigger evaluation on a chosen subrange of dates.
 - Present trigger evaluation summary as a table.
+- Make plots interactive.
 
 ### Version 3.3.0
 
