@@ -100,6 +100,8 @@ def main(options):
     config = configuration.load_config()
     market = factory.make_marketplace(options.marketplace, config)
 
+    marketplace.report_balances(market)
+
     database_source = historical.DatabaseHistoricalSource(
         session, datetime.timedelta(minutes=5)
     )

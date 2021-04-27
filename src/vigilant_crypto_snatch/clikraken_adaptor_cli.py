@@ -2,8 +2,8 @@ import csv
 import datetime
 import subprocess
 import typing
-import logging
 import shlex
+import json
 
 from . import clikraken_adaptor_api
 from . import datamodel
@@ -54,6 +54,18 @@ class KrakenMarketplace(marketplace.Marketplace):
             timestamp=now, last=float(ticker["last"]), coin=coin, fiat=fiat
         )
         return price
+
+    def get_balance(self) -> dict:
+        command = [
+            "clikraken",
+            "--raw",
+            "balance",
+        ]
+        output = run_command(command, marketplace.TickerError)
+        parsed = json.loads(output)
+        result = {currency[1:]: value for currency, value in parsed["result"].items()}
+        return result
+
 
     def get_name(self) -> str:
         return "Kraken"

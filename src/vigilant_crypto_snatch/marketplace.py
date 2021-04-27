@@ -1,6 +1,7 @@
 import datetime
 
 from . import datamodel
+from . import logger
 
 
 class Marketplace(object):
@@ -15,6 +16,9 @@ class Marketplace(object):
     def get_name(self) -> str:
         raise NotImplementedError()
 
+    def get_balance(self) -> dict:
+        raise NotImplementedError()
+
 
 class BuyError(Exception):
     pass
@@ -22,3 +26,13 @@ class BuyError(Exception):
 
 class TickerError(Exception):
     pass
+
+
+def report_balances(market: Marketplace) -> None:
+    try:
+        balance = market.get_balance()
+    except NotImplementedError:
+        pass
+    else:
+        balances_formatted = ', '.join(f'{value} {currency}' for currency, value in sorted(balance.items()))
+        logger.info(f'Your balances on {market.get_name()} are: {balances_formatted}')
