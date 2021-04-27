@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "vigilant-crypto-snatch"
-version = "3.3.0"
+version = "3.4.0"
 description = "Crypto currency buying agent"
 authors = ["Martin Ueding <mu@martin-ueding.de>"]
 license = "MIT"
