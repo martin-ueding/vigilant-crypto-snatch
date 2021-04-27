@@ -1,3 +1,4 @@
+import datetime
 import sys
 
 import altair as alt
@@ -35,6 +36,7 @@ def sub_price(sidebar_settings):
                 "close", title=f"Close {sidebar_settings.fiat}/{sidebar_settings.coin}"
             ),
         )
+        .interactive()
     )
     st.altair_chart(close_chart, use_container_width=True)
 
@@ -113,12 +115,22 @@ def sub_trigger_simulation(sidebar_settings):
     source = evaluation.InterpolatingSource(sidebar_settings.data)
     market = evaluation.SimulationMarketplace(source)
 
+    print(sidebar_settings.data.columns)
+    time_begin = np.min(sidebar_settings.data['datetime']).toordinal()
+    time_end = np.max(sidebar_settings.data['datetime']).toordinal()
+    time_range = st.slider(
+        "Data range", min_value=time_begin, max_value=time_end, value=(time_begin, time_end)
+    )
+    time_begin = datetime.datetime.fromordinal(time_range[0])
+    time_end = datetime.datetime.fromordinal(time_range[1])
+
+    st.markdown(f'From {time_begin} to {time_end}')
+
     number_of_triggers = st.number_input(
         "Number of triggers", min_value=1, max_value=None, value=2
     )
 
     st.markdown("# Parameters")
-
 
     active_triggers = []
     for i in range(number_of_triggers):
@@ -137,8 +149,11 @@ def sub_trigger_simulation(sidebar_settings):
     st.markdown("Simulating triggers …")
     simulation_progress_bar = st.progress(0.0)
 
+    data_datetime = sidebar_settings.data["datetime"]
+    selection = (time_begin <= data_datetime) & (data_datetime <= time_end)
+
     trades = simulate_triggers(
-        sidebar_settings.data,
+        sidebar_settings.data.loc[selection].reset_index(),
         sidebar_settings.coin,
         sidebar_settings.fiat,
         active_triggers,
@@ -154,13 +169,13 @@ def sub_trigger_simulation(sidebar_settings):
     cumsum_progress_bar = st.progress(0.0)
 
     result = []
-    for i, elem in enumerate(sidebar_settings.data["datetime"]):
+    for i, elem in enumerate(data_datetime.loc[selection]):
         for t in active_triggers:
             sel1 = trades["timestamp"] <= elem
             sel2 = trades["trigger_name"] == t.get_name()
-            selection = sel1 & sel2
-            cumsum_coin = np.sum(trades["volume_coin"][selection])
-            cumsum_fiat = np.sum(trades["volume_fiat"][selection])
+            sel12 = sel1 & sel2
+            cumsum_coin = np.sum(trades["volume_coin"][sel12])
+            cumsum_fiat = np.sum(trades["volume_fiat"][sel12])
             value_fiat = cumsum_coin * sidebar_settings.data.loc[i, "close"]
             result.append(
                 dict(
@@ -171,7 +186,7 @@ def sub_trigger_simulation(sidebar_settings):
                     value_fiat=value_fiat,
                 )
             )
-        cumsum_progress_bar.progress((i + 1) / len(sidebar_settings.data["datetime"]))
+        cumsum_progress_bar.progress((i + 1) / len(data_datetime.loc[selection]))
     value = pd.DataFrame(result)
 
     st.markdown("# Summary")
@@ -215,6 +230,7 @@ def sub_trigger_simulation(sidebar_settings):
             strokeDash=alt.StrokeDash("variable", title="Variable"),
             color=alt.Color("trigger_name", title="Trigger"),
         )
+        .interactive()
     )
 
     st.markdown("# Diagram with gains")
