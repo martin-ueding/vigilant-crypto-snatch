@@ -6,12 +6,20 @@ import numpy as np
 import pandas as pd
 import streamlit as st
 import streamlit.cli as st_cli
+import requests
 
 from vigilant_crypto_snatch import configuration
 from vigilant_crypto_snatch import datamodel
 from vigilant_crypto_snatch import evaluation
 from vigilant_crypto_snatch import historical
 from vigilant_crypto_snatch import triggers
+
+
+def get_currency_pairs(api_key: str) -> list:
+    r = requests.get(f'https://min-api.cryptocompare.com/data/v2/pair/mapping/exchange?e=Kraken&api_key={api_key}')
+    data = r.json()['Data']['current']
+    pairs = [(e['fsym'], e['tsym']) for e in data]
+    return pairs
 
 
 def sub_home(sidebar_settings):
@@ -281,8 +289,13 @@ def ui():
     config = configuration.load_config()
     st.sidebar.title("Vigilant Crypto Snatch Evaluation")
 
-    coin = st.sidebar.selectbox("Coin", ["BTC", "ETH"])
-    fiat = st.sidebar.selectbox("Fiat", ["EUR", "USD"])
+    available_pairs = get_currency_pairs(config['cryptocompare']['api_key'])
+    available_fiats = list({f for c, f in available_pairs})
+    available_fiats.sort()
+    fiat = st.sidebar.selectbox("Fiat", available_fiats, index=available_fiats.index("EUR"))
+    available_coins = list({c for c, f in available_pairs if f == fiat})
+    available_coins.sort()
+    coin = st.sidebar.selectbox("Coin", available_coins, index=available_coins.index("BTC"))
 
     data = historical.get_hourly_data(coin, fiat, config["cryptocompare"]["api_key"])
     data = evaluation.make_dataframe_from_json(data)
