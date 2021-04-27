@@ -119,11 +119,12 @@ def sub_trigger_simulation(sidebar_settings):
 
     st.markdown("# Parameters")
 
-    cols = st.beta_columns(number_of_triggers)
 
     active_triggers = []
-    for i, col in enumerate(cols):
-        with col:
+    for i in range(number_of_triggers):
+        if i % 3 == 0:
+            col = st.beta_columns(min(number_of_triggers - i, 3))
+        with col[i % 3]:
             active_triggers.append(
                 make_trigger_ui(session, source, market, sidebar_settings, i)
             )
