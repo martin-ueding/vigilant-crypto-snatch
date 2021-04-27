@@ -58,7 +58,5 @@ class KrakenMarketplace(marketplace.Marketplace):
 
 def make_asset_pair(coin: str, fiat: str) -> str:
     kraken_coin = coin
-    if coin == "BTC":
-        kraken_coin = "XBT"
     pair = "{}{}".format(kraken_coin, fiat)
     return pair
