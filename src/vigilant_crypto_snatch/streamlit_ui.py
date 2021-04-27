@@ -191,31 +191,35 @@ def sub_trigger_simulation(sidebar_settings):
 
     st.markdown("# Summary")
 
+    summary_rows = []
     for t in active_triggers:
-        st.markdown(f"## {t.get_name()}")
         sub_trades = trades[trades["trigger_name"] == t.get_name()]
         sub_values = value[value["trigger_name"] == t.get_name()]
         num_trigger_executions = len(sub_trades)
         cumsum_fiat = sub_values["cumsum_fiat"].iat[-1]
         cumsum_coin = sub_values["cumsum_coin"].iat[-1]
         value_fiat = sub_values["value_fiat"].iat[-1]
+        average_price = cumsum_fiat / cumsum_coin
         gain = value_fiat / cumsum_fiat - 1
         period = (
-            sidebar_settings.data["datetime"].iat[-1]
-            - sidebar_settings.data["datetime"].iat[0]
+            data_datetime.loc[selection].iat[-1]
+            - data_datetime.loc[selection].iat[0]
         ).days
         yearly_gain = np.power(gain + 1, 365 / period) - 1
-        st.markdown(
-            f"""
-        - {period} days simulated
-        - {num_trigger_executions} trades
-        - {cumsum_fiat:.2f} {sidebar_settings.fiat} invested
-        - {cumsum_coin:.8f} {sidebar_settings.coin} acquired
-        - {value_fiat:.2f} {sidebar_settings.fiat} value
-        - {gain*100:.1f} % gain in {period} days
-        - {yearly_gain*100:.1f} % estimated yearly gain
-        """
-        )
+        row = {
+            "Trigger": t.get_name(),
+            "Days": period,
+            "Trades": num_trigger_executions,
+            f"{sidebar_settings.fiat} invested": cumsum_fiat,
+            f"{sidebar_settings.coin} acquired": cumsum_coin,
+            f"{sidebar_settings.fiat} value": value_fiat,
+            f"Average {sidebar_settings.fiat}/{sidebar_settings.coin}": average_price,
+            "Gain %": gain,
+            "Gain %/a": yearly_gain,
+        }
+        summary_rows.append(row)
+    summary = pd.DataFrame(summary_rows)
+    st.dataframe(summary)
 
     value_long = value.rename(
         {"cumsum_fiat": "Invested", "value_fiat": "Value"}, axis=1
