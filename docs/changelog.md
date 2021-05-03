@@ -4,7 +4,7 @@ This is a list of changes, from new to older.
 
 ## 3.0 Series
 
-Upcoming:
+## Version 3.5.0
 
 - Add `--one-shot` to the `watch` subcommand to only run the watch loop once.
 - Update documentation and state paths to the configuration file on various platforms.
