@@ -20,6 +20,7 @@ There are a couple of command line options:
 
 - `--marketplace MARKETPLACE`: We support two marketplaces, you can select either `bitstamp` or `kraken`.
 - `--keepalive`: The program handles various error cases. Sometimes there are exceptions that we haven't encountered yet. When you use the watch subcommand in production, you can specify this option. It will catch *any* exception and just report it. Please [open a ticket](https://github.com/martin-ueding/vigilant-crypto-snatch/issues) when you encounter a new exception type.
+- `--one-shot`: One execute one iteration of the watch loop. This way one can call the program periodically with an external scheduler like Cron.
 
 When you want to quit, just press <kbd>Ctrl</kbd>+<kbd>C</kbd>.
 
