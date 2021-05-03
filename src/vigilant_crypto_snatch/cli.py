@@ -40,6 +40,12 @@ def main():
         default=False,
         help="Ignore all Exceptions and just report them.",
     )
+    watch.add_argument(
+        "--one-shot",
+        action="store_true",
+        default=False,
+        help="Only check once and then exit.",
+    )
 
     options = parser.parse_args()
     if options.func is None:

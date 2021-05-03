@@ -66,7 +66,6 @@ class KrakenMarketplace(marketplace.Marketplace):
         result = {currency[1:]: value for currency, value in parsed["result"].items()}
         return result
 
-
     def get_name(self) -> str:
         return "Kraken"
 

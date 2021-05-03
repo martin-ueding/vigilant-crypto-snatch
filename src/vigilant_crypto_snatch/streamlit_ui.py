@@ -16,9 +16,11 @@ from vigilant_crypto_snatch import triggers
 
 
 def get_currency_pairs(api_key: str) -> list:
-    r = requests.get(f'https://min-api.cryptocompare.com/data/v2/pair/mapping/exchange?e=Kraken&api_key={api_key}')
-    data = r.json()['Data']['current']
-    pairs = [(e['fsym'], e['tsym']) for e in data]
+    r = requests.get(
+        f"https://min-api.cryptocompare.com/data/v2/pair/mapping/exchange?e=Kraken&api_key={api_key}"
+    )
+    data = r.json()["Data"]["current"]
+    pairs = [(e["fsym"], e["tsym"]) for e in data]
     return pairs
 
 
@@ -124,15 +126,18 @@ def sub_trigger_simulation(sidebar_settings):
     market = evaluation.SimulationMarketplace(source)
 
     print(sidebar_settings.data.columns)
-    time_begin = np.min(sidebar_settings.data['datetime']).toordinal()
-    time_end = np.max(sidebar_settings.data['datetime']).toordinal()
+    time_begin = np.min(sidebar_settings.data["datetime"]).toordinal()
+    time_end = np.max(sidebar_settings.data["datetime"]).toordinal()
     time_range = st.slider(
-        "Data range", min_value=time_begin, max_value=time_end, value=(time_begin, time_end)
+        "Data range",
+        min_value=time_begin,
+        max_value=time_end,
+        value=(time_begin, time_end),
     )
     time_begin = datetime.datetime.fromordinal(time_range[0])
     time_end = datetime.datetime.fromordinal(time_range[1])
 
-    st.markdown(f'From {time_begin} to {time_end}')
+    st.markdown(f"From {time_begin} to {time_end}")
 
     number_of_triggers = st.number_input(
         "Number of triggers", min_value=1, max_value=None, value=2
@@ -210,8 +215,7 @@ def sub_trigger_simulation(sidebar_settings):
         average_price = cumsum_fiat / cumsum_coin
         gain = value_fiat / cumsum_fiat - 1
         period = (
-            data_datetime.loc[selection].iat[-1]
-            - data_datetime.loc[selection].iat[0]
+            data_datetime.loc[selection].iat[-1] - data_datetime.loc[selection].iat[0]
         ).days
         yearly_gain = np.power(gain + 1, 365 / period) - 1
         row = {
@@ -289,13 +293,17 @@ def ui():
     config = configuration.load_config()
     st.sidebar.title("Vigilant Crypto Snatch Evaluation")
 
-    available_pairs = get_currency_pairs(config['cryptocompare']['api_key'])
+    available_pairs = get_currency_pairs(config["cryptocompare"]["api_key"])
     available_fiats = list({f for c, f in available_pairs})
     available_fiats.sort()
-    fiat = st.sidebar.selectbox("Fiat", available_fiats, index=available_fiats.index("EUR"))
+    fiat = st.sidebar.selectbox(
+        "Fiat", available_fiats, index=available_fiats.index("EUR")
+    )
     available_coins = list({c for c, f in available_pairs if f == fiat})
     available_coins.sort()
-    coin = st.sidebar.selectbox("Coin", available_coins, index=available_coins.index("BTC"))
+    coin = st.sidebar.selectbox(
+        "Coin", available_coins, index=available_coins.index("BTC")
+    )
 
     data = historical.get_hourly_data(coin, fiat, config["cryptocompare"]["api_key"])
     data = evaluation.make_dataframe_from_json(data)

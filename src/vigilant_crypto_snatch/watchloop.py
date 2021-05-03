@@ -22,15 +22,19 @@ class TriggerLoop(object):
         active_triggers: typing.List[triggers.Trigger],
         sleep: int,
         keepalive: bool,
+        one_shot: bool,
     ):
         self.active_triggers = active_triggers
         self.sleep = sleep
         self.keepalive = keepalive
+        self.one_shot = one_shot
 
     def loop(self) -> None:
         try:
             while True:
                 self.loop_body()
+                if self.one_shot:
+                    break
         except KeyboardInterrupt:
             logger.info("User interrupted, shutting down.")
 
@@ -94,13 +98,15 @@ def process_trigger(trigger: triggers.Trigger, keepalive: bool):
 
 def main(options):
     telegram.add_telegram_logger()
-    logger.info("Starting up …")
+    if not options.one_shot:
+        logger.info("Starting up …")
 
     session = datamodel.open_user_db_session()
     config = configuration.load_config()
     market = factory.make_marketplace(options.marketplace, config)
 
-    marketplace.report_balances(market)
+    if not options.one_shot:
+        marketplace.report_balances(market)
 
     database_source = historical.DatabaseHistoricalSource(
         session, datetime.timedelta(minutes=5)
@@ -114,5 +120,7 @@ def main(options):
     )
     active_triggers = triggers.make_triggers(config, session, caching_source, market)
 
-    trigger_loop = TriggerLoop(active_triggers, config["sleep"], options.keepalive)
+    trigger_loop = TriggerLoop(
+        active_triggers, config["sleep"], options.keepalive, options.one_shot
+    )
     trigger_loop.loop()

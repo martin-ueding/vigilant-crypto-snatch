@@ -34,5 +34,7 @@ def report_balances(market: Marketplace) -> None:
     except NotImplementedError:
         pass
     else:
-        balances_formatted = ', '.join(f'{value} {currency}' for currency, value in sorted(balance.items()))
-        logger.info(f'Your balances on {market.get_name()} are: {balances_formatted}')
+        balances_formatted = ", ".join(
+            f"{value} {currency}" for currency, value in sorted(balance.items())
+        )
+        logger.info(f"Your balances on {market.get_name()} are: {balances_formatted}")
