@@ -101,6 +101,8 @@ triggers:
 
 You can specify a decimal number for the drop percentage, just be aware that it must contain a decimal point instead of a decimal comma.
 
+With the additional keyword `fiat_percentage: true` you can make the `volume_fiat` be interpreted as a percentage of your balance in the fiat currency on the selected exchange. This type of trigger is not tested as well as the other kinds.
+
 ### Timers
 
 If the market is steadily rising, there won't be drops. We still want to make use of the *dollar cost average* effect. For this we want to have a simple timer that doesn't have any other dependencies. If we want to buy Bitcoin for 75 EUR every 14 days, we can use this:

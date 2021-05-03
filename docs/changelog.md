@@ -8,6 +8,7 @@ Upcoming:
 
 - Add `--one-shot` to the `watch` subcommand to only run the watch loop once.
 - Update documentation and state paths to the configuration file on various platforms.
+- Add `fiat_percentage: true` option to create drop triggers that use a percentage of the available fiat balance instead of a fixed volume.
 
 ### Version 3.4.0
 
