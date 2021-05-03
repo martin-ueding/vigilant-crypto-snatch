@@ -69,24 +69,28 @@ class BuyTrigger(Trigger, abc.ABC):
     def fire(self, now: datetime.datetime) -> None:
         logger.info(f"Trigger “{self.get_name()}” fired, try buying …")
         price = self.source.get_price(now, self.coin, self.fiat)
-        volume_coin = round(self.volume_fiat / price.last, 8)
+        volume_fiat = self.get_volume_fiat()
+        volume_coin = round(volume_fiat / price.last, 8)
 
         self.market.place_order(self.coin, self.fiat, volume_coin)
         trade = datamodel.Trade(
             timestamp=now,
             trigger_name=self.get_name(),
             volume_coin=volume_coin,
-            volume_fiat=self.volume_fiat,
+            volume_fiat=volume_fiat,
             coin=self.coin,
             fiat=self.fiat,
         )
         self.session.add(trade)
         self.session.commit()
 
-        rate = self.volume_fiat / volume_coin
-        buy_message = f"{volume_coin} {self.coin} for {self.volume_fiat} {self.fiat} ({rate} {self.fiat}/{self.coin}) on {self.market.get_name()} due to “{self.get_name()}”"
+        rate = volume_fiat / volume_coin
+        buy_message = f"{volume_coin} {self.coin} for {volume_fiat} {self.fiat} ({rate} {self.fiat}/{self.coin}) on {self.market.get_name()} due to “{self.get_name()}”"
         logger.info(f"Bought {buy_message}.")
         marketplace.report_balances(self.market)
+
+    def get_volume_fiat(self) -> float:
+        return self.volume_fiat
 
 
 class DropTrigger(BuyTrigger):
@@ -125,6 +129,13 @@ class TrueTrigger(BuyTrigger):
 
     def get_name(self) -> str:
         return f"{self.coin} every {self.minutes} minutes"
+
+
+class DropTriggerWithPercentage(DropTrigger):
+    def get_volume_fiat(self) -> float:
+        balances = self.market.get_balance()
+        balance_fiat = balances[self.fiat]
+        return balance_fiat * self.volume_fiat
 
 
 class CheckinTrigger(Trigger):
