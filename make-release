@@ -2,10 +2,11 @@
 
 set -e
 set -u
+set -x
 
 poetry run pytest
 git push
 git push --tags
-poetry run gh-deploy
+poetry run mkdocs gh-deploy
 poetry build
 poetry publish
