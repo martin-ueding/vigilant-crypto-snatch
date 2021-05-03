@@ -14,7 +14,7 @@ def drop_trigger_with_percentage() -> triggers.DropTriggerWithPercentage:
     source = mock_historical.MockHistorical()
     market = mock_historical.MockMarketplace()
     drop_trigger = triggers.DropTriggerWithPercentage(
-        session, source, market, "BTC", "EUR", 0.25, 10, 120
+        session, source, market, "BTC", "EUR", 25.0, 10, 120
     )
     return drop_trigger
 

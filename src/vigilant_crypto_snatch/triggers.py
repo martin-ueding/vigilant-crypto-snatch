@@ -135,7 +135,7 @@ class DropTriggerWithPercentage(DropTrigger):
     def get_volume_fiat(self) -> float:
         balances = self.market.get_balance()
         balance_fiat = balances[self.fiat]
-        return balance_fiat * self.volume_fiat
+        return balance_fiat * self.volume_fiat / 100
 
 
 class CheckinTrigger(Trigger):

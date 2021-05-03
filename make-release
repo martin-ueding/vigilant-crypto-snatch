@@ -3,6 +3,7 @@
 set -e
 set -u
 
+poetry run pytest
 git push
 git push --tags
 poetry run gh-deploy
