@@ -1,6 +1,12 @@
 # Configuration
 
-Unfortunately we need to configure a few things before you can start automatic trading with this software. Most configuration is done in a [YAML](https://yaml.org/) file at `~/.config/vigilant-crypto-snatch.yml`. Create this file and open it in a text editor. We will talk you through the neccessary steps and show snippets to put into.
+Unfortunately we need to configure a few things before you can start automatic trading with this software. Most configuration is done in a [YAML](https://yaml.org/) file. Create this file and open it in a text editor. We will talk you through the necessary steps and show snippets to put into. Depending on your platform, the path should be this:
+
+| Platform | Location |
+| --- | --- |
+| Linux | `~/.config/vigilant-crypto-snatch/config.yml` |
+| Windows | `C:\Users\<User>\Application Data\Martin Ueding\vigilant-crypto-snatch\config.yml` |
+| macOS | `~/Library/Application Support/vigilant-crypto-snatch/config.yml`
 
 ## Historic price API
 
