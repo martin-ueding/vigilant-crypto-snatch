@@ -186,16 +186,28 @@ def make_buy_triggers(config, session, source, market) -> typing.List[Trigger]:
     active_triggers = []
     if "triggers" in config and config["triggers"] is not None:
         for trigger_spec in config["triggers"]:
-            trigger = DropTrigger(
-                session=session,
-                source=source,
-                market=market,
-                coin=trigger_spec["coin"].upper(),
-                fiat=trigger_spec["fiat"].upper(),
-                volume_fiat=trigger_spec["volume_fiat"],
-                drop=trigger_spec["drop"],
-                minutes=trigger_spec["minutes"],
-            )
+            if getattr(trigger_spec, 'fiat_percentage', False):
+                trigger = DropTriggerWithPercentage(
+                    session=session,
+                    source=source,
+                    market=market,
+                    coin=trigger_spec["coin"].upper(),
+                    fiat=trigger_spec["fiat"].upper(),
+                    volume_fiat=trigger_spec["volume_fiat"],
+                    drop=trigger_spec["drop"],
+                    minutes=trigger_spec["minutes"],
+                )
+            else:
+                trigger = DropTrigger(
+                    session=session,
+                    source=source,
+                    market=market,
+                    coin=trigger_spec["coin"].upper(),
+                    fiat=trigger_spec["fiat"].upper(),
+                    volume_fiat=trigger_spec["volume_fiat"],
+                    drop=trigger_spec["drop"],
+                    minutes=trigger_spec["minutes"],
+                )
             logger.debug(f"Constructed trigger: {trigger.get_name()}")
             active_triggers.append(trigger)
 
