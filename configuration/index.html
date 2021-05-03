@@ -504,7 +504,29 @@
                 
                 
                 <h1 id="configuration">Configuration</h1>
-<p>Unfortunately we need to configure a few things before you can start automatic trading with this software. Most configuration is done in a <a href="https://yaml.org/">YAML</a> file at <code>~/.config/vigilant-crypto-snatch.yml</code>. Create this file and open it in a text editor. We will talk you through the neccessary steps and show snippets to put into.</p>
+<p>Unfortunately we need to configure a few things before you can start automatic trading with this software. Most configuration is done in a <a href="https://yaml.org/">YAML</a> file. Create this file and open it in a text editor. We will talk you through the necessary steps and show snippets to put into. Depending on your platform, the path should be this:</p>
+<table>
+<thead>
+<tr>
+<th>Platform</th>
+<th>Location</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Linux</td>
+<td><code>~/.config/vigilant-crypto-snatch/config.yml</code></td>
+</tr>
+<tr>
+<td>Windows</td>
+<td><code>C:\Users\&lt;User&gt;\Application Data\Martin Ueding\vigilant-crypto-snatch\config.yml</code></td>
+</tr>
+<tr>
+<td>macOS</td>
+<td><code>~/Library/Application Support/vigilant-crypto-snatch/config.yml</code></td>
+</tr>
+</tbody>
+</table>
 <h2 id="historic-price-api">Historic price API</h2>
 <p>In order to find a drop in the price, we need to know the historic price at a given point. We use Crypto Compare for that as they provide a free API. Go to <a href="https://min-api.cryptocompare.com/pricing">their website</a> and create an API key.</p>
 <blockquote>
@@ -562,6 +584,7 @@ secret
   <span class="p p-Indicator">-</span> <span class="p p-Indicator">{</span><span class="nt"> coin</span><span class="p">:</span> <span class="nv">eth</span><span class="p p-Indicator">,</span><span class="nt"> fiat</span><span class="p">:</span> <span class="nv">eur</span><span class="p p-Indicator">,</span><span class="nt"> minutes</span><span class="p">:</span> <span class="nv">60</span><span class="p p-Indicator">,</span><span class="nt"> drop</span><span class="p">:</span> <span class="nv">4.5</span><span class="p p-Indicator">,</span><span class="nt"> volume_fiat</span><span class="p">:</span> <span class="nv">25.00</span> <span class="p p-Indicator">}</span>
 </code></pre></div>
 <p>You can specify a decimal number for the drop percentage, just be aware that it must contain a decimal point instead of a decimal comma.</p>
+<p>With the additional keyword <code>fiat_percentage: true</code> you can make the <code>volume_fiat</code> be interpreted as a percentage of your balance in the fiat currency on the selected exchange. This type of trigger is not tested as well as the other kinds.</p>
 <h3 id="timers">Timers</h3>
 <p>If the market is steadily rising, there won't be drops. We still want to make use of the <em>dollar cost average</em> effect. For this we want to have a simple timer that doesn't have any other dependencies. If we want to buy Bitcoin for 75 EUR every 14 days, we can use this:</p>
 <div class="highlight"><pre><span></span><code><span class="nt">timers</span><span class="p">:</span>

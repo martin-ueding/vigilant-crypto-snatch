@@ -504,6 +504,7 @@
 <ul>
 <li><code>--marketplace MARKETPLACE</code>: We support two marketplaces, you can select either <code>bitstamp</code> or <code>kraken</code>.</li>
 <li><code>--keepalive</code>: The program handles various error cases. Sometimes there are exceptions that we haven't encountered yet. When you use the watch subcommand in production, you can specify this option. It will catch <em>any</em> exception and just report it. Please <a href="https://github.com/martin-ueding/vigilant-crypto-snatch/issues">open a ticket</a> when you encounter a new exception type.</li>
+<li><code>--one-shot</code>: One execute one iteration of the watch loop. This way one can call the program periodically with an external scheduler like Cron.</li>
 </ul>
 <p>When you want to quit, just press <kbd>Ctrl</kbd>+<kbd>C</kbd>.</p>
 <p>All historical price data and performed transactions will be stored in a SQLite database at <code>~/.local/share/vigilant-crypto-snatch/db.sqlite</code>. We sometimes change the database format between major releases. In that case it is easiest to delete the database and let the script create the new one. As there are only so few users, we don't offer proper database migrations.</p>
