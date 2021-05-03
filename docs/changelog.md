@@ -4,6 +4,11 @@ This is a list of changes, from new to older.
 
 ## 3.0 Series
 
+Upcoming:
+
+- Add `--one-shot` to the `watch` subcommand to only run the watch loop once.
+- Update documentation and state paths to the configuration file on various platforms.
+
 ### Version 3.4.0
 
 - Reflect change from `XBT` to `BTC` coding on Kraken.
