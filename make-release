@@ -1,0 +1,10 @@
+#!/bin/bash
+
+set -e
+set -u
+
+git push
+git push --tags
+poetry run gh-deploy
+poetry build
+poetry publish
