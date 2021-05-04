@@ -16,11 +16,11 @@ def make_marketplace(marketplace_str: str, config: dict) -> marketplace.Marketpl
             config["bitstamp"]["key"],
             config["bitstamp"]["secret"],
         )
-    elif marketplace_str == "kraken-api":
+    elif marketplace_str == "clikraken-api":
         return clikraken_adaptor_api.KrakenMarketplace()
-    elif marketplace_str == "kraken":
+    elif marketplace_str == "clikraken":
         return clikraken_adaptor_cli.KrakenMarketplace()
-    elif marketplace_str == "krakenex":
+    elif marketplace_str == "kraken":
         return krakenex_adaptor.KrakenexMarketplace(
             config["kraken"]["key"], config["kraken"]["secret"]
         )

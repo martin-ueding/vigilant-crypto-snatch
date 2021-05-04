@@ -1,4 +1,5 @@
 import datetime
+import typing
 
 import krakenex
 import vigilant_crypto_snatch.datamodel
@@ -21,7 +22,7 @@ class KrakenexMarketplace(marketplace.Marketplace):
         self, coin: str, fiat: str, now: datetime.datetime
     ) -> vigilant_crypto_snatch.datamodel.Price:
         answer = self.handle.query_public("Ticker", {"pair": f"{coin}{fiat}"})
-        raise_error(answer)
+        raise_error(answer, marketplace.TickerError)
         close = float(list(answer["result"].values())[0]["c"][0])
         logger.debug(f"Retrieved {close} for {fiat}/{coin} from Krakenex.")
         price = vigilant_crypto_snatch.datamodel.Price(
@@ -31,10 +32,23 @@ class KrakenexMarketplace(marketplace.Marketplace):
 
     def get_balance(self) -> dict:
         answer = self.handle.query_private("Balance")
-        raise_error(answer)
+        raise_error(answer, marketplace.TickerError)
         return {currency: float(value) for currency, value in answer["result"].items()}
 
+    def place_order(self, coin: str, fiat: str, volume: float) -> None:
+        answer = self.handle.query_private(
+            "AddOrder",
+            {
+                "pair": f"{coin}{fiat}",
+                "ordertype": "market",
+                "type": f"buy",
+                "volume": str(volume),
+                # 'validate': 'validate',
+            },
+        )
+        raise_error(answer, marketplace.BuyError)
 
-def raise_error(answer: dict):
+
+def raise_error(answer: dict, exception: typing.Type[Exception]):
     if len(answer["error"]) > 0:
-        raise marketplace.TickerError(answer["error"])
+        raise exception(answer["error"])

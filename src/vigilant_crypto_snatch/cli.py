@@ -31,7 +31,7 @@ def main():
     watch.add_argument(
         "--marketplace",
         default="kraken",
-        choices=["bitstamp", "kraken", "kraken-api", "krakenex"],
+        choices=["bitstamp", "clikraken", "clikraken-api", "kraken"],
         help="Marketplace to place orders on. Default: %(default)s.",
     )
     watch.add_argument(
