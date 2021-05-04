@@ -76,41 +76,64 @@ There is nothing to add to our main configuration file.
 
 ## Triggers
 
-You can define as many triggers as you would like. First you should set the polling interval that the main loop should use. It will wait this many seconds before checking again. For testing we found that 5 seconds is a good value, for production use 60 seconds should be absolutely sufficient.
+First you should set the polling interval that the main loop should use. It will wait this many seconds before checking again. For testing we found that 5 seconds is a good value, for production use 60 seconds should be absolutely sufficient.
 
 ```yaml
 sleep: 60
 ```
 
-We have two types of triggers: Drop triggers and just timers.
-
-All timers have a cooldown such that they are not executed again and again. The cooldown is the same as the checking interval.
-
-### Drop triggers
-
-The drop trigger will fire when the price has dropped by a certain percentage compared to a reference at an earlier time. You can choose the delay and the drop percentage as you like. It might make sense to have larger drops when the time period is longer.
-
-Say we want to have three triggers, two for Bitcoin and one for Etherum. When it drops by 5 % within 60 minutes, we want to buy for 25 EUR. If it drops by 15 % within 24 hours, we want to buy for 100 EUR. And for Etherum I just want the first trigger. This is an off-the-cuff example, think about the triggers that you want to have yourself. In the configuration it would look like this:
+You can define as many triggers as you would like. This is done in a section `triggers`. Let us show an example first and explain all the keys below.
 
 ```yaml
 triggers:
-  - { coin: btc, fiat: eur, minutes: 60, drop: 5, volume_fiat: 25.00 }
-  - { coin: btc, fiat: eur, minutes: 1400, drop: 15, volume_fiat: 100.00 }
-  - { coin: eth, fiat: eur, minutes: 60, drop: 4.5, volume_fiat: 25.00 }
+- coin: btc
+  fiat: eur
+  cooldown_minutes: 1440
+  volume_fiat: 26.0
+  delay_minutes: 1440
+  drop_percentage: 10
+- coin: btc
+  fiat: eur
+  cooldown_minutes: 1440
+  volume_fiat: 26.0
+  delay_minutes: 1440
+  drop_percentage: 5
+- coin: btc
+  fiat: eur
+  cooldown_minutes: 5000
+  volume_fiat: 26.0
 ```
+
+There are different sub-types, but all of them have the following elements in common:
+
+- `coin`: The name of the crypto-currency, case insensitive.
+- `coin`: The name of the fiat currency, case insensitive.
+- `cooldown_minutes`: Minutes until a trigger can fire again.
+
+### Trigger strategy
+
+We currently have two trigger strategies.
+
+One is a fixed time interval, which is basically the *dollar cost average* strategy. For this you don't have any additional keys.
+
+The other is the *drop* strategy. It will look whether the price has dropped by a given *percentage* within a given *delay*. You could for instance look for a drop of 1 % within 60 minutes. You will need to specify these keys:
+
+- `drop_percentage`
+- `delay_minutes`
 
 You can specify a decimal number for the drop percentage, just be aware that it must contain a decimal point instead of a decimal comma.
 
-With the additional keyword `fiat_percentage: true` you can make the `volume_fiat` be interpreted as a percentage of your balance in the fiat currency on the selected exchange. This type of trigger is not tested as well as the other kinds.
+### Fiat volume strategy
 
-### Timers
+There are two ways that you can determine the amount of fiat volume that you want to spend on each trigger execution.
 
-If the market is steadily rising, there won't be drops. We still want to make use of the *dollar cost average* effect. For this we want to have a simple timer that doesn't have any other dependencies. If we want to buy Bitcoin for 75 EUR every 14 days, we can use this:
+First there is the *fixed* strategy, where you always spend a fixed amount. For that you need this key:
 
-```yaml
-timers:
-  - { coin: btc, fiat: eur, minutes: 20160, volume_fiat: 75.00 }
-```
+- `volume_fiat`: Amount in fiat currency.
+
+Alternatively you can specify a percentage of the amount of fiat currency that you have on the market. For this specify a percentage:
+
+- `percentage_fiat`: Percentage of fiat money to spend in each buy.
 
 ## Telegram notifications
 
