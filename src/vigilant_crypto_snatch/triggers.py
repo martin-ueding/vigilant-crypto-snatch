@@ -221,7 +221,7 @@ class DatabaseCleaningTrigger(Trigger):
         return "Database cleaning"
 
 
-def make_buy_triggers(config, session, source, market) -> typing.List[Trigger]:
+def make_buy_triggers(config, session, source, market) -> typing.List[BuyTrigger]:
     active_triggers = []
     for trigger_spec in config["triggers"]:
         trigger = make_buy_trigger(session, source, market, trigger_spec)
@@ -274,7 +274,11 @@ def make_triggers(
     config, session, source: historical.HistoricalSource, market
 ) -> typing.List[Trigger]:
     active_triggers = make_buy_triggers(config, session, source, market)
-    longest_cooldown = max(trigger.delay_minutes for trigger in active_triggers)
+    longest_cooldown = max(
+        trigger.triggered_delegate.delay_minutes
+        for trigger in active_triggers
+        if isinstance(trigger.triggered_delegate, DropTriggeredDelegate)
+    )
     active_triggers.append(CheckinTrigger())
     active_triggers.append(
         DatabaseCleaningTrigger(
