@@ -10,11 +10,11 @@ This is a list of changes, from new to older.
 
 ## 3.0 Series
 
-## Version 3.5.1
+### Version 3.5.1
 
 - Fix drop trigger with percentage such that `volume_fiat` is actually a percentage and not a ratio (between 0 and 1).
 
-## Version 3.5.0
+### Version 3.5.0
 
 - Add `--one-shot` to the `watch` subcommand to only run the watch loop once.
 - Update documentation and state paths to the configuration file on various platforms.
