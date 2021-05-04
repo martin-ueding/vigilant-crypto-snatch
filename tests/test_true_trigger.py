@@ -9,25 +9,31 @@ from . import mock_historical
 
 
 @pytest.fixture
-def true_trigger() -> triggers.TrueTrigger:
+def true_trigger() -> triggers.BuyTrigger:
     session = datamodel.open_memory_db_session()
     source = mock_historical.MockHistorical()
     market = mock_historical.MockMarketplace()
-    true_trigger = triggers.TrueTrigger(session, source, market, "BTC", "EUR", 25.0, 10)
-    return true_trigger
+    trigger_spec = {
+        'coin': 'BTC',
+        'fiat': 'EUR',
+        'volume_fiat': 25.0,
+        'cooldown_minutes': 10,
+    }
+    result = triggers.make_buy_trigger(session, source, market, trigger_spec)
+    return result
 
 
-def test_triggered(true_trigger: triggers.TrueTrigger) -> None:
+def test_triggered(true_trigger: triggers.BuyTrigger) -> None:
     # This trigger type must always be triggered.
     assert true_trigger.is_triggered(datetime.datetime.now())
 
 
-def test_cooled_off(true_trigger: triggers.TrueTrigger) -> None:
+def test_cooled_off(true_trigger: triggers.BuyTrigger) -> None:
     # There are no trades in the DB yet.
     assert true_trigger.has_cooled_off(datetime.datetime.now())
 
 
-def test_waiting(true_trigger: triggers.TrueTrigger) -> None:
+def test_waiting(true_trigger: triggers.BuyTrigger) -> None:
     now = datetime.datetime.now()
     session = true_trigger.session
     trade = datamodel.Trade(
@@ -43,7 +49,7 @@ def test_waiting(true_trigger: triggers.TrueTrigger) -> None:
     assert not true_trigger.has_cooled_off(now)
 
 
-def test_trade(true_trigger: triggers.TrueTrigger) -> None:
+def test_trade(true_trigger: triggers.BuyTrigger) -> None:
     now = datetime.datetime.now()
     true_trigger.fire(now)
     session = true_trigger.session

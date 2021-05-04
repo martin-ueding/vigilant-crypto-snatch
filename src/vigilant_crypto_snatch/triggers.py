@@ -11,12 +11,84 @@ from . import marketplace
 from . import logger
 
 
+class TriggeredDelegate(object):
+    def is_triggered(self, now: datetime.datetime) -> bool:
+        raise NotImplementedError()
+
+
+class DropTriggeredDelegate(TriggeredDelegate):
+    def __init__(
+        self,
+        coin: str,
+        fiat: str,
+        delay_minutes: int,
+        drop_percentage: float,
+        source: historical.HistoricalSource,
+    ):
+        self.coin = coin
+        self.fiat = fiat
+        self.delay_minutes = delay_minutes
+        self.drop_percentage = drop_percentage
+        self.source = source
+
+    def is_triggered(self, now: datetime.datetime) -> bool:
+        price = self.source.get_price(now, self.coin, self.fiat)
+        then = now - datetime.timedelta(minutes=self.delay_minutes)
+        try:
+            then_price = self.source.get_price(then, self.coin, self.fiat)
+        except historical.HistoricalError:
+            return False
+        critical = then_price.last * (1 - self.drop_percentage / 100)
+        return price.last < critical
+
+    def __str__(self) -> str:
+        return f"Drop(delay_minutes={self.delay_minutes}, drop={self.drop_percentage})"
+
+
+class TrueTriggeredDelegate(TriggeredDelegate):
+    def is_triggered(self, now: datetime.datetime) -> bool:
+        return True
+
+    def __str__(self) -> str:
+        return f"True()"
+
+
+class VolumeFiatDelegate(object):
+    def get_volume_fiat(self) -> float:
+        raise NotImplementedError()
+
+
+class FixedVolumeFiatDelegate(VolumeFiatDelegate):
+    def __init__(self, volume_fiat: float):
+        self.volume_fiat = volume_fiat
+
+    def get_volume_fiat(self) -> float:
+        return self.volume_fiat
+
+    def __str__(self) -> str:
+        return f"Fixed(volume_fiat={self.volume_fiat})"
+
+
+class RatioVolumeFiatDelegate(VolumeFiatDelegate):
+    def __init__(
+        self, fiat: str, percentage_fiat: float, market: marketplace.Marketplace
+    ):
+        self.fiat = fiat
+        self.market = market
+        self.percentage_fiat = percentage_fiat
+
+    def get_volume_fiat(self) -> float:
+        balances = self.market.get_balance()
+        balance_fiat = balances[self.fiat]
+        return balance_fiat * self.percentage_fiat / 100
+
+    def __str__(self) -> str:
+        return f"Ratio(percentage_fiat={self.percentage_fiat})"
+
+
 class Trigger(object):
     def __init__(self):
         self.trials = 0
-
-    def is_triggered(self, now: datetime.datetime) -> bool:
-        raise NotImplementedError()
 
     def get_name(self) -> str:
         raise NotImplementedError()
@@ -30,6 +102,9 @@ class Trigger(object):
     def reset_trials(self):
         self.trials = 0
 
+    def is_triggered(self, now: datetime.datetime) -> bool:
+        raise NotImplementedError()
+
 
 class BuyTrigger(Trigger, abc.ABC):
     def __init__(
@@ -39,8 +114,9 @@ class BuyTrigger(Trigger, abc.ABC):
         market: marketplace.Marketplace,
         coin: str,
         fiat: str,
-        volume_fiat: float,
-        minutes: int,
+        cooldown_minutes: int,
+        triggered_delegate: TriggeredDelegate,
+        volume_fiat_delegate: VolumeFiatDelegate,
     ):
         super().__init__()
         self.session = session
@@ -48,12 +124,16 @@ class BuyTrigger(Trigger, abc.ABC):
         self.market = market
         self.coin = coin
         self.fiat = fiat
-        self.volume_fiat = volume_fiat
-        self.minutes = minutes
+        self.cooldown_minutes = cooldown_minutes
+        self.triggered_delegate = triggered_delegate
+        self.volume_fiat_delegate = volume_fiat_delegate
         self.reset_trials()
 
+    def is_triggered(self, now: datetime.datetime) -> bool:
+        return self.triggered_delegate.is_triggered(now)
+
     def has_cooled_off(self, now: datetime.datetime) -> bool:
-        then = now - datetime.timedelta(minutes=self.minutes)
+        then = now - datetime.timedelta(minutes=self.cooldown_minutes)
         trade_count = (
             self.session.query(datamodel.Trade)
             .filter(
@@ -69,7 +149,7 @@ class BuyTrigger(Trigger, abc.ABC):
     def fire(self, now: datetime.datetime) -> None:
         logger.info(f"Trigger “{self.get_name()}” fired, try buying …")
         price = self.source.get_price(now, self.coin, self.fiat)
-        volume_fiat = self.get_volume_fiat()
+        volume_fiat = self.volume_fiat_delegate.get_volume_fiat()
         volume_coin = round(volume_fiat / price.last, 8)
         self.perform_buy(volume_coin, volume_fiat, now)
 
@@ -93,53 +173,8 @@ class BuyTrigger(Trigger, abc.ABC):
         logger.info(f"Bought {buy_message}.")
         marketplace.report_balances(self.market)
 
-    def get_volume_fiat(self) -> float:
-        return self.volume_fiat
-
-
-class DropTrigger(BuyTrigger):
-    def __init__(
-        self,
-        session: sqlalchemy.orm.session,
-        source: historical.HistoricalSource,
-        market: marketplace.Marketplace,
-        coin: str,
-        fiat: str,
-        volume_fiat: float,
-        minutes: int,
-        drop: float,
-    ):
-        super().__init__(session, source, market, coin, fiat, volume_fiat, minutes)
-        self.drop = drop
-        assert self.drop > 0, "Drop triggers must have positive percentages!"
-
-    def is_triggered(self, now: datetime.datetime) -> bool:
-        price = self.source.get_price(now, self.coin, self.fiat)
-        then = now - datetime.timedelta(minutes=self.minutes)
-        try:
-            then_price = self.source.get_price(then, self.coin, self.fiat)
-        except historical.HistoricalError:
-            return False
-        critical = then_price.last * (1 - self.drop / 100)
-        return price.last < critical
-
     def get_name(self) -> str:
-        return f"{self.coin} drop {self.drop} % in {self.minutes} minutes"
-
-
-class TrueTrigger(BuyTrigger):
-    def is_triggered(self, now: datetime.datetime) -> bool:
-        return True
-
-    def get_name(self) -> str:
-        return f"{self.coin} every {self.minutes} minutes"
-
-
-class DropTriggerWithPercentage(DropTrigger):
-    def get_volume_fiat(self) -> float:
-        balances = self.market.get_balance()
-        balance_fiat = balances[self.fiat]
-        return balance_fiat * self.volume_fiat / 100
+        return f"Buy(cooldown_minutes={self.cooldown_minutes}, trigger={str(self.triggered_delegate)}, volume_fiat={str(self.volume_fiat_delegate)})"
 
 
 class CheckinTrigger(Trigger):
@@ -188,47 +223,51 @@ class DatabaseCleaningTrigger(Trigger):
 
 def make_buy_triggers(config, session, source, market) -> typing.List[Trigger]:
     active_triggers = []
-    if "triggers" in config and config["triggers"] is not None:
-        for trigger_spec in config["triggers"]:
-            if getattr(trigger_spec, "fiat_percentage", False):
-                trigger = DropTriggerWithPercentage(
-                    session=session,
-                    source=source,
-                    market=market,
-                    coin=trigger_spec["coin"].upper(),
-                    fiat=trigger_spec["fiat"].upper(),
-                    volume_fiat=trigger_spec["volume_fiat"],
-                    drop=trigger_spec["drop"],
-                    minutes=trigger_spec["minutes"],
-                )
-            else:
-                trigger = DropTrigger(
-                    session=session,
-                    source=source,
-                    market=market,
-                    coin=trigger_spec["coin"].upper(),
-                    fiat=trigger_spec["fiat"].upper(),
-                    volume_fiat=trigger_spec["volume_fiat"],
-                    drop=trigger_spec["drop"],
-                    minutes=trigger_spec["minutes"],
-                )
-            logger.debug(f"Constructed trigger: {trigger.get_name()}")
-            active_triggers.append(trigger)
-
-    if "timers" in config and config["timers"] is not None:
-        for timer_spec in config["timers"]:
-            trigger = TrueTrigger(
-                session=session,
-                source=source,
-                market=market,
-                coin=timer_spec["coin"].upper(),
-                fiat=timer_spec["fiat"].upper(),
-                volume_fiat=timer_spec["volume_fiat"],
-                minutes=timer_spec["minutes"],
-            )
-            logger.debug(f"Constructed trigger: {trigger.get_name()}")
-            active_triggers.append(trigger)
+    for trigger_spec in config["triggers"]:
+        trigger = make_buy_trigger(session, source, market, trigger_spec)
+        active_triggers.append(trigger)
     return active_triggers
+
+
+def make_buy_trigger(session, source, market, trigger_spec) -> BuyTrigger:
+    logger.debug(f"Processing trigger spec: {trigger_spec}")
+
+    # We first need to construct the `TriggeredDelegate` and find out which type it is.
+    if "delay_minutes" in trigger_spec and "drop_percentage" in trigger_spec:
+        triggered_delegate = DropTriggeredDelegate(
+            coin=trigger_spec["coin"],
+            fiat=trigger_spec["fiat"],
+            delay_minutes=trigger_spec["delay_minutes"],
+            drop_percentage=trigger_spec["drop_percentage"],
+            source=source,
+        )
+    else:
+        triggered_delegate = TrueTriggeredDelegate()
+    logger.debug(f"Constructed: {triggered_delegate}")
+
+    # Then we need the `VolumeFiatDelegate`.
+    if "volume_fiat" in trigger_spec:
+        volume_fiat_delegate = FixedVolumeFiatDelegate(trigger_spec["volume_fiat"])
+    elif "percentage_fiat" in trigger_spec:
+        volume_fiat_delegate = RatioVolumeFiatDelegate(
+            trigger_spec["fiat"], trigger_spec["percentage_fiat"], market
+        )
+    else:
+        raise RuntimeError("Could not determine fiat volume strategy from config.")
+    logger.debug(f"Constructed: {volume_fiat_delegate}")
+
+    result = BuyTrigger(
+        session=session,
+        source=source,
+        market=market,
+        coin=trigger_spec["coin"],
+        fiat=trigger_spec["fiat"],
+        cooldown_minutes=trigger_spec["cooldown_minutes"],
+        triggered_delegate=triggered_delegate,
+        volume_fiat_delegate=volume_fiat_delegate,
+    )
+    logger.debug(f"Constructed trigger: {result.get_name()}")
+    return result
 
 
 def make_triggers(
