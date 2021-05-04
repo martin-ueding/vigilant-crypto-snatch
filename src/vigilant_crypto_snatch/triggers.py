@@ -117,6 +117,7 @@ class BuyTrigger(Trigger, abc.ABC):
         cooldown_minutes: int,
         triggered_delegate: TriggeredDelegate,
         volume_fiat_delegate: VolumeFiatDelegate,
+        name: typing.Optional[str],
     ):
         super().__init__()
         self.session = session
@@ -127,6 +128,7 @@ class BuyTrigger(Trigger, abc.ABC):
         self.cooldown_minutes = cooldown_minutes
         self.triggered_delegate = triggered_delegate
         self.volume_fiat_delegate = volume_fiat_delegate
+        self.name = name
         self.reset_trials()
 
     def is_triggered(self, now: datetime.datetime) -> bool:
@@ -174,7 +176,10 @@ class BuyTrigger(Trigger, abc.ABC):
         marketplace.report_balances(self.market)
 
     def get_name(self) -> str:
-        return f"Buy(cooldown_minutes={self.cooldown_minutes}, trigger={str(self.triggered_delegate)}, volume_fiat={str(self.volume_fiat_delegate)})"
+        if self.name is None:
+            return f"Buy(cooldown_minutes={self.cooldown_minutes}, trigger={str(self.triggered_delegate)}, volume_fiat={str(self.volume_fiat_delegate)})"
+        else:
+            return self.name
 
 
 class CheckinTrigger(Trigger):
@@ -265,6 +270,7 @@ def make_buy_trigger(session, source, market, trigger_spec) -> BuyTrigger:
         cooldown_minutes=trigger_spec["cooldown_minutes"],
         triggered_delegate=triggered_delegate,
         volume_fiat_delegate=volume_fiat_delegate,
+        name=getattr(trigger_spec, 'name', None),
     )
     logger.debug(f"Constructed trigger: {result.get_name()}")
     return result
