@@ -235,8 +235,8 @@ def make_buy_trigger(session, source, market, trigger_spec) -> BuyTrigger:
     # We first need to construct the `TriggeredDelegate` and find out which type it is.
     if "delay_minutes" in trigger_spec and "drop_percentage" in trigger_spec:
         triggered_delegate = DropTriggeredDelegate(
-            coin=trigger_spec["coin"],
-            fiat=trigger_spec["fiat"],
+            coin=trigger_spec["coin"].upper(),
+            fiat=trigger_spec["fiat"].upper(),
             delay_minutes=trigger_spec["delay_minutes"],
             drop_percentage=trigger_spec["drop_percentage"],
             source=source,
@@ -260,8 +260,8 @@ def make_buy_trigger(session, source, market, trigger_spec) -> BuyTrigger:
         session=session,
         source=source,
         market=market,
-        coin=trigger_spec["coin"],
-        fiat=trigger_spec["fiat"],
+        coin=trigger_spec["coin"].upper(),
+        fiat=trigger_spec["fiat"].upper(),
         cooldown_minutes=trigger_spec["cooldown_minutes"],
         triggered_delegate=triggered_delegate,
         volume_fiat_delegate=volume_fiat_delegate,
@@ -274,7 +274,7 @@ def make_triggers(
     config, session, source: historical.HistoricalSource, market
 ) -> typing.List[Trigger]:
     active_triggers = make_buy_triggers(config, session, source, market)
-    longest_cooldown = max(trigger.minutes for trigger in active_triggers)
+    longest_cooldown = max(trigger.delay_minutes for trigger in active_triggers)
     active_triggers.append(CheckinTrigger())
     active_triggers.append(
         DatabaseCleaningTrigger(
