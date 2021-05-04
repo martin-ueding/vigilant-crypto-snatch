@@ -73,7 +73,9 @@ class BuyTrigger(Trigger, abc.ABC):
         volume_coin = round(volume_fiat / price.last, 8)
         self.perform_buy(volume_coin, volume_fiat, now)
 
-    def perform_buy(self, volume_coin: float, volume_fiat: float, now: datetime.datetime) -> None:
+    def perform_buy(
+        self, volume_coin: float, volume_fiat: float, now: datetime.datetime
+    ) -> None:
         self.market.place_order(self.coin, self.fiat, volume_coin)
         trade = datamodel.Trade(
             timestamp=now,
@@ -188,7 +190,7 @@ def make_buy_triggers(config, session, source, market) -> typing.List[Trigger]:
     active_triggers = []
     if "triggers" in config and config["triggers"] is not None:
         for trigger_spec in config["triggers"]:
-            if getattr(trigger_spec, 'fiat_percentage', False):
+            if getattr(trigger_spec, "fiat_percentage", False):
                 trigger = DropTriggerWithPercentage(
                     session=session,
                     source=source,

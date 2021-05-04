@@ -36,12 +36,11 @@ class MockHistorical(vigilant_crypto_snatch.historical.HistoricalSource):
 
 
 class MockMarketplace(vigilant_crypto_snatch.marketplace.Marketplace):
-
     def __init__(self):
         super().__init__()
         self.orders = 0
         self.prices = 0
-        self.balances = {'EUR': 1000.0}
+        self.balances = {"EUR": 1000.0}
 
     def get_balance(self) -> dict:
         return self.balances
