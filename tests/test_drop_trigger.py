@@ -14,12 +14,12 @@ def drop_trigger() -> triggers.BuyTrigger:
     source = mock_historical.MockHistorical()
     market = mock_historical.MockMarketplace()
     trigger_spec = {
-        'coin': 'BTC',
-        'fiat': 'EUR',
-        'drop_percentage': 120.0,
-        'volume_fiat': 25.0,
-        'cooldown_minutes': 10,
-        'delay_minutes': 10,
+        "coin": "BTC",
+        "fiat": "EUR",
+        "drop_percentage": 120.0,
+        "volume_fiat": 25.0,
+        "cooldown_minutes": 10,
+        "delay_minutes": 10,
     }
     result = triggers.make_buy_trigger(session, source, market, trigger_spec)
     return result

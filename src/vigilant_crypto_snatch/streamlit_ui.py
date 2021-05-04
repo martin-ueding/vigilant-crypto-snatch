@@ -70,52 +70,48 @@ def sub_drop_survey(sidebar_settings):
     )
 
 
-def make_trigger_ui(session, source, market, sidebar_settings, i):
-    trigger_type = st.radio("Trigger type", ["Drop", "Time"], key=f"trigger_type_{i}")
-    trigger_volume = st.number_input(
+def make_trigger_ui(
+    session, source, market, sidebar_settings, i
+) -> triggers.BuyTrigger:
+    trigger_spec = {"fiat": sidebar_settings.fiat, "coin": sidebar_settings.coin}
+
+    trigger_spec["cooldown_minutes"] = 60 * st.slider(
+        "Cooldown / hours",
+        min_value=1,
+        max_value=14 * 24,
+        value=24,
+        key=f"cooldown_minutes{i}",
+    )
+
+    trigger_spec["volume_fiat"] = st.number_input(
         f"Volume / {sidebar_settings.fiat}",
         min_value=25,
         max_value=None,
         value=25,
         key=f"trigger_volume_{i}",
     )
-    trigger_delay = st.slider(
-        "Delay / hours",
-        min_value=1,
-        max_value=14 * 24,
-        value=24,
-        key=f"trigger_delay_{i}",
+
+    triggered_delegate_type = st.radio(
+        "Triggered type", ["Drop", "Time"], key=f"triggered_delegate_type{i}"
     )
 
-    if trigger_type == "Drop":
-        trigger_percentage = st.slider(
+    if triggered_delegate_type == "Drop":
+        trigger_spec["delay_minutes"] = 60 * st.slider(
+            "Delay / hours",
+            min_value=1,
+            max_value=14 * 24,
+            value=24,
+            key=f"delay_minutes{i}",
+        )
+        trigger_spec["drop_percentage"] = st.slider(
             "Drop / %",
             min_value=0,
             max_value=100,
             value=30,
-            key=f"trigger_percentage_{i}",
-        )
-        return triggers.DropTrigger(
-            session,
-            source,
-            market,
-            sidebar_settings.coin,
-            sidebar_settings.fiat,
-            trigger_volume,
-            trigger_delay * 60,
-            trigger_percentage,
+            key=f"drop_percentage{i}",
         )
 
-    elif trigger_type == "Time":
-        return triggers.TrueTrigger(
-            session,
-            source,
-            market,
-            sidebar_settings.coin,
-            sidebar_settings.fiat,
-            trigger_volume,
-            trigger_delay * 60,
-        )
+    return triggers.make_buy_trigger(session, source, market, trigger_spec)
 
 
 def sub_trigger_simulation(sidebar_settings):
