@@ -7,7 +7,7 @@ import typing
 import sqlalchemy.exc
 
 from . import configuration
-from . import factory
+from .marketplace import factory
 from . import datamodel
 from . import marketplace
 from . import triggers

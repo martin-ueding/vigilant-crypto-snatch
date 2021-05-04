@@ -1,7 +1,7 @@
 import datetime
 
-from . import datamodel
-from . import logger
+from vigilant_crypto_snatch import datamodel
+from vigilant_crypto_snatch import logger
 
 
 class Marketplace(object):

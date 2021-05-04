@@ -6,9 +6,9 @@ import clikraken.api.private.place_order
 import clikraken.clikraken_utils
 import clikraken.global_vars
 
-from . import capture
-from . import datamodel
-from . import marketplace
+from vigilant_crypto_snatch import capture
+from vigilant_crypto_snatch import datamodel
+from vigilant_crypto_snatch import marketplace
 
 
 class KrakenArgs(object):

@@ -5,10 +5,10 @@ import typing
 import shlex
 import json
 
-from . import clikraken_adaptor_api
-from . import datamodel
-from . import marketplace
-from . import logger
+from vigilant_crypto_snatch.marketplace import clikraken_adaptor_api
+from vigilant_crypto_snatch import datamodel
+from vigilant_crypto_snatch import marketplace
+from vigilant_crypto_snatch import logger
 
 
 _delimiter = ";"

@@ -1,9 +1,8 @@
-from . import (
+from vigilant_crypto_snatch import (
     marketplace,
-    bitstamp_adaptor,
-    clikraken_adaptor_api,
-    clikraken_adaptor_cli,
 )
+from vigilant_crypto_snatch.marketplace import clikraken_adaptor_api, \
+    clikraken_adaptor_cli, bitstamp_adaptor
 
 
 def make_marketplace(marketplace_str: str, config: dict) -> marketplace.Marketplace:
