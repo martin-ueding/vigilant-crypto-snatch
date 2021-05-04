@@ -71,7 +71,9 @@ class BuyTrigger(Trigger, abc.ABC):
         price = self.source.get_price(now, self.coin, self.fiat)
         volume_fiat = self.get_volume_fiat()
         volume_coin = round(volume_fiat / price.last, 8)
+        self.perform_buy(volume_coin, volume_fiat, now)
 
+    def perform_buy(self, volume_coin: float, volume_fiat: float, now: datetime.datetime) -> None:
         self.market.place_order(self.coin, self.fiat, volume_coin)
         trade = datamodel.Trade(
             timestamp=now,
