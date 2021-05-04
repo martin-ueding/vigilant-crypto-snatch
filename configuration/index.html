@@ -274,15 +274,15 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#drop-triggers" class="md-nav__link">
-    Drop triggers
+  <a href="#trigger-strategy" class="md-nav__link">
+    Trigger strategy
   </a>
   
 </li>
         
           <li class="md-nav__item">
-  <a href="#timers" class="md-nav__link">
-    Timers
+  <a href="#fiat-volume-strategy" class="md-nav__link">
+    Fiat volume strategy
   </a>
   
 </li>
@@ -465,15 +465,15 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#drop-triggers" class="md-nav__link">
-    Drop triggers
+  <a href="#trigger-strategy" class="md-nav__link">
+    Trigger strategy
   </a>
   
 </li>
         
           <li class="md-nav__item">
-  <a href="#timers" class="md-nav__link">
-    Timers
+  <a href="#fiat-volume-strategy" class="md-nav__link">
+    Fiat volume strategy
   </a>
   
 </li>
@@ -570,26 +570,53 @@ secret
 </code></pre></div>
 <p>There is nothing to add to our main configuration file.</p>
 <h2 id="triggers">Triggers</h2>
-<p>You can define as many triggers as you would like. First you should set the polling interval that the main loop should use. It will wait this many seconds before checking again. For testing we found that 5 seconds is a good value, for production use 60 seconds should be absolutely sufficient.</p>
+<p>First you should set the polling interval that the main loop should use. It will wait this many seconds before checking again. For testing we found that 5 seconds is a good value, for production use 60 seconds should be absolutely sufficient.</p>
 <div class="highlight"><pre><span></span><code><span class="nt">sleep</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">60</span>
 </code></pre></div>
-<p>We have two types of triggers: Drop triggers and just timers.</p>
-<p>All timers have a cooldown such that they are not executed again and again. The cooldown is the same as the checking interval.</p>
-<h3 id="drop-triggers">Drop triggers</h3>
-<p>The drop trigger will fire when the price has dropped by a certain percentage compared to a reference at an earlier time. You can choose the delay and the drop percentage as you like. It might make sense to have larger drops when the time period is longer.</p>
-<p>Say we want to have three triggers, two for Bitcoin and one for Etherum. When it drops by 5 % within 60 minutes, we want to buy for 25 EUR. If it drops by 15 % within 24 hours, we want to buy for 100 EUR. And for Etherum I just want the first trigger. This is an off-the-cuff example, think about the triggers that you want to have yourself. In the configuration it would look like this:</p>
+<p>You can define as many triggers as you would like. This is done in a section <code>triggers</code>. Let us show an example first and explain all the keys below.</p>
 <div class="highlight"><pre><span></span><code><span class="nt">triggers</span><span class="p">:</span>
-  <span class="p p-Indicator">-</span> <span class="p p-Indicator">{</span><span class="nt"> coin</span><span class="p">:</span> <span class="nv">btc</span><span class="p p-Indicator">,</span><span class="nt"> fiat</span><span class="p">:</span> <span class="nv">eur</span><span class="p p-Indicator">,</span><span class="nt"> minutes</span><span class="p">:</span> <span class="nv">60</span><span class="p p-Indicator">,</span><span class="nt"> drop</span><span class="p">:</span> <span class="nv">5</span><span class="p p-Indicator">,</span><span class="nt"> volume_fiat</span><span class="p">:</span> <span class="nv">25.00</span> <span class="p p-Indicator">}</span>
-  <span class="p p-Indicator">-</span> <span class="p p-Indicator">{</span><span class="nt"> coin</span><span class="p">:</span> <span class="nv">btc</span><span class="p p-Indicator">,</span><span class="nt"> fiat</span><span class="p">:</span> <span class="nv">eur</span><span class="p p-Indicator">,</span><span class="nt"> minutes</span><span class="p">:</span> <span class="nv">1400</span><span class="p p-Indicator">,</span><span class="nt"> drop</span><span class="p">:</span> <span class="nv">15</span><span class="p p-Indicator">,</span><span class="nt"> volume_fiat</span><span class="p">:</span> <span class="nv">100.00</span> <span class="p p-Indicator">}</span>
-  <span class="p p-Indicator">-</span> <span class="p p-Indicator">{</span><span class="nt"> coin</span><span class="p">:</span> <span class="nv">eth</span><span class="p p-Indicator">,</span><span class="nt"> fiat</span><span class="p">:</span> <span class="nv">eur</span><span class="p p-Indicator">,</span><span class="nt"> minutes</span><span class="p">:</span> <span class="nv">60</span><span class="p p-Indicator">,</span><span class="nt"> drop</span><span class="p">:</span> <span class="nv">4.5</span><span class="p p-Indicator">,</span><span class="nt"> volume_fiat</span><span class="p">:</span> <span class="nv">25.00</span> <span class="p p-Indicator">}</span>
+<span class="p p-Indicator">-</span> <span class="nt">coin</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">btc</span>
+  <span class="nt">fiat</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">eur</span>
+  <span class="nt">cooldown_minutes</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">1440</span>
+  <span class="nt">volume_fiat</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">26.0</span>
+  <span class="nt">delay_minutes</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">1440</span>
+  <span class="nt">drop_percentage</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">10</span>
+<span class="p p-Indicator">-</span> <span class="nt">coin</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">btc</span>
+  <span class="nt">fiat</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">eur</span>
+  <span class="nt">cooldown_minutes</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">1440</span>
+  <span class="nt">volume_fiat</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">26.0</span>
+  <span class="nt">delay_minutes</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">1440</span>
+  <span class="nt">drop_percentage</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">5</span>
+<span class="p p-Indicator">-</span> <span class="nt">coin</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">btc</span>
+  <span class="nt">fiat</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">eur</span>
+  <span class="nt">cooldown_minutes</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">5000</span>
+  <span class="nt">volume_fiat</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">26.0</span>
 </code></pre></div>
+<p>There are different sub-types, but all of them have the following elements in common:</p>
+<ul>
+<li><code>coin</code>: The name of the crypto-currency, case insensitive.</li>
+<li><code>coin</code>: The name of the fiat currency, case insensitive.</li>
+<li><code>cooldown_minutes</code>: Minutes until a trigger can fire again.</li>
+</ul>
+<h3 id="trigger-strategy">Trigger strategy</h3>
+<p>We currently have two trigger strategies.</p>
+<p>One is a fixed time interval, which is basically the <em>dollar cost average</em> strategy. For this you don't have any additional keys.</p>
+<p>The other is the <em>drop</em> strategy. It will look whether the price has dropped by a given <em>percentage</em> within a given <em>delay</em>. You could for instance look for a drop of 1 % within 60 minutes. You will need to specify these keys:</p>
+<ul>
+<li><code>drop_percentage</code></li>
+<li><code>delay_minutes</code></li>
+</ul>
 <p>You can specify a decimal number for the drop percentage, just be aware that it must contain a decimal point instead of a decimal comma.</p>
-<p>With the additional keyword <code>fiat_percentage: true</code> you can make the <code>volume_fiat</code> be interpreted as a percentage of your balance in the fiat currency on the selected exchange. This type of trigger is not tested as well as the other kinds.</p>
-<h3 id="timers">Timers</h3>
-<p>If the market is steadily rising, there won't be drops. We still want to make use of the <em>dollar cost average</em> effect. For this we want to have a simple timer that doesn't have any other dependencies. If we want to buy Bitcoin for 75 EUR every 14 days, we can use this:</p>
-<div class="highlight"><pre><span></span><code><span class="nt">timers</span><span class="p">:</span>
-  <span class="p p-Indicator">-</span> <span class="p p-Indicator">{</span><span class="nt"> coin</span><span class="p">:</span> <span class="nv">btc</span><span class="p p-Indicator">,</span><span class="nt"> fiat</span><span class="p">:</span> <span class="nv">eur</span><span class="p p-Indicator">,</span><span class="nt"> minutes</span><span class="p">:</span> <span class="nv">20160</span><span class="p p-Indicator">,</span><span class="nt"> volume_fiat</span><span class="p">:</span> <span class="nv">75.00</span> <span class="p p-Indicator">}</span>
-</code></pre></div>
+<h3 id="fiat-volume-strategy">Fiat volume strategy</h3>
+<p>There are two ways that you can determine the amount of fiat volume that you want to spend on each trigger execution.</p>
+<p>First there is the <em>fixed</em> strategy, where you always spend a fixed amount. For that you need this key:</p>
+<ul>
+<li><code>volume_fiat</code>: Amount in fiat currency.</li>
+</ul>
+<p>Alternatively you can specify a percentage of the amount of fiat currency that you have on the market. For this specify a percentage:</p>
+<ul>
+<li><code>percentage_fiat</code>: Percentage of fiat money to spend in each buy.</li>
+</ul>
 <h2 id="telegram-notifications">Telegram notifications</h2>
 <p>Optionally you can set up notifications via Telegram. This is not required, but a nice extra to allow monitoring from anywhere.</p>
 <p>First you have to create a bot by talking to <a href="https://t.me/botfather">@botfather</a>. It will lead you through a couple of steps:</p>
