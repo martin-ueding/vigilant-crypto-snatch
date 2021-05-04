@@ -270,7 +270,7 @@ def make_buy_trigger(session, source, market, trigger_spec) -> BuyTrigger:
         cooldown_minutes=trigger_spec["cooldown_minutes"],
         triggered_delegate=triggered_delegate,
         volume_fiat_delegate=volume_fiat_delegate,
-        name=getattr(trigger_spec, 'name', None),
+        name=getattr(trigger_spec, "name", None),
     )
     logger.debug(f"Constructed trigger: {result.get_name()}")
     return result
