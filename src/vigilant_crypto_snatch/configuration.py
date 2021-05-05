@@ -43,7 +43,7 @@ def migrate_new_location():
 
 
 def migrate_kraken_key(config: dict) -> dict:
-    if not "kraken" in config and os.path.isfile(kraken_key_file):
+    if "kraken" not in config and os.path.isfile(kraken_key_file):
         logger.info("Copying your Kraken API key from clikraken to this config file.")
         with open(kraken_key_file) as f:
             key, secret = f.read().strip().split("\n")
