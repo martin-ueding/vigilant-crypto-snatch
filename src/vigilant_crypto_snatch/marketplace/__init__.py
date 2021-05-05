@@ -28,9 +28,7 @@ class Marketplace(object):
         raise NotImplementedError("Selected marketplace does not support withdrawal.")
 
 
-def check_and_perform_widthdrawal(
-    market: Marketplace
-) -> None:
+def check_and_perform_widthdrawal(market: Marketplace) -> None:
     balance = market.get_balance()
     for coin, balance_coin in balance.items():
         market.withdrawal(coin, balance_coin)

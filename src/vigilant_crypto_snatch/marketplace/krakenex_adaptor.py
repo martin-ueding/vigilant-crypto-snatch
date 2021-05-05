@@ -20,7 +20,7 @@ def map_normal_to_kraken(coin: str) -> str:
 
 
 def map_kraken_to_normal(coin: str) -> str:
-    if len(coin) == 4 and coin[0] in 'ZX':
+    if len(coin) == 4 and coin[0] in "ZX":
         coin = coin[1:]
     return mapping_kraken_to_normal.get(coin, coin)
 
@@ -72,7 +72,7 @@ class KrakenexMarketplace(marketplace.Marketplace):
         marketplace.check_and_perform_widthdrawal(self)
 
     def get_withdrawal_fee(self, coin: str, volume: float) -> float:
-        target = self.withdrawal_config[coin]['target']
+        target = self.withdrawal_config[coin]["target"]
         answer = self.handle.query_private(
             "WithdrawInfo",
             {
@@ -88,12 +88,14 @@ class KrakenexMarketplace(marketplace.Marketplace):
 
     def withdrawal(self, coin: str, volume: float) -> None:
         if coin not in self.withdrawal_config:
-            logger.debug(f'No withdrawal config for {coin}.')
+            logger.debug(f"No withdrawal config for {coin}.")
             return
-        target = self.withdrawal_config[coin]['target']
+        target = self.withdrawal_config[coin]["target"]
         fee = self.get_withdrawal_fee(coin, volume)
-        if fee / volume <= self.withdrawal_config[coin]['fee_limit_percent'] / 100:
-            logger.info(f'Trying to withdraw {volume} {coin} as fee is just {fee} {coin} and below limit.')
+        if fee / volume <= self.withdrawal_config[coin]["fee_limit_percent"] / 100:
+            logger.info(
+                f"Trying to withdraw {volume} {coin} as fee is just {fee} {coin} and below limit."
+            )
             answer = self.handle.query_private(
                 "Withdraw",
                 {
@@ -104,7 +106,9 @@ class KrakenexMarketplace(marketplace.Marketplace):
             )
             raise_error(answer, marketplace.WithdrawalError)
         else:
-            logger.debug(f'Not withdrawing {volume} {coin} as fee is {fee} {coin} and above limit.')
+            logger.debug(
+                f"Not withdrawing {volume} {coin} as fee is {fee} {coin} and above limit."
+            )
 
 
 def raise_error(answer: dict, exception: typing.Type[Exception]):

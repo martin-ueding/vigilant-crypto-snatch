@@ -22,7 +22,9 @@ def make_marketplace(marketplace_str: str, config: dict) -> marketplace.Marketpl
         return clikraken_adaptor_cli.KrakenMarketplace()
     elif marketplace_str == "kraken":
         return krakenex_adaptor.KrakenexMarketplace(
-            config["kraken"]["key"], config["kraken"]["secret"], withdrawal_config=config["kraken"]["withdrawal"]
+            config["kraken"]["key"],
+            config["kraken"]["secret"],
+            withdrawal_config=config["kraken"].get("withdrawal", {}),
         )
     else:
         raise RuntimeError(f"Unknown market place {marketplace_str}!")
