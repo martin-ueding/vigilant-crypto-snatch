@@ -285,6 +285,13 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
+  <a href="#version-410" class="md-nav__link">
+    Version 4.1.0
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#version-400" class="md-nav__link">
     Version 4.0.0
   </a>
@@ -301,22 +308,22 @@
     3.0 Series
   </a>
   
-</li>
-      
-        <li class="md-nav__item">
+    <nav class="md-nav" aria-label="3.0 Series">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
   <a href="#version-351" class="md-nav__link">
     Version 3.5.1
   </a>
   
 </li>
-      
-        <li class="md-nav__item">
+        
+          <li class="md-nav__item">
   <a href="#version-350" class="md-nav__link">
     Version 3.5.0
   </a>
   
-    <nav class="md-nav" aria-label="Version 3.5.0">
-      <ul class="md-nav__list">
+</li>
         
           <li class="md-nav__item">
   <a href="#version-340" class="md-nav__link">
@@ -493,6 +500,13 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
+  <a href="#version-410" class="md-nav__link">
+    Version 4.1.0
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#version-400" class="md-nav__link">
     Version 4.0.0
   </a>
@@ -509,22 +523,22 @@
     3.0 Series
   </a>
   
-</li>
-      
-        <li class="md-nav__item">
+    <nav class="md-nav" aria-label="3.0 Series">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
   <a href="#version-351" class="md-nav__link">
     Version 3.5.1
   </a>
   
 </li>
-      
-        <li class="md-nav__item">
+        
+          <li class="md-nav__item">
   <a href="#version-350" class="md-nav__link">
     Version 3.5.0
   </a>
   
-    <nav class="md-nav" aria-label="Version 3.5.0">
-      <ul class="md-nav__list">
+</li>
         
           <li class="md-nav__item">
   <a href="#version-340" class="md-nav__link">
@@ -630,16 +644,21 @@
                 <h1 id="changelog">Changelog</h1>
 <p>This is a list of changes, from new to older.</p>
 <h2 id="40-series">4.0 Series</h2>
+<h3 id="version-410">Version 4.1.0</h3>
+<ul>
+<li>Use <a href="https://github.com/veox/python3-krakenex"><code>krakenex</code></a> instead of <a href="https://github.com/zertrin/clikraken"><code>clikraken</code></a> to communicate with Kraken. The old implementation is deprecated but retained with <code>--marketplace clikraken</code>.</li>
+<li>Add automatic withdrawal for currency when the amount exceeds a certain threshold determined by the fee. See the configuration of the Kraken marketplace for details.</li>
+</ul>
 <h3 id="version-400">Version 4.0.0</h3>
 <ul>
 <li>The trigger specification is significantly changed. Consult the documentation to learn about the new format. I'm sorry for breaking your configuration, but I didn't want to provide a migration and rather deliver more new features.</li>
 </ul>
 <h2 id="30-series">3.0 Series</h2>
-<h2 id="version-351">Version 3.5.1</h2>
+<h3 id="version-351">Version 3.5.1</h3>
 <ul>
 <li>Fix drop trigger with percentage such that <code>volume_fiat</code> is actually a percentage and not a ratio (between 0 and 1).</li>
 </ul>
-<h2 id="version-350">Version 3.5.0</h2>
+<h3 id="version-350">Version 3.5.0</h3>
 <ul>
 <li>Add <code>--one-shot</code> to the <code>watch</code> subcommand to only run the watch loop once.</li>
 <li>Update documentation and state paths to the configuration file on various platforms.</li>
