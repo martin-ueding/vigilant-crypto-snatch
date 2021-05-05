@@ -104,6 +104,7 @@ def main(options):
     session = datamodel.open_user_db_session()
     config = configuration.load_config()
     market = factory.make_marketplace(options.marketplace, config)
+    marketplace.check_and_perform_widthdrawal(market)
 
     if not options.one_shot:
         marketplace.report_balances(market)
