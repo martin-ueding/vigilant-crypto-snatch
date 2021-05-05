@@ -4,6 +4,11 @@ This is a list of changes, from new to older.
 
 ## 4.0 Series
 
+### Version 4.1.0
+
+- Use [`krakenex`](https://github.com/veox/python3-krakenex) instead of [`clikraken`](https://github.com/zertrin/clikraken) to communicate with Kraken. The old implementation is deprecated but retained with `--marketplace clikraken`.
+- Add automatic withdrawal for currency when the amount exceeds a certain threshold determined by the fee. See the configuration of the Kraken marketplace for details.
+
 ### Version 4.0.0
 
 - The trigger specification is significantly changed. Consult the documentation to learn about the new format. I'm sorry for breaking your configuration, but I didn't want to provide a migration and rather deliver more new features.
