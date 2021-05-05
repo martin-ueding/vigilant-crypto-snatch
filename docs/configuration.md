@@ -46,16 +46,7 @@ bitstamp:
 
 ### Kraken
 
-The Kraken Python library that we use has it's own configuration files. First you have to create a file at `~/.config/clikraken/settings.ini` and insert the following there:
-
-```ini
-[clikraken]
-trading_agreement=agree
-```
-
-Then on the website create an API key which has the permission to trade. Navigate to the API settings:
-
-![](kraken-menu.png)
+Go to the [Kraken API key page](https://www.kraken.com/u/security/api) and create an API key which has the permission to trade.
 
 There you need to create a new API key:
 
@@ -65,11 +56,12 @@ Be sure to select the _Create & Modify Orders_ permission such that the program 
 
 ![](kraken-api-settings.png)
 
-You will get an API key and an associated secret. In the file `~/.config/clikraken/kraken.key` you must have two lines, the first will be API key and the second will be the secret, like this:
+You will get an API key and an associated secret. In the configuration file you add a paragraph like the following. The first will be API key and the second will be the secret, like this:
 
 ```
-APIKEY
-secret
+kraken:
+  key: YOUR KEY
+  secret: YOUR SECRET
 ```
 
 There is nothing to add to our main configuration file.
