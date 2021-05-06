@@ -8,7 +8,7 @@ import sqlalchemy.orm
 
 from . import datamodel
 from . import historical
-from . import marketplace
+from .marketplace import marketplace
 from . import logger
 
 

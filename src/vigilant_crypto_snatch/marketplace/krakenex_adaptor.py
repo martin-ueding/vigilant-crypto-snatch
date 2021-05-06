@@ -4,7 +4,7 @@ import typing
 import krakenex
 import vigilant_crypto_snatch.datamodel
 
-from vigilant_crypto_snatch import marketplace
+from . import marketplace
 
 from vigilant_crypto_snatch import logger
 

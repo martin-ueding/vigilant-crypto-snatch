@@ -6,7 +6,7 @@ import requests
 import urllib3
 
 from vigilant_crypto_snatch import datamodel
-from vigilant_crypto_snatch import marketplace
+from vigilant_crypto_snatch.marketplace import marketplace
 
 
 class BitstampMarketplace(marketplace.Marketplace):

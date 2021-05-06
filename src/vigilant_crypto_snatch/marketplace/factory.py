@@ -1,7 +1,5 @@
 from . import krakenex_adaptor
-from vigilant_crypto_snatch import (
-    marketplace,
-)
+from . import marketplace
 from vigilant_crypto_snatch.marketplace import (
     clikraken_adaptor_api,
     clikraken_adaptor_cli,

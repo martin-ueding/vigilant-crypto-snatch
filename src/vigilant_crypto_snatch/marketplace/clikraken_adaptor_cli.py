@@ -7,7 +7,7 @@ import json
 
 from vigilant_crypto_snatch.marketplace import clikraken_adaptor_api
 from vigilant_crypto_snatch import datamodel
-from vigilant_crypto_snatch import marketplace
+from vigilant_crypto_snatch.marketplace import marketplace
 from vigilant_crypto_snatch import logger
 
 

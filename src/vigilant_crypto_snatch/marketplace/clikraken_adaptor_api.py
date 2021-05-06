@@ -8,7 +8,7 @@ import clikraken.global_vars
 
 from vigilant_crypto_snatch import capture
 from vigilant_crypto_snatch import datamodel
-from vigilant_crypto_snatch import marketplace
+from vigilant_crypto_snatch.marketplace import marketplace
 
 
 class KrakenArgs(object):

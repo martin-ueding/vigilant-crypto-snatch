@@ -4,6 +4,11 @@ This is a list of changes, from new to older.
 
 ## 4.0 Series
 
+Upcoming:
+
+- Triggers can be given names in the evaluation interface.
+- The legend in the trigger simulation plot is shown below the plot to allow for longer trigger names without having them cropped.
+
 ### Version 4.1.0
 
 - Use [`krakenex`](https://github.com/veox/python3-krakenex) instead of [`clikraken`](https://github.com/zertrin/clikraken) to communicate with Kraken. The old implementation is deprecated but retained with `--marketplace clikraken`.

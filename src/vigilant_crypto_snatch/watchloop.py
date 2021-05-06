@@ -9,7 +9,7 @@ import sqlalchemy.exc
 from . import configuration
 from .marketplace import factory
 from . import datamodel
-from . import marketplace
+from .marketplace import marketplace
 from . import triggers
 from . import historical
 from . import telegram
