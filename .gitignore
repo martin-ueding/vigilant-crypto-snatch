@@ -10,3 +10,5 @@ site/
 .ipynb_checkpoints/
 gains.pdf
 gains.png
+.coverage
+htmlcov/
