@@ -1,5 +1,9 @@
 # Developing
 
+If you want to contribute, that's awesome! It is best if you get in touch first, then we can discuss the best way to add your idea.
+
+## Development setup
+
 This project is written in Python. It uses [Poetry](https://python-poetry.org/) to manage the project and its dependencies.
 
 Once you have obtained the source code via `git clone`, you can install the project into a virtual environment using `poetry install`. This will install all the dependencies and the package.
@@ -10,6 +14,19 @@ In order to run in development mode, use Poetry:
 
 ```bash
 poetry run vigilant-crypto-snatch [more command line arguments]
+```
+
+You can run the tests with `pytest`:
+
+```bash
+poetry run pytest
+```
+
+In order to determine test coverage, use this:
+
+```bash
+poetry run coverage run --source=src -m pytest
+poetry run coverage html
 ```
 
 ## Updating the documentation

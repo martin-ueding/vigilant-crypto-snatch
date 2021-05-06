@@ -41,7 +41,7 @@ If you happen to get nonce errors with the Kraken marketplace, consider using le
 It is not inherently clear how triggers should be set. There are multiple variables that have to be tuned for *each* trigger:
 
 - Time delay
-- Cooloff (currently the same as time delay)
+- Cooloff
 - Drop percentage
 - Fiat volume
 
