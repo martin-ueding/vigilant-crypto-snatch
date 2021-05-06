@@ -75,6 +75,9 @@ def make_trigger_ui(
 ) -> triggers.BuyTrigger:
     trigger_spec = {"fiat": sidebar_settings.fiat, "coin": sidebar_settings.coin}
 
+    trigger_spec["name"] = st.text_input('Name', f"Trigger {i+1}",
+        key=f"name{i}",)
+
     trigger_spec["cooldown_minutes"] = 60 * st.slider(
         "Cooldown / hours",
         min_value=1,
@@ -239,8 +242,8 @@ def sub_trigger_simulation(sidebar_settings):
         .encode(
             x=alt.X("datetime", title="Time"),
             y=alt.Y("value", title=f"{sidebar_settings.fiat}"),
-            strokeDash=alt.StrokeDash("variable", title="Variable"),
-            color=alt.Color("trigger_name", title="Trigger"),
+            strokeDash=alt.StrokeDash("variable", title="Variable", legend=alt.Legend(orient='bottom')),
+            color=alt.Color("trigger_name", title="Trigger", legend=alt.Legend(orient='bottom')),
         )
         .interactive()
     )
