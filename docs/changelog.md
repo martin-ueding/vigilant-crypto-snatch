@@ -8,6 +8,7 @@ Upcoming:
 
 - Triggers can be given names in the evaluation interface.
 - The legend in the trigger simulation plot is shown below the plot to allow for longer trigger names without having them cropped.
+- Historical API was broken, it now retrieves data again.
 
 ### Version 4.1.0
 

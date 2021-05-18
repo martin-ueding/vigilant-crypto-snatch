@@ -32,7 +32,7 @@ class CryptoCompareHistoricalSource(HistoricalSource):
         logger.debug(f"Retrieving historical price at {when} for {fiat}/{coin} …")
         timestamp = int(when.timestamp())
         kind = self.get_kind(when)
-        url = self.base_url(kind, coin, fiat) + "&limit=1&toTs={timestamp}"
+        url = self.base_url(kind, coin, fiat) + f"&limit=1&toTs={timestamp}"
         try:
             r = requests.get(url)
         except requests.exceptions.ConnectionError as e:
