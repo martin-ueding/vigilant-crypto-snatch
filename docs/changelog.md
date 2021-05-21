@@ -6,15 +6,28 @@ This is a list of changes, from new to older.
 
 ### Version 4.2.0 (Upcoming)
 
+🧪 New features:
+
 - Triggers can be given names in the evaluation interface.
-- The legend in the trigger simulation plot is shown below the plot to allow for longer trigger names without having them cropped.
-- Historical API was broken, it now retrieves data again.
-- `clikraken` has been retired and we now use `krakenex` in version 2.
 - For the Kraken marketplace you can now specify whether the fees should be applied to base or quote currency.
-- Specifying a lower-case fiat currency and using the percentage based fiat volume strategy led to an error. This is now fixed and the fiat currency is again case-insensitive.
 - Attach a stack trace of exceptions to the Telegram message.
-- Send Telegram messages via POST (and not GET).
+
+🔧 Improvements:
+
+- The reported balance at startup will only contain currencies which are used in triggers. This will remove some leftover shitcoins that people might left in their account. After a trade only the balances for that currency pair will be reported to give a cleaner report.
+- The legend in the trigger simulation plot is shown below the plot to allow for longer trigger names without having them cropped.
+
+🪲 Bug fixes:
+
+- Historical API was broken, it now retrieves data again.
+- Specifying a lower-case fiat currency and using the percentage based fiat volume strategy led to an error. This is now fixed and the fiat currency is again case-insensitive.
 - Make sure that errors from the Telegram API are reported and not ignored.
+- Do not use Markdown with Telegram as parsing errors prevent messages from being sent. Plain text is not as pretty, but better have it reliable no matter which names the Triggers have.
+
+⚙️ Implementation details:
+
+- `clikraken` has been retired and we now use `krakenex` in version 2.
+- Send Telegram messages via POST (and not GET).
 
 ### Version 4.1.0
 
