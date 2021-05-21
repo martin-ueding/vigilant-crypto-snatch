@@ -137,10 +137,11 @@ class CachingHistoricalSource(HistoricalSource):
             return price
 
         for live_source in self.live_sources:
+            logger.debug(live_source)
             try:
                 price = live_source.get_price(then, coin, fiat)
             except HistoricalError as e:
-                logger.debug(e)
+                logger.debug(f"Error from live source: {repr(e)}")
             else:
                 self.session.add(price)
                 self.session.commit()

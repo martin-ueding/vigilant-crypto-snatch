@@ -38,7 +38,11 @@ class DropTriggeredDelegate(TriggeredDelegate):
         then = now - datetime.timedelta(minutes=self.delay_minutes)
         try:
             then_price = self.source.get_price(then, self.coin, self.fiat)
-        except historical.HistoricalError:
+        except historical.HistoricalError as e:
+            logger.warning(
+                f"Could not retrieve a historical price, so cannot determine if strategy “{self}” was triggered."
+                f" The original error is: {e}"
+            )
             return False
         critical = then_price.last * (1 - self.drop_percentage / 100)
         return price.last < critical
@@ -140,7 +144,7 @@ class BuyTrigger(Trigger, abc.ABC):
 
     def has_cooled_off(self, now: datetime.datetime) -> bool:
         if (
-            self.trials >= configuration.TRIGGER_FAILURE_COUNT
+            self.trials >= TRIGGER_FAILURE_COUNT
             and self.last_trial
             > now - datetime.timedelta(hours=TRIGGER_FAILURE_TIMEOUT_HOURS)
         ):

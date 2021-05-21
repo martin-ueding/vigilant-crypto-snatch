@@ -24,6 +24,7 @@ This is a list of changes, from new to older.
 - Specifying a lower-case fiat currency and using the percentage based fiat volume strategy led to an error. This is now fixed and the fiat currency is again case-insensitive.
 - Make sure that errors from the Telegram API are reported and not ignored.
 - Do not use Markdown with Telegram as parsing errors prevent messages from being sent. Plain text is not as pretty, but better have it reliable no matter which names the Triggers have.
+- Errors from the historical price source have been silently ignored. They now issue a warning.
 
 ⚙️ Implementation details:
 
