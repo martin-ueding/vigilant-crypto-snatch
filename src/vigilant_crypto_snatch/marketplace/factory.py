@@ -15,7 +15,9 @@ def make_marketplace(marketplace_str: str, config: dict) -> marketplace.Marketpl
             config["kraken"]["key"],
             config["kraken"]["secret"],
             withdrawal_config=config["kraken"].get("withdrawal", {}),
-            prefer_fee_in_base_currency=config["kraken"].get("prefer_fee_in_base_currency", False),
+            prefer_fee_in_base_currency=config["kraken"].get(
+                "prefer_fee_in_base_currency", False
+            ),
         )
     else:
         raise RuntimeError(f"Unknown market place {marketplace_str}!")
