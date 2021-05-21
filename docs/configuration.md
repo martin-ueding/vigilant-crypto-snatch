@@ -49,7 +49,7 @@ kraken:
   secret: YOUR SECRET
 ```
 
-### Fee policy
+#### Fee policy
 
 When you trade, you will have to pay a certain fee that depends on your Kraken account tier. Whatever these are exactly, you can choose whether you would like to have them taken away from your fiat or coin amount. If you let it take away from your coin amount, buying coin for 50 EUR will only cost exactly that, but you get a bit less coin. Should you rather choose to have it taken in fiat, you will get as much coin as you want, but it will cost you more fiat.
 
