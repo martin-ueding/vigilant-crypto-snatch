@@ -254,7 +254,7 @@ def make_buy_trigger(session, source, market, trigger_spec) -> BuyTrigger:
         volume_fiat_delegate = FixedVolumeFiatDelegate(trigger_spec["volume_fiat"])
     elif "percentage_fiat" in trigger_spec:
         volume_fiat_delegate = RatioVolumeFiatDelegate(
-            trigger_spec["fiat"], trigger_spec["percentage_fiat"], market
+            trigger_spec["fiat"].upper(), trigger_spec["percentage_fiat"], market
         )
     else:
         raise RuntimeError("Could not determine fiat volume strategy from config.")

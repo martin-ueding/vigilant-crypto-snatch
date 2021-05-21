@@ -11,6 +11,7 @@ This is a list of changes, from new to older.
 - Historical API was broken, it now retrieves data again.
 - `clikraken` has been retired and we now use `krakenex` in version 2.
 - For the Kraken marketplace you can now specify whether the fees should be applied to base or quote currency.
+- Specifying a lower-case fiat currency and using the percentage based fiat volume strategy led to an error. This is now fixed and the fiat currency is again case-insensitive.
 
 ### Version 4.1.0
 
