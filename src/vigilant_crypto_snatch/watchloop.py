@@ -86,11 +86,9 @@ def process_trigger(trigger: triggers.Trigger, keepalive: bool):
         raise
     except Exception as e:
         logger.critical(
-            f"Unhandled exception type: `{repr(e)}`. Please report this to Martin!\n"
+            f"Unhandled exception type: {repr(e)}. Please report this to Martin!\n"
             f"\n"
-            f"```\n"
             f"{traceback.format_exc()}\n"
-            f"```"
         )
         if not keepalive:
             raise

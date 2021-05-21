@@ -38,7 +38,7 @@ class TelegramBot(logging.Handler):
     def send_message(self, message: str) -> typing.Optional[dict]:
         logger.debug(f"Sending message to Telegram …")
         url = f"https://api.telegram.org/bot{self.token}/sendMessage"
-        data = {"chat_id": self.chat_id, "parse_mode": "Markdown", "text": message}
+        data = {"chat_id": self.chat_id, "text": message}
         try:
             response = requests.post(url, json=data)
             j = response.json()
