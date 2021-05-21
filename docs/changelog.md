@@ -12,6 +12,9 @@ This is a list of changes, from new to older.
 - `clikraken` has been retired and we now use `krakenex` in version 2.
 - For the Kraken marketplace you can now specify whether the fees should be applied to base or quote currency.
 - Specifying a lower-case fiat currency and using the percentage based fiat volume strategy led to an error. This is now fixed and the fiat currency is again case-insensitive.
+- Attach a stack trace of exceptions to the Telegram message.
+- Send Telegram messages via POST (and not GET).
+- Make sure that errors from the Telegram API are reported and not ignored.
 
 ### Version 4.1.0
 

@@ -2,6 +2,7 @@ import datetime
 import logging
 import time
 import sys
+import traceback
 import typing
 
 import sqlalchemy.exc
@@ -78,21 +79,25 @@ def process_trigger(trigger: triggers.Trigger, keepalive: bool):
         notify_and_continue(e, logging.CRITICAL)
     except sqlalchemy.exc.OperationalError as e:
         logger.critical(
-            f"Something went wrong with the database. Perhaps it is easiest to just delete the database file at `{datamodel.user_db_path}`. The original exception was this: {repr(e)}"
+            f"Something went wrong with the database. Perhaps it is easiest to just delete the database file at `{datamodel.user_db_path}`. The original exception was this: `{repr(e)}`"
         )
-        sys.exit(1)
+        raise
     except KeyboardInterrupt:
         raise
     except Exception as e:
         logger.critical(
-            f"Unhandled exception type: {repr(e)}. Please report this to Martin!"
+            f"Unhandled exception type: `{repr(e)}`. Please report this to Martin!\n"
+            f"\n"
+            f"```\n"
+            f"{traceback.format_exc()}\n"
+            f"```"
         )
         if not keepalive:
             raise
 
     if trigger.trials > 3:
         logger.warning(
-            f"Disabling trigger “{trigger.get_name()}” after repeated failures."
+            f"Disabling trigger `{trigger.get_name()}` after repeated failures."
         )
 
 

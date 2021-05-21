@@ -1,11 +1,16 @@
 import logging
 import sys
 import typing
+import json
 
 import requests
 
 from . import configuration
 from . import logger
+
+
+class TelegramBotException(Exception):
+    pass
 
 
 class TelegramBot(logging.Handler):
@@ -31,11 +36,16 @@ class TelegramBot(logging.Handler):
         logger.info(f"Your Telegram chat ID is {self.chat_id}.")
 
     def send_message(self, message: str) -> typing.Optional[dict]:
-        logger.debug("Sending message to Telegram …")
-        send_text = f"https://api.telegram.org/bot{self.token}/sendMessage?chat_id={self.chat_id}&parse_mode=Markdown&text={message}"
+        logger.debug(f"Sending message to Telegram …")
+        url = f"https://api.telegram.org/bot{self.token}/sendMessage"
+        data = {"chat_id": self.chat_id, "parse_mode": "Markdown", "text": message}
         try:
-            response = requests.get(send_text)
-            return response.json()
+            response = requests.post(url, json=data)
+            j = response.json()
+            if not j["ok"]:
+                raise TelegramBotException(
+                    f"Error sending to telegram. Response: `{json.dumps(j)}`"
+                )
         except requests.exceptions.ConnectionError as e:
             pass
 
