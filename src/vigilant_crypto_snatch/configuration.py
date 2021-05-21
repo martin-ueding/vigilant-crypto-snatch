@@ -1,6 +1,7 @@
 import os
 import sys
 import shutil
+import typing
 
 import appdirs
 import yaml
@@ -50,3 +51,12 @@ def migrate_kraken_key(config: dict) -> dict:
         config["kraken"] = {"key": key, "secret": secret}
         update_config(config)
     return config
+
+
+def get_used_currencies(config: dict) -> typing.Set[str]:
+    result = set()
+    for trigger_spec in config["triggers"]:
+        result.add(trigger_spec["fiat"].upper())
+        result.add(trigger_spec["coin"].upper())
+    logger.debug(f"Currencies used in triggers: {result}")
+    return result

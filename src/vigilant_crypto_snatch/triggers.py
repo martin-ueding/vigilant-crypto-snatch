@@ -172,7 +172,7 @@ class BuyTrigger(Trigger, abc.ABC):
         rate = volume_fiat / volume_coin
         buy_message = f"{volume_coin} {self.coin} for {volume_fiat} {self.fiat} ({rate} {self.fiat}/{self.coin}) on {self.market.get_name()} due to “{self.get_name()}”"
         logger.info(f"Bought {buy_message}.")
-        marketplace.report_balances(self.market)
+        marketplace.report_balances(self.market, {self.coin, self.fiat})
 
     def get_name(self) -> str:
         if self.name is None:

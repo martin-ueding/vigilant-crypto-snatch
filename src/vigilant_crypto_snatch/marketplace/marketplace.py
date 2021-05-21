@@ -1,4 +1,5 @@
 import datetime
+import typing
 
 from vigilant_crypto_snatch import datamodel
 from vigilant_crypto_snatch import logger
@@ -46,13 +47,21 @@ class WithdrawalError(Exception):
     pass
 
 
-def report_balances(market: Marketplace) -> None:
+def report_balances(market: Marketplace, subset: typing.Set[str] = None) -> None:
     try:
         balance = market.get_balance()
     except NotImplementedError:
-        pass
+        return
+
+    if subset is None:
+        filtered_balances = balance
     else:
-        balances_formatted = ", ".join(
-            f"{value} {currency}" for currency, value in sorted(balance.items())
-        )
-        logger.info(f"Your balances on {market.get_name()} are: {balances_formatted}")
+        filtered_balances = {
+            currency: value
+            for currency, value in balance.items()
+            if currency in subset or value in subset
+        }
+    balances_formatted = ", ".join(
+        f"{value} {currency}" for currency, value in sorted(filtered_balances.items())
+    )
+    logger.info(f"Your balances on {market.get_name()} are: {balances_formatted}")

@@ -112,7 +112,7 @@ def main(options):
     marketplace.check_and_perform_widthdrawal(market)
 
     if not options.one_shot:
-        marketplace.report_balances(market)
+        marketplace.report_balances(market, configuration.get_used_currencies(config))
 
     database_source = historical.DatabaseHistoricalSource(
         session, datetime.timedelta(minutes=5)
