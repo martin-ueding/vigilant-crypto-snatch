@@ -42,21 +42,8 @@ class TriggerLoop(object):
     def loop_body(self) -> None:
         for trigger in self.active_triggers:
             process_trigger(trigger, self.keepalive)
-        self.clean_triggers()
         logger.debug(f"All triggers checked, sleeping for {self.sleep} seconds …")
         time.sleep(self.sleep)
-
-    def clean_triggers(self):
-        self.active_triggers = [
-            trigger for trigger in self.active_triggers if trigger.trials <= 3
-        ]
-        if not any(
-            isinstance(trigger, triggers.BuyTrigger) for trigger in self.active_triggers
-        ):
-            logger.critical(
-                "All triggers have been disabled, shutting down. You need to manually restart the program after fixing the errors."
-            )
-            sys.exit(1)
 
 
 def notify_and_continue(exception: Exception, severity: int) -> None:
@@ -71,6 +58,7 @@ def process_trigger(trigger: triggers.Trigger, keepalive: bool):
         now = datetime.datetime.now()
         if trigger.has_cooled_off(now) and trigger.is_triggered(now):
             trigger.trials += 1
+            trigger.last_trial = now
             trigger.fire(now)
             trigger.reset_trials()
     except marketplace.TickerError as e:

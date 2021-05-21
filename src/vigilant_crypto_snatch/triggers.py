@@ -9,6 +9,9 @@ from . import historical
 from .marketplace import marketplace
 from . import logger
 
+TRIGGER_FAILURE_COUNT = 3
+TRIGGER_FAILURE_TIMEOUT_HOURS = 12
+
 
 class TriggeredDelegate(object):
     def is_triggered(self, now: datetime.datetime) -> bool:
@@ -88,6 +91,7 @@ class RatioVolumeFiatDelegate(VolumeFiatDelegate):
 class Trigger(object):
     def __init__(self):
         self.trials = 0
+        self.last_trial = None
 
     def get_name(self) -> str:
         raise NotImplementedError()
@@ -100,6 +104,7 @@ class Trigger(object):
 
     def reset_trials(self):
         self.trials = 0
+        self.last_trial = None
 
     def is_triggered(self, now: datetime.datetime) -> bool:
         raise NotImplementedError()
@@ -134,6 +139,16 @@ class BuyTrigger(Trigger, abc.ABC):
         return self.triggered_delegate.is_triggered(now)
 
     def has_cooled_off(self, now: datetime.datetime) -> bool:
+        if (
+            self.trials >= configuration.TRIGGER_FAILURE_COUNT
+            and self.last_trial
+            > now - datetime.timedelta(hours=TRIGGER_FAILURE_TIMEOUT_HOURS)
+        ):
+            logger.debug(
+                f"Trigger {self.get_name()} has not cooled off as it had too many errors in the past {TRIGGER_FAILURE_TIMEOUT_HOURS} hours."
+            )
+            return False
+
         then = now - datetime.timedelta(minutes=self.cooldown_minutes)
         trade_count = (
             self.session.query(datamodel.Trade)

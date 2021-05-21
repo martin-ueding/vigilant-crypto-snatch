@@ -16,6 +16,7 @@ This is a list of changes, from new to older.
 
 - The reported balance at startup will only contain currencies which are used in triggers. This will remove some leftover shitcoins that people might left in their account. After a trade only the balances for that currency pair will be reported to give a cleaner report.
 - The legend in the trigger simulation plot is shown below the plot to allow for longer trigger names without having them cropped.
+- Triggers with failures used to get deactivated completely. Once no more triggers were active, the program was shut down. Failures stemming from insufficient funds are easily recovered from by transferring more money to the marketplace. The bot would have to be restarted afterwards. In order to make this unnecessary, failed triggers are just silenced for 12 hours. Another attempt is made automatically afterwards. This keeps the number of messages relatively low.
 
 🪲 Bug fixes:
 
