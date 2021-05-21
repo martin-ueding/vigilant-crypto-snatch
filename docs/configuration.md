@@ -49,6 +49,25 @@ kraken:
   secret: YOUR SECRET
 ```
 
+### Fee policy
+
+When you trade, you will have to pay a certain fee that depends on your Kraken account tier. Whatever these are exactly, you can choose whether you would like to have them taken away from your fiat or coin amount. If you let it take away from your coin amount, buying coin for 50 EUR will only cost exactly that, but you get a bit less coin. Should you rather choose to have it taken in fiat, you will get as much coin as you want, but it will cost you more fiat.
+
+Kraken supports this as a [flag to `addOrder`](https://docs.kraken.com/rest/#operation/addOrder) and has two options:
+
+> - `fcib` prefer fee in base currency (default if selling)
+> - `fciq` prefer fee in quote currency (default if buying, mutually exclusive with `fcib`)
+
+As explained [in their glossary](https://support.kraken.com/hc/en-us/articles/115000364388-Trading-glossary), the quote currency is fiat, whereas the base currency is the coin.
+
+We support this choice via the option `prefer_fee_in_base_currency`, which is false by default, so the fee is preferred in quote currency. If you set this to true, you can instead have it in the base currency and only spend exactly as much as you want. For this add this line:
+
+```yaml
+kraken:
+  …
+  prefer_fee_in_base_currency: true
+```
+
 #### Automatic transfer to wallet
 
 For this marketplace we support automatic transfers to an external wallet when the crypto volume is large enough. We query the current fees and only do the transfer when the fees are below a certain percentage of the value to transfer.
@@ -57,8 +76,7 @@ In order to set this up, you first need to have a withdrawal target. Go to the [
 
 ```yaml
 kraken:
-  key: YOUR KEY
-  secret: YOUR SECRET
+  …
   withdrawal:
     BTC:
       target: "Wallet"

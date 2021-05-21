@@ -26,11 +26,10 @@ def map_kraken_to_normal(coin: str) -> str:
 
 
 class KrakenexMarketplace(marketplace.Marketplace):
-    def __init__(self, api_key: str, api_secret: str, withdrawal_config: dict):
-        # self.api_key = api_key
-        # self.api_secret = api_secret
+    def __init__(self, api_key: str, api_secret: str, withdrawal_config: dict, prefer_fee_in_base_currency: bool):
         self.handle = krakenex.API(api_key, api_secret)
         self.withdrawal_config = withdrawal_config
+        self.prefer_fee_in_base_currency = prefer_fee_in_base_currency
 
     def get_name(self) -> str:
         return "Kraken"
@@ -65,7 +64,7 @@ class KrakenexMarketplace(marketplace.Marketplace):
                 "ordertype": "market",
                 "type": f"buy",
                 "volume": str(volume),
-                # 'validate': 'validate',
+                "oflags": "fcib" if self.prefer_fee_in_base_currency else "fciq",
             },
         )
         raise_error(answer, marketplace.BuyError)

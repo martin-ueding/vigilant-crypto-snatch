@@ -10,6 +10,7 @@ This is a list of changes, from new to older.
 - The legend in the trigger simulation plot is shown below the plot to allow for longer trigger names without having them cropped.
 - Historical API was broken, it now retrieves data again.
 - `clikraken` has been retired and we now use `krakenex` in version 2.
+- For the Kraken marketplace you can now specify whether the fees should be applied to base or quote currency.
 
 ### Version 4.1.0
 
