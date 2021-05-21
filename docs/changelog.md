@@ -4,11 +4,12 @@ This is a list of changes, from new to older.
 
 ## 4.0 Series
 
-Upcoming:
+### Version 4.2.0 (Upcoming)
 
 - Triggers can be given names in the evaluation interface.
 - The legend in the trigger simulation plot is shown below the plot to allow for longer trigger names without having them cropped.
 - Historical API was broken, it now retrieves data again.
+- `clikraken` has been retired and we now use `krakenex` in version 2.
 
 ### Version 4.1.0
 
