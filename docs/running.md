@@ -24,7 +24,7 @@ There are a couple of command line options:
 
 When you want to quit, just press <kbd>Ctrl</kbd>+<kbd>C</kbd>.
 
-All historical price data and performed transactions will be stored in a SQLite database at `~/.local/share/vigilant-crypto-snatch/db.sqlite`. We sometimes change the database format between major releases. In that case it is easiest to delete the database and let the script create the new one. As there are only so few users, we don't offer proper database migrations.
+All historical price data and performed transactions will be stored in a SQLite database at `~/.local/share/vigilant-crypto-snatch/db.sqlite` (elsewhere on Windows). We sometimes change the database format between major releases. In that case it is easiest to delete the database and let the script create the new one. As there are only so few users, we don't offer proper database migrations.
 
 An example for running the script with log level info on Kraken:
 

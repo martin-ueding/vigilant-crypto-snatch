@@ -30,6 +30,7 @@ This is a list of changes, from new to older.
 
 - `clikraken` has been retired and we now use `krakenex` in version 2.
 - Send Telegram messages via POST (and not GET).
+- Automatically move the SQLite database into the appropriate user data directory on Windows on macOS, no change on Linux.
 
 ### Version 4.1.0
 

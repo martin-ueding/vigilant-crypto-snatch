@@ -12,6 +12,7 @@ dirs = appdirs.AppDirs(
     appname="vigilant-crypto-snatch", appauthor="Martin Ueding", roaming=True
 )
 config_path = os.path.join(dirs.user_config_dir, "config.yml")
+user_db_path = os.path.join(dirs.user_data_dir, "db.sqlite")
 
 
 def report_app_dirs() -> None:
