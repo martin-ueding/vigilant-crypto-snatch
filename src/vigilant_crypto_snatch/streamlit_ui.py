@@ -13,11 +13,14 @@ from vigilant_crypto_snatch import datamodel
 from vigilant_crypto_snatch import evaluation
 from vigilant_crypto_snatch import historical
 from vigilant_crypto_snatch import triggers
+from vigilant_crypto_snatch import migrations
 
 
 def get_currency_pairs(api_key: str) -> list:
     r = requests.get(
-        f"https://min-api.cryptocompare.com/data/v2/pair/mapping/exchange?e=Kraken&api_key={api_key}"
+        f"https://min-api.cryptocompare.com/data/v2/pair/mapping/exchange"
+        f"?e=Kraken"
+        f"&api_key={api_key}"
     )
     data = r.json()["Data"]["current"]
     pairs = [(e["fsym"], e["tsym"]) for e in data]
@@ -363,5 +366,6 @@ if __name__ == "__main__" and st._is_running_with_streamlit:
 
 
 def main(options):
+    migrations.run_migrations()
     sys.argv = ["streamlit", "run", __file__]
     sys.exit(st_cli.main())

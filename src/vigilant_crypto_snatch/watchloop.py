@@ -15,6 +15,7 @@ from . import triggers
 from . import historical
 from . import telegram
 from . import logger
+from . import migrations
 
 
 class TriggerLoop(object):
@@ -88,6 +89,8 @@ def process_trigger(trigger: triggers.Trigger, keepalive: bool):
 
 
 def main(options):
+    migrations.run_migrations()
+
     telegram.add_telegram_logger()
     if not options.one_shot:
         logger.info("Starting up …")
