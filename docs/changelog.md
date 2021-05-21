@@ -4,7 +4,7 @@ This is a list of changes, from new to older.
 
 ## 4.0 Series
 
-### Version 4.2.0 (Upcoming)
+### Version 4.2.0
 
 🧪 New features:
 
