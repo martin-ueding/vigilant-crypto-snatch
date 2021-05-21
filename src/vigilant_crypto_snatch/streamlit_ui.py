@@ -40,6 +40,10 @@ def sub_home(sidebar_settings):
 def sub_price(sidebar_settings):
     st.title("Close price")
 
+    show_close_chart(sidebar_settings)
+
+
+def show_close_chart(sidebar_settings):
     close_chart = (
         alt.Chart(sidebar_settings.data)
         .mark_line()
@@ -57,13 +61,19 @@ def sub_price(sidebar_settings):
 def sub_drop_survey(sidebar_settings):
     st.markdown("# Drop survey")
 
+    show_close_chart(sidebar_settings)
+
+    time_begin, time_end = make_time_slider(sidebar_settings)
+    data_datetime = sidebar_settings.data["datetime"]
+    selection = (time_begin <= data_datetime) & (data_datetime <= time_end)
+
     range_delay = st.slider(
         "Delay / hours", min_value=1, max_value=14 * 24, value=(1, 48)
     )
     range_percentage = st.slider("Drop / %", min_value=0, max_value=100, value=(1, 30))
     st.altair_chart(
         make_survey_chart(
-            sidebar_settings.data,
+            sidebar_settings.data.loc[selection].reset_index(),
             range_delay,
             range_percentage,
             sidebar_settings.coin,
@@ -130,19 +140,7 @@ def sub_trigger_simulation(sidebar_settings):
     source = evaluation.InterpolatingSource(sidebar_settings.data)
     market = evaluation.SimulationMarketplace(source)
 
-    print(sidebar_settings.data.columns)
-    time_begin = np.min(sidebar_settings.data["datetime"]).toordinal()
-    time_end = np.max(sidebar_settings.data["datetime"]).toordinal()
-    time_range = st.slider(
-        "Data range",
-        min_value=time_begin,
-        max_value=time_end,
-        value=(time_begin, time_end),
-    )
-    time_begin = datetime.datetime.fromordinal(time_range[0])
-    time_end = datetime.datetime.fromordinal(time_range[1])
-
-    st.markdown(f"From {time_begin} to {time_end}")
+    time_begin, time_end = make_time_slider(sidebar_settings)
 
     number_of_triggers = st.number_input(
         "Number of triggers", min_value=1, max_value=None, value=2
@@ -263,6 +261,21 @@ def sub_trigger_simulation(sidebar_settings):
 
     st.markdown("# Table with trades")
     st.dataframe(trades)
+
+
+def make_time_slider(sidebar_settings):
+    time_begin = np.min(sidebar_settings.data["datetime"]).toordinal()
+    time_end = np.max(sidebar_settings.data["datetime"]).toordinal()
+    time_range = st.slider(
+        "Data range",
+        min_value=time_begin,
+        max_value=time_end,
+        value=(time_begin, time_end),
+    )
+    time_begin = datetime.datetime.fromordinal(time_range[0])
+    time_end = datetime.datetime.fromordinal(time_range[1])
+    st.markdown(f"From {time_begin} to {time_end}")
+    return time_begin, time_end
 
 
 def simulate_triggers(

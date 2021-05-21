@@ -11,6 +11,7 @@ This is a list of changes, from new to older.
 - Triggers can be given names in the evaluation interface.
 - For the Kraken marketplace you can now specify whether the fees should be applied to base or quote currency.
 - Attach a stack trace of exceptions to the Telegram message.
+- In the drop survey evaluation one now also has a time range slider such that one can get a feeling for the drops. Some are one-time events, and others are regular patterns.
 
 🔧 Improvements:
 
