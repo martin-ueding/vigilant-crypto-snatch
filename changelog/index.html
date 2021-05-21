@@ -682,8 +682,15 @@
 </ul>
 <p>⚙️ Implementation details:</p>
 <ul>
-<li><code>clikraken</code> has been retired and we now use <code>krakenex</code> in version 2.</li>
-<li>Send Telegram messages via POST (and not GET).</li>
+<li>
+<p><code>clikraken</code> has been retired and we now use <code>krakenex</code> in version 2. This version is in conflice with <code>clikraken</code>, which needs <code>krakenex</code> version 1. When you upgrade, you might see this message:</p>
+<p><code>ERROR: pip's dependency resolver does not currently take into account all the packages that are installed. This behaviour is the source of the following dependency conflicts.
+clikraken 0.8.3.2 requires krakenex&lt;1.0,&gt;=0.1, but you have krakenex 2.1.0 which is incompatible.</code></p>
+<p>To resolve this, run <code>pip uninstall clikraken</code> or <code>sudo pip uninstall clikraken</code>, depending on whether you have installed it with <code>--user</code> in the past.</p>
+</li>
+<li>
+<p>Send Telegram messages via POST (and not GET).</p>
+</li>
 <li>Automatically move the SQLite database into the appropriate user data directory on Windows on macOS, no change on Linux.</li>
 </ul>
 <h3 id="version-410">Version 4.1.0</h3>
