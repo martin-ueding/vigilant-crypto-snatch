@@ -4,6 +4,10 @@ This is a list of changes, from new to older.
 
 ## 4.0 Series
 
+### Version 4.2.1
+
+- When a trigger was disabled after three consecutive failures, a message stating that would be shown every time the trigger was processed. In this way the user got the same amount of messages. This message is now removed. The initial errors speak for themselves, there is no need to have this additional message.
+
 ### Version 4.2.0
 
 🧪 New features:
