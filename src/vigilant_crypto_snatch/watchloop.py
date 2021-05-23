@@ -58,10 +58,7 @@ def process_trigger(trigger: triggers.Trigger, keepalive: bool):
     try:
         now = datetime.datetime.now()
         if trigger.has_cooled_off(now) and trigger.is_triggered(now):
-            trigger.trials += 1
-            trigger.last_trial = now
             trigger.fire(now)
-            trigger.reset_trials()
     except marketplace.TickerError as e:
         notify_and_continue(e, logging.ERROR)
     except marketplace.BuyError as e:

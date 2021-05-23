@@ -9,8 +9,31 @@ from . import historical
 from .marketplace import marketplace
 from . import logger
 
-TRIGGER_FAILURE_COUNT = 3
-TRIGGER_FAILURE_TIMEOUT_HOURS = 12
+
+class FailureTimeout(object):
+    TRIGGER_FAILURE_COUNT = 3
+    TRIGGER_FAILURE_TIMEOUT_HOURS = 12
+
+    def __init__(self):
+        self.trials = 0
+        self.last_trial = None
+
+    def start(self, now: datetime.datetime) -> None:
+        self.trials += 1
+        self.last_trial = now
+
+    def finish(self) -> None:
+        self.trials = 0
+        self.last_trial = None
+
+    def has_timeout(self, now: datetime.datetime) -> bool:
+        if self.trials < self.TRIGGER_FAILURE_COUNT:
+            return False
+        else:
+            end_timeout = self.last_trial + datetime.timedelta(
+                hours=self.TRIGGER_FAILURE_TIMEOUT_HOURS
+            )
+            return end_timeout >= now
 
 
 class TriggeredDelegate(object):
@@ -93,10 +116,6 @@ class RatioVolumeFiatDelegate(VolumeFiatDelegate):
 
 
 class Trigger(object):
-    def __init__(self):
-        self.trials = 0
-        self.last_trial = None
-
     def get_name(self) -> str:
         raise NotImplementedError()
 
@@ -105,10 +124,6 @@ class Trigger(object):
 
     def has_cooled_off(self, now: datetime.datetime) -> bool:
         raise NotImplementedError()
-
-    def reset_trials(self):
-        self.trials = 0
-        self.last_trial = None
 
     def is_triggered(self, now: datetime.datetime) -> bool:
         raise NotImplementedError()
@@ -137,17 +152,13 @@ class BuyTrigger(Trigger, abc.ABC):
         self.triggered_delegate = triggered_delegate
         self.volume_fiat_delegate = volume_fiat_delegate
         self.name = name
-        self.reset_trials()
+        self.failure_timeout = FailureTimeout()
 
     def is_triggered(self, now: datetime.datetime) -> bool:
         return self.triggered_delegate.is_triggered(now)
 
     def has_cooled_off(self, now: datetime.datetime) -> bool:
-        if (
-            self.trials >= TRIGGER_FAILURE_COUNT
-            and self.last_trial
-            > now - datetime.timedelta(hours=TRIGGER_FAILURE_TIMEOUT_HOURS)
-        ):
+        if self.failure_timeout.has_timeout(now):
             logger.debug(
                 f"Trigger {self.get_name()} has not cooled off as it had too many errors in the past {TRIGGER_FAILURE_TIMEOUT_HOURS} hours."
             )
@@ -168,10 +179,12 @@ class BuyTrigger(Trigger, abc.ABC):
 
     def fire(self, now: datetime.datetime) -> None:
         logger.info(f"Trigger “{self.get_name()}” fired, try buying …")
+        self.failure_timeout.start(now)
         price = self.source.get_price(now, self.coin, self.fiat)
         volume_fiat = self.volume_fiat_delegate.get_volume_fiat()
         volume_coin = round(volume_fiat / price.last, 8)
         self.perform_buy(volume_coin, volume_fiat, now)
+        self.failure_timeout.finish()
 
     def perform_buy(
         self, volume_coin: float, volume_fiat: float, now: datetime.datetime
