@@ -79,11 +79,6 @@ def process_trigger(trigger: triggers.Trigger, keepalive: bool):
         if not keepalive:
             raise
 
-    if trigger.trials > 3:
-        logger.warning(
-            f"Disabling trigger `{trigger.get_name()}` after repeated failures."
-        )
-
 
 def main(options):
     migrations.run_migrations()
