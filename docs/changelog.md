@@ -4,6 +4,10 @@ This is a list of changes, from new to older.
 
 ## 4.0 Series
 
+### Version 4.2.2
+
+- Another warning message would use a constant that was moved to another place in the meantime. The program crashed when the message was going to be emitted. It has been removed now.
+
 ### Version 4.2.1
 
 - When a trigger was disabled after three consecutive failures, a message stating that would be shown every time the trigger was processed. In this way the user got the same amount of messages. This message is now removed. The initial errors speak for themselves, there is no need to have this additional message.

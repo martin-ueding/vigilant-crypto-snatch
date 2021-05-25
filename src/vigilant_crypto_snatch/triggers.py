@@ -159,9 +159,6 @@ class BuyTrigger(Trigger, abc.ABC):
 
     def has_cooled_off(self, now: datetime.datetime) -> bool:
         if self.failure_timeout.has_timeout(now):
-            logger.debug(
-                f"Trigger {self.get_name()} has not cooled off as it had too many errors in the past {TRIGGER_FAILURE_TIMEOUT_HOURS} hours."
-            )
             return False
 
         then = now - datetime.timedelta(minutes=self.cooldown_minutes)
