@@ -3,7 +3,7 @@ name = "altair"
 version = "4.1.0"
 description = "Altair: A declarative statistical visualization library for Python."
 category = "main"
-optional = true
+optional = false
 python-versions = ">=3.6"
 
 [package.dependencies]
@@ -30,7 +30,7 @@ name = "appnope"
 version = "0.1.2"
 description = "Disable App Nap on macOS >= 10.9"
 category = "main"
-optional = true
+optional = false
 python-versions = "*"
 
 [[package]]
@@ -38,7 +38,7 @@ name = "argon2-cffi"
 version = "20.1.0"
 description = "The secure Argon2 password hashing algorithm."
 category = "main"
-optional = true
+optional = false
 python-versions = "*"
 
 [package.dependencies]
@@ -55,7 +55,7 @@ name = "astor"
 version = "0.8.1"
 description = "Read/rewrite/write Python ASTs"
 category = "main"
-optional = true
+optional = false
 python-versions = "!=3.0.*,!=3.1.*,!=3.2.*,!=3.3.*,>=2.7"
 
 [[package]]
@@ -63,7 +63,7 @@ name = "async-generator"
 version = "1.10"
 description = "Async generators and context managers for Python 3.5+"
 category = "main"
-optional = true
+optional = false
 python-versions = ">=3.5"
 
 [[package]]
@@ -93,7 +93,7 @@ name = "backcall"
 version = "0.2.0"
 description = "Specifications for callback functions passed in to an API"
 category = "main"
-optional = true
+optional = false
 python-versions = "*"
 
 [[package]]
@@ -101,7 +101,7 @@ name = "base58"
 version = "2.1.0"
 description = "Base58 and Base58Check implementation."
 category = "main"
-optional = true
+optional = false
 python-versions = ">=3.5"
 
 [package.extras]
@@ -145,7 +145,7 @@ name = "bleach"
 version = "3.3.0"
 description = "An easy safelist-based HTML-sanitizing tool."
 category = "main"
-optional = true
+optional = false
 python-versions = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*, !=3.4.*"
 
 [package.dependencies]
@@ -158,7 +158,7 @@ name = "blinker"
 version = "1.4"
 description = "Fast, simple object-to-object and broadcast signaling"
 category = "main"
-optional = true
+optional = false
 python-versions = "*"
 
 [[package]]
@@ -166,7 +166,7 @@ name = "cachetools"
 version = "4.2.2"
 description = "Extensible memoizing collections and decorators"
 category = "main"
-optional = true
+optional = false
 python-versions = "~=3.5"
 
 [[package]]
@@ -182,7 +182,7 @@ name = "cffi"
 version = "1.14.5"
 description = "Foreign Function Interface for Python calling C code."
 category = "main"
-optional = true
+optional = false
 python-versions = "*"
 
 [package.dependencies]
@@ -198,15 +198,11 @@ python-versions = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*, !=3.4.*"
 
 [[package]]
 name = "click"
-version = "8.0.1"
+version = "7.1.2"
 description = "Composable command line interface toolkit"
 category = "main"
 optional = false
-python-versions = ">=3.6"
-
-[package.dependencies]
-colorama = {version = "*", markers = "platform_system == \"Windows\""}
-importlib-metadata = {version = "*", markers = "python_version < \"3.8\""}
+python-versions = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*, !=3.4.*"
 
 [[package]]
 name = "colorama"
@@ -246,7 +242,7 @@ name = "decorator"
 version = "5.0.9"
 description = "Decorators for Humans"
 category = "main"
-optional = true
+optional = false
 python-versions = ">=3.5"
 
 [[package]]
@@ -254,7 +250,7 @@ name = "defusedxml"
 version = "0.7.1"
 description = "XML bomb protection for Python stdlib modules"
 category = "main"
-optional = true
+optional = false
 python-versions = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*, !=3.4.*"
 
 [[package]]
@@ -262,7 +258,7 @@ name = "entrypoints"
 version = "0.3"
 description = "Discover and load entry points from installed packages."
 category = "main"
-optional = true
+optional = false
 python-versions = ">=2.7"
 
 [[package]]
@@ -278,7 +274,7 @@ name = "gitdb"
 version = "4.0.7"
 description = "Git Object Database"
 category = "main"
-optional = true
+optional = false
 python-versions = ">=3.4"
 
 [package.dependencies]
@@ -289,7 +285,7 @@ name = "gitpython"
 version = "3.1.17"
 description = "Python Git Library"
 category = "main"
-optional = true
+optional = false
 python-versions = ">=3.5"
 
 [package.dependencies]
@@ -355,7 +351,7 @@ name = "ipykernel"
 version = "5.5.5"
 description = "IPython Kernel for Jupyter"
 category = "main"
-optional = true
+optional = false
 python-versions = ">=3.5"
 
 [package.dependencies]
@@ -373,7 +369,7 @@ name = "ipython"
 version = "7.23.1"
 description = "IPython: Productive Interactive Computing"
 category = "main"
-optional = true
+optional = false
 python-versions = ">=3.7"
 
 [package.dependencies]
@@ -405,7 +401,7 @@ name = "ipython-genutils"
 version = "0.2.0"
 description = "Vestigial utilities from IPython"
 category = "main"
-optional = true
+optional = false
 python-versions = "*"
 
 [[package]]
@@ -413,7 +409,7 @@ name = "ipywidgets"
 version = "7.6.3"
 description = "IPython HTML widgets for Jupyter"
 category = "main"
-optional = true
+optional = false
 python-versions = "*"
 
 [package.dependencies]
@@ -432,7 +428,7 @@ name = "jedi"
 version = "0.18.0"
 description = "An autocompletion tool for Python that can be used for text editors."
 category = "main"
-optional = true
+optional = false
 python-versions = ">=3.6"
 
 [package.dependencies]
@@ -469,7 +465,7 @@ name = "jsonschema"
 version = "3.2.0"
 description = "An implementation of JSON Schema validation for Python"
 category = "main"
-optional = true
+optional = false
 python-versions = "*"
 
 [package.dependencies]
@@ -487,7 +483,7 @@ name = "jupyter-client"
 version = "6.2.0"
 description = "Jupyter protocol implementation and client libraries"
 category = "main"
-optional = true
+optional = false
 python-versions = ">=3.6.1"
 
 [package.dependencies]
@@ -507,7 +503,7 @@ name = "jupyter-core"
 version = "4.7.1"
 description = "Jupyter core package. A base package on which Jupyter projects rely."
 category = "main"
-optional = true
+optional = false
 python-versions = ">=3.6"
 
 [package.dependencies]
@@ -519,7 +515,7 @@ name = "jupyterlab-pygments"
 version = "0.1.2"
 description = "Pygments theme using JupyterLab CSS variables"
 category = "main"
-optional = true
+optional = false
 python-versions = "*"
 
 [package.dependencies]
@@ -530,7 +526,7 @@ name = "jupyterlab-widgets"
 version = "1.0.0"
 description = "A JupyterLab extension."
 category = "main"
-optional = true
+optional = false
 python-versions = ">=3.6"
 
 [[package]]
@@ -599,7 +595,7 @@ name = "matplotlib-inline"
 version = "0.1.2"
 description = "Inline Matplotlib backend for Jupyter"
 category = "main"
-optional = true
+optional = false
 python-versions = ">=3.5"
 
 [package.dependencies]
@@ -610,7 +606,7 @@ name = "mistune"
 version = "0.8.4"
 description = "The fastest markdown parser in pure Python"
 category = "main"
-optional = true
+optional = false
 python-versions = "*"
 
 [[package]]
@@ -669,7 +665,7 @@ name = "nbclient"
 version = "0.5.3"
 description = "A client library for executing notebooks. Formerly nbconvert's ExecutePreprocessor."
 category = "main"
-optional = true
+optional = false
 python-versions = ">=3.6.1"
 
 [package.dependencies]
@@ -689,7 +685,7 @@ name = "nbconvert"
 version = "6.0.7"
 description = "Converting Jupyter Notebooks"
 category = "main"
-optional = true
+optional = false
 python-versions = ">=3.6"
 
 [package.dependencies]
@@ -719,7 +715,7 @@ name = "nbformat"
 version = "5.1.3"
 description = "The Jupyter Notebook format"
 category = "main"
-optional = true
+optional = false
 python-versions = ">=3.5"
 
 [package.dependencies]
@@ -737,7 +733,7 @@ name = "nest-asyncio"
 version = "1.5.1"
 description = "Patch asyncio to allow nested event loops"
 category = "main"
-optional = true
+optional = false
 python-versions = ">=3.5"
 
 [[package]]
@@ -767,7 +763,7 @@ name = "notebook"
 version = "6.4.0"
 description = "A web-based notebook environment for interactive computing"
 category = "main"
-optional = true
+optional = false
 python-versions = ">=3.6"
 
 [package.dependencies]
@@ -796,7 +792,7 @@ name = "numpy"
 version = "1.20.3"
 description = "NumPy is the fundamental package for array computing with Python."
 category = "main"
-optional = true
+optional = false
 python-versions = ">=3.7"
 
 [[package]]
@@ -815,7 +811,7 @@ name = "pandas"
 version = "1.2.4"
 description = "Powerful data structures for data analysis, time series, and statistics"
 category = "main"
-optional = true
+optional = false
 python-versions = ">=3.7.1"
 
 [package.dependencies]
@@ -831,7 +827,7 @@ name = "pandocfilters"
 version = "1.4.3"
 description = "Utilities for writing pandoc filters in python"
 category = "main"
-optional = true
+optional = false
 python-versions = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*"
 
 [[package]]
@@ -839,7 +835,7 @@ name = "parso"
 version = "0.8.2"
 description = "A Python Parser"
 category = "main"
-optional = true
+optional = false
 python-versions = ">=3.6"
 
 [package.extras]
@@ -859,7 +855,7 @@ name = "pexpect"
 version = "4.8.0"
 description = "Pexpect allows easy control of interactive console applications."
 category = "main"
-optional = true
+optional = false
 python-versions = "*"
 
 [package.dependencies]
@@ -870,7 +866,7 @@ name = "pickleshare"
 version = "0.7.5"
 description = "Tiny 'shelve'-like database with concurrency support"
 category = "main"
-optional = true
+optional = false
 python-versions = "*"
 
 [[package]]
@@ -878,7 +874,7 @@ name = "pillow"
 version = "8.2.0"
 description = "Python Imaging Library (Fork)"
 category = "main"
-optional = true
+optional = false
 python-versions = ">=3.6"
 
 [[package]]
@@ -900,7 +896,7 @@ name = "prometheus-client"
 version = "0.10.1"
 description = "Python client for the Prometheus monitoring system."
 category = "main"
-optional = true
+optional = false
 python-versions = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*"
 
 [package.extras]
@@ -911,7 +907,7 @@ name = "prompt-toolkit"
 version = "3.0.18"
 description = "Library for building powerful interactive command lines in Python"
 category = "main"
-optional = true
+optional = false
 python-versions = ">=3.6.1"
 
 [package.dependencies]
@@ -922,7 +918,7 @@ name = "protobuf"
 version = "3.17.0"
 description = "Protocol Buffers"
 category = "main"
-optional = true
+optional = false
 python-versions = "*"
 
 [package.dependencies]
@@ -933,7 +929,7 @@ name = "ptyprocess"
 version = "0.7.0"
 description = "Run a subprocess in a pseudo terminal"
 category = "main"
-optional = true
+optional = false
 python-versions = "*"
 
 [[package]]
@@ -949,7 +945,7 @@ name = "pyarrow"
 version = "4.0.0"
 description = "Python library for Apache Arrow"
 category = "main"
-optional = true
+optional = false
 python-versions = ">=3.6"
 
 [package.dependencies]
@@ -960,7 +956,7 @@ name = "pycparser"
 version = "2.20"
 description = "C parser in Python"
 category = "main"
-optional = true
+optional = false
 python-versions = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*"
 
 [[package]]
@@ -968,7 +964,7 @@ name = "pydeck"
 version = "0.6.2"
 description = "Widget for deck.gl maps"
 category = "main"
-optional = true
+optional = false
 python-versions = "*"
 
 [package.dependencies]
@@ -1021,7 +1017,7 @@ name = "pyrsistent"
 version = "0.17.3"
 description = "Persistent/Functional/Immutable data structures"
 category = "main"
-optional = true
+optional = false
 python-versions = ">=3.5"
 
 [[package]]
@@ -1051,7 +1047,7 @@ name = "python-dateutil"
 version = "2.8.1"
 description = "Extensions to the standard Python datetime module"
 category = "main"
-optional = true
+optional = false
 python-versions = "!=3.0.*,!=3.1.*,!=3.2.*,>=2.7"
 
 [package.dependencies]
@@ -1062,7 +1058,7 @@ name = "pytz"
 version = "2021.1"
 description = "World timezone definitions, modern and historical"
 category = "main"
-optional = true
+optional = false
 python-versions = "*"
 
 [[package]]
@@ -1070,7 +1066,7 @@ name = "pywin32"
 version = "300"
 description = "Python for Window Extensions"
 category = "main"
-optional = true
+optional = false
 python-versions = "*"
 
 [[package]]
@@ -1078,7 +1074,7 @@ name = "pywinpty"
 version = "1.1.1"
 description = "Pseudo terminal support for Windows from Python."
 category = "main"
-optional = true
+optional = false
 python-versions = ">=3.6"
 
 [[package]]
@@ -1094,7 +1090,7 @@ name = "pyzmq"
 version = "22.0.3"
 description = "Python bindings for 0MQ"
 category = "main"
-optional = true
+optional = false
 python-versions = ">=3.6"
 
 [package.dependencies]
@@ -1132,7 +1128,7 @@ name = "scipy"
 version = "1.6.3"
 description = "SciPy: Scientific Library for Python"
 category = "main"
-optional = true
+optional = false
 python-versions = ">=3.7,<3.10"
 
 [package.dependencies]
@@ -1143,7 +1139,7 @@ name = "send2trash"
 version = "1.5.0"
 description = "Send file to trash natively under Mac OS X, Windows and Linux."
 category = "main"
-optional = true
+optional = false
 python-versions = "*"
 
 [[package]]
@@ -1159,7 +1155,7 @@ name = "smmap"
 version = "4.0.0"
 description = "A pure Python implementation of a sliding window memory map manager"
 category = "main"
-optional = true
+optional = false
 python-versions = ">=3.5"
 
 [[package]]
@@ -1196,10 +1192,10 @@ sqlcipher = ["sqlcipher3-binary"]
 
 [[package]]
 name = "streamlit"
-version = "0.80.0"
+version = "0.82.0"
 description = "The fastest way to build data apps in Python"
 category = "main"
-optional = true
+optional = false
 python-versions = ">=3.6"
 
 [package.dependencies]
@@ -1208,7 +1204,7 @@ astor = "*"
 base58 = "*"
 blinker = "*"
 cachetools = ">=4.0"
-click = ">=7.0"
+click = ">=7.0,<8.0"
 gitpython = "*"
 numpy = "*"
 packaging = "*"
@@ -1230,7 +1226,7 @@ name = "terminado"
 version = "0.10.0"
 description = "Tornado websocket backend for the Xterm.js Javascript terminal emulator library."
 category = "main"
-optional = true
+optional = false
 python-versions = ">=3.6"
 
 [package.dependencies]
@@ -1246,7 +1242,7 @@ name = "testpath"
 version = "0.5.0"
 description = "Test utilities for code working with files and commands"
 category = "main"
-optional = true
+optional = false
 python-versions = ">= 3.5"
 
 [package.extras]
@@ -1265,7 +1261,7 @@ name = "toolz"
 version = "0.11.1"
 description = "List processing tools and functional utilities"
 category = "main"
-optional = true
+optional = false
 python-versions = ">=3.5"
 
 [[package]]
@@ -1294,7 +1290,7 @@ name = "traitlets"
 version = "5.0.5"
 description = "Traitlets Python configuration system"
 category = "main"
-optional = true
+optional = false
 python-versions = ">=3.7"
 
 [package.dependencies]
@@ -1324,7 +1320,7 @@ name = "tzlocal"
 version = "2.1"
 description = "tzinfo object for the local timezone"
 category = "main"
-optional = true
+optional = false
 python-versions = "*"
 
 [package.dependencies]
@@ -1348,7 +1344,7 @@ name = "validators"
 version = "0.18.2"
 description = "Python Data Validation for Humans™."
 category = "main"
-optional = true
+optional = false
 python-versions = ">=3.4"
 
 [package.dependencies]
@@ -1363,7 +1359,7 @@ name = "watchdog"
 version = "2.1.2"
 description = "Filesystem events monitoring"
 category = "main"
-optional = true
+optional = false
 python-versions = ">=3.6"
 
 [package.extras]
@@ -1374,7 +1370,7 @@ name = "wcwidth"
 version = "0.2.5"
 description = "Measures the displayed width of unicode strings in a terminal"
 category = "main"
-optional = true
+optional = false
 python-versions = "*"
 
 [[package]]
@@ -1382,7 +1378,7 @@ name = "webencodings"
 version = "0.5.1"
 description = "Character encoding aliases for legacy web content"
 category = "main"
-optional = true
+optional = false
 python-versions = "*"
 
 [[package]]
@@ -1390,7 +1386,7 @@ name = "widgetsnbextension"
 version = "3.5.1"
 description = "IPython HTML widgets for Jupyter"
 category = "main"
-optional = true
+optional = false
 python-versions = "*"
 
 [package.dependencies]
@@ -1414,7 +1410,7 @@ evaluation = ["pandas", "scipy", "streamlit", "altair"]
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.7.1,<3.10"
-content-hash = "0ae0c1db989e7dea49c85158931e1248951ecf63f3843c515f36fd32c90c51cf"
+content-hash = "82e750ffddc761f4e985cda6295a7b72dea6e7d965d4c2c62c866bb618ec3837"
 
 [metadata.files]
 altair = [
@@ -1540,8 +1536,8 @@ chardet = [
     {file = "chardet-4.0.0.tar.gz", hash = "sha256:0d6f53a15db4120f2b08c94f11e7d93d2c911ee118b6b30a04ec3ee8310179fa"},
 ]
 click = [
-    {file = "click-8.0.1-py3-none-any.whl", hash = "sha256:fba402a4a47334742d782209a7c79bc448911afe1149d07bdabdf480b3e2f4b6"},
-    {file = "click-8.0.1.tar.gz", hash = "sha256:8c04c11192119b1ef78ea049e0a6f0463e4c48ef00a30160c704337586f3ad7a"},
+    {file = "click-7.1.2-py2.py3-none-any.whl", hash = "sha256:dacca89f4bfadd5de3d7489b7c8a566eee0d3676333fbb50030263894c38c0dc"},
+    {file = "click-7.1.2.tar.gz", hash = "sha256:d2b5255c7c6349bc1bd1e59e08cd12acbbd63ce649f2588755783aa94dfb6b1a"},
 ]
 colorama = [
     {file = "colorama-0.4.4-py2.py3-none-any.whl", hash = "sha256:9f47eda37229f68eee03b24b9748937c7dc3868f906e8ba69fbcbdd3bc5dc3e2"},
@@ -2252,8 +2248,8 @@ sqlalchemy = [
     {file = "SQLAlchemy-1.4.15.tar.gz", hash = "sha256:0ff100c75cd175f35f4d24375a0b3d82461f5b1af5fc8d112ef0e5ceea8049e6"},
 ]
 streamlit = [
-    {file = "streamlit-0.80.0-py2.py3-none-any.whl", hash = "sha256:156051dd1b2233d9cfa1d512edec8284567aa44def13cc228034e032bbb47d85"},
-    {file = "streamlit-0.80.0.tar.gz", hash = "sha256:a67951245581bacce377bc33965890afe9170dc782d9ae4fcfc5fc05ace59013"},
+    {file = "streamlit-0.82.0-py2.py3-none-any.whl", hash = "sha256:350b49b8a0677fb781ece048b225d39b298dd0375cd298d3520f48583178959a"},
+    {file = "streamlit-0.82.0.tar.gz", hash = "sha256:362539ea398d9528742a47e92216e076cc594e012998504aaec2ee00249ac331"},
 ]
 terminado = [
     {file = "terminado-0.10.0-py3-none-any.whl", hash = "sha256:048ce7b271ad1f94c48130844af1de163e54913b919f8c268c89b36a6d468d7c"},

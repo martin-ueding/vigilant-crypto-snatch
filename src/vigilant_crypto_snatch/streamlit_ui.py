@@ -1,4 +1,5 @@
 import datetime
+import os
 import sys
 
 import altair as alt
@@ -311,11 +312,20 @@ class Namespace(object):
     pass
 
 
+def get_api_key() -> str:
+    var_name = "CRYPTOCOMPARE_API_KEY"
+    if var_name in os.environ:
+        return os.environ.get(var_name)
+    else:
+        config = configuration.load_config()
+        return config['cryptocompare']["api_key"]
+
+
 def ui():
-    config = configuration.load_config()
+    api_key = get_api_key()
     st.sidebar.title("Vigilant Crypto Snatch Evaluation")
 
-    available_pairs = get_currency_pairs(config["cryptocompare"]["api_key"])
+    available_pairs = get_currency_pairs(api_key)
     available_fiats = list({f for c, f in available_pairs})
     available_fiats.sort()
     fiat = st.sidebar.selectbox(
@@ -327,7 +337,7 @@ def ui():
         "Coin", available_coins, index=available_coins.index("BTC")
     )
 
-    data = historical.get_hourly_data(coin, fiat, config["cryptocompare"]["api_key"])
+    data = historical.get_hourly_data(coin, fiat, api_key)
     data = evaluation.make_dataframe_from_json(data)
 
     sidebar_settings = Namespace()
