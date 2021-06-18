@@ -38,16 +38,17 @@ class TelegramBot(logging.Handler):
     def send_message(self, message: str) -> typing.Optional[dict]:
         logger.debug(f"Sending message to Telegram …")
         url = f"https://api.telegram.org/bot{self.token}/sendMessage"
-        data = {"chat_id": self.chat_id, "text": message}
-        try:
-            response = requests.post(url, json=data)
-            j = response.json()
-            if not j["ok"]:
-                raise TelegramBotException(
-                    f"Error sending to telegram. Response: `{json.dumps(j)}`"
-                )
-        except requests.exceptions.ConnectionError as e:
-            pass
+        for chunk in chunk_message(message):
+            data = {"chat_id": self.chat_id, "text": chunk}
+            try:
+                response = requests.post(url, json=data)
+                j = response.json()
+                if not j["ok"]:
+                    raise TelegramBotException(
+                        f"Error sending to telegram. Response: `{json.dumps(j)}`"
+                    )
+            except requests.exceptions.ConnectionError as e:
+                pass
 
     def format(self, record: logging.LogRecord) -> str:
         emoji = prefixes[record.levelname]
