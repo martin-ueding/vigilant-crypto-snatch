@@ -16,7 +16,7 @@ class TelegramBotException(Exception):
     pass
 
 
-class TelegramBot(logging.Handler):
+class TelegramLogger(logging.Handler):
     def __init__(self, token: str, level: str, chat_id: int = None):
         super().__init__(level.upper())
         self.sender = TelegramSender(token, chat_id)
@@ -69,7 +69,7 @@ class TelegramSender(object):
 def add_telegram_logger() -> None:
     config = configuration.load_config()
     if "telegram" in config:
-        telegram_handler = TelegramBot(
+        telegram_handler = TelegramLogger(
             config["telegram"]["token"],
             config["telegram"]["level"],
             config["telegram"].get("chat_id", None),
