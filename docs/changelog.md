@@ -4,11 +4,12 @@ This is a list of changes, from new to older.
 
 ## 4.0 Series
 
-### Upcoming
+### Version 4.2.3
 
 - Log output is also put into the Linux system log. In this way one can do post-mortem debugging.
 - Crashes have been reported when the Telegram message was longer than their limit of 4096 characters. Messages are now chunked to prevent this from happening.
 - Telegram messages are no longer directly send but stored in a send-queue. This way connection outages do not yield lost messages but rather just delay sending.
+- Use a proper form instead of the plain button in Streamlit.
 
 ### Version 4.2.2
 
