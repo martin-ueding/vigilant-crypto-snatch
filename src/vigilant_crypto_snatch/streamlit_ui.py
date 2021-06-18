@@ -149,19 +149,19 @@ def sub_trigger_simulation(sidebar_settings):
 
     st.markdown("# Parameters")
 
-    active_triggers = []
-    for i in range(number_of_triggers):
-        if i % 3 == 0:
-            col = st.beta_columns(min(number_of_triggers - i, 3))
-        with col[i % 3]:
-            active_triggers.append(
-                make_trigger_ui(session, source, market, sidebar_settings, i)
-            )
+    with st.form("triggers"):
+        active_triggers = []
+        for i in range(number_of_triggers):
+            if i % 3 == 0:
+                col = st.beta_columns(min(number_of_triggers - i, 3))
+            with col[i % 3]:
+                active_triggers.append(
+                    make_trigger_ui(session, source, market, sidebar_settings, i)
+                )
+        if not st.form_submit_button("Go!"):
+            return
 
     st.markdown("# Run")
-
-    if not st.button("Go!"):
-        st.stop()
 
     st.markdown("Simulating triggers …")
     simulation_progress_bar = st.progress(0.0)
