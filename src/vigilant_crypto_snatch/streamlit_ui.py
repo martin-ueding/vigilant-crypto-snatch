@@ -318,7 +318,7 @@ def get_api_key() -> str:
         return os.environ.get(var_name)
     else:
         config = configuration.load_config()
-        return config['cryptocompare']["api_key"]
+        return config["cryptocompare"]["api_key"]
 
 
 def ui():
