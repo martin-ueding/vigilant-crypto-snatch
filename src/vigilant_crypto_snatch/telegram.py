@@ -76,7 +76,7 @@ def add_telegram_logger() -> None:
             configuration.update_config(config)
 
 
-def chunk_message(message: str, char_limit: int = 4096) -> typing.List[str]:
+def chunk_message(message: str, char_limit: int = 4000) -> typing.List[str]:
     lines = message.split("\n")
     capped_lines = []
     for line in lines:
@@ -99,7 +99,7 @@ def chunk_message(message: str, char_limit: int = 4096) -> typing.List[str]:
     return chunks
 
 
-def split_long_line(line: str, char_limit: int = 4096) -> typing.List[str]:
+def split_long_line(line: str, char_limit: int = 4000) -> typing.List[str]:
     intervals = len(line) // char_limit + 1
     chunks = [line[(i * char_limit) : ((i + 1) * char_limit)] for i in range(intervals)]
     return chunks
