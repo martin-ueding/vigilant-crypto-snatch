@@ -1,5 +1,6 @@
 import logging
 import sys
+import threading
 import typing
 import json
 
@@ -10,23 +11,11 @@ from . import logger
 
 
 prefixes = {"CRITICAL": "🔴", "ERROR": "🟠", "WARNING": "🟡", "INFO": "🟢", "DEBUG": "🔵"}
+telegram_sender = None
 
 
 class TelegramBotException(Exception):
     pass
-
-
-class TelegramLogger(logging.Handler):
-    def __init__(self, token: str, level: str, chat_id: int = None):
-        super().__init__(level.upper())
-        self.sender = TelegramSender(token, chat_id)
-
-    def format(self, record: logging.LogRecord) -> str:
-        emoji = prefixes[record.levelname]
-        return f"{emoji} {record.getMessage()}"
-
-    def emit(self, record: logging.LogRecord) -> None:
-        self.sender.send_message(self.format(record))
 
 
 class TelegramSender(object):
@@ -36,6 +25,43 @@ class TelegramSender(object):
             self.get_chat_id()
         else:
             self.chat_id = chat_id
+        self.running = True
+        self.queue = []
+        self.cv = threading.Condition()
+        self.thread = threading.Thread(target=self.watch_queue)
+        self.thread.start()
+
+    def queue_message(self, message: str) -> None:
+        with self.cv:
+            self.queue.append(message)
+            self.cv.notify()
+
+    def has_messages(self) -> bool:
+        return len(self.queue) > 0
+
+    def wait_predicate(self) -> bool:
+        return self.running or self.has_messages()
+
+    def shutdown(self) -> None:
+        self.running = False
+        with self.cv:
+            self.cv.notify()
+
+    def watch_queue(self) -> None:
+        while self.running:
+            with self.cv:
+                while not self.has_messages():
+                    self.cv.wait()
+                    if not self.running:
+                        break
+
+                while self.has_messages():
+                    try:
+                        message = self.queue[0]
+                        self.send_message(message)
+                        del self.queue[0]
+                    except requests.exceptions.ConnectionError as e:
+                        pass
 
     def get_chat_id(self) -> None:
         response = requests.get(f"https://api.telegram.org/bot{self.token}/getUpdates")
@@ -55,28 +81,38 @@ class TelegramSender(object):
         url = f"https://api.telegram.org/bot{self.token}/sendMessage"
         for chunk in chunk_message(message):
             data = {"chat_id": self.chat_id, "text": chunk}
-            try:
-                response = requests.post(url, json=data)
-                j = response.json()
-                if not j["ok"]:
-                    raise TelegramBotException(
-                        f"Error sending to telegram. Response: `{json.dumps(j)}`"
-                    )
-            except requests.exceptions.ConnectionError as e:
-                pass
+            response = requests.post(url, json=data)
+            j = response.json()
+            if not j["ok"]:
+                raise TelegramBotException(
+                    f"Error sending to telegram. Response: `{json.dumps(j)}`"
+                )
+
+
+class TelegramLogger(logging.Handler):
+    def __init__(self, level: str, sender: TelegramSender):
+        super().__init__(level.upper())
+        self.sender = sender
+
+    def format(self, record: logging.LogRecord) -> str:
+        emoji = prefixes[record.levelname]
+        return f"{emoji} {record.getMessage()}"
+
+    def emit(self, record: logging.LogRecord) -> None:
+        self.sender.queue_message(self.format(record))
 
 
 def add_telegram_logger() -> None:
     config = configuration.load_config()
     if "telegram" in config:
-        telegram_handler = TelegramLogger(
-            config["telegram"]["token"],
-            config["telegram"]["level"],
-            config["telegram"].get("chat_id", None),
+        global telegram_sender
+        telegram_sender = TelegramSender(
+            config["telegram"]["token"], config["telegram"].get("chat_id", None)
         )
+        telegram_handler = TelegramLogger(config["telegram"]["level"], telegram_sender)
         logger.addHandler(telegram_handler)
 
-        if not "chat_id" in config["telegram"]:
+        if "chat_id" not in config["telegram"]:
             config["telegram"]["chat_id"] = telegram_handler.chat_id
             configuration.update_config(config)
 

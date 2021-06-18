@@ -39,6 +39,8 @@ class TriggerLoop(object):
                     break
         except KeyboardInterrupt:
             logger.info("User interrupted, shutting down.")
+            if telegram.telegram_sender is not None:
+                telegram.telegram_sender.shutdown()
 
     def loop_body(self) -> None:
         for trigger in self.active_triggers:
