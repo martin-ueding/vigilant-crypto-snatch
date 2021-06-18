@@ -9,6 +9,9 @@ from . import configuration
 from . import logger
 
 
+prefixes = {"CRITICAL": "🔴", "ERROR": "🟠", "WARNING": "🟡", "INFO": "🟢", "DEBUG": "🔵"}
+
+
 class TelegramBotException(Exception):
     pass
 
@@ -56,9 +59,6 @@ class TelegramBot(logging.Handler):
 
     def emit(self, record: logging.LogRecord) -> None:
         self.send_message(self.format(record))
-
-
-prefixes = {"CRITICAL": "🔴", "ERROR": "🟠", "WARNING": "🟡", "INFO": "🟢", "DEBUG": "🔵"}
 
 
 def add_telegram_logger() -> None:
