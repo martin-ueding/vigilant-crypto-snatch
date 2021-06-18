@@ -5,6 +5,7 @@ import sys
 import traceback
 import typing
 
+import requests.exceptions
 import sqlalchemy.exc
 
 from . import configuration
@@ -65,6 +66,12 @@ def process_trigger(trigger: triggers.Trigger, keepalive: bool):
         notify_and_continue(e, logging.ERROR)
     except marketplace.BuyError as e:
         notify_and_continue(e, logging.CRITICAL)
+    except requests.exceptions.ReadTimeout as e:
+        logger.error(
+            f"We have had a read timeout, likely just a temporary internet or API availability glitch."
+            f"Details: {e}"
+        )
+        notify_and_continue(e, logging.ERROR)
     except sqlalchemy.exc.OperationalError as e:
         logger.critical(
             f"Something went wrong with the database. Perhaps it is easiest to just delete the database file at `{datamodel.user_db_path}`. The original exception was this: `{repr(e)}`"
