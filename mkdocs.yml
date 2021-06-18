@@ -1,4 +1,5 @@
 site_name: Vigilant Crypto Snatch
+site_url: 'https://martin-ueding.github.io/vigilant-crypto-snatch/'
 
 theme:
   name: material
