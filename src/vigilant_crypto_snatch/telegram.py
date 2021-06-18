@@ -17,8 +17,20 @@ class TelegramBotException(Exception):
 
 
 class TelegramBot(logging.Handler):
-    def __init__(self, token: str, level: str, chat_id: None):
+    def __init__(self, token: str, level: str, chat_id: int = None):
         super().__init__(level.upper())
+        self.sender = TelegramSender(token, chat_id)
+
+    def format(self, record: logging.LogRecord) -> str:
+        emoji = prefixes[record.levelname]
+        return f"{emoji} {record.getMessage()}"
+
+    def emit(self, record: logging.LogRecord) -> None:
+        self.sender.send_message(self.format(record))
+
+
+class TelegramSender(object):
+    def __init__(self, token: str, chat_id: int = None):
         self.token = token
         if chat_id is None:
             self.get_chat_id()
@@ -52,13 +64,6 @@ class TelegramBot(logging.Handler):
                     )
             except requests.exceptions.ConnectionError as e:
                 pass
-
-    def format(self, record: logging.LogRecord) -> str:
-        emoji = prefixes[record.levelname]
-        return f"{emoji} {record.getMessage()}"
-
-    def emit(self, record: logging.LogRecord) -> None:
-        self.send_message(self.format(record))
 
 
 def add_telegram_logger() -> None:
