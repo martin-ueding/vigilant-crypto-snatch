@@ -33,7 +33,8 @@ class TelegramSender(object):
 
     def queue_message(self, message: str) -> None:
         with self.cv:
-            self.queue.append(message)
+            if message not in self.queue:
+                self.queue.append(message)
             self.cv.notify()
 
     def has_messages(self) -> bool:
