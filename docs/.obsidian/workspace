@@ -1,117 +1,98 @@
 {
-  "main": {
-    "id": "dedb812b80c7d826",
-    "type": "split",
-    "children": [
-      {
-        "id": "5007416e47384c1a",
-        "type": "leaf",
-        "state": {
-          "type": "markdown",
-          "state": {
-            "file": "running.md",
-            "mode": "source"
-          }
-        }
-      }
-    ],
-    "direction": "vertical"
-  },
-  "left": {
-    "id": "f3d727661f5f5d45",
-    "type": "split",
-    "children": [],
-    "direction": "horizontal",
-    "width": 300,
-    "collapsed": true
-  },
-  "right": {
-    "id": "ff1dc2c91149c1a6",
-    "type": "split",
-    "children": [
-      {
-        "id": "e00c81017d7231dc",
-        "type": "tabs",
+    "main": {
+        "id": "dedb812b80c7d826",
+        "type": "split",
         "children": [
-          {
-            "id": "ce1e89109f1dfe2f",
-            "type": "leaf",
-            "state": {
-              "type": "backlink",
-              "state": {
-                "file": "running.md",
-                "collapseAll": false,
-                "extraContext": false,
-                "sortOrder": "alphabetical",
-                "showSearch": false,
-                "searchQuery": "",
-                "backlinkCollapsed": false,
-                "unlinkedCollapsed": true
-              }
+            {
+                "id": "5007416e47384c1a",
+                "type": "leaf",
+                "state": {
+                    "type": "markdown",
+                    "state": {"file": "running.md", "mode": "source"},
+                },
             }
-          },
-          {
-            "id": "f6e7b4807a40b8bb",
-            "type": "leaf",
-            "state": {
-              "type": "search",
-              "state": {
-                "query": "",
-                "matchingCase": false,
-                "explainSearch": false,
-                "collapseAll": false,
-                "extraContext": false,
-                "sortOrder": "alphabetical"
-              }
-            }
-          },
-          {
-            "id": "47fdf6b00a022b00",
-            "type": "leaf",
-            "state": {
-              "type": "tag",
-              "state": {
-                "sortOrder": "frequency",
-                "useHierarchy": true
-              }
-            }
-          },
-          {
-            "id": "ecd72d3dce3b7a5c",
-            "type": "leaf",
-            "state": {
-              "type": "outline",
-              "state": {
-                "file": "running.md"
-              }
-            }
-          }
         ],
-        "currentTab": 3
-      },
-      {
-        "id": "17068b0665b3bc8a",
-        "type": "tabs",
+        "direction": "vertical",
+    },
+    "left": {
+        "id": "f3d727661f5f5d45",
+        "type": "split",
+        "children": [],
+        "direction": "horizontal",
+        "width": 300,
+        "collapsed": true,
+    },
+    "right": {
+        "id": "ff1dc2c91149c1a6",
+        "type": "split",
         "children": [
-          {
-            "id": "ab792071d5436b58",
-            "type": "leaf",
-            "state": {
-              "type": "file-explorer",
-              "state": {}
-            }
-          }
-        ]
-      }
-    ],
-    "direction": "horizontal",
-    "width": 300
-  },
-  "active": "5007416e47384c1a",
-  "lastOpenFiles": [
-    "running.md",
-    "evaluation.md",
-    "configuration.md",
-    "donation.md"
-  ]
+            {
+                "id": "e00c81017d7231dc",
+                "type": "tabs",
+                "children": [
+                    {
+                        "id": "ce1e89109f1dfe2f",
+                        "type": "leaf",
+                        "state": {
+                            "type": "backlink",
+                            "state": {
+                                "file": "running.md",
+                                "collapseAll": false,
+                                "extraContext": false,
+                                "sortOrder": "alphabetical",
+                                "showSearch": false,
+                                "searchQuery": "",
+                                "backlinkCollapsed": false,
+                                "unlinkedCollapsed": true,
+                            },
+                        },
+                    },
+                    {
+                        "id": "f6e7b4807a40b8bb",
+                        "type": "leaf",
+                        "state": {
+                            "type": "search",
+                            "state": {
+                                "query": "",
+                                "matchingCase": false,
+                                "explainSearch": false,
+                                "collapseAll": false,
+                                "extraContext": false,
+                                "sortOrder": "alphabetical",
+                            },
+                        },
+                    },
+                    {
+                        "id": "47fdf6b00a022b00",
+                        "type": "leaf",
+                        "state": {
+                            "type": "tag",
+                            "state": {"sortOrder": "frequency", "useHierarchy": true},
+                        },
+                    },
+                    {
+                        "id": "ecd72d3dce3b7a5c",
+                        "type": "leaf",
+                        "state": {"type": "outline", "state": {"file": "running.md"}},
+                    },
+                ],
+                "currentTab": 3,
+            },
+            {
+                "id": "17068b0665b3bc8a",
+                "type": "tabs",
+                "children": [
+                    {
+                        "id": "ab792071d5436b58",
+                        "type": "leaf",
+                        "state": {"type": "file-explorer", "state": {}},
+                    }
+                ],
+            },
+        ],
+        "direction": "horizontal",
+        "width": 300,
+    },
+    "active": "5007416e47384c1a",
+    "lastOpenFiles": ["running.md", "evaluation.md", "configuration.md", "donation.md"],
 }
