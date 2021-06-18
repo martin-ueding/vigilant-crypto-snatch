@@ -4,6 +4,10 @@ This is a list of changes, from new to older.
 
 ## 4.0 Series
 
+### Version 4.2.4
+
+- Also handle `ReadTimeout` errors that can happen when the API doesn't answer before the connection breaks. These have been ignored previously, but now the error message is a bit cleaner.
+
 ### Version 4.2.3
 
 - Log output is also put into the Linux system log. In this way one can do post-mortem debugging.
