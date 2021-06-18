@@ -4,6 +4,10 @@ This is a list of changes, from new to older.
 
 ## 4.0 Series
 
+### Upcoming
+
+- Log output is also put into the Linux system log. In this way one can do post-mortem debugging.
+
 ### Version 4.2.2
 
 - Another warning message would use a constant that was moved to another place in the meantime. The program crashed when the message was going to be emitted. It has been removed now.
