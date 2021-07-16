@@ -37,6 +37,8 @@ class TriggerLoop(object):
             while True:
                 self.loop_body()
                 if self.one_shot:
+                    if telegram.telegram_sender is not None:
+                        telegram.telegram_sender.shutdown()
                     break
         except KeyboardInterrupt:
             logger.info("User interrupted, shutting down.")
@@ -46,8 +48,9 @@ class TriggerLoop(object):
     def loop_body(self) -> None:
         for trigger in self.active_triggers:
             process_trigger(trigger, self.keepalive)
-        logger.debug(f"All triggers checked, sleeping for {self.sleep} seconds …")
-        time.sleep(self.sleep)
+        if not self.one_shot:
+            logger.debug(f"All triggers checked, sleeping for {self.sleep} seconds …")
+            time.sleep(self.sleep)
 
 
 def notify_and_continue(exception: Exception, severity: int) -> None:
