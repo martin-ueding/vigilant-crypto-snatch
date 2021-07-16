@@ -1,5 +1,6 @@
 import abc
 import datetime
+import numbers
 import typing
 
 import dateutil.parser
@@ -320,7 +321,7 @@ def get_start(trigger_spec: dict) -> typing.Optional[datetime.datetime]:
         return None
 
 
-def get_minutes(trigger_spec: dict, key: str) -> typing.Optional[int]:
+def get_minutes(trigger_spec: dict, key: str) -> typing.Optional[numbers.Real]:
     if f"{key}_days" in trigger_spec:
         return trigger_spec[f"{key}_days"] * 60 * 24
     if f"{key}_hours" in trigger_spec:
