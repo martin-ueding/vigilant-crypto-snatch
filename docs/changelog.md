@@ -4,6 +4,20 @@ This is a list of changes, from new to older.
 
 ## 4.0 Series
 
+### Version 4.3.0
+
+New features:
+
+Fixes:
+
+- Remove double reports of connection errors.
+- In case that the user has no drop triggers, the database cleaning interval is set to 120 minutes.
+- Handle `requests.exceptions.ConnectionError` without crashing.
+
+Development:
+
+- Introduce a new pre-commit hook that sorts the import statements.
+
 ### Version 4.2.4
 
 - Also handle `ReadTimeout` errors that can happen when the API doesn't answer before the connection breaks. These have been ignored previously, but now the error message is a bit cleaner.
