@@ -140,7 +140,13 @@ There are different sub-types, but all of them have the following elements in co
 - `cooldown_minutes`: Minutes until a trigger can fire again.
 - `name`: Optional human-readable name of the trigger.
 
-The internal name of the trigger can be derived from the options. This will give you technical names in notifications, so you might prefer to give them personal names. Additionally the name is used in the database to compute the cooldown. If you don't have a name specified and change any of the parameters, the internal name will change and cooldown doesn't apply any more.
+    The internal name of the trigger can be derived from the options. This will give you technical names in notifications, so you might prefer to give them personal names. Additionally the name is used in the database to compute the cooldown. If you don't have a name specified and change any of the parameters, the internal name will change and cooldown doesn't apply any more.
+
+- `start`: Optional date time string which specifies the earliest execution of the trigger.
+
+    This can be used if you have just created a bunch of new triggers, or made changes to them without keeping the `name` attribute fixed. By specifying a future point in time you can prepare a trigger without having it executed on the next run of the program.
+    
+    We use [`dateutil.parser`](https://dateutil.readthedocs.io/en/stable/parser.html) to parse the date. It will understand most formats, but the ISO format (`YYYY-MM-DD HH:MM:SS`) will certainly work.
 
 ### Trigger strategy
 

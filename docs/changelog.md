@@ -8,6 +8,8 @@ This is a list of changes, from new to older.
 
 New features:
 
+- Add a `start` attributes to triggers.
+
 Fixes:
 
 - Remove double reports of connection errors.
