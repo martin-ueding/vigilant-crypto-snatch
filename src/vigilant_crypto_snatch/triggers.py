@@ -270,12 +270,15 @@ def make_buy_triggers(config, session, source, market) -> typing.List[BuyTrigger
 def make_buy_trigger(session, source, market, trigger_spec) -> BuyTrigger:
     logger.debug(f"Processing trigger spec: {trigger_spec}")
 
+    delay_minutes = get_minutes(trigger_spec, "delay")
+    cooldown_minutes = get_minutes(trigger_spec, "cooldown")
+
     # We first need to construct the `TriggeredDelegate` and find out which type it is.
-    if "delay_minutes" in trigger_spec and "drop_percentage" in trigger_spec:
+    if delay_minutes is not None and "drop_percentage" in trigger_spec:
         triggered_delegate = DropTriggeredDelegate(
             coin=trigger_spec["coin"].upper(),
             fiat=trigger_spec["fiat"].upper(),
-            delay_minutes=trigger_spec["delay_minutes"],
+            delay_minutes=delay_minutes,
             drop_percentage=trigger_spec["drop_percentage"],
             source=source,
         )
@@ -300,7 +303,7 @@ def make_buy_trigger(session, source, market, trigger_spec) -> BuyTrigger:
         market=market,
         coin=trigger_spec["coin"].upper(),
         fiat=trigger_spec["fiat"].upper(),
-        cooldown_minutes=trigger_spec["cooldown_minutes"],
+        cooldown_minutes=cooldown_minutes,
         triggered_delegate=triggered_delegate,
         volume_fiat_delegate=volume_fiat_delegate,
         name=trigger_spec.get("name", None),
@@ -313,6 +316,17 @@ def make_buy_trigger(session, source, market, trigger_spec) -> BuyTrigger:
 def get_start(trigger_spec: dict) -> typing.Optional[datetime.datetime]:
     if "start" in trigger_spec:
         return dateutil.parser.parse(trigger_spec["start"])
+    else:
+        return None
+
+
+def get_minutes(trigger_spec: dict, key: str) -> typing.Optional[int]:
+    if f"{key}_days" in trigger_spec:
+        return trigger_spec[f"{key}_days"] * 60 * 24
+    if f"{key}_hours" in trigger_spec:
+        return trigger_spec[f"{key}_hours"] * 60
+    elif f"{key}_minutes" in trigger_spec:
+        return trigger_spec[f"{key}_minutes"]
     else:
         return None
 

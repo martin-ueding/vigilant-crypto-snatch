@@ -137,7 +137,7 @@ There are different sub-types, but all of them have the following elements in co
 
 - `coin`: The name of the crypto-currency, case insensitive.
 - `fiat`: The name of the fiat currency, case insensitive.
-- `cooldown_minutes`: Minutes until a trigger can fire again.
+- `cooldown_minutes`, `cooldown_hours`, `cooldown_days`: Time until a trigger can fire again. If multiple ones are given, only the one with the largest unit will be used.
 - `name`: Optional human-readable name of the trigger.
 
     The internal name of the trigger can be derived from the options. This will give you technical names in notifications, so you might prefer to give them personal names. Additionally the name is used in the database to compute the cooldown. If you don't have a name specified and change any of the parameters, the internal name will change and cooldown doesn't apply any more.
@@ -157,7 +157,7 @@ One is a fixed time interval, which is basically the *dollar cost average* strat
 The other is the *drop* strategy. It will look whether the price has dropped by a given *percentage* within a given *delay*. You could for instance look for a drop of 1 % within 60 minutes. You will need to specify these keys:
 
 - `drop_percentage`
-- `delay_minutes`
+- `delay_minutes`, `delay_hours` or `delay_days`. If multiple are given, only the one with the largest unit will be used.
 
 You can specify a decimal number for the drop percentage, just be aware that it must contain a decimal point instead of a decimal comma.
 

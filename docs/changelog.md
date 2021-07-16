@@ -10,6 +10,7 @@ New features:
 
 - Add a `start` attributes to triggers.
 - Add `--dry-run` option to `watch` command such that it can be tested without spending money.
+- Allow specifying `delay` and `cooldown` not only in minutes as `delay_minutes` and `cooldown_minutes`, but also as `delay_hours`, `delay_days`, `cooldown_hours` and `cooldown_days`.
 
 Fixes:
 
