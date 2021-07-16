@@ -1,4 +1,3 @@
-import logging
 import logging.handlers
 
 logger = logging.getLogger("vigilant_crypto_snatch")
@@ -8,4 +7,4 @@ h.setFormatter(logging.Formatter("%(name)s %(levelname)s %(message)s"))
 h.setLevel(logging.INFO)
 logger.addHandler(h)
 
-__version__ = "4.2.4"
+__version__ = "4.3.0"
