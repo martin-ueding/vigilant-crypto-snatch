@@ -2,6 +2,7 @@ import abc
 import datetime
 import typing
 
+import dateutil.parser
 import sqlalchemy.orm
 
 from . import datamodel
@@ -140,7 +141,8 @@ class BuyTrigger(Trigger, abc.ABC):
         cooldown_minutes: int,
         triggered_delegate: TriggeredDelegate,
         volume_fiat_delegate: VolumeFiatDelegate,
-        name: typing.Optional[str],
+        name: typing.Optional[str] = None,
+        start: typing.Optional[datetime.datetime] = None,
     ):
         super().__init__()
         self.session = session
@@ -152,6 +154,7 @@ class BuyTrigger(Trigger, abc.ABC):
         self.triggered_delegate = triggered_delegate
         self.volume_fiat_delegate = volume_fiat_delegate
         self.name = name
+        self.start = start
         self.failure_timeout = FailureTimeout()
 
     def is_triggered(self, now: datetime.datetime) -> bool:
@@ -159,6 +162,8 @@ class BuyTrigger(Trigger, abc.ABC):
 
     def has_cooled_off(self, now: datetime.datetime) -> bool:
         if self.failure_timeout.has_timeout(now):
+            return False
+        if self.start is not None and now < self.start:
             return False
 
         then = now - datetime.timedelta(minutes=self.cooldown_minutes)
@@ -299,9 +304,17 @@ def make_buy_trigger(session, source, market, trigger_spec) -> BuyTrigger:
         triggered_delegate=triggered_delegate,
         volume_fiat_delegate=volume_fiat_delegate,
         name=trigger_spec.get("name", None),
+        start=get_start(trigger_spec),
     )
     logger.debug(f"Constructed trigger: {result.get_name()}")
     return result
+
+
+def get_start(trigger_spec: dict) -> typing.Optional[datetime.datetime]:
+    if "start" in trigger_spec:
+        return dateutil.parser.parse(trigger_spec["start"])
+    else:
+        return None
 
 
 def make_triggers(
