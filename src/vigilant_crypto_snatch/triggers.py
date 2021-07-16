@@ -1,13 +1,13 @@
-import datetime
 import abc
+import datetime
 import typing
 
 import sqlalchemy.orm
 
 from . import datamodel
 from . import historical
-from .marketplace import marketplace
 from . import logger
+from .marketplace import marketplace
 
 
 class FailureTimeout(object):
@@ -309,9 +309,12 @@ def make_triggers(
 ) -> typing.List[Trigger]:
     active_triggers = make_buy_triggers(config, session, source, market)
     longest_cooldown = max(
-        trigger.triggered_delegate.delay_minutes
-        for trigger in active_triggers
-        if isinstance(trigger.triggered_delegate, DropTriggeredDelegate)
+        (
+            trigger.triggered_delegate.delay_minutes
+            for trigger in active_triggers
+            if isinstance(trigger.triggered_delegate, DropTriggeredDelegate)
+        ),
+        default=120,
     )
     active_triggers.append(CheckinTrigger())
     active_triggers.append(
