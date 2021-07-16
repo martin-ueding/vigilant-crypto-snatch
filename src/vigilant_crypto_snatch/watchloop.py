@@ -1,7 +1,7 @@
 import datetime
 import logging
-import time
 import sys
+import time
 import traceback
 import typing
 
@@ -9,14 +9,14 @@ import requests.exceptions
 import sqlalchemy.exc
 
 from . import configuration
-from .marketplace import factory
 from . import datamodel
-from .marketplace import marketplace
-from . import triggers
 from . import historical
-from . import telegram
 from . import logger
 from . import migrations
+from . import telegram
+from . import triggers
+from .marketplace import factory
+from .marketplace import marketplace
 
 
 class TriggerLoop(object):
@@ -71,6 +71,8 @@ def process_trigger(trigger: triggers.Trigger, keepalive: bool):
             f"We have had a read timeout, likely just a temporary internet or API availability glitch."
             f"Details: {e}"
         )
+        notify_and_continue(e, logging.ERROR)
+    except requests.exceptions.ConnectionError as e:
         notify_and_continue(e, logging.ERROR)
     except sqlalchemy.exc.OperationalError as e:
         logger.critical(
