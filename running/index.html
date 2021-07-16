@@ -12,7 +12,7 @@
         <link rel="canonical" href="https://martin-ueding.github.io/vigilant-crypto-snatch/running/">
       
       <link rel="icon" href="../assets/images/favicon.png">
-      <meta name="generator" content="mkdocs-1.2.1, mkdocs-material-7.1.8">
+      <meta name="generator" content="mkdocs-1.2.1, mkdocs-material-7.1.10">
     
     
       
@@ -20,7 +20,7 @@
       
     
     
-      <link rel="stylesheet" href="../assets/stylesheets/main.ca7ac06f.min.css">
+      <link rel="stylesheet" href="../assets/stylesheets/main.1fe995fd.min.css">
       
         
         <link rel="stylesheet" href="../assets/stylesheets/palette.f1a3b89f.min.css">
@@ -509,6 +509,7 @@
 <li><code>--marketplace MARKETPLACE</code>: We support two marketplaces, you can select either <code>bitstamp</code> or <code>kraken</code>.</li>
 <li><code>--keepalive</code>: The program handles various error cases. Sometimes there are exceptions that we haven't encountered yet. When you use the watch subcommand in production, you can specify this option. It will catch <em>any</em> exception and just report it. Please <a href="https://github.com/martin-ueding/vigilant-crypto-snatch/issues">open a ticket</a> when you encounter a new exception type.</li>
 <li><code>--one-shot</code>: One execute one iteration of the watch loop. This way one can call the program periodically with an external scheduler like Cron.</li>
+<li><code>--dry-run</code>: The program runs as usual, it just tells the marketplace that orders should not be actually placed. This will let you see whether you have set up everything like you want without actually spending money on trades.</li>
 </ul>
 <p>When you want to quit, just press <kbd>Ctrl</kbd>+<kbd>C</kbd>.</p>
 <p>All historical price data and performed transactions will be stored in a SQLite database at <code>~/.local/share/vigilant-crypto-snatch/db.sqlite</code> (elsewhere on Windows). We sometimes change the database format between major releases. In that case it is easiest to delete the database and let the script create the new one. As there are only so few users, we don't offer proper database migrations.</p>
@@ -650,10 +651,10 @@
     <div class="md-dialog" data-md-component="dialog">
       <div class="md-dialog__inner md-typeset"></div>
     </div>
-    <script id="__config" type="application/json">{"base": "..", "features": [], "translations": {"clipboard.copy": "Copy to clipboard", "clipboard.copied": "Copied to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "Search", "search.result.placeholder": "Type to start searching", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.term.missing": "Missing", "select.version.title": "Select version"}, "search": "../assets/javascripts/workers/search.b0710199.min.js", "version": null}</script>
+    <script id="__config" type="application/json">{"base": "..", "features": [], "translations": {"clipboard.copy": "Copy to clipboard", "clipboard.copied": "Copied to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "Search", "search.result.placeholder": "Type to start searching", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.term.missing": "Missing", "select.version.title": "Select version"}, "search": "../assets/javascripts/workers/search.477d984a.min.js", "version": null}</script>
     
     
-      <script src="../assets/javascripts/bundle.76f349be.min.js"></script>
+      <script src="../assets/javascripts/bundle.ddd52ceb.min.js"></script>
       
     
   </body>

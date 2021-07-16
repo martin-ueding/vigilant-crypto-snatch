@@ -12,7 +12,7 @@
         <link rel="canonical" href="https://martin-ueding.github.io/vigilant-crypto-snatch/changelog/">
       
       <link rel="icon" href="../assets/images/favicon.png">
-      <meta name="generator" content="mkdocs-1.2.1, mkdocs-material-7.1.8">
+      <meta name="generator" content="mkdocs-1.2.1, mkdocs-material-7.1.10">
     
     
       
@@ -20,7 +20,7 @@
       
     
     
-      <link rel="stylesheet" href="../assets/stylesheets/main.ca7ac06f.min.css">
+      <link rel="stylesheet" href="../assets/stylesheets/main.1fe995fd.min.css">
       
         
         <link rel="stylesheet" href="../assets/stylesheets/palette.f1a3b89f.min.css">
@@ -289,6 +289,13 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
+  <a href="#version-430" class="md-nav__link">
+    Version 4.3.0
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#version-424" class="md-nav__link">
     Version 4.2.4
   </a>
@@ -539,6 +546,13 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
+  <a href="#version-430" class="md-nav__link">
+    Version 4.3.0
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#version-424" class="md-nav__link">
     Version 4.2.4
   </a>
@@ -718,6 +732,25 @@
                 <h1 id="changelog">Changelog</h1>
 <p>This is a list of changes, from new to older.</p>
 <h2 id="40-series">4.0 Series</h2>
+<h3 id="version-430">Version 4.3.0</h3>
+<p>New features:</p>
+<ul>
+<li>Add a <code>start</code> attributes to triggers.</li>
+<li>Add <code>--dry-run</code> option to <code>watch</code> command such that it can be tested without spending money.</li>
+<li>Allow specifying <code>delay</code> and <code>cooldown</code> not only in minutes as <code>delay_minutes</code> and <code>cooldown_minutes</code>, but also as <code>delay_hours</code>, <code>delay_days</code>, <code>cooldown_hours</code> and <code>cooldown_days</code>.</li>
+<li>Add documentation for cron to <em>Configuration</em>.</li>
+</ul>
+<p>Fixes:</p>
+<ul>
+<li>Remove double reports of connection errors.</li>
+<li>In case that the user has no drop triggers, the database cleaning interval is set to 120 minutes.</li>
+<li>Handle <code>requests.exceptions.ConnectionError</code> without crashing.</li>
+<li>Fix <code>--one-shot</code> mode. It would previously sleep for another interval and not shut down the Telegram logger, preventing the program from a clean exit.</li>
+</ul>
+<p>Development:</p>
+<ul>
+<li>Introduce a new pre-commit hook that sorts the import statements.</li>
+</ul>
 <h3 id="version-424">Version 4.2.4</h3>
 <ul>
 <li>Also handle <code>ReadTimeout</code> errors that can happen when the API doesn't answer before the connection breaks. These have been ignored previously, but now the error message is a bit cleaner.</li>
@@ -935,10 +968,10 @@ clikraken 0.8.3.2 requires krakenex&lt;1.0,&gt;=0.1, but you have krakenex 2.1.0
     <div class="md-dialog" data-md-component="dialog">
       <div class="md-dialog__inner md-typeset"></div>
     </div>
-    <script id="__config" type="application/json">{"base": "..", "features": [], "translations": {"clipboard.copy": "Copy to clipboard", "clipboard.copied": "Copied to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "Search", "search.result.placeholder": "Type to start searching", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.term.missing": "Missing", "select.version.title": "Select version"}, "search": "../assets/javascripts/workers/search.b0710199.min.js", "version": null}</script>
+    <script id="__config" type="application/json">{"base": "..", "features": [], "translations": {"clipboard.copy": "Copy to clipboard", "clipboard.copied": "Copied to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "Search", "search.result.placeholder": "Type to start searching", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.term.missing": "Missing", "select.version.title": "Select version"}, "search": "../assets/javascripts/workers/search.477d984a.min.js", "version": null}</script>
     
     
-      <script src="../assets/javascripts/bundle.76f349be.min.js"></script>
+      <script src="../assets/javascripts/bundle.ddd52ceb.min.js"></script>
       
     
   </body>

@@ -12,7 +12,7 @@
         <link rel="canonical" href="https://martin-ueding.github.io/vigilant-crypto-snatch/configuration/">
       
       <link rel="icon" href="../assets/images/favicon.png">
-      <meta name="generator" content="mkdocs-1.2.1, mkdocs-material-7.1.8">
+      <meta name="generator" content="mkdocs-1.2.1, mkdocs-material-7.1.10">
     
     
       
@@ -20,7 +20,7 @@
       
     
     
-      <link rel="stylesheet" href="../assets/stylesheets/main.ca7ac06f.min.css">
+      <link rel="stylesheet" href="../assets/stylesheets/main.1fe995fd.min.css">
       
         
         <link rel="stylesheet" href="../assets/stylesheets/palette.f1a3b89f.min.css">
@@ -323,6 +323,13 @@
   
 </li>
       
+        <li class="md-nav__item">
+  <a href="#planned-execution-with-cron" class="md-nav__link">
+    Planned execution with cron
+  </a>
+  
+</li>
+      
     </ul>
   
 </nav>
@@ -534,6 +541,13 @@
   
 </li>
       
+        <li class="md-nav__item">
+  <a href="#planned-execution-with-cron" class="md-nav__link">
+    Planned execution with cron
+  </a>
+  
+</li>
+      
     </ul>
   
 </nav>
@@ -663,17 +677,24 @@
 <ul>
 <li><code>coin</code>: The name of the crypto-currency, case insensitive.</li>
 <li><code>fiat</code>: The name of the fiat currency, case insensitive.</li>
-<li><code>cooldown_minutes</code>: Minutes until a trigger can fire again.</li>
-<li><code>name</code>: Optional human-readable name of the trigger.</li>
-</ul>
+<li><code>cooldown_minutes</code>, <code>cooldown_hours</code>, <code>cooldown_days</code>: Time until a trigger can fire again. If multiple ones are given, only the one with the largest unit will be used.</li>
+<li>
+<p><code>name</code>: Optional human-readable name of the trigger.</p>
 <p>The internal name of the trigger can be derived from the options. This will give you technical names in notifications, so you might prefer to give them personal names. Additionally the name is used in the database to compute the cooldown. If you don't have a name specified and change any of the parameters, the internal name will change and cooldown doesn't apply any more.</p>
+</li>
+<li>
+<p><code>start</code>: Optional date time string which specifies the earliest execution of the trigger.</p>
+<p>This can be used if you have just created a bunch of new triggers, or made changes to them without keeping the <code>name</code> attribute fixed. By specifying a future point in time you can prepare a trigger without having it executed on the next run of the program.</p>
+<p>We use <a href="https://dateutil.readthedocs.io/en/stable/parser.html"><code>dateutil.parser</code></a> to parse the date. It will understand most formats, but the ISO format (<code>YYYY-MM-DD HH:MM:SS</code>) will certainly work.</p>
+</li>
+</ul>
 <h3 id="trigger-strategy">Trigger strategy</h3>
 <p>We currently have two trigger strategies.</p>
 <p>One is a fixed time interval, which is basically the <em>dollar cost average</em> strategy. For this you don't have any additional keys.</p>
 <p>The other is the <em>drop</em> strategy. It will look whether the price has dropped by a given <em>percentage</em> within a given <em>delay</em>. You could for instance look for a drop of 1 % within 60 minutes. You will need to specify these keys:</p>
 <ul>
 <li><code>drop_percentage</code></li>
-<li><code>delay_minutes</code></li>
+<li><code>delay_minutes</code>, <code>delay_hours</code> or <code>delay_days</code>. If multiple are given, only the one with the largest unit will be used.</li>
 </ul>
 <p>You can specify a decimal number for the drop percentage, just be aware that it must contain a decimal point instead of a decimal comma.</p>
 <h3 id="fiat-volume-strategy">Fiat volume strategy</h3>
@@ -738,6 +759,24 @@
 </tbody>
 </table>
 <p>The logging level is set to <em>Info</em> by default. You must not set it to <em>Debug</em> as sending a Telegram message will produce more debug messages. The program will crash with an infinite recursion.</p>
+<h2 id="planned-execution-with-cron">Planned execution with cron</h2>
+<p>You can let the program run the whole time with the <code>watch</code> command as described on the <em>Usage</em> page. If you want to regularly start the program and not have it running, you can use a <em>cron</em> job for that. Reasons for not keeping it running the whole time could be that you want it executed only during certain times of day or certain weekdays. It could also be that it happen to crash for you often (though please report that) and you want it restarted regularly.</p>
+<p>First you need to find the path to the executable using the <code>type</code> command:</p>
+<div class="highlight"><pre><span></span><code><span class="gp">$ </span><span class="nb">type</span> vigilant-crypto-snatch
+<span class="go">vigilant-crypto-snatch is /home/mu/.local/bin/vigilant-crypto-snatch</span>
+</code></pre></div>
+<p>Then use <code>crontab -e</code> to edit the cron tab and add a new entry like this, where you have to adjust the path to the one that the above command has given you.</p>
+<div class="highlight"><pre><span></span><code>*/15 * * * * /home/mu/.local/bin/vigilant-crypto-snatch watch --one-shot
+</code></pre></div>
+<p>The syntax for the first five columns can be read with <code>man 5 crontab</code>. In short, they are</p>
+<ol>
+<li>Minute (0 to 59)</li>
+<li>Hour (0 to 23)</li>
+<li>Day of month (1 to 31)</li>
+<li>Month (1 to 12)</li>
+<li>Weekday (0 to 7, 0 and 7 are Sunday)</li>
+</ol>
+<p>You can pass a <code>*</code> to specify all values, and <code>*/15</code> means all values which are multiples of 15. The above line calls the program every 15 minutes on every hour, every day of month, every month and every weekday.</p>
                 
               
               
@@ -808,10 +847,10 @@
     <div class="md-dialog" data-md-component="dialog">
       <div class="md-dialog__inner md-typeset"></div>
     </div>
-    <script id="__config" type="application/json">{"base": "..", "features": [], "translations": {"clipboard.copy": "Copy to clipboard", "clipboard.copied": "Copied to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "Search", "search.result.placeholder": "Type to start searching", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.term.missing": "Missing", "select.version.title": "Select version"}, "search": "../assets/javascripts/workers/search.b0710199.min.js", "version": null}</script>
+    <script id="__config" type="application/json">{"base": "..", "features": [], "translations": {"clipboard.copy": "Copy to clipboard", "clipboard.copied": "Copied to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "Search", "search.result.placeholder": "Type to start searching", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.term.missing": "Missing", "select.version.title": "Select version"}, "search": "../assets/javascripts/workers/search.477d984a.min.js", "version": null}</script>
     
     
-      <script src="../assets/javascripts/bundle.76f349be.min.js"></script>
+      <script src="../assets/javascripts/bundle.ddd52ceb.min.js"></script>
       
     
   </body>
