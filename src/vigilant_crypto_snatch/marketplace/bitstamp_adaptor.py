@@ -4,19 +4,21 @@ import pprint
 import bitstamp.client
 import requests
 import urllib3
-
 from vigilant_crypto_snatch import datamodel
 from vigilant_crypto_snatch.marketplace import marketplace
 
 
 class BitstampMarketplace(marketplace.Marketplace):
-    def __init__(self, username: str, key: str, secret: str):
+    def __init__(self, username: str, key: str, secret: str, dry_run: bool):
         self.public_client = bitstamp.client.Public()
         self.trading_client = bitstamp.client.Trading(
             username=username, key=key, secret=secret
         )
+        self.dry_run = dry_run
 
     def place_order(self, coin: str, fiat: str, volume: float) -> None:
+        if self.dry_run:
+            return
         try:
             response = self.trading_client.buy_market_order(
                 volume, base=coin, quote=fiat

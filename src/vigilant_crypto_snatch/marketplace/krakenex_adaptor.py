@@ -3,10 +3,9 @@ import typing
 
 import krakenex
 import vigilant_crypto_snatch.datamodel
+from vigilant_crypto_snatch import logger
 
 from . import marketplace
-
-from vigilant_crypto_snatch import logger
 
 
 mapping_normal_to_kraken = {"BTC": "XBT"}
@@ -32,10 +31,12 @@ class KrakenexMarketplace(marketplace.Marketplace):
         api_secret: str,
         withdrawal_config: dict,
         prefer_fee_in_base_currency: bool,
+        dry_run: bool,
     ):
         self.handle = krakenex.API(api_key, api_secret)
         self.withdrawal_config = withdrawal_config
         self.prefer_fee_in_base_currency = prefer_fee_in_base_currency
+        self.dry_run = dry_run
 
     def get_name(self) -> str:
         return "Kraken"
@@ -71,6 +72,7 @@ class KrakenexMarketplace(marketplace.Marketplace):
                 "type": f"buy",
                 "volume": str(volume),
                 "oflags": "fcib" if self.prefer_fee_in_base_currency else "fciq",
+                "validate": "true" if self.dry_run else "false",
             },
         )
         raise_error(answer, marketplace.BuyError)
@@ -101,6 +103,8 @@ class KrakenexMarketplace(marketplace.Marketplace):
             logger.info(
                 f"Trying to withdraw {volume} {coin} as fee is just {fee} {coin} and below limit."
             )
+            if self.dry_run:
+                return
             answer = self.handle.query_private(
                 "Withdraw",
                 {

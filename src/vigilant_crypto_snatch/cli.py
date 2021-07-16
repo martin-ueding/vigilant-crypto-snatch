@@ -46,6 +46,12 @@ def main():
         default=False,
         help="Only check once and then exit.",
     )
+    watch.add_argument(
+        "--dry-run",
+        action="store_true",
+        default=False,
+        help="Do not place actual orders to the marketplace.",
+    )
 
     options = parser.parse_args()
     if options.func is None:

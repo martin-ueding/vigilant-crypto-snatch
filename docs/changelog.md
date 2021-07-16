@@ -9,6 +9,7 @@ This is a list of changes, from new to older.
 New features:
 
 - Add a `start` attributes to triggers.
+- Add `--dry-run` option to `watch` command such that it can be tested without spending money.
 
 Fixes:
 
