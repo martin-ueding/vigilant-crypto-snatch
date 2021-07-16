@@ -17,6 +17,7 @@ Fixes:
 - Remove double reports of connection errors.
 - In case that the user has no drop triggers, the database cleaning interval is set to 120 minutes.
 - Handle `requests.exceptions.ConnectionError` without crashing.
+- Fix `--one-shot` mode. It would previously sleep for another interval and not shut down the Telegram logger, preventing the program from a clean exit.
 
 Development:
 

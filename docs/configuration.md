@@ -211,3 +211,30 @@ Symbol | Severity
 🔵 | Debug
 
 The logging level is set to *Info* by default. You must not set it to *Debug* as sending a Telegram message will produce more debug messages. The program will crash with an infinite recursion.
+
+## Planned execution with cron
+
+You can let the program run the whole time with the `watch` command as described on the _Usage_ page. If you want to regularly start the program and not have it running, you can use a _cron_ job for that. Reasons for not keeping it running the whole time could be that you want it executed only during certain times of day or certain weekdays. It could also be that it happen to crash for you often (though please report that) and you want it restarted regularly.
+
+First you need to find the path to the executable using the `type` command:
+
+```console
+$ type vigilant-crypto-snatch
+vigilant-crypto-snatch is /home/mu/.local/bin/vigilant-crypto-snatch
+```
+
+Then use `crontab -e` to edit the cron tab and add a new entry like this, where you have to adjust the path to the one that the above command has given you.
+
+```cron
+*/15 * * * * /home/mu/.local/bin/vigilant-crypto-snatch watch --one-shot
+```
+
+The syntax for the first five columns can be read with `man 5 crontab`. In short, they are
+
+1. Minute (0 to 59)
+2. Hour (0 to 23)
+3. Day of month (1 to 31)
+4. Month (1 to 12)
+5. Weekday (0 to 7, 0 and 7 are Sunday)
+
+You can pass a `*` to specify all values, and `*/15` means all values which are multiples of 15. The above line calls the program every 15 minutes on every hour, every day of month, every month and every weekday.
