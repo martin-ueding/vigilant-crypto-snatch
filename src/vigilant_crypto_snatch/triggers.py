@@ -335,7 +335,9 @@ def get_minutes(trigger_spec: dict, key: str) -> typing.Optional[numbers.Real]:
 def make_triggers(
     config, session, source: historical.HistoricalSource, market
 ) -> typing.List[Trigger]:
-    active_triggers = make_buy_triggers(config, session, source, market)
+    active_triggers: typing.Sequence[Trigger] = make_buy_triggers(
+        config, session, source, market
+    )
     longest_cooldown = max(
         (
             trigger.triggered_delegate.delay_minutes
