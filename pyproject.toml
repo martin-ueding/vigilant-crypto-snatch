@@ -37,6 +37,7 @@ scipy = "^1.6.3"
 streamlit = "^0.82.0"
 altair = "^4.1.0"
 pre-commit = "^2.13.0"
+mypy = "^0.910"
 
 [build-system]
 requires = ["poetry>=0.12"]
