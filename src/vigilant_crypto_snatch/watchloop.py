@@ -71,7 +71,6 @@ def process_trigger(trigger: triggers.Trigger, keepalive: bool):
             f"We have had a read timeout, likely just a temporary internet or API availability glitch."
             f"Details: {e}"
         )
-        notify_and_continue(e, logging.ERROR)
     except requests.exceptions.ConnectionError as e:
         notify_and_continue(e, logging.ERROR)
     except sqlalchemy.exc.OperationalError as e:
