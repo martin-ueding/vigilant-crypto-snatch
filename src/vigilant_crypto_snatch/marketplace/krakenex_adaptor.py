@@ -64,17 +64,16 @@ class KrakenexMarketplace(marketplace.Marketplace):
         }
 
     def place_order(self, coin: str, fiat: str, volume: float) -> None:
-        answer = self.handle.query_private(
-            "AddOrder",
-            {
-                "pair": f"{map_normal_to_kraken(coin)}{fiat}",
-                "ordertype": "market",
-                "type": f"buy",
-                "volume": str(volume),
-                "oflags": "fcib" if self.prefer_fee_in_base_currency else "fciq",
-                "validate": "true" if self.dry_run else "false",
-            },
-        )
+        arguments = {
+            "pair": f"{map_normal_to_kraken(coin)}{fiat}",
+            "ordertype": "market",
+            "type": f"buy",
+            "volume": str(volume),
+            "oflags": "fcib" if self.prefer_fee_in_base_currency else "fciq",
+        }
+        if self.dry_run:
+            arguments["validate"] = "true"
+        answer = self.handle.query_private("AddOrder", arguments)
         raise_error(answer, marketplace.BuyError)
         marketplace.check_and_perform_widthdrawal(self)
 
