@@ -4,6 +4,10 @@ This is a list of changes, from new to older.
 
 ## 4.0 Series
 
+### Version 4.3.1
+
+- Apparently all Kraken trades were sent in the validation mode. I have tried to fix that.
+
 ### Version 4.3.0
 
 New features:
