@@ -58,10 +58,14 @@ class KrakenexMarketplace(marketplace.Marketplace):
     def get_balance(self) -> dict:
         answer = self.handle.query_private("Balance")
         raise_error(answer, marketplace.TickerError)
-        return {
-            map_kraken_to_normal(currency): float(value)
-            for currency, value in answer["result"].items()
-        }
+        # The key `result` will only be present if the user has any balances.
+        if "result" in answer:
+            return {
+                map_kraken_to_normal(currency): float(value)
+                for currency, value in answer["result"].items()
+            }
+        else:
+            return {}
 
     def place_order(self, coin: str, fiat: str, volume: float) -> None:
         arguments = {
@@ -122,5 +126,3 @@ class KrakenexMarketplace(marketplace.Marketplace):
 def raise_error(answer: dict, exception: typing.Type[Exception]):
     if len(answer["error"]) > 0:
         raise exception(answer["error"])
-    if "result" not in answer:
-        raise exception(f"No result, got this: {answer}")

@@ -7,6 +7,7 @@ This is a list of changes, from new to older.
 ### Version 4.3.2
 
 - Fix automatic detection of Telegram chat ID.
+- Do not crash when there is no balance at Kraken.
 
 ### Version 4.3.1
 
