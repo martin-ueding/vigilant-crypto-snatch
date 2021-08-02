@@ -4,6 +4,10 @@ This is a list of changes, from new to older.
 
 ## 4.0 Series
 
+### Version 4.3.2
+
+- Fix automatic detection of Telegram chat ID.
+
 ### Version 4.3.1
 
 - Apparently all Kraken trades were sent in the validation mode. I have tried to fix that.

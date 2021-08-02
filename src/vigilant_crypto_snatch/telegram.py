@@ -1,8 +1,8 @@
+import json
 import logging
 import sys
 import threading
 import typing
-import json
 
 import requests
 
@@ -114,7 +114,7 @@ def add_telegram_logger() -> None:
         logger.addHandler(telegram_handler)
 
         if "chat_id" not in config["telegram"]:
-            config["telegram"]["chat_id"] = telegram_handler.chat_id
+            config["telegram"]["chat_id"] = telegram_sender.chat_id
             configuration.update_config(config)
 
 
