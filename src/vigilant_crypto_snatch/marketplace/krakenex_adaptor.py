@@ -122,3 +122,5 @@ class KrakenexMarketplace(marketplace.Marketplace):
 def raise_error(answer: dict, exception: typing.Type[Exception]):
     if len(answer["error"]) > 0:
         raise exception(answer["error"])
+    if "result" not in answer:
+        raise exception(f"No result, got this: {answer}")

@@ -4,14 +4,12 @@ repos:
       - id: black
         name: black
         entry: poetry run black
-        language: python
+        language: system
         files: '.*\.py'
-  - repo: local
-    hooks:
       - id: pytest
         name: pytest
-        entry: poetry run pytest
-        language: python
+        entry: poetry run pytest -vv tests
+        language: system
         files: '.*\.py'
   - repo: https://github.com/asottile/reorder_python_imports
     rev: v2.5.0
