@@ -289,6 +289,13 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
+  <a href="#version-432" class="md-nav__link">
+    Version 4.3.2
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#version-431" class="md-nav__link">
     Version 4.3.1
   </a>
@@ -553,6 +560,13 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
+  <a href="#version-432" class="md-nav__link">
+    Version 4.3.2
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#version-431" class="md-nav__link">
     Version 4.3.1
   </a>
@@ -746,7 +760,19 @@
                 <h1 id="changelog">Changelog</h1>
 <p>This is a list of changes, from new to older.</p>
 <h2 id="40-series">4.0 Series</h2>
+<h3 id="version-432">Version 4.3.2</h3>
+<p>Fixes:</p>
+<ul>
+<li>Fix automatic detection of Telegram chat ID.</li>
+<li>Do not crash when there is no balance at Kraken.</li>
+<li>Also handle <code>requests.exceptions.HTTPError</code>.</li>
+</ul>
+<p>Development:</p>
+<ul>
+<li>Make the <code>marketplace</code> package isolated, only expose a limited set of attributes in <code>__init__.py</code>.</li>
+</ul>
 <h3 id="version-431">Version 4.3.1</h3>
+<p>Fixes:</p>
 <ul>
 <li>Apparently all Kraken trades were sent in the validation mode. I have tried to fix that.</li>
 </ul>
