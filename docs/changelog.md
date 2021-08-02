@@ -8,6 +8,7 @@ This is a list of changes, from new to older.
 
 - Fix automatic detection of Telegram chat ID.
 - Do not crash when there is no balance at Kraken.
+- Also handle `requests.exceptions.HTTPError`.
 
 ### Version 4.3.1
 

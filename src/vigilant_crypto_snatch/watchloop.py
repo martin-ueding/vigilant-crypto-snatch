@@ -76,6 +76,8 @@ def process_trigger(trigger: triggers.Trigger, keepalive: bool):
         )
     except requests.exceptions.ConnectionError as e:
         notify_and_continue(e, logging.ERROR)
+    except requests.exceptions.HTTPError:
+        notify_and_continue(e, logging.ERROR)
     except sqlalchemy.exc.OperationalError as e:
         logger.critical(
             f"Something went wrong with the database. Perhaps it is easiest to just delete the database file at `{datamodel.user_db_path}`. The original exception was this: `{repr(e)}`"
