@@ -1,9 +1,9 @@
 import datetime
 import math
 
-import vigilant_crypto_snatch.historical
 import vigilant_crypto_snatch.datamodel
-import vigilant_crypto_snatch.marketplace.marketplace
+import vigilant_crypto_snatch.historical
+import vigilant_crypto_snatch.marketplace
 
 reference_time = datetime.datetime(2021, 1, 1, 00, 00, 00)
 
@@ -35,7 +35,7 @@ class MockHistorical(vigilant_crypto_snatch.historical.HistoricalSource):
         )
 
 
-class MockMarketplace(vigilant_crypto_snatch.marketplace.marketplace.Marketplace):
+class MockMarketplace(vigilant_crypto_snatch.marketplace.Marketplace):
     def __init__(self):
         super().__init__()
         self.orders = 0

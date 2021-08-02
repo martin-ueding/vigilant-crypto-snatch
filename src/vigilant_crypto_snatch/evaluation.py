@@ -8,8 +8,8 @@ import sqlalchemy.orm
 
 from . import datamodel
 from . import historical
-from .marketplace import marketplace
 from . import logger
+from . import marketplace
 
 
 def make_interpolator(data: pd.DataFrame):

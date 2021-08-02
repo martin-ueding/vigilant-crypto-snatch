@@ -7,8 +7,8 @@ import requests
 import sqlalchemy.orm
 
 from . import datamodel
-from .marketplace import marketplace
 from . import logger
+from . import marketplace
 
 
 class HistoricalSource(object):

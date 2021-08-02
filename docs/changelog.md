@@ -6,11 +6,19 @@ This is a list of changes, from new to older.
 
 ### Version 4.3.2
 
+Fixes:
+
 - Fix automatic detection of Telegram chat ID.
 - Do not crash when there is no balance at Kraken.
 - Also handle `requests.exceptions.HTTPError`.
 
+Development:
+
+- Make the `marketplace` package isolated, only expose a limited set of attributes in `__init__.py`.
+
 ### Version 4.3.1
+
+Fixes:
 
 - Apparently all Kraken trades were sent in the validation mode. I have tried to fix that.
 

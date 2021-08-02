@@ -12,11 +12,10 @@ from . import configuration
 from . import datamodel
 from . import historical
 from . import logger
+from . import marketplace
 from . import migrations
 from . import telegram
 from . import triggers
-from .marketplace import factory
-from .marketplace import marketplace
 
 
 class TriggerLoop(object):
@@ -104,7 +103,7 @@ def main(options):
 
     session = datamodel.open_user_db_session()
     config = configuration.load_config()
-    market = factory.make_marketplace(options.marketplace, config, options.dry_run)
+    market = marketplace.make_marketplace(options.marketplace, config, options.dry_run)
     marketplace.check_and_perform_widthdrawal(market)
 
     if not options.one_shot:
