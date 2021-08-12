@@ -4,6 +4,12 @@ This is a list of changes, from new to older.
 
 ## 4.0 Series
 
+### Version 4.3.3
+
+Fixes:
+
+- Due to an incomplete refactoring the program would crash whenever there was a non-fatal exception regarding the marketplace. This should be fixed now.
+
 ### Version 4.3.2
 
 Fixes:
