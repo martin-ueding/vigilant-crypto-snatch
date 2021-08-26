@@ -289,6 +289,13 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
+  <a href="#version-434" class="md-nav__link">
+    Version 4.3.4
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#version-433" class="md-nav__link">
     Version 4.3.3
   </a>
@@ -567,6 +574,13 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
+  <a href="#version-434" class="md-nav__link">
+    Version 4.3.4
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#version-433" class="md-nav__link">
     Version 4.3.3
   </a>
@@ -774,6 +788,11 @@
                 <h1 id="changelog">Changelog</h1>
 <p>This is a list of changes, from new to older.</p>
 <h2 id="40-series">4.0 Series</h2>
+<h3 id="version-434">Version 4.3.4</h3>
+<ul>
+<li>The <code>--dry-run</code> option would write buys into the database, although it would not buy anything on the market. Now the database should now be changed. If you need to clean up your database, you might find <a href="https://sourceforge.net/projects/sqliteman/">sqliteman</a> helpful for that.</li>
+<li>I now use the mypy static analysis and type checker, and also found a few subtle bugs with that in code paths which aren't used often.</li>
+</ul>
 <h3 id="version-433">Version 4.3.3</h3>
 <p>Fixes:</p>
 <ul>
