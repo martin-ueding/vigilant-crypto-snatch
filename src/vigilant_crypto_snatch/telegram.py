@@ -77,7 +77,7 @@ class TelegramSender(object):
         self.chat_id = int(data["result"][-1]["message"]["chat"]["id"])
         logger.info(f"Your Telegram chat ID is {self.chat_id}.")
 
-    def send_message(self, message: str) -> typing.Optional[dict]:
+    def send_message(self, message: str) -> None:
         logger.debug(f"Sending message to Telegram …")
         url = f"https://api.telegram.org/bot{self.token}/sendMessage"
         for chunk in chunk_message(message):

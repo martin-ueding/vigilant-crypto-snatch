@@ -1,5 +1,6 @@
 import datetime
-import typing
+from typing import List
+from typing import Tuple
 
 import numpy as np
 import pandas as pd
@@ -41,7 +42,7 @@ class InterpolatingSource(historical.HistoricalSource):
 
 
 def json_to_database(
-    data: typing.List[dict], coin: str, fiat: str, session: sqlalchemy.orm.session
+    data: List[dict], coin: str, fiat: str, session: sqlalchemy.orm.session
 ) -> None:
     logger.info(f"Writing {len(data)} prices to the DB …")
     for elem in data:
@@ -63,7 +64,7 @@ def make_dataframe_from_json(data: dict) -> pd.DataFrame:
 
 def drop_survey(
     data: pd.DataFrame, hours, drops
-) -> typing.Tuple[np.array, np.array, np.array]:
+) -> Tuple[np.ndarray, np.ndarray, np.ndarray]:
     factor = np.zeros(hours.shape + drops.shape)
     for i, hour in enumerate(hours):
         for j, drop in enumerate(drops):
@@ -73,7 +74,7 @@ def drop_survey(
 
 def compute_gains(
     df: pd.DataFrame, hours: int, drop: float
-) -> typing.Tuple[float, float, float]:
+) -> Tuple[float, float, float]:
     close_shift = df["close"].shift(hours)
     ratio = df["close"] / close_shift
     btc = 0.0

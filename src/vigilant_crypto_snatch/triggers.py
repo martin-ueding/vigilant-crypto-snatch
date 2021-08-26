@@ -1,7 +1,6 @@
 import abc
 import datetime
-import numbers
-import typing
+from typing import *
 
 import dateutil.parser
 import sqlalchemy.orm
@@ -142,8 +141,8 @@ class BuyTrigger(Trigger, abc.ABC):
         cooldown_minutes: int,
         triggered_delegate: TriggeredDelegate,
         volume_fiat_delegate: VolumeFiatDelegate,
-        name: typing.Optional[str] = None,
-        start: typing.Optional[datetime.datetime] = None,
+        name: Optional[str] = None,
+        start: Optional[datetime.datetime] = None,
     ):
         super().__init__()
         self.session = session
@@ -260,7 +259,7 @@ class DatabaseCleaningTrigger(Trigger):
         return "Database cleaning"
 
 
-def make_buy_triggers(config, session, source, market) -> typing.List[BuyTrigger]:
+def make_buy_triggers(config, session, source, market) -> List[BuyTrigger]:
     active_triggers = []
     for trigger_spec in config["triggers"]:
         trigger = make_buy_trigger(session, source, market, trigger_spec)
@@ -314,14 +313,14 @@ def make_buy_trigger(session, source, market, trigger_spec) -> BuyTrigger:
     return result
 
 
-def get_start(trigger_spec: dict) -> typing.Optional[datetime.datetime]:
+def get_start(trigger_spec: dict) -> Optional[datetime.datetime]:
     if "start" in trigger_spec:
         return dateutil.parser.parse(trigger_spec["start"])
     else:
         return None
 
 
-def get_minutes(trigger_spec: dict, key: str) -> typing.Optional[numbers.Real]:
+def get_minutes(trigger_spec: dict, key: str) -> Optional[int]:
     if f"{key}_days" in trigger_spec:
         return trigger_spec[f"{key}_days"] * 60 * 24
     if f"{key}_hours" in trigger_spec:
@@ -334,7 +333,7 @@ def get_minutes(trigger_spec: dict, key: str) -> typing.Optional[numbers.Real]:
 
 def make_triggers(
     config, session, source: historical.HistoricalSource, market
-) -> typing.List[Trigger]:
+) -> Sequence[Trigger]:
     buy_triggers = make_buy_triggers(config, session, source, market)
     longest_cooldown = max(
         (
@@ -344,7 +343,7 @@ def make_triggers(
         ),
         default=120,
     )
-    active_triggers: typing.List[Trigger] = buy_triggers
+    active_triggers: Sequence[Trigger] = buy_triggers
     active_triggers.append(CheckinTrigger())
     active_triggers.append(
         DatabaseCleaningTrigger(
