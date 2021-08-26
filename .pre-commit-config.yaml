@@ -13,7 +13,7 @@ repos:
         files: '.*\.py'
       - id: mypy
         name: mypy
-        entry: poetry run mypy src/vigilant-crypto-snatch
+        entry: poetry run mypy src/
         language: system
         files: '.*\.py'
   - repo: https://github.com/asottile/reorder_python_imports
