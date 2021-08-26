@@ -158,6 +158,7 @@ class BuyTrigger(Trigger, abc.ABC):
         self.name = name
         self.start = start
         self.failure_timeout = FailureTimeout()
+        self.dry_run = dry_run
 
     def is_triggered(self, now: datetime.datetime) -> bool:
         return self.triggered_delegate.is_triggered(now)
@@ -203,7 +204,8 @@ class BuyTrigger(Trigger, abc.ABC):
             fiat=self.fiat,
         )
         self.session.add(trade)
-        self.session.commit()
+        if not self.dry_run:
+            self.session.commit()
 
         rate = volume_fiat / volume_coin
         buy_message = f"{volume_coin} {self.coin} for {volume_fiat} {self.fiat} ({rate} {self.fiat}/{self.coin}) on {self.market.get_name()} due to “{self.get_name()}”"
