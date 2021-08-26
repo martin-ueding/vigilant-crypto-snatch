@@ -2,7 +2,7 @@ import json
 import logging
 import sys
 import threading
-import typing
+from typing import *
 
 import requests
 
@@ -26,7 +26,7 @@ class TelegramSender(object):
         else:
             self.chat_id = chat_id
         self.running = True
-        self.queue = []
+        self.queue: List[str] = []
         self.cv = threading.Condition()
         self.thread = threading.Thread(target=self.watch_queue)
         self.thread.start()
@@ -118,7 +118,7 @@ def add_telegram_logger() -> None:
             configuration.update_config(config)
 
 
-def chunk_message(message: str, char_limit: int = 4000) -> typing.List[str]:
+def chunk_message(message: str, char_limit: int = 4000) -> List[str]:
     lines = message.split("\n")
     capped_lines = []
     for line in lines:
@@ -127,7 +127,7 @@ def chunk_message(message: str, char_limit: int = 4000) -> typing.List[str]:
         else:
             lines += split_long_line(line, char_limit)
     chunks = []
-    current_chunk = []
+    current_chunk: List[str] = []
     current_size = 0
     for line in capped_lines:
         if len(line) + current_size >= char_limit:
@@ -141,7 +141,7 @@ def chunk_message(message: str, char_limit: int = 4000) -> typing.List[str]:
     return chunks
 
 
-def split_long_line(line: str, char_limit: int = 4000) -> typing.List[str]:
+def split_long_line(line: str, char_limit: int = 4000) -> List[str]:
     intervals = len(line) // char_limit + 1
     chunks = [line[(i * char_limit) : ((i + 1) * char_limit)] for i in range(intervals)]
     return chunks

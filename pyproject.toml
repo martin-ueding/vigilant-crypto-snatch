@@ -41,7 +41,11 @@ mypy = "^0.910"
 types-PyYAML = "^5.4.6"
 types-requests = "^2.25.6"
 types-python-dateutil = "^0.1.6"
+sqlalchemy-stubs = "^0.4"
 
 [build-system]
 requires = ["poetry>=0.12"]
 build-backend = "poetry.masonry.api"
+
+[tool.mypy]
+ignore_missing_imports = true

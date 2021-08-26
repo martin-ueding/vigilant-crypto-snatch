@@ -42,7 +42,7 @@ class InterpolatingSource(historical.HistoricalSource):
 
 
 def json_to_database(
-    data: List[dict], coin: str, fiat: str, session: sqlalchemy.orm.session
+    data: List[dict], coin: str, fiat: str, session: sqlalchemy.orm.session.Session
 ) -> None:
     logger.info(f"Writing {len(data)} prices to the DB …")
     for elem in data:

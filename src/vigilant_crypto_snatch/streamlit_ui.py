@@ -5,16 +5,15 @@ import sys
 import altair as alt
 import numpy as np
 import pandas as pd
+import requests
 import streamlit as st
 import streamlit.cli as st_cli
-import requests
-
 from vigilant_crypto_snatch import configuration
 from vigilant_crypto_snatch import datamodel
 from vigilant_crypto_snatch import evaluation
 from vigilant_crypto_snatch import historical
-from vigilant_crypto_snatch import triggers
 from vigilant_crypto_snatch import migrations
+from vigilant_crypto_snatch import triggers
 
 
 def get_currency_pairs(api_key: str) -> list:
@@ -314,8 +313,9 @@ class Namespace(object):
 
 def get_api_key() -> str:
     var_name = "CRYPTOCOMPARE_API_KEY"
-    if var_name in os.environ:
-        return os.environ.get(var_name)
+    key = os.environ.get(var_name, None)
+    if key is not None:
+        return key
     else:
         config = configuration.load_config()
         return config["cryptocompare"]["api_key"]

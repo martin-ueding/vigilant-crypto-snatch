@@ -2,16 +2,16 @@ import datetime
 import logging
 import os
 
-import sqlalchemy.orm
 import sqlalchemy.ext.declarative
+import sqlalchemy.orm
 
-from . import logger
 from . import configuration
+from . import logger
 
 Base = sqlalchemy.ext.declarative.declarative_base()
 
 
-class Price(Base):
+class Price(Base):  # type: ignore
     __tablename__ = "prices"
 
     id = sqlalchemy.Column(sqlalchemy.Integer, primary_key=True)
@@ -24,7 +24,7 @@ class Price(Base):
         return f"{self.timestamp}: {self.last} {self.fiat}/{self.coin}"
 
 
-class Trade(Base):
+class Trade(Base):  # type: ignore
     __tablename__ = "trades"
 
     id = sqlalchemy.Column(sqlalchemy.Integer, primary_key=True)
@@ -60,7 +60,7 @@ class Trade(Base):
 
 
 def garbage_collect_db(
-    session: sqlalchemy.orm.Session, cutoff: datetime.datetime
+    session: sqlalchemy.orm.session.Session, cutoff: datetime.datetime
 ) -> None:
     logger.debug(f"Start cleaning of database before {cutoff} …")
 
@@ -71,7 +71,7 @@ def garbage_collect_db(
     session.commit()
 
 
-def open_db_session(db_path: str) -> sqlalchemy.orm.Session:
+def open_db_session(db_path: str) -> sqlalchemy.orm.session.Session:
     if db_path != "":
         if not os.path.isdir(os.path.dirname(db_path)):
             os.makedirs(os.path.dirname(db_path))
@@ -81,13 +81,13 @@ def open_db_session(db_path: str) -> sqlalchemy.orm.Session:
     engine = sqlalchemy.create_engine(db_url)
     Base.metadata.create_all(engine)
     Session = sqlalchemy.orm.sessionmaker(bind=engine)
-    session = Session()
+    session = Session()  # type: ignore
     return session
 
 
-def open_memory_db_session() -> sqlalchemy.orm.session:
+def open_memory_db_session() -> sqlalchemy.orm.session.Session:
     return open_db_session("")
 
 
-def open_user_db_session() -> sqlalchemy.orm.session:
+def open_user_db_session() -> sqlalchemy.orm.session.Session:
     return open_db_session("/" + configuration.user_db_path)

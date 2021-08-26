@@ -4,7 +4,7 @@ import os
 import typing
 
 import requests
-import sqlalchemy.orm
+import sqlalchemy.orm.exc
 
 from . import datamodel
 from . import logger
@@ -66,7 +66,9 @@ class CryptoCompareHistoricalSource(HistoricalSource):
 
 
 class DatabaseHistoricalSource(HistoricalSource):
-    def __init__(self, session: sqlalchemy.orm.session, tolerance: datetime.timedelta):
+    def __init__(
+        self, session: sqlalchemy.orm.session.Session, tolerance: datetime.timedelta
+    ):
         self.session = session
         self.tolerance = tolerance
 
@@ -119,7 +121,7 @@ class CachingHistoricalSource(HistoricalSource):
         self,
         database_source: HistoricalSource,
         live_sources: typing.List[HistoricalSource],
-        session: sqlalchemy.orm.session,
+        session: sqlalchemy.orm.session.Session,
     ):
         self.database_source = database_source
         self.live_sources = live_sources

@@ -75,7 +75,7 @@ def process_trigger(trigger: triggers.Trigger, keepalive: bool):
         )
     except requests.exceptions.ConnectionError as e:
         notify_and_continue(e, logging.ERROR)
-    except requests.exceptions.HTTPError:
+    except requests.exceptions.HTTPError as e:
         notify_and_continue(e, logging.ERROR)
     except sqlalchemy.exc.OperationalError as e:
         logger.critical(
@@ -119,7 +119,9 @@ def main(options):
     caching_source = historical.CachingHistoricalSource(
         database_source, [market_source, crypto_compare_source], session
     )
-    active_triggers = triggers.make_triggers(config, session, caching_source, market)
+    active_triggers = triggers.make_triggers(
+        config, session, caching_source, market, options.dry_run
+    )
 
     trigger_loop = TriggerLoop(
         active_triggers, config["sleep"], options.keepalive, options.one_shot
