@@ -9,6 +9,7 @@ nav:
   - installation.md
   - configuration.md
   - running.md
+  - deployment.md
   - support.md
   - changelog.md
   - developing.md
