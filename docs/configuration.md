@@ -104,13 +104,15 @@ bitstamp:
   secret: "secret here"
 ```
 
-## Triggers
+## Polling interval
 
 First you should set the polling interval that the main loop should use. It will wait this many seconds before checking again. For testing we found that 5 seconds is a good value, for production use 60 seconds should be absolutely sufficient.
 
 ```yaml
 sleep: 60
 ```
+
+## Triggers
 
 You can define as many triggers as you would like. This is done in a section `triggers`. Let us show an example first and explain all the keys below.
 
@@ -174,6 +176,12 @@ First there is the *fixed* strategy, where you always spend a fixed amount. For 
 Alternatively you can specify a percentage of the amount of fiat currency that you have on the market. For this specify a percentage:
 
 - `percentage_fiat`: Percentage of fiat money to spend in each buy.
+
+### Choosing sensible values
+
+But what shall I choose? What will give me the most return of investment? We don't have the truth either, but we recommend that you take a look at the evaluation interface that is linked on the [usage](running.md) page. The heatmap of drops gives you a good idea of which delays and drop percentages to use. The trigger simulation gives you an idea of how often they fire, and let you choose the amount of fiat to spend.
+
+You can also come to the Telegram group, see [support](support.md), and ask other users for their experience.
 
 ## Telegram notifications
 
