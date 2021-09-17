@@ -290,6 +290,13 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#polling-interval" class="md-nav__link">
+    Polling interval
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#triggers" class="md-nav__link">
     Triggers
   </a>
@@ -307,6 +314,13 @@
           <li class="md-nav__item">
   <a href="#fiat-volume-strategy" class="md-nav__link">
     Fiat volume strategy
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#choosing-sensible-values" class="md-nav__link">
+    Choosing sensible values
   </a>
   
 </li>
@@ -516,6 +530,13 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#polling-interval" class="md-nav__link">
+    Polling interval
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#triggers" class="md-nav__link">
     Triggers
   </a>
@@ -533,6 +554,13 @@
           <li class="md-nav__item">
   <a href="#fiat-volume-strategy" class="md-nav__link">
     Fiat volume strategy
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#choosing-sensible-values" class="md-nav__link">
+    Choosing sensible values
   </a>
   
 </li>
@@ -563,7 +591,8 @@
                 
                 
                 <h1 id="configuration">Configuration</h1>
-<p>Unfortunately we need to configure a few things before you can start automatic trading with this software. Most configuration is done in a <a href="https://yaml.org/">YAML</a> file. Create this file and open it in a text editor. We will talk you through the necessary steps and show snippets to put into. Depending on your platform, the path should be this:</p>
+<p>Unfortunately we need to configure a few things before you can start automatic trading with this software. Most configuration is done in a <a href="https://yaml.org/">YAML</a> file. It is a syntax for hierarchical data and relies on indentation to show the hierarchy.</p>
+<p>The configuration file needs to be created with a (programmer's) text editor. We will talk you through the necessary steps and show snippets to put into. Depending on your platform, the path should be this:</p>
 <table>
 <thead>
 <tr>
@@ -597,7 +626,7 @@
 </blockquote>
 <p>In the configuration file then add the following:</p>
 <div class="highlight"><pre><span></span><code><span class="nt">cryptocompare</span><span class="p">:</span>
-  <span class="nt">api_key</span><span class="p">:</span> <span class="s">&#39;your</span><span class="nv"> </span><span class="s">API</span><span class="nv"> </span><span class="s">key</span><span class="nv"> </span><span class="s">here&#39;</span>
+  <span class="nt">api_key</span><span class="p">:</span> <span class="s">&quot;your</span><span class="nv"> </span><span class="s">API</span><span class="nv"> </span><span class="s">key</span><span class="nv"> </span><span class="s">here&quot;</span>
 </code></pre></div>
 <h2 id="marketplaces">Marketplaces</h2>
 <p>We currently support two marketplaces, <a href="https://bitstamp.net/">Bitstamp</a> and <a href="https://kraken.com">Kraken</a>. You only have to configure one of them, but you can also configure both. When you start the program, you can just choose which marketplace you want to use today.</p>
@@ -609,8 +638,8 @@
 <p><img alt="" src="../kraken-api-settings.png" /></p>
 <p>You will get an API key and an associated secret. In the configuration file you add a paragraph like the following. The first will be API key and the second will be the secret, like this:</p>
 <div class="highlight"><pre><span></span><code><span class="nt">kraken</span><span class="p">:</span>
-  <span class="nt">key</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">YOUR KEY</span>
-  <span class="nt">secret</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">YOUR SECRET</span>
+  <span class="nt">key</span><span class="p">:</span> <span class="s">&quot;YOUR</span><span class="nv"> </span><span class="s">KEY&quot;</span>
+  <span class="nt">secret</span><span class="p">:</span> <span class="s">&quot;YOUR</span><span class="nv"> </span><span class="s">SECRET&quot;</span>
 </code></pre></div>
 <h4 id="fee-policy">Fee policy</h4>
 <p>When you trade, you will have to pay a certain fee that depends on your Kraken account tier. Whatever these are exactly, you can choose whether you would like to have them taken away from your fiat or coin amount. If you let it take away from your coin amount, buying coin for 50 EUR will only cost exactly that, but you get a bit less coin. Should you rather choose to have it taken in fiat, you will get as much coin as you want, but it will cost you more fiat.</p>
@@ -646,14 +675,15 @@
 </blockquote>
 <p>Put this API key into the configuration file.</p>
 <div class="highlight"><pre><span></span><code><span class="nt">bitstamp</span><span class="p">:</span>
-  <span class="nt">username</span><span class="p">:</span> <span class="s">&#39;username</span><span class="nv"> </span><span class="s">here&#39;</span>
-  <span class="nt">key</span><span class="p">:</span> <span class="s">&#39;key</span><span class="nv"> </span><span class="s">here&#39;</span>
-  <span class="nt">secret</span><span class="p">:</span> <span class="s">&#39;secret</span><span class="nv"> </span><span class="s">here&#39;</span>
+  <span class="nt">username</span><span class="p">:</span> <span class="s">&quot;username</span><span class="nv"> </span><span class="s">here&quot;</span>
+  <span class="nt">key</span><span class="p">:</span> <span class="s">&quot;key</span><span class="nv"> </span><span class="s">here&quot;</span>
+  <span class="nt">secret</span><span class="p">:</span> <span class="s">&quot;secret</span><span class="nv"> </span><span class="s">here&quot;</span>
 </code></pre></div>
-<h2 id="triggers">Triggers</h2>
+<h2 id="polling-interval">Polling interval</h2>
 <p>First you should set the polling interval that the main loop should use. It will wait this many seconds before checking again. For testing we found that 5 seconds is a good value, for production use 60 seconds should be absolutely sufficient.</p>
 <div class="highlight"><pre><span></span><code><span class="nt">sleep</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">60</span>
 </code></pre></div>
+<h2 id="triggers">Triggers</h2>
 <p>You can define as many triggers as you would like. This is done in a section <code>triggers</code>. Let us show an example first and explain all the keys below.</p>
 <div class="highlight"><pre><span></span><code><span class="nt">triggers</span><span class="p">:</span>
 <span class="p p-Indicator">-</span> <span class="nt">coin</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">btc</span>
@@ -708,6 +738,9 @@
 <ul>
 <li><code>percentage_fiat</code>: Percentage of fiat money to spend in each buy.</li>
 </ul>
+<h3 id="choosing-sensible-values">Choosing sensible values</h3>
+<p>But what shall I choose? What will give me the most return of investment? We don't have the truth either, but we recommend that you take a look at the evaluation interface that is linked on the <a href="../running/">usage</a> page. The heatmap of drops gives you a good idea of which delays and drop percentages to use. The trigger simulation gives you an idea of how often they fire, and let you choose the amount of fiat to spend.</p>
+<p>You can also come to the Telegram group, see <a href="../support/">support</a>, and ask other users for their experience.</p>
 <h2 id="telegram-notifications">Telegram notifications</h2>
 <p>Optionally you can set up notifications via Telegram. This is not required, but a nice extra to allow monitoring from anywhere.</p>
 <p>First you have to create a bot by talking to <a href="https://t.me/botfather">@botfather</a>. It will lead you through a couple of steps:</p>
@@ -719,7 +752,7 @@
 </ol>
 <p>It will give you an access token that you can use for the API. Enter that token into the configuration file:</p>
 <div class="highlight"><pre><span></span><code><span class="nt">telegram</span><span class="p">:</span>
-  <span class="nt">token</span><span class="p">:</span> <span class="s">&#39;Your</span><span class="nv"> </span><span class="s">bot</span><span class="nv"> </span><span class="s">token</span><span class="nv"> </span><span class="s">here&#39;</span>
+  <span class="nt">token</span><span class="p">:</span> <span class="s">&quot;Your</span><span class="nv"> </span><span class="s">bot</span><span class="nv"> </span><span class="s">token</span><span class="nv"> </span><span class="s">here&quot;</span>
   <span class="nt">level</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">info</span>
 </code></pre></div>
 <p>You will need to write a message to the bot in order to open a direct conversation with it. This is necessary such that the bot can reply to you.</p>
