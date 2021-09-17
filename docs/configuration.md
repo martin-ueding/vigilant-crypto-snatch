@@ -1,6 +1,8 @@
 # Configuration
 
-Unfortunately we need to configure a few things before you can start automatic trading with this software. Most configuration is done in a [YAML](https://yaml.org/) file. Create this file and open it in a text editor. We will talk you through the necessary steps and show snippets to put into. Depending on your platform, the path should be this:
+Unfortunately we need to configure a few things before you can start automatic trading with this software. Most configuration is done in a [YAML](https://yaml.org/) file. It is a syntax for hierarchical data and relies on indentation to show the hierarchy.
+
+The configuration file needs to be created with a (programmer's) text editor. We will talk you through the necessary steps and show snippets to put into. Depending on your platform, the path should be this:
 
 | Platform | Location |
 | --- | --- |
@@ -22,7 +24,7 @@ In the configuration file then add the following:
 
 ```yaml
 cryptocompare:
-  api_key: 'your API key here'
+  api_key: "your API key here"
 ```
 
 ## Marketplaces
@@ -45,8 +47,8 @@ You will get an API key and an associated secret. In the configuration file you 
 
 ```yaml
 kraken:
-  key: YOUR KEY
-  secret: YOUR SECRET
+  key: "YOUR KEY"
+  secret: "YOUR SECRET"
 ```
 
 #### Fee policy
@@ -97,9 +99,9 @@ Put this API key into the configuration file.
 
 ```yaml
 bitstamp:
-  username: 'username here'
-  key: 'key here'
-  secret: 'secret here'
+  username: "username here"
+  key: "key here"
+  secret: "secret here"
 ```
 
 ## Triggers
@@ -188,7 +190,7 @@ It will give you an access token that you can use for the API. Enter that token 
 
 ```yaml
 telegram:
-  token: 'Your bot token here'
+  token: "Your bot token here"
   level: info
 ```
 
