@@ -9,14 +9,14 @@
       
       
       
-        <link rel="canonical" href="https://martin-ueding.github.io/vigilant-crypto-snatch/developing/">
+        <link rel="canonical" href="https://martin-ueding.github.io/vigilant-crypto-snatch/deployment/">
       
       <link rel="icon" href="../assets/images/favicon.png">
       <meta name="generator" content="mkdocs-1.2.1, mkdocs-material-7.1.10">
     
     
       
-        <title>Developing - Vigilant Crypto Snatch</title>
+        <title>Deployment - Vigilant Crypto Snatch</title>
       
     
     
@@ -63,7 +63,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#developing" class="md-skip">
+        <a href="#deployment" class="md-skip">
           Skip to content
         </a>
       
@@ -93,7 +93,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Developing
+              Deployment
             
           </span>
         </div>
@@ -231,11 +231,72 @@
 
   
   
+    
   
-    <li class="md-nav__item">
-      <a href="../deployment/" class="md-nav__link">
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" data-md-toggle="toc" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          Deployment
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
         Deployment
       </a>
+      
+        
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#screen-session" class="md-nav__link">
+    Screen session
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#team-viewer" class="md-nav__link">
+    Team Viewer
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#planned-execution-with-cron" class="md-nav__link">
+    Planned execution with cron
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#systemd-unit" class="md-nav__link">
+    Systemd unit
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
     </li>
   
 
@@ -276,65 +337,11 @@
 
   
   
-    
   
-  
-    <li class="md-nav__item md-nav__item--active">
-      
-      <input class="md-nav__toggle md-toggle" data-md-toggle="toc" type="checkbox" id="__toc">
-      
-      
-        
-      
-      
-        <label class="md-nav__link md-nav__link--active" for="__toc">
-          Developing
-          <span class="md-nav__icon md-icon"></span>
-        </label>
-      
-      <a href="./" class="md-nav__link md-nav__link--active">
+    <li class="md-nav__item">
+      <a href="../developing/" class="md-nav__link">
         Developing
       </a>
-      
-        
-<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
-  
-  
-  
-    
-  
-  
-    <label class="md-nav__title" for="__toc">
-      <span class="md-nav__icon md-icon"></span>
-      Table of contents
-    </label>
-    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
-      
-        <li class="md-nav__item">
-  <a href="#development-setup" class="md-nav__link">
-    Development setup
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#updating-the-documentation" class="md-nav__link">
-    Updating the documentation
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#code-style" class="md-nav__link">
-    Code style
-  </a>
-  
-</li>
-      
-    </ul>
-  
-</nav>
-      
     </li>
   
 
@@ -395,22 +402,29 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#development-setup" class="md-nav__link">
-    Development setup
+  <a href="#screen-session" class="md-nav__link">
+    Screen session
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#updating-the-documentation" class="md-nav__link">
-    Updating the documentation
+  <a href="#team-viewer" class="md-nav__link">
+    Team Viewer
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#code-style" class="md-nav__link">
-    Code style
+  <a href="#planned-execution-with-cron" class="md-nav__link">
+    Planned execution with cron
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#systemd-unit" class="md-nav__link">
+    Systemd unit
   </a>
   
 </li>
@@ -428,35 +442,84 @@
               
                 
                 
-                <h1 id="developing">Developing</h1>
-<p>If you want to contribute, that's awesome! It is best if you get in touch first, then we can discuss the best way to add your idea.</p>
-<h2 id="development-setup">Development setup</h2>
-<p>This project is written in Python. It uses <a href="https://python-poetry.org/">Poetry</a> to manage the project and its dependencies.</p>
-<p>Once you have obtained the source code via <code>git clone</code>, you can install the project into a virtual environment using <code>poetry install</code>. This will install all the dependencies and the package.</p>
-<p>You can of course use any Python development environment that you want. Martin can recommend <a href="https://www.jetbrains.com/pycharm/">PyCharm Community Edition</a>. Make sure to install the “Poetry” plugin to easily set up the virtual environment.</p>
-<p>In order to run in development mode, use Poetry:</p>
-<div class="highlight"><pre><span></span><code>poetry run vigilant-crypto-snatch <span class="o">[</span>more <span class="nb">command</span> line arguments<span class="o">]</span>
+                <h1 id="deployment">Deployment</h1>
+<p>Using the other pages, you should have already <a href="../configuration/">configured</a> the program and <a href="../running/">tried to use</a> it. It should log into the marketplace, report your balance and load the triggers. Then you can start it and have it run, but you likely want a proper deployment.</p>
+<p>Most users seem to have a Raspberry Pi, which is an affordable miniature server. It is perfectly suited to run this little Python program. You can also run it on a larger server, if you want.</p>
+<p>We will introduce a couple ways that you can deploy this program.</p>
+<h2 id="screen-session">Screen session</h2>
+<p>If you log into your Linux server via SSH and start a program, it will run on the server. But when you disconnect, the program will be shut shown. This is not what we want, we want to have the service running the whole time. Therefore a simple SSH connection is not appropriate.</p>
+<p>Fortunately there are <em>terminal multiplexers</em>, namely <em>screen</em> and <em>tmux</em>. For our purposes both are just perfectly fine. The idea is that you have a persistent terminal on the server, and you just attach to see it, and detach from viewing it. It is still there, even if you don't see it.</p>
+<p>For that start a new screen session, and perhaps already give it a name (we use <code>vigilant</code> here, but you are free to choose):</p>
+<div class="highlight"><pre><span></span><code><span class="gp">$ </span>screen -S vigilant
 </code></pre></div>
-<p>You can run the tests with <code>pytest</code>:</p>
-<div class="highlight"><pre><span></span><code>poetry run pytest
+<p>Not much will change, you will get a fresh screen. Then start the program as documented in the <a href="../running/">usage</a> page. It should start up.</p>
+<p>Then you can <kbd>Ctrl</kbd>+<kbd>A</kbd>, then <kbd>D</kbd>. This will <em>detach</em> the session. Use <code>screen -ls</code> to see a list of all sessions that are open. This can look like this:</p>
+<div class="highlight"><pre><span></span><code><span class="gp">$ </span>screen -ls
+<span class="go">There is a screen on:</span>
+<span class="go">        445439.vigilant (Detached)</span>
+<span class="go">1 Socket in /run/screen/S-mu.</span>
 </code></pre></div>
-<p>In order to determine test coverage, use this:</p>
-<div class="highlight"><pre><span></span><code>poetry run coverage run --source<span class="o">=</span>src -m pytest
-poetry run coverage html
+<p>Now you can logout via SSH, and the program will still run. Later you can log back in and use <code>screen -r vigilant</code> to <em>reattach</em> the session and control it or look at the log output.</p>
+<h2 id="team-viewer">Team Viewer</h2>
+<p>You might have set up your Raspberry Pi with a graphical user interface and a running session. In that case you log into that session using Team Viewer or any other remote administration tool. Just open a terminal window and start the program. It will keep running when you disconnect from Team Viewer.</p>
+<h2 id="planned-execution-with-cron">Planned execution with cron</h2>
+<p>You can let the program run the whole time with the <code>watch</code> command as described on the <a href="../running/">usage</a> page. If you want to regularly start the program and not have it running continually, you can use a <em>cron</em> job for that. Reasons for not keeping it running the whole time could be that you want it executed only during certain times of day or certain weekdays. It could also be that it happen to crash for you often (though please report that) and you want it restarted regularly. Personally I use it with cron because I don't have a machine which is running the whole time.</p>
+<p>First you need to find the path to the executable using the <code>type</code> command:</p>
+<div class="highlight"><pre><span></span><code><span class="gp">$ </span><span class="nb">type</span> vigilant-crypto-snatch
+<span class="go">vigilant-crypto-snatch is /home/mu/.local/bin/vigilant-crypto-snatch</span>
 </code></pre></div>
-<h2 id="updating-the-documentation">Updating the documentation</h2>
-<p>The documentation is created with <a href="https://squidfunk.github.io/mkdocs-material/">Material for MkDocs</a>. Just edit the Markdown files in <code>docs</code>.</p>
-<p>To locally view the documentation, use this:</p>
-<div class="highlight"><pre><span></span><code>poetry run mkdocs serve
+<p>This path comes because my local user is <code>mu</code> and I have installed it just for my user. It may be <code>/usr/local/bin/vigilant-crypto-snatch</code> on your machine, or something different.</p>
+<p>Then use <code>crontab -e</code> to edit the cron tab and add a new entry like this, where you have to adjust the path to the one that the above command has given you.</p>
+<div class="highlight"><pre><span></span><code>*/15 * * * * /home/mu/.local/bin/vigilant-crypto-snatch watch --one-shot
 </code></pre></div>
-<p>To publish a new version to GitHub Pages, use this:</p>
-<div class="highlight"><pre><span></span><code>poetry run mkdocs gh-publish
+<p>The syntax for the first five columns can be read with <code>man 5 crontab</code>. In short, they are</p>
+<ol>
+<li>Minute (0 to 59)</li>
+<li>Hour (0 to 23)</li>
+<li>Day of month (1 to 31)</li>
+<li>Month (1 to 12)</li>
+<li>Weekday (0 to 7, 0 and 7 are Sunday)</li>
+</ol>
+<p>You can pass a <code>*</code> to specify all values, and <code>*/15</code> means all values which are multiples of 15. The above line calls the program every 15 minutes on every hour, every day of month, every month and every weekday.</p>
+<h2 id="systemd-unit">Systemd unit</h2>
+<p>A very modern approach for continuous running is to use systemd. That is the program which starts all the other programs on a modern Linux system. It needs to have a definition of the service. It is a text file which looks like this:</p>
+<div class="highlight"><pre><span></span><code><span class="k">[Unit]</span>
+<span class="na">Description</span><span class="o">=</span><span class="s">Vigilant Crypto Snatch Service (watch)</span>
+<span class="na">StartLimitIntervalSec</span><span class="o">=</span><span class="s">500</span>
+<span class="na">StartLimitBurst</span><span class="o">=</span><span class="s">5</span>
+<span class="na">After</span><span class="o">=</span><span class="s">network.target</span>
+
+<span class="k">[Service]</span>
+<span class="na">User</span><span class="o">=</span><span class="s">USERNAME</span>
+<span class="na">ExecStart</span><span class="o">=</span><span class="s">/usr/local/bin/vigilant-crypto-snatch watch --marketplace kraken --keepalive</span>
+<span class="na">Restart</span><span class="o">=</span><span class="s">on-failure</span>
+<span class="na">RestartSec</span><span class="o">=</span><span class="s">5s</span>
+
+<span class="k">[Install]</span>
+<span class="na">WantedBy</span><span class="o">=</span><span class="s">multi-user.target</span>
 </code></pre></div>
-<h2 id="code-style">Code style</h2>
-<p>We try to develop this in a <em>Clean Code</em> way, with the least amount of coupling. We also follow the <a href="https://medium.com/@cjolowicz/hypermodern-python-d44485d9d769">Hypermodern Python</a> series for project layout and choice of tooling.</p>
-<p>Code formatting is done with <a href="https://github.com/psf/black">Black</a>:</p>
-<div class="highlight"><pre><span></span><code>poetry run black src/**.py test/**.py
+<p>Create a text file at <code>/etc/systemd/system/vigilant-crypto-snatch.service</code> and put that content into it, making these changes:</p>
+<ul>
+<li>
+<p>Be sure to replace the placeholder <code>USERNAME</code> with the one where you have put the config. On a Raspberry Pi that is usually just the username <code>pi</code>. You can find out like this:</p>
+<div class="highlight"><pre><span></span><code><span class="gp">$ </span><span class="nb">echo</span> <span class="nv">$USER</span>
+<span class="go">mu</span>
 </code></pre></div>
+</li>
+<li>
+<p>You also need to change the path, which you can find out by executing <code>type vigilant-crypto-snatch</code> on the command line.</p>
+</li>
+<li>
+<p>The command line flags might not be the ones you want, perhaps you want a different market place.</p>
+</li>
+</ul>
+<p>Once you have that unit in place, you can query systemd to show you this unit:</p>
+<div class="highlight"><pre><span></span><code><span class="gp">$ </span>sudo systemctl status vigilant-crypto-snatch
+<span class="go">○ vigilant-crypto-snatch.service - Vigilant Crypto Snatch Service (watch)</span>
+<span class="go">     Loaded: loaded (/etc/systemd/system/vigilant-crypto-snatch.service; disabled; vendor preset: disabled)</span>
+<span class="go">     Active: inactive (dead)</span>
+</code></pre></div>
+<p>If you want to have this unit started on system startup, you need to <em>enable</em> it with <code>sudo systemctl enable vigilant-crypto-snatch</code>. To start the unit, you use <code>sudo systemctl start vigilant-crypto-snatch</code>. Using the above <code>status</code> command you can check whether it has started or crashed and also get the latest error messages.</p>
                 
               
               
@@ -476,7 +539,7 @@ poetry run coverage html
     <nav class="md-footer__inner md-grid" aria-label="Footer">
       
         
-        <a href="../changelog/" class="md-footer__link md-footer__link--prev" aria-label="Previous: Changelog" rel="prev">
+        <a href="../running/" class="md-footer__link md-footer__link--prev" aria-label="Previous: Usage" rel="prev">
           <div class="md-footer__button md-icon">
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"/></svg>
           </div>
@@ -485,20 +548,20 @@ poetry run coverage html
               <span class="md-footer__direction">
                 Previous
               </span>
-              Changelog
+              Usage
             </div>
           </div>
         </a>
       
       
         
-        <a href="../license/" class="md-footer__link md-footer__link--next" aria-label="Next: License" rel="next">
+        <a href="../support/" class="md-footer__link md-footer__link--next" aria-label="Next: Support" rel="next">
           <div class="md-footer__title">
             <div class="md-ellipsis">
               <span class="md-footer__direction">
                 Next
               </span>
-              License
+              Support
             </div>
           </div>
           <div class="md-footer__button md-icon">

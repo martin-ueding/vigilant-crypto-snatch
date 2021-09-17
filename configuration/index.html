@@ -323,13 +323,6 @@
   
 </li>
       
-        <li class="md-nav__item">
-  <a href="#planned-execution-with-cron" class="md-nav__link">
-    Planned execution with cron
-  </a>
-  
-</li>
-      
     </ul>
   
 </nav>
@@ -348,6 +341,21 @@
     <li class="md-nav__item">
       <a href="../running/" class="md-nav__link">
         Usage
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../deployment/" class="md-nav__link">
+        Deployment
       </a>
     </li>
   
@@ -537,13 +545,6 @@
         <li class="md-nav__item">
   <a href="#telegram-notifications" class="md-nav__link">
     Telegram notifications
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#planned-execution-with-cron" class="md-nav__link">
-    Planned execution with cron
   </a>
   
 </li>
@@ -759,24 +760,6 @@
 </tbody>
 </table>
 <p>The logging level is set to <em>Info</em> by default. You must not set it to <em>Debug</em> as sending a Telegram message will produce more debug messages. The program will crash with an infinite recursion.</p>
-<h2 id="planned-execution-with-cron">Planned execution with cron</h2>
-<p>You can let the program run the whole time with the <code>watch</code> command as described on the <em>Usage</em> page. If you want to regularly start the program and not have it running, you can use a <em>cron</em> job for that. Reasons for not keeping it running the whole time could be that you want it executed only during certain times of day or certain weekdays. It could also be that it happen to crash for you often (though please report that) and you want it restarted regularly.</p>
-<p>First you need to find the path to the executable using the <code>type</code> command:</p>
-<div class="highlight"><pre><span></span><code><span class="gp">$ </span><span class="nb">type</span> vigilant-crypto-snatch
-<span class="go">vigilant-crypto-snatch is /home/mu/.local/bin/vigilant-crypto-snatch</span>
-</code></pre></div>
-<p>Then use <code>crontab -e</code> to edit the cron tab and add a new entry like this, where you have to adjust the path to the one that the above command has given you.</p>
-<div class="highlight"><pre><span></span><code>*/15 * * * * /home/mu/.local/bin/vigilant-crypto-snatch watch --one-shot
-</code></pre></div>
-<p>The syntax for the first five columns can be read with <code>man 5 crontab</code>. In short, they are</p>
-<ol>
-<li>Minute (0 to 59)</li>
-<li>Hour (0 to 23)</li>
-<li>Day of month (1 to 31)</li>
-<li>Month (1 to 12)</li>
-<li>Weekday (0 to 7, 0 and 7 are Sunday)</li>
-</ol>
-<p>You can pass a <code>*</code> to specify all values, and <code>*/15</code> means all values which are multiples of 15. The above line calls the program every 15 minutes on every hour, every day of month, every month and every weekday.</p>
                 
               
               
