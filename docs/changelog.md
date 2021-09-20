@@ -4,6 +4,10 @@ This is a list of changes, from new to older.
 
 ## 4.0 Series
 
+### Version 4.3.5
+
+- When the balance on the marketplace is zero, withdrawals would fail and therefore crash the whole program. This is now fixed.
+
 ### Version 4.3.4
 
 - The `--dry-run` option would write buys into the database, although it would not buy anything on the market. Now the database should now be changed. If you need to clean up your database, you might find [sqliteman](https://sourceforge.net/projects/sqliteman/) helpful for that.
