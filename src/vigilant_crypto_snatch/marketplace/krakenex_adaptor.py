@@ -100,6 +100,8 @@ class KrakenexMarketplace(marketplace.Marketplace):
         if coin not in self.withdrawal_config:
             logger.debug(f"No withdrawal config for {coin}.")
             return
+        if volume == 0:
+            return
         target = self.withdrawal_config[coin]["target"]
         fee = self.get_withdrawal_fee(coin, volume)
         if fee / volume <= self.withdrawal_config[coin]["fee_limit_percent"] / 100:
