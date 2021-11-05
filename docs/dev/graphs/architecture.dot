@@ -34,9 +34,7 @@ style=filled
 "DatabaseCleaningTrigger"
 "make_triggers()"
 "make_buy_trigger()"
-"make_triggers()" -> "make_buy_trigger()"
 "CheckinTrigger"
-"BuyTrigger" -> "Trigger" [arrowhead=onormal]
 }
 
 
@@ -53,7 +51,6 @@ label = "datastore"
 fillcolor = gray85
 style=filled
 "Datastore" [shape=ellipse]
-"Datastore" -> "BuyTrigger"
 }
 
 subgraph cluster_datastore_sqlalchemy_store {
@@ -62,160 +59,164 @@ fillcolor = gray85
 style=filled
 "AlchemyPrice"
 "AlchemyTrade"
-"SqlAlchemyDatastore" -> "Datastore" [arrowhead=onormal]
-"SqlAlchemyDatastore" -> "AlchemyPrice"
-"SqlAlchemyDatastore" -> "AlchemyTrade"
-
-"SqlAlchemyDatastore" -> "sqlalchemy"
-"AlchemyPrice" -> "sqlalchemy"
-"AlchemyTrade" -> "sqlalchemy"
+"SqlAlchemyDatastore"
 }
 
-{
-node [shape=parallelogram]
+subgraph cluster_datastore_list_store {
+label = "datastore.list_store"
+fillcolor = gray85
+style=filled
+"ListDatastore"
+}
 
+subgraph cluster_historical {
+label = "historical"
+fillcolor = gray90
+style=filled
+"HistoricalSource" [shape=ellipse]
+"MockHistorical"
+"MarketSource"
+"CachingHistoricalSource"
+"InterpolatingSource"
+"CryptoCompareHistoricalSource"
+"DatabaseHistoricalSource"
+}
 
+subgraph cluster_marketplace {
+label = "marketplace"
+fillcolor = gray90
+style=filled
+"Marketplace" [shape=ellipse]
+"make_marketplace()" [shape=note]
+"BitstampMarketplace"
+"KrakenexMarketplace"
+"BuyError"
+"MockMarketplace"
+"SimulationMarketplace"
+"TickerError"
+}
+
+subgraph cluster_triggers {
+label = "triggers"
+fillcolor = gray90
+style=filled
+"Trigger" [shape=ellipse]
+"RatioVolumeFiatDelegate"
+"DropTriggeredDelegate"
+"FixedVolumeFiatDelegate"
+"VolumeFiatDelegate"
+"TriggeredDelegate"
 }
 
 {
 node [shape=box]
-"BitstampMarketplace"
-"KrakenexMarketplace"
 "TelegramBotException"
 "TelegramSender"
 "TriggerLoop"
-"BuyError"
 }
 
-{
-node [shape=ellipse]
-
-"HistoricalSource"
-"Marketplace"
-
-}
 
 {
-node [shape=component]
-
+node [shape=component, fillcolor=gray90, style=filled]
 "streamlit_ui"
 "configuration"
 "cli"
 "migrations"
-
 }
-
 
 
 {
 node [shape=note]
-
 "watchloop.process_trigger()"
 "watchloop.main()"
-"marketplace.make_marketplace()"
-"datamodel.garbage_collect_db()"
-
 }
 
-{
-edge [arrowhead=vee]
 
+"AlchemyPrice" -> "sqlalchemy"
+"AlchemyTrade" -> "sqlalchemy"
 "BitstampMarketplace" -> "bitstamp"
-"CachingHistoricalSource" -> "sqlalchemy"
-"DatabaseHistoricalSource" -> "sqlalchemy"
-"KrakenexMarketplace" -> "krakenex"
-"MarketSource" -> "Marketplace"
-"TelegramSender" -> "Telegram"
-"RatioVolumeFiatDelegate" -> "Marketplace"
-"TriggerLoop" -> "Trigger"
-"TriggerLoop" -> "TelegramSender"
-"TriggerLoop" -> "BuyError"
-"watchloop.process_trigger()" -> "TickerError"
-"watchloop.process_trigger()" -> "BuyError"
-"watchloop.process_trigger()" -> "requests"
-"watchloop.process_trigger()" -> "Trigger"
-"watchloop.process_trigger()" -> "sqlalchemy"
-"watchloop.main()" -> "Marketplace"
-"watchloop.main()" -> "CryptoCompareHistoricalSource"
-"watchloop.main()" -> "MarketSource"
-"watchloop.main()" -> "CachingHistoricalSource"
-"watchloop.main()" -> "DatabaseHistoricalSource"
-"watchloop.main()" -> "TriggerLoop"
-"TelegramSender" -> "TelegramBotException"
-"datamodel.garbage_collect_db()" -> "OldPrice"
-"HistoricalSource" -> "OldPrice"
-"Marketplace" -> "OldPrice"
-"BuyTrigger" -> "OldTrade"
+"BitstampMarketplace" -> "Marketplace" [arrowhead=onormal]
 "BuyTrigger" -> "FailureTimeout"
-"configuration" -> "appdirs"
-"configuration" -> "yaml"
-"watchloop.main()" -> "configuration"
-"telegram.add_telegram_logger()" -> "configuration"
-"marketplace.make_marketplace()" -> "BitstampMarketplace"
-"marketplace.make_marketplace()" -> "KrakenexMarketplace"
-"marketplace.make_marketplace()" -> "configuration"
-"telegram.add_telegram_logger()" -> "TelegramLogger"
-"telegram.add_telegram_logger()" -> "TelegramSender"
-"streamlit_ui" -> "streamlit"
-"streamlit_ui" -> "requests"
-"streamlit_ui" -> "pandas"
-"streamlit_ui" -> "BuyTrigger"
-"make_buy_trigger()" -> "DropTriggeredDelegate"
-"make_buy_trigger()" -> "TrueTriggeredDelegate"
-"make_buy_trigger()" -> "FixedVolumeFiatDelegate"
-"make_buy_trigger()" -> "RatioVolumeFiatDelegate"
-"make_buy_trigger()" -> "BuyTrigger"
-"BuyTrigger" -> "VolumeFiatDelegate"
-"BuyTrigger" -> "TriggeredDelegate"
-"BuyTrigger" -> "sqlalchemy"
 "BuyTrigger" -> "HistoricalSource"
 "BuyTrigger" -> "Marketplace"
+"BuyTrigger" -> "sqlalchemy"
+"BuyTrigger" -> "Trade"
+"BuyTrigger" -> "Trigger" [arrowhead=onormal]
+"BuyTrigger" -> "TriggeredDelegate"
+"BuyTrigger" -> "VolumeFiatDelegate"
+"CachingHistoricalSource" -> "HistoricalSource" [arrowhead=onormal]
+"CheckinTrigger" -> "Datastore"
+"CheckinTrigger" -> "Trigger" [arrowhead=onormal]
 "cli" -> "streamlit_ui"
-"migrations" -> "configuration"
-"watchloop.main()" -> "migrations"
-"streamlit_ui" -> "InterpolatingSource"
-"streamlit_ui" -> "SimulationMarketplace"
-"Datastore" -> "Trade"
-"Datastore" -> "Price"
-
-}
-
-
-
-{
-edge [arrowhead=vee, style=dashed]
-
-"CheckinTrigger" -> "datamodel.garbage_collect_db()"
-"watchloop.main()" -> "marketplace.make_marketplace()"
-"watchloop.main()" -> "make_triggers()"
-"watchloop.main()" -> "telegram.add_telegram_logger()"
-"streamlit_ui" -> "make_buy_trigger()"
 "cli" -> "watchloop.main()"
-
-}
-
-{
-edge [arrowhead=onormal]
-
-"CachingHistoricalSource" -> "HistoricalSource"
-"CryptoCompareHistoricalSource" -> "HistoricalSource"
-"DatabaseHistoricalSource" -> "HistoricalSource"
-"MarketSource" -> "HistoricalSource"
-"BitstampMarketplace" -> "Marketplace"
-"KrakenexMarketplace" -> "Marketplace"
-"TelegramLogger" -> "logging.logger"
-"DropTriggeredDelegate" -> "TriggeredDelegate"
-"TrueTriggeredDelegate" -> "TriggeredDelegate"
-"FixedVolumeFiatDelegate" -> "VolumeFiatDelegate"
-"RatioVolumeFiatDelegate" -> "VolumeFiatDelegate"
-"BuyTrigger" -> "Trigger"
-"CheckinTrigger" -> "Trigger"
-"DatabaseCleaningTrigger" -> "Trigger"
-"InterpolatingSource" -> "HistoricalSource"
-"SimulationMarketplace" -> "Marketplace"
-"MockMarketplace" -> "Marketplace"
-"MockHistorical" -> "HistoricalSource"
-
-}
+"configuration" -> "appdirs"
+"configuration" -> "yaml"
+"CryptoCompareHistoricalSource" -> "HistoricalSource" [arrowhead=onormal]
+"DatabaseCleaningTrigger" -> "Trigger" [arrowhead=onormal]
+"DatabaseHistoricalSource" -> "HistoricalSource" [arrowhead=onormal]
+"Datastore" -> "Price"
+"Datastore" -> "Trade"
+"DropTriggeredDelegate" -> "TriggeredDelegate" [arrowhead=onormal]
+"FixedVolumeFiatDelegate" -> "VolumeFiatDelegate" [arrowhead=onormal]
+"HistoricalSource" -> "Price"
+"InterpolatingSource" -> "HistoricalSource" [arrowhead=onormal]
+"KrakenexMarketplace" -> "krakenex"
+"KrakenexMarketplace" -> "Marketplace" [arrowhead=onormal]
+"ListDatastore" -> "Datastore" [arrowhead=onormal]
+"make_buy_trigger()" -> "BuyTrigger"
+"make_buy_trigger()" -> "DropTriggeredDelegate"
+"make_buy_trigger()" -> "FixedVolumeFiatDelegate"
+"make_buy_trigger()" -> "RatioVolumeFiatDelegate"
+"make_buy_trigger()" -> "TrueTriggeredDelegate"
+"make_marketplace()" -> "BitstampMarketplace"
+"make_marketplace()" -> "configuration"
+"make_marketplace()" -> "KrakenexMarketplace"
+"make_triggers()" -> "make_buy_trigger()"
+"Marketplace" -> "Price"
+"MarketSource" -> "HistoricalSource" [arrowhead=onormal]
+"MarketSource" -> "Marketplace"
+"migrations" -> "configuration"
+"MockHistorical" -> "HistoricalSource" [arrowhead=onormal]
+"MockMarketplace" -> "Marketplace" [arrowhead=onormal]
+"RatioVolumeFiatDelegate" -> "Marketplace"
+"RatioVolumeFiatDelegate" -> "VolumeFiatDelegate" [arrowhead=onormal]
+"SimulationMarketplace" -> "Marketplace" [arrowhead=onormal]
+"SqlAlchemyDatastore" -> "AlchemyPrice"
+"SqlAlchemyDatastore" -> "AlchemyTrade"
+"SqlAlchemyDatastore" -> "Datastore" [arrowhead=onormal]
+"SqlAlchemyDatastore" -> "sqlalchemy"
+"streamlit_ui" -> "BuyTrigger"
+"streamlit_ui" -> "InterpolatingSource"
+"streamlit_ui" -> "make_buy_trigger()"
+"streamlit_ui" -> "pandas"
+"streamlit_ui" -> "requests"
+"streamlit_ui" -> "SimulationMarketplace"
+"streamlit_ui" -> "streamlit"
+"telegram.add_telegram_logger()" -> "configuration"
+"telegram.add_telegram_logger()" -> "TelegramLogger"
+"telegram.add_telegram_logger()" -> "TelegramSender"
+"TelegramLogger" -> "logging.logger" [arrowhead=onormal]
+"TelegramSender" -> "Telegram"
+"TelegramSender" -> "TelegramBotException"
+"TriggerLoop" -> "BuyError"
+"TriggerLoop" -> "TelegramSender"
+"TriggerLoop" -> "Trigger"
+"TrueTriggeredDelegate" -> "TriggeredDelegate" [arrowhead=onormal]
+"watchloop.main()" -> "CachingHistoricalSource"
+"watchloop.main()" -> "configuration"
+"watchloop.main()" -> "CryptoCompareHistoricalSource"
+"watchloop.main()" -> "DatabaseHistoricalSource"
+"watchloop.main()" -> "make_marketplace()"
+"watchloop.main()" -> "make_triggers()"
+"watchloop.main()" -> "Marketplace"
+"watchloop.main()" -> "MarketSource"
+"watchloop.main()" -> "migrations"
+"watchloop.main()" -> "telegram.add_telegram_logger()"
+"watchloop.main()" -> "TriggerLoop"
+"watchloop.process_trigger()" -> "BuyError"
+"watchloop.process_trigger()" -> "requests"
+"watchloop.process_trigger()" -> "sqlalchemy"
+"watchloop.process_trigger()" -> "TickerError"
+"watchloop.process_trigger()" -> "Trigger"
 
 } 

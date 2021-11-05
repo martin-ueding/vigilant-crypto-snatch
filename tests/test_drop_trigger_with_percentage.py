@@ -3,13 +3,13 @@ import datetime
 import pytest
 from vigilant_crypto_snatch import core
 from vigilant_crypto_snatch import datastorage
-from vigilant_crypto_snatch import triggers
+from vigilant_crypto_snatch import triggers_old
 
 from . import mock_historical
 
 
 @pytest.fixture
-def drop_trigger_with_percentage() -> triggers.BuyTrigger:
+def drop_trigger_with_percentage() -> triggers_old.BuyTrigger:
     datastore = datastorage.ListDatastore()
     source = mock_historical.MockHistorical()
     market = mock_historical.MockMarketplace()
@@ -21,11 +21,11 @@ def drop_trigger_with_percentage() -> triggers.BuyTrigger:
         "cooldown_minutes": 10,
         "delay_minutes": 10,
     }
-    result = triggers.make_buy_trigger(datastore, source, market, trigger_spec)
+    result = triggers_old.make_buy_trigger(datastore, source, market, trigger_spec)
     return result
 
 
-def test_buy(drop_trigger_with_percentage: triggers.BuyTrigger) -> None:
+def test_buy(drop_trigger_with_percentage: triggers_old.BuyTrigger) -> None:
     drop_trigger_with_percentage.fire(datetime.datetime.now())
     resultset = drop_trigger_with_percentage.datastore.get_all_trades()
     assert len(resultset) == 1

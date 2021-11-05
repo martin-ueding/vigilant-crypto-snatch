@@ -3,13 +3,13 @@ import datetime
 import pytest
 from vigilant_crypto_snatch import core
 from vigilant_crypto_snatch import datastorage
-from vigilant_crypto_snatch import triggers
+from vigilant_crypto_snatch import triggers_old
 
 from . import mock_historical
 
 
 @pytest.fixture
-def drop_trigger_with_start() -> triggers.BuyTrigger:
+def drop_trigger_with_start() -> triggers_old.BuyTrigger:
     datastore = datastorage.ListDatastore()
     source = mock_historical.MockHistorical()
     market = mock_historical.MockMarketplace()
@@ -21,11 +21,11 @@ def drop_trigger_with_start() -> triggers.BuyTrigger:
         "delay_minutes": 10,
         "start": "2021-07-16 00:00:00",
     }
-    result = triggers.make_buy_trigger(datastore, source, market, trigger_spec)
+    result = triggers_old.make_buy_trigger(datastore, source, market, trigger_spec)
     return result
 
 
-def test_trigger_with_start(drop_trigger_with_start: triggers.BuyTrigger) -> None:
+def test_trigger_with_start(drop_trigger_with_start: triggers_old.BuyTrigger) -> None:
     before = datetime.datetime(2021, 7, 15, 0, 0, 0)
     after = datetime.datetime(2021, 7, 17, 0, 0, 0)
     assert not drop_trigger_with_start.has_cooled_off(before)

@@ -9,19 +9,20 @@ import requests.exceptions
 import sqlalchemy.exc
 
 from . import configuration
-from . import datamodel
+from . import core
+from . import datastorage
 from . import historical
 from . import logger
 from . import marketplace
 from . import migrations
 from . import telegram
-from . import triggers
+from . import triggers_old
 
 
 class TriggerLoop(object):
     def __init__(
         self,
-        active_triggers: typing.List[triggers.Trigger],
+        active_triggers: typing.List[triggers_old.Trigger],
         sleep: int,
         keepalive: bool,
         one_shot: bool,
@@ -58,7 +59,7 @@ def notify_and_continue(exception: Exception, severity: int) -> None:
     )
 
 
-def process_trigger(trigger: triggers.Trigger, keepalive: bool):
+def process_trigger(trigger: triggers_old.Trigger, keepalive: bool):
     logger.debug(f"Checking trigger “{trigger.get_name()}” …")
     try:
         now = datetime.datetime.now()
@@ -101,7 +102,7 @@ def main(options):
     if not options.one_shot:
         logger.info("Starting up …")
 
-    session = datamodel.open_user_db_session()
+    datastore = datastorage.make_datastore(persistent=True)
     config = configuration.load_config()
     market = marketplace.make_marketplace(options.marketplace, config, options.dry_run)
     marketplace.check_and_perform_widthdrawal(market)
@@ -110,17 +111,17 @@ def main(options):
         marketplace.report_balances(market, configuration.get_used_currencies(config))
 
     database_source = historical.DatabaseHistoricalSource(
-        session, datetime.timedelta(minutes=5)
+        datastore, datetime.timedelta(minutes=5)
     )
     crypto_compare_source = historical.CryptoCompareHistoricalSource(
         config["cryptocompare"]["api_key"]
     )
     market_source = historical.MarketSource(market)
     caching_source = historical.CachingHistoricalSource(
-        database_source, [market_source, crypto_compare_source], session
+        database_source, [market_source, crypto_compare_source], datastore
     )
-    active_triggers = triggers.make_triggers(
-        config, session, caching_source, market, options.dry_run
+    active_triggers = triggers_old.make_triggers(
+        config, datastore, caching_source, market, options.dry_run
     )
 
     trigger_loop = TriggerLoop(
