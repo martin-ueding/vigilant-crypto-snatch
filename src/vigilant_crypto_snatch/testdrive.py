@@ -7,7 +7,7 @@ from . import marketplace
 from . import migrations
 from . import triggers
 from .historical import concrete
-from .historical import mock_historical
+from .historical.mock import MockHistorical
 
 
 def main(marketplace_name) -> None:
@@ -48,5 +48,5 @@ def try_triggers(config):
     logger.info("Trying to construct triggers …")
     datastore = datastorage.ListDatastore()
     market = marketplace.MockMarketplace()
-    caching_source = mock_historical.MockHistorical()
+    caching_source = MockHistorical()
     active_triggers = triggers.make_triggers(config, datastore, caching_source, market)
