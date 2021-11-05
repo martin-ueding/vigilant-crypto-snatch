@@ -18,7 +18,7 @@ repos:
         pass_filenames: false
       - id: pytest
         name: pytest
-        entry: poetry run pytest -vv tests
+        entry: poetry run pytest -vv src
         pass_filenames: false
         language: system
         files: '.*\.py'
