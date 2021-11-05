@@ -1,5 +1,6 @@
 import datetime
 
+import vigilant_crypto_snatch.telegram.sender
 from vigilant_crypto_snatch.configuration import migrations
 
 from .. import configuration
@@ -56,8 +57,10 @@ def try_triggers(config: dict) -> None:
 
 
 def try_telegram(config: dict) -> None:
-    telegram_sender = telegram.make_telegram_sender(config)
-    if telegram_sender is not None:
+    if "telegram" in config:
+        telegram_sender = vigilant_crypto_snatch.telegram.sender.make_telegram_sender(
+            config
+        )
         telegram_sender.queue_message("Telegram is set up correctly!")
         telegram_sender.shutdown()
     else:

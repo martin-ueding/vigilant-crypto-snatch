@@ -5,6 +5,7 @@ import traceback
 import typing
 
 import requests.exceptions
+import vigilant_crypto_snatch.telegram.sender
 
 from . import datastorage
 from . import logger
@@ -31,13 +32,16 @@ class TriggerLoop(object):
             while True:
                 self.loop_body()
                 if self.one_shot:
-                    if telegram.telegram_sender is not None:
-                        telegram.telegram_sender.shutdown()
+                    if (
+                        vigilant_crypto_snatch.telegram.sender.telegram_sender
+                        is not None
+                    ):
+                        vigilant_crypto_snatch.telegram.sender.telegram_sender.shutdown()
                     break
         except KeyboardInterrupt:
             logger.info("User interrupted, shutting down.")
-            if telegram.telegram_sender is not None:
-                telegram.telegram_sender.shutdown()
+            if vigilant_crypto_snatch.telegram.sender.telegram_sender is not None:
+                vigilant_crypto_snatch.telegram.sender.telegram_sender.shutdown()
 
     def loop_body(self) -> None:
         for trigger in self.active_triggers:
