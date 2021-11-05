@@ -178,6 +178,7 @@ node [shape=note]
 "KrakenexMarketplace" -> "krakenex"
 "KrakenexMarketplace" -> "Marketplace" [arrowhead=onormal]
 "ListDatastore" -> "Datastore" [arrowhead=onormal]
+"make_buy_trigger()" -> "TriggerSpec"
 "make_buy_trigger()" -> "BuyTrigger"
 "make_buy_trigger()" -> "DropTriggeredDelegate"
 "make_buy_trigger()" -> "FixedVolumeFiatDelegate"
