@@ -1,0 +1,179 @@
+digraph {
+
+bgcolor = gray95
+rankdir = RL
+overlap = false
+
+node [style=filled, fillcolor=white, shape=box]
+
+{
+node [shape=parallelogram]
+
+"Price"
+"Trade"
+
+}
+
+{
+node [shape=box]
+
+"BitstampMarketplace"
+"KrakenexMarketplace"
+"TelegramBotException"
+"TelegramSender"
+"FailureTimeout"
+"TriggerLoop"
+"BuyError"
+
+}
+
+{
+node [shape=ellipse]
+
+"HistoricalSource"
+"Marketplace"
+"TriggeredDelegate"
+"VolumeFiatDelegate"
+"Trigger"
+
+}
+
+{
+node [shape=component]
+
+"streamlit_ui"
+"configuration"
+"cli"
+"migrations"
+
+}
+
+{
+node [shape=component, style=filled, fillcolor=gray85]
+
+"bitstamp"
+"krakenex"
+"sqlalchemy"
+"Telegram"
+"requests"
+"appdirs"
+"streamlit"
+"pandas"
+"yaml"
+
+}
+
+{
+node [shape=note]
+
+"watchloop.process_trigger()"
+"watchloop.main()"
+"marketplace.make_marketplace()"
+"triggers.make_triggers()"
+"datamodel.garbage_collect_db()"
+"triggers.make_buy_trigger()"
+
+}
+
+{
+edge [arrowhead=vee]
+
+"BitstampMarketplace" -> "bitstamp"
+"CachingHistoricalSource" -> "sqlalchemy"
+"DatabaseHistoricalSource" -> "sqlalchemy"
+"KrakenexMarketplace" -> "krakenex"
+"MarketSource" -> "Marketplace"
+"Price" -> "sqlalchemy"
+"Trade" -> "sqlalchemy"
+"TelegramSender" -> "Telegram"
+"RatioVolumeFiatDelegate" -> "Marketplace"
+"TriggerLoop" -> "Trigger"
+"TriggerLoop" -> "TelegramSender"
+"TriggerLoop" -> "BuyError"
+"watchloop.process_trigger()" -> "TickerError"
+"watchloop.process_trigger()" -> "BuyError"
+"watchloop.process_trigger()" -> "requests"
+"watchloop.process_trigger()" -> "Trigger"
+"watchloop.process_trigger()" -> "sqlalchemy"
+"watchloop.main()" -> "Marketplace"
+"watchloop.main()" -> "CryptoCompareHistoricalSource"
+"watchloop.main()" -> "MarketSource"
+"watchloop.main()" -> "CachingHistoricalSource"
+"watchloop.main()" -> "DatabaseHistoricalSource"
+"watchloop.main()" -> "TriggerLoop"
+"TelegramSender" -> "TelegramBotException"
+"datamodel.garbage_collect_db()" -> "Price"
+"HistoricalSource" -> "Price"
+"Marketplace" -> "Price"
+"BuyTrigger" -> "Trade"
+"BuyTrigger" -> "FailureTimeout"
+"configuration" -> "appdirs"
+"configuration" -> "yaml"
+"watchloop.main()" -> "configuration"
+"telegram.add_telegram_logger()" -> "configuration"
+"marketplace.make_marketplace()" -> "BitstampMarketplace"
+"marketplace.make_marketplace()" -> "KrakenexMarketplace"
+"marketplace.make_marketplace()" -> "configuration"
+"telegram.add_telegram_logger()" -> "TelegramLogger"
+"telegram.add_telegram_logger()" -> "TelegramSender"
+"streamlit_ui" -> "streamlit"
+"streamlit_ui" -> "requests"
+"streamlit_ui" -> "pandas"
+"streamlit_ui" -> "BuyTrigger"
+"triggers.make_buy_trigger()" -> "DropTriggeredDelegate"
+"triggers.make_buy_trigger()" -> "TrueTriggeredDelegate"
+"triggers.make_buy_trigger()" -> "FixedVolumeFiatDelegate"
+"triggers.make_buy_trigger()" -> "RatioVolumeFiatDelegate"
+"triggers.make_buy_trigger()" -> "BuyTrigger"
+"BuyTrigger" -> "VolumeFiatDelegate"
+"BuyTrigger" -> "TriggeredDelegate"
+"BuyTrigger" -> "sqlalchemy"
+"BuyTrigger" -> "HistoricalSource"
+"BuyTrigger" -> "Marketplace"
+"cli" -> "streamlit_ui"
+"migrations" -> "configuration"
+"watchloop.main()" -> "migrations"
+"streamlit_ui" -> "InterpolatingSource"
+"streamlit_ui" -> "SimulationMarketplace"
+
+}
+
+
+
+{
+edge [arrowhead=vee, style=dashed]
+
+"CheckinTrigger" -> "datamodel.garbage_collect_db()"
+"watchloop.main()" -> "marketplace.make_marketplace()"
+"watchloop.main()" -> "triggers.make_triggers()"
+"watchloop.main()" -> "telegram.add_telegram_logger()"
+"streamlit_ui" -> "triggers.make_buy_trigger()"
+"cli" -> "watchloop.main()"
+
+}
+
+{
+edge [arrowhead=onormal]
+
+"CachingHistoricalSource" -> "HistoricalSource"
+"CryptoCompareHistoricalSource" -> "HistoricalSource"
+"DatabaseHistoricalSource" -> "HistoricalSource"
+"MarketSource" -> "HistoricalSource"
+"BitstampMarketplace" -> "Marketplace"
+"KrakenexMarketplace" -> "Marketplace"
+"TelegramLogger" -> "logging.logger"
+"DropTriggeredDelegate" -> "TriggeredDelegate"
+"TrueTriggeredDelegate" -> "TriggeredDelegate"
+"FixedVolumeFiatDelegate" -> "VolumeFiatDelegate"
+"RatioVolumeFiatDelegate" -> "VolumeFiatDelegate"
+"BuyTrigger" -> "Trigger"
+"CheckinTrigger" -> "Trigger"
+"DatabaseCleaningTrigger" -> "Trigger"
+"InterpolatingSource" -> "HistoricalSource"
+"SimulationMarketplace" -> "Marketplace"
+"MockMarketplace" -> "Marketplace"
+"MockHistorical" -> "HistoricalSource"
+
+}
+
+} 

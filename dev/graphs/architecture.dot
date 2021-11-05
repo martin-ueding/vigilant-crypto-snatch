@@ -1,0 +1,303 @@
+digraph {
+
+rankdir = RL
+overlap = false
+
+node [style=filled, fillcolor=white, shape=box]
+
+{
+    node [shape=component, style=filled, fillcolor=gray20, fontcolor=white]
+    "bitstamp"
+    "krakenex"
+    "sqlalchemy"
+    "Telegram"
+    "requests"
+    "appdirs"
+    "streamlit"
+    "pandas"
+    "yaml"
+}
+
+subgraph cluster_triggers {
+    label = "triggers"
+    fillcolor = gray80
+    style=filled
+    
+    subgraph cluster_triggers_interface {
+        label = "triggers.interface"
+        fillcolor = gray90
+        style=filled
+        "Trigger" [shape=ellipse]
+    }
+    
+    subgraph cluster_triggers_factory {
+        label = "triggers.factory"
+        fillcolor = gray90
+        style=filled
+        "make_triggers()"
+        "make_buy_trigger()"
+    }
+    
+    subgraph cluster_triggers_concrete {
+        label = "triggers.concrete"
+        fillcolor = gray90
+        style=filled
+        "FailureTimeout"
+        "DatabaseCleaningTrigger"
+        "CheckinTrigger"
+        "BuyTrigger"
+    }
+    
+    subgraph cluster_triggers_triggered_delegates {
+        label = "triggers.triggered_delegates"
+        fillcolor = gray90
+        style=filled
+        "TriggeredDelegate" [shape=ellipse]
+        "DropTriggeredDelegate"
+        "TrueTriggeredDelegate"
+    }
+    
+    subgraph cluster_triggers_volume_fiat_delegates {
+        label = "triggers.volume_fiat_delegates"
+        fillcolor = gray90
+        style=filled
+        "VolumeFiatDelegate" [shape=ellipse]
+        "RatioVolumeFiatDelegate"
+        "FixedVolumeFiatDelegate"
+    }
+}
+
+subgraph cluster_core {
+    label = "core"
+    fillcolor = gray90
+    style=filled
+    "Price" [shape=parallelogram]
+    "Trade" [shape=parallelogram]
+    "TriggerSpec" [shape=parallelogram]
+}
+
+subgraph cluster_datastore {
+    label = "datastore"
+    fillcolor = gray80
+    style=filled
+    
+    subgraph cluster_datastore_interface {
+        label = "datastore.interface"
+        fillcolor = gray90
+        style=filled
+        "Datastore" [shape=ellipse]
+    }
+
+
+    subgraph cluster_datastore_factory {
+        label = "datastore.factory"
+        fillcolor = gray90
+        style=filled
+        "make_datastore()" [shape=box]
+    }
+
+    subgraph cluster_datastore_sqlalchemy_store {
+        label = "datastore.sqlalchemy_store"
+        fillcolor = gray90
+        style=filled
+        "AlchemyPrice"
+        "AlchemyTrade"
+        "SqlAlchemyDatastore"
+    }
+
+    subgraph cluster_datastore_list_store {
+        label = "datastore.list_store"
+        fillcolor = gray90
+        style=filled
+        "ListDatastore"
+    }
+}
+
+subgraph cluster_historical {
+    label = "historical"
+    fillcolor = gray80
+    style=filled
+
+    subgraph cluster_historical_interface {
+        label = "historical.interface"
+        fillcolor = gray90
+        style=filled
+        "HistoricalSource" [shape=ellipse]
+    }
+
+    subgraph cluster_historical_mock {
+        label = "historical.mock"
+        fillcolor = gray90
+        style=filled
+        "MockHistorical"
+    }
+
+    subgraph cluster_historical_concrete {
+        label = "historical.concrete"
+        fillcolor = gray90
+        style=filled
+        "MarketSource"
+        "CachingHistoricalSource"
+        "InterpolatingSource"
+        "CryptoCompareHistoricalSource"
+        "DatabaseHistoricalSource"
+    }
+}
+
+subgraph cluster_marketplace {
+    label = "marketplace"
+    fillcolor = gray80
+    style=filled
+    "BitstampMarketplace"
+    "KrakenexMarketplace"
+    "MockMarketplace"
+    "SimulationMarketplace"
+    
+     subgraph cluster_marketplace_interface {
+        label = "marketplace.interface"
+        fillcolor = gray90
+        style=filled
+        "Marketplace" [shape=ellipse]
+        "BuyError"
+        "TickerError"
+    }
+    
+     subgraph cluster_marketplace_factory {
+        label = "marketplace.factory"
+        fillcolor = gray90
+        style=filled
+        "make_marketplace()" [shape=note]
+    }
+}
+
+subgraph cluster_configuration {
+label = "configuration"
+fillcolor = gray90
+style=filled
+"parse_trigger_spec()" [shape=note]
+"DropTriggeredDelegate"
+"FixedVolumeFiatDelegate"
+"VolumeFiatDelegate"
+"TriggeredDelegate"
+}
+
+
+{
+node [shape=box]
+"TelegramBotException"
+"TelegramSender"
+"TriggerLoop"
+}
+
+
+{
+node [shape=component, fillcolor=gray80, style=filled]
+"streamlit_ui"
+"configuration"
+"cli"
+"migrations"
+"testdrive"
+"watchloop"
+}
+
+
+"testdrive" -> "configuration"
+"testdrive" -> "make_marketplace()"
+"testdrive" -> "make_datastore()"
+"testdrive" -> "CryptoCompareHistoricalSource"
+"testdrive" -> "ListDatastore"
+"testdrive" -> "MockMarketplace"
+"testdrive" -> "MockHistorical"
+
+"parse_trigger_spec()" -> "TriggerSpec"
+"AlchemyPrice" -> "sqlalchemy"
+"AlchemyTrade" -> "sqlalchemy"
+"BitstampMarketplace" -> "bitstamp"
+"BitstampMarketplace" -> "Marketplace" [arrowhead=onormal]
+"BuyTrigger" -> "FailureTimeout"
+"BuyTrigger" -> "HistoricalSource"
+"BuyTrigger" -> "Marketplace"
+"BuyTrigger" -> "Trade"
+"BuyTrigger" -> "Trigger" [arrowhead=onormal]
+"BuyTrigger" -> "TriggeredDelegate"
+"BuyTrigger" -> "VolumeFiatDelegate"
+"CachingHistoricalSource" -> "HistoricalSource" [arrowhead=onormal]
+"CheckinTrigger" -> "Datastore"
+"CheckinTrigger" -> "Trigger" [arrowhead=onormal]
+"cli" -> "streamlit_ui"
+"cli" -> "watchloop"
+"cli" -> "testdrive"
+"configuration" -> "appdirs"
+"configuration" -> "yaml"
+"CryptoCompareHistoricalSource" -> "HistoricalSource" [arrowhead=onormal]
+"DatabaseCleaningTrigger" -> "Trigger" [arrowhead=onormal]
+"DatabaseHistoricalSource" -> "HistoricalSource" [arrowhead=onormal]
+"Datastore" -> "Price"
+"Datastore" -> "Trade"
+"DropTriggeredDelegate" -> "TriggeredDelegate" [arrowhead=onormal]
+"FixedVolumeFiatDelegate" -> "VolumeFiatDelegate" [arrowhead=onormal]
+"HistoricalSource" -> "Price"
+"InterpolatingSource" -> "HistoricalSource" [arrowhead=onormal]
+"KrakenexMarketplace" -> "krakenex"
+"KrakenexMarketplace" -> "Marketplace" [arrowhead=onormal]
+"ListDatastore" -> "Datastore" [arrowhead=onormal]
+"make_buy_trigger()" -> "TriggerSpec"
+"make_buy_trigger()" -> "BuyTrigger"
+"make_buy_trigger()" -> "DropTriggeredDelegate"
+"make_buy_trigger()" -> "FixedVolumeFiatDelegate"
+"make_buy_trigger()" -> "RatioVolumeFiatDelegate"
+"make_buy_trigger()" -> "TrueTriggeredDelegate"
+"make_marketplace()" -> "BitstampMarketplace"
+"make_marketplace()" -> "configuration"
+"make_marketplace()" -> "KrakenexMarketplace"
+"make_triggers()" -> "make_buy_trigger()"
+"Marketplace" -> "Price"
+"MarketSource" -> "HistoricalSource" [arrowhead=onormal]
+"MarketSource" -> "Marketplace"
+"migrations" -> "configuration"
+"MockHistorical" -> "HistoricalSource" [arrowhead=onormal]
+"MockMarketplace" -> "Marketplace" [arrowhead=onormal]
+"RatioVolumeFiatDelegate" -> "Marketplace"
+"RatioVolumeFiatDelegate" -> "VolumeFiatDelegate" [arrowhead=onormal]
+"SimulationMarketplace" -> "Marketplace" [arrowhead=onormal]
+"SqlAlchemyDatastore" -> "AlchemyPrice"
+"SqlAlchemyDatastore" -> "AlchemyTrade"
+"SqlAlchemyDatastore" -> "Datastore" [arrowhead=onormal]
+"SqlAlchemyDatastore" -> "sqlalchemy"
+"streamlit_ui" -> "BuyTrigger"
+"streamlit_ui" -> "InterpolatingSource"
+"streamlit_ui" -> "make_buy_trigger()"
+"streamlit_ui" -> "pandas"
+"streamlit_ui" -> "requests"
+"streamlit_ui" -> "SimulationMarketplace"
+"streamlit_ui" -> "streamlit"
+"telegram.add_telegram_logger()" -> "configuration"
+"telegram.add_telegram_logger()" -> "TelegramLogger"
+"telegram.add_telegram_logger()" -> "TelegramSender"
+"TelegramLogger" -> "logging.logger" [arrowhead=onormal]
+"TelegramSender" -> "Telegram"
+"TelegramSender" -> "TelegramBotException"
+"TriggerLoop" -> "BuyError"
+"TriggerLoop" -> "TelegramSender"
+"TriggerLoop" -> "Trigger"
+"TrueTriggeredDelegate" -> "TriggeredDelegate" [arrowhead=onormal]
+"watchloop" -> "CachingHistoricalSource"
+"watchloop" -> "configuration"
+"watchloop" -> "CryptoCompareHistoricalSource"
+"watchloop" -> "DatabaseHistoricalSource"
+"watchloop" -> "make_marketplace()"
+"watchloop" -> "make_triggers()"
+"watchloop" -> "Marketplace"
+"watchloop" -> "MarketSource"
+"watchloop" -> "migrations"
+"watchloop" -> "telegram.add_telegram_logger()"
+"watchloop" -> "TriggerLoop"
+"watchloop" -> "BuyError"
+"watchloop" -> "requests"
+"watchloop" -> "TickerError"
+"watchloop" -> "Trigger"
+"make_datastore()" -> "SqlAlchemyDatastore"
+"make_datastore()" -> "Datastore"
+"make_datastore()" -> "configuration"
+
+} 

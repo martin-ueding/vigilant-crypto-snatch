@@ -251,6 +251,13 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
+  <a href="#subcommand-test-drive" class="md-nav__link">
+    Subcommand test-drive
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#subcommand-watch" class="md-nav__link">
     Subcommand watch
   </a>
@@ -435,6 +442,13 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
+  <a href="#subcommand-test-drive" class="md-nav__link">
+    Subcommand test-drive
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#subcommand-watch" class="md-nav__link">
     Subcommand watch
   </a>
@@ -518,6 +532,20 @@
 <ul>
 <li><code>--loglevel</code>: The program can emit a lot of status output while running. You can specify a <em>log level</em> with <code>--loglevel LEVEL</code>, where <code>LEVEL</code> can be <code>critical</code>, <code>error</code>, <code>warning</code>, <code>info</code> or <code>debug</code>. The <code>info</code> level is the default and does not fill the terminal with tons of output. You can set it to <code>debug</code> if you want to have more output and want to diagnose your triggers.</li>
 </ul>
+<h2 id="subcommand-test-drive">Subcommand test-drive</h2>
+<p>In order to check your configuration, use the <code>test-drive</code> subcommand. It will accept this option:</p>
+<ul>
+<li><code>--marketplace MARKETPLACE</code>: We support two marketplaces, you can select either <code>bitstamp</code> or <code>kraken</code>.</li>
+</ul>
+<p>It will test the following things:</p>
+<ul>
+<li>Can the database be loaded?</li>
+<li>Can we receive the balance from your marketplace? This verifies whether you have set up your private keys.</li>
+<li>Can we retrieve a historical price?</li>
+<li>Can your triggers be constructed?</li>
+<li>Can a message be sent via Telegram, if you have set it up?</li>
+</ul>
+<p>If that runs through, you have a working configuration.</p>
 <h2 id="subcommand-watch">Subcommand watch</h2>
 <p>The main command is <code>watch</code>.  It will monitor the market and place buy orders.</p>
 <p>There are a couple of command line options:</p>
