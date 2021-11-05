@@ -9,12 +9,11 @@ import requests
 import streamlit as st
 import streamlit.cli as st_cli
 from vigilant_crypto_snatch import configuration
-from vigilant_crypto_snatch import core
 from vigilant_crypto_snatch import datastorage
 from vigilant_crypto_snatch import evaluation
 from vigilant_crypto_snatch import historical
 from vigilant_crypto_snatch import migrations
-from vigilant_crypto_snatch import triggers_old
+from vigilant_crypto_snatch import triggers
 
 
 def get_currency_pairs(api_key: str) -> list:
@@ -86,7 +85,7 @@ def sub_drop_survey(sidebar_settings):
 
 def make_trigger_ui(
     datastore, source, market, sidebar_settings, i
-) -> triggers_old.BuyTrigger:
+) -> triggers.BuyTrigger:
     trigger_spec = {"fiat": sidebar_settings.fiat, "coin": sidebar_settings.coin}
 
     trigger_spec["name"] = st.text_input(
@@ -131,7 +130,7 @@ def make_trigger_ui(
             key=f"drop_percentage{i}",
         )
 
-    return triggers_old.make_buy_trigger(datastore, source, market, trigger_spec)
+    return triggers.make_buy_trigger(datastore, source, market, trigger_spec)
 
 
 def sub_trigger_simulation(sidebar_settings):
@@ -174,7 +173,7 @@ def sub_trigger_simulation(sidebar_settings):
         sidebar_settings.coin,
         sidebar_settings.fiat,
         active_triggers,
-        session,
+        datastore,
         lambda p: simulation_progress_bar.progress(p),
     )
 

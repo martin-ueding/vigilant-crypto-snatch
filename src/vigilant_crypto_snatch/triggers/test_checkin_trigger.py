@@ -1,11 +1,11 @@
 import datetime
 
-from vigilant_crypto_snatch import triggers_old
+from .concrete import CheckinTrigger
 
 
 def test_checkin():
     start = datetime.datetime(2021, 1, 1, 0, 0, 0)
-    trigger = triggers_old.CheckinTrigger(start)
+    trigger = CheckinTrigger(start)
     assert not trigger.is_triggered(start)
     assert not trigger.has_cooled_off(start)
 

@@ -3,14 +3,13 @@ from typing import Tuple
 
 from vigilant_crypto_snatch import core
 from vigilant_crypto_snatch import datastorage
-from vigilant_crypto_snatch import triggers_old
 
-from . import mock_historical
+from . import BuyTrigger
+from . import make_buy_trigger
+from ..historical import mock_historical
 
 
-def make_true_trigger() -> Tuple[
-    triggers_old.BuyTrigger, mock_historical.MockMarketplace
-]:
+def make_true_trigger() -> Tuple[BuyTrigger, mock_historical.MockMarketplace]:
     datastore = datastorage.ListDatastore()
     source = mock_historical.MockHistorical()
     market = mock_historical.MockMarketplace()
@@ -20,7 +19,7 @@ def make_true_trigger() -> Tuple[
         "volume_fiat": 25.0,
         "cooldown_minutes": 10,
     }
-    result = triggers_old.make_buy_trigger(datastore, source, market, trigger_spec)
+    result = make_buy_trigger(datastore, source, market, trigger_spec)
     return result, market
 
 

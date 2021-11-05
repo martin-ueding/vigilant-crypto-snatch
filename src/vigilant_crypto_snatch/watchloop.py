@@ -1,6 +1,5 @@
 import datetime
 import logging
-import sys
 import time
 import traceback
 import typing
@@ -9,20 +8,19 @@ import requests.exceptions
 import sqlalchemy.exc
 
 from . import configuration
-from . import core
 from . import datastorage
 from . import historical
 from . import logger
 from . import marketplace
 from . import migrations
 from . import telegram
-from . import triggers_old
+from . import triggers
 
 
 class TriggerLoop(object):
     def __init__(
         self,
-        active_triggers: typing.List[triggers_old.Trigger],
+        active_triggers: typing.List[triggers.Trigger],
         sleep: int,
         keepalive: bool,
         one_shot: bool,
@@ -59,7 +57,7 @@ def notify_and_continue(exception: Exception, severity: int) -> None:
     )
 
 
-def process_trigger(trigger: triggers_old.Trigger, keepalive: bool):
+def process_trigger(trigger: triggers.Trigger, keepalive: bool):
     logger.debug(f"Checking trigger “{trigger.get_name()}” …")
     try:
         now = datetime.datetime.now()
@@ -120,7 +118,7 @@ def main(options):
     caching_source = historical.CachingHistoricalSource(
         database_source, [market_source, crypto_compare_source], datastore
     )
-    active_triggers = triggers_old.make_triggers(
+    active_triggers = triggers.make_triggers(
         config, datastore, caching_source, market, options.dry_run
     )
 
