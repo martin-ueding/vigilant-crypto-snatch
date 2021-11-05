@@ -5,7 +5,8 @@ import typing
 import appdirs
 import yaml
 
-from . import logger
+from .. import logger
+from .triggers import parse_trigger_spec
 
 dirs = appdirs.AppDirs(
     appname="vigilant-crypto-snatch", appauthor="Martin Ueding", roaming=True

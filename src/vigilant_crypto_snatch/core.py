@@ -1,5 +1,6 @@
 import dataclasses
 import datetime
+from typing import Optional
 
 
 @dataclasses.dataclass()
@@ -44,3 +45,16 @@ class Trade:
             coin=self.coin,
             fiat=self.fiat,
         )
+
+
+@dataclasses.dataclass()
+class TriggerSpec:
+    name: Optional[str]
+    coin: str
+    fiat: str
+    cooldown_minutes: int
+    delay_minutes: Optional[int]
+    drop_percentage: Optional[float]
+    volume_fiat: Optional[float]
+    percentage_fiat: Optional[float]
+    start: Optional[datetime.datetime]
