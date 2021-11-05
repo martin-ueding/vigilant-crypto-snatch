@@ -4,6 +4,11 @@ This is a list of changes, from new to older.
 
 ## 4.0 Series
 
+### Version 4.4.0
+
+- Major architectural change, without changes to the user.
+- Add `test-drive` command to verify configuration.
+
 ### Version 4.3.5
 
 - When the balance on the marketplace is zero, withdrawals would fail and therefore crash the whole program. This is now fixed.

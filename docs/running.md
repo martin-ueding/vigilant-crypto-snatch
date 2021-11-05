@@ -14,6 +14,22 @@ The general options are the following:
 
 - `--loglevel`: The program can emit a lot of status output while running. You can specify a *log level* with `--loglevel LEVEL`, where `LEVEL` can be `critical`, `error`, `warning`, `info` or `debug`. The `info` level is the default and does not fill the terminal with tons of output. You can set it to `debug` if you want to have more output and want to diagnose your triggers.
 
+## Subcommand test-drive
+
+In order to check your configuration, use the `test-drive` subcommand. It will accept this option:
+
+- `--marketplace MARKETPLACE`: We support two marketplaces, you can select either `bitstamp` or `kraken`.
+
+It will test the following things:
+
+- Can the database be loaded?
+- Can we receive the balance from your marketplace? This verifies whether you have set up your private keys.
+- Can we retrieve a historical price?
+- Can your triggers be constructed?
+- Can a message be sent via Telegram, if you have set it up?
+
+If that runs through, you have a working configuration.
+
 ## Subcommand watch
 
 The main command is `watch`.  It will monitor the market and place buy orders.

@@ -12,10 +12,7 @@ nav:
   - deployment.md
   - support.md
   - changelog.md
-  - Developers:
-    - dev/entities.md
-    - dev/use-cases.md
-    - developing.md
+  - developing.md
   - license.md
   - donation.md
 
