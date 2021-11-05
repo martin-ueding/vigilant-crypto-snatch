@@ -44,6 +44,7 @@ node [shape=component]
 "streamlit_ui"
 "configuration"
 "cli"
+"migrations"
 
 }
 
@@ -130,6 +131,10 @@ edge [arrowhead=vee]
 "BuyTrigger" -> "HistoricalSource"
 "BuyTrigger" -> "Marketplace"
 "cli" -> "streamlit_ui"
+"migrations" -> "configuration"
+"watchloop.main()" -> "migrations"
+"streamlit_ui" -> "InterpolatingSource"
+"streamlit_ui" -> "SimulationMarketplace"
 
 }
 
@@ -148,26 +153,26 @@ edge [arrowhead=vee, style=dashed]
 }
 
 {
-edge [arrowtail=onormal, dir=back]
+edge [arrowhead=onormal]
 
-"HistoricalSource" -> "CachingHistoricalSource"
-"HistoricalSource" -> "CryptoCompareHistoricalSource"
-"HistoricalSource" -> "DatabaseHistoricalSource"
-"HistoricalSource" -> "MarketSource"
-"Marketplace" -> "BitstampMarketplace"
-"Marketplace" -> "KrakenexMarketplace"
-"logging.logger" -> "TelegramLogger"
-"TriggeredDelegate" -> "DropTriggeredDelegate"
-"TriggeredDelegate" -> "TrueTriggeredDelegate"
-"VolumeFiatDelegate" -> "FixedVolumeFiatDelegate"
-"VolumeFiatDelegate" -> "RatioVolumeFiatDelegate"
-"Trigger" -> "BuyTrigger"
-"Trigger" -> "CheckinTrigger"
-"Trigger" -> "DatabaseCleaningTrigger"
-"HistoricalSource" -> "InterpolatingSource"
-"Marketplace" -> "SimulationMarketplace"
-"Marketplace" -> "MockMarketplace"
-"HistoricalSource" -> "MockHistorical"
+"CachingHistoricalSource" -> "HistoricalSource"
+"CryptoCompareHistoricalSource" -> "HistoricalSource"
+"DatabaseHistoricalSource" -> "HistoricalSource"
+"MarketSource" -> "HistoricalSource"
+"BitstampMarketplace" -> "Marketplace"
+"KrakenexMarketplace" -> "Marketplace"
+"TelegramLogger" -> "logging.logger"
+"DropTriggeredDelegate" -> "TriggeredDelegate"
+"TrueTriggeredDelegate" -> "TriggeredDelegate"
+"FixedVolumeFiatDelegate" -> "VolumeFiatDelegate"
+"RatioVolumeFiatDelegate" -> "VolumeFiatDelegate"
+"BuyTrigger" -> "Trigger"
+"CheckinTrigger" -> "Trigger"
+"DatabaseCleaningTrigger" -> "Trigger"
+"InterpolatingSource" -> "HistoricalSource"
+"SimulationMarketplace" -> "Marketplace"
+"MockMarketplace" -> "Marketplace"
+"MockHistorical" -> "HistoricalSource"
 
 }
 
