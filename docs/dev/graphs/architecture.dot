@@ -52,6 +52,7 @@ label = "datastore"
 fillcolor = gray85
 style=filled
 "Datastore" [shape=ellipse]
+"make_datastore()" [shape=box]
 }
 
 subgraph cluster_datastore_sqlalchemy_store {
@@ -135,6 +136,8 @@ node [shape=component, fillcolor=gray90, style=filled]
 "configuration"
 "cli"
 "migrations"
+"testdrive"
+"watchloop"
 }
 
 
@@ -145,6 +148,13 @@ node [shape=note]
 }
 
 
+"testdrive" -> "configuration"
+"testdrive" -> "make_marketplace()"
+"testdrive" -> "make_datastore()"
+"testdrive" -> "CryptoCompareHistoricalSource"
+"testdrive" -> "ListDatastore"
+"testdrive" -> "MockMarketplace"
+"testdrive" -> "MockHistorical"
 
 "parse_trigger_spec()" -> "TriggerSpec"
 "AlchemyPrice" -> "sqlalchemy"
@@ -154,7 +164,6 @@ node [shape=note]
 "BuyTrigger" -> "FailureTimeout"
 "BuyTrigger" -> "HistoricalSource"
 "BuyTrigger" -> "Marketplace"
-"BuyTrigger" -> "sqlalchemy"
 "BuyTrigger" -> "Trade"
 "BuyTrigger" -> "Trigger" [arrowhead=onormal]
 "BuyTrigger" -> "TriggeredDelegate"
@@ -163,7 +172,8 @@ node [shape=note]
 "CheckinTrigger" -> "Datastore"
 "CheckinTrigger" -> "Trigger" [arrowhead=onormal]
 "cli" -> "streamlit_ui"
-"cli" -> "watchloop.main()"
+"cli" -> "watchloop"
+"cli" -> "testdrive"
 "configuration" -> "appdirs"
 "configuration" -> "yaml"
 "CryptoCompareHistoricalSource" -> "HistoricalSource" [arrowhead=onormal]
@@ -231,7 +241,6 @@ node [shape=note]
 "watchloop.main()" -> "TriggerLoop"
 "watchloop.process_trigger()" -> "BuyError"
 "watchloop.process_trigger()" -> "requests"
-"watchloop.process_trigger()" -> "sqlalchemy"
 "watchloop.process_trigger()" -> "TickerError"
 "watchloop.process_trigger()" -> "Trigger"
 
