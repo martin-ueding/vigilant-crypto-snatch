@@ -136,7 +136,7 @@ def make_trigger_ui(
 def sub_trigger_simulation(sidebar_settings):
     st.title("Trigger simulation")
 
-    datastore = datastorage.make_datastore(persistent=False)
+    datastore = datastorage.make_datastore(None)
     source = evaluation.InterpolatingSource(sidebar_settings.data)
     market = evaluation.SimulationMarketplace(source)
 

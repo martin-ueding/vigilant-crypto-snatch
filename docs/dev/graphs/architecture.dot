@@ -16,6 +16,7 @@ node [style=filled, fillcolor=white, shape=box]
     "streamlit"
     "pandas"
     "yaml"
+    "logging.logger"
 }
 
 subgraph cluster_triggers {
@@ -65,6 +66,17 @@ subgraph cluster_triggers {
         "RatioVolumeFiatDelegate"
         "FixedVolumeFiatDelegate"
     }
+}
+
+subgraph cluster_telegram {
+    label = "telegram"
+    fillcolor = gray80
+    style=filled
+    
+    "TelegramLogger"
+    "TelegramSender"
+    "TelegramBotException"
+    "add_telegram_logger()"
 }
 
 subgraph cluster_core {
@@ -267,9 +279,9 @@ node [shape=component, fillcolor=gray80, style=filled]
 "streamlit_ui" -> "requests"
 "streamlit_ui" -> "SimulationMarketplace"
 "streamlit_ui" -> "streamlit"
-"telegram.add_telegram_logger()" -> "configuration"
-"telegram.add_telegram_logger()" -> "TelegramLogger"
-"telegram.add_telegram_logger()" -> "TelegramSender"
+"add_telegram_logger()" -> "configuration"
+"add_telegram_logger()" -> "TelegramLogger"
+"add_telegram_logger()" -> "TelegramSender"
 "TelegramLogger" -> "logging.logger" [arrowhead=onormal]
 "TelegramSender" -> "Telegram"
 "TelegramSender" -> "TelegramBotException"
@@ -286,14 +298,14 @@ node [shape=component, fillcolor=gray80, style=filled]
 "watchloop" -> "Marketplace"
 "watchloop" -> "MarketSource"
 "watchloop" -> "migrations"
-"watchloop" -> "telegram.add_telegram_logger()"
+"watchloop" -> "add_telegram_logger()"
 "watchloop" -> "TriggerLoop"
 "watchloop" -> "BuyError"
 "watchloop" -> "requests"
 "watchloop" -> "TickerError"
 "watchloop" -> "Trigger"
+"TelegramSender" -> "requests"
 "make_datastore()" -> "SqlAlchemyDatastore"
 "make_datastore()" -> "Datastore"
-"make_datastore()" -> "configuration"
 
 } 

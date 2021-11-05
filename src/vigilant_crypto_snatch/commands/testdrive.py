@@ -27,7 +27,7 @@ def main(marketplace_name) -> None:
 
 def try_database() -> None:
     logger.info("Trying to open persistent database …")
-    persistent_datastore = datastorage.make_datastore(persistent=True)
+    persistent_datastore = datastorage.make_datastore(configuration.user_db_path)
 
 
 def try_balance(config: dict, marketplace_name: str) -> None:

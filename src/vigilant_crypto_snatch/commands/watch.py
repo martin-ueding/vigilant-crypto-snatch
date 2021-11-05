@@ -19,7 +19,7 @@ def main(marketplace_name, keepalive, one_shot, dry_run):
     if not one_shot:
         logger.info("Starting up …")
 
-    datastore = datastorage.make_datastore(persistent=True)
+    datastore = datastorage.make_datastore(configuration.user_db_path)
     config = configuration.load_config()
     market = marketplace.make_marketplace(marketplace_name, config, dry_run)
     marketplace.check_and_perform_widthdrawal(market)
