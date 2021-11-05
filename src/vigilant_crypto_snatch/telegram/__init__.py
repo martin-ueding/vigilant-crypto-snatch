@@ -6,8 +6,8 @@ from typing import *
 
 import requests
 
-from . import configuration
-from . import logger
+from .. import configuration
+from .. import logger
 
 
 prefixes = {"CRITICAL": "🔴", "ERROR": "🟠", "WARNING": "🟡", "INFO": "🟢", "DEBUG": "🔵"}
