@@ -103,13 +103,20 @@ class TelegramLogger(logging.Handler):
         self.sender.queue_message(self.format(record))
 
 
-def add_telegram_logger() -> None:
-    config = configuration.load_config()
+def make_telegram_sender(config: dict) -> Optional[TelegramSender]:
     if "telegram" in config:
-        global telegram_sender
-        telegram_sender = TelegramSender(
+        return TelegramSender(
             config["telegram"]["token"], config["telegram"].get("chat_id", None)
         )
+    else:
+        return None
+
+
+def add_telegram_logger() -> None:
+    config = configuration.load_config()
+    global telegram_sender
+    telegram_sender = make_telegram_sender(config)
+    if telegram_sender is not None:
         telegram_handler = TelegramLogger(config["telegram"]["level"], telegram_sender)
         logger.addHandler(telegram_handler)
 
