@@ -1,8 +1,8 @@
 import datetime
 import typing
 
-from vigilant_crypto_snatch import core
-from vigilant_crypto_snatch import logger
+from .. import core
+from .. import logger
 
 
 class Marketplace(object):
