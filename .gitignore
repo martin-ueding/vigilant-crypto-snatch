@@ -12,3 +12,6 @@ gains.pdf
 gains.png
 .coverage
 htmlcov/
+docs/dev/graphs/architecture.pdf
+docs/dev/graphs/old_architecture.pdf
+docs/dev/graphs/old_architecture.svg
