@@ -1,13 +1,13 @@
 import datetime
 
-from vigilant_crypto_snatch import configuration
-from vigilant_crypto_snatch import datastorage
-from vigilant_crypto_snatch import logger
-from vigilant_crypto_snatch import marketplace
-from vigilant_crypto_snatch import migrations
-from vigilant_crypto_snatch import triggers
-from vigilant_crypto_snatch.historical import concrete
-from vigilant_crypto_snatch.historical.mock import MockHistorical
+from .. import configuration
+from .. import datastorage
+from .. import logger
+from .. import marketplace
+from .. import migrations
+from .. import triggers
+from ..historical import concrete
+from ..historical.mock import MockHistorical
 
 
 def main(marketplace_name) -> None:
