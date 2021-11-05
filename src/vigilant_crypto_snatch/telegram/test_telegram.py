@@ -1,4 +1,5 @@
-from vigilant_crypto_snatch.telegram import chunk_message, split_long_line
+from . import chunk_message
+from . import split_long_line
 
 
 def test_chunk_message() -> None:
