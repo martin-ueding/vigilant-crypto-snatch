@@ -4,7 +4,6 @@ import datetime
 
 @dataclasses.dataclass()
 class Price:
-    id: int
     timestamp: datetime.datetime
     last: float
     coin: str
@@ -16,7 +15,6 @@ class Price:
 
 @dataclasses.dataclass()
 class Trade:
-    id: int
     timestamp: datetime.datetime
     trigger_name: str
     volume_coin: float

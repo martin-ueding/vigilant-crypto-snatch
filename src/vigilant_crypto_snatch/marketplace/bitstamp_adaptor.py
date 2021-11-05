@@ -4,12 +4,12 @@ import pprint
 import bitstamp.client
 import requests
 import urllib3
-from vigilant_crypto_snatch import datamodel
 
-from . import marketplace
+from . import interface
+from .. import core
 
 
-class BitstampMarketplace(marketplace.Marketplace):
+class BitstampMarketplace(interface.Marketplace):
     def __init__(self, username: str, key: str, secret: str, dry_run: bool):
         self.public_client = bitstamp.client.Public()
         self.trading_client = bitstamp.client.Trading(
@@ -26,24 +26,22 @@ class BitstampMarketplace(marketplace.Marketplace):
             )
             pprint.pprint(response, compact=True, width=100)
         except bitstamp.client.BitstampError as e:
-            raise marketplace.BuyError(str(e))
+            raise interface.BuyError(str(e))
 
     def get_spot_price(
         self, coin: str, fiat: str, now: datetime.datetime
-    ) -> datamodel.Price:
+    ) -> core.Price:
         try:
             ticker = self.public_client.ticker(base=coin, quote=fiat)
         except requests.exceptions.ChunkedEncodingError as e:
-            raise marketplace.TickerError(str(e))
+            raise interface.TickerError(str(e))
         except requests.exceptions.HTTPError as e:
-            raise marketplace.TickerError(str(e))
+            raise interface.TickerError(str(e))
         except urllib3.exceptions.ProtocolError as e:
-            raise marketplace.TickerError(str(e))
+            raise interface.TickerError(str(e))
         else:
             now = datetime.datetime.fromtimestamp(int(ticker["timestamp"]))
-            price = datamodel.Price(
-                timestamp=now, last=ticker["last"], coin=coin, fiat=fiat
-            )
+            price = core.Price(timestamp=now, last=ticker["last"], coin=coin, fiat=fiat)
             return price
 
     def get_balance(self) -> dict:

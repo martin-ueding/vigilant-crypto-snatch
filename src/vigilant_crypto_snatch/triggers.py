@@ -4,9 +4,9 @@ import sys
 from typing import *
 
 import dateutil.parser
-import sqlalchemy.orm
 
-from . import datamodel
+from . import core
+from . import datastorage
 from . import historical
 from . import logger
 from . import marketplace
@@ -134,7 +134,7 @@ class Trigger(object):
 class BuyTrigger(Trigger, abc.ABC):
     def __init__(
         self,
-        session: sqlalchemy.orm.session.Session,
+        datastore: datastorage.Datastore,
         source: historical.HistoricalSource,
         market: marketplace.Marketplace,
         coin: str,
@@ -147,7 +147,7 @@ class BuyTrigger(Trigger, abc.ABC):
         dry_run: bool = False,
     ):
         super().__init__()
-        self.session = session
+        self.datastore = datastore
         self.source = source
         self.market = market
         self.coin = coin
@@ -170,17 +170,9 @@ class BuyTrigger(Trigger, abc.ABC):
             return False
 
         then = now - datetime.timedelta(minutes=self.cooldown_minutes)
-        trade_count = (
-            self.session.query(datamodel.Trade)
-            .filter(
-                datamodel.Trade.trigger_name == self.get_name(),
-                datamodel.Trade.timestamp > then,
-                datamodel.Trade.coin == self.coin,
-                datamodel.Trade.fiat == self.fiat,
-            )
-            .count()
+        return not self.datastore.was_triggered_since(
+            self.get_name(), self.coin, self.fiat, then
         )
-        return trade_count == 0
 
     def fire(self, now: datetime.datetime) -> None:
         logger.info(f"Trigger “{self.get_name()}” fired, try buying …")
@@ -195,7 +187,7 @@ class BuyTrigger(Trigger, abc.ABC):
         self, volume_coin: float, volume_fiat: float, now: datetime.datetime
     ) -> None:
         self.market.place_order(self.coin, self.fiat, volume_coin)
-        trade = datamodel.Trade(
+        trade = core.Trade(
             timestamp=now,
             trigger_name=self.get_name(),
             volume_coin=volume_coin,
@@ -203,9 +195,7 @@ class BuyTrigger(Trigger, abc.ABC):
             coin=self.coin,
             fiat=self.fiat,
         )
-        self.session.add(trade)
-        if not self.dry_run:
-            self.session.commit()
+        self.datastore.add_trade(trade)
 
         rate = volume_fiat / volume_coin
         buy_message = f"{volume_coin} {self.coin} for {volume_fiat} {self.fiat} ({rate} {self.fiat}/{self.coin}) on {self.market.get_name()} due to “{self.get_name()}”"
@@ -239,11 +229,9 @@ class CheckinTrigger(Trigger):
 
 
 class DatabaseCleaningTrigger(Trigger):
-    def __init__(
-        self, session: sqlalchemy.orm.session.Session, interval: datetime.timedelta
-    ):
+    def __init__(self, datastore: datastorage.Datastore, interval: datetime.timedelta):
         super().__init__()
-        self.session = session
+        self.datastore = datastore
         self.interval = interval
         self.last_cleaning = None
 
@@ -256,10 +244,7 @@ class DatabaseCleaningTrigger(Trigger):
         return self.last_cleaning < now - self.interval
 
     def fire(self, now: datetime.datetime) -> None:
-        datamodel.garbage_collect_db(
-            self.session,
-            now - self.interval,
-        )
+        self.datastore.clean_old(now - self.interval)
 
     def get_name(self) -> str:
         return "Database cleaning"
@@ -276,7 +261,11 @@ def make_buy_triggers(
 
 
 def make_buy_trigger(
-    session, source, market, trigger_spec, dry_run: bool = False
+    datastore: datastorage.Datastore,
+    source: historical.HistoricalSource,
+    market: marketplace.Marketplace,
+    trigger_spec: Dict,
+    dry_run: bool = False,
 ) -> BuyTrigger:
     logger.debug(f"Processing trigger spec: {trigger_spec}")
 
@@ -313,7 +302,7 @@ def make_buy_trigger(
     logger.debug(f"Constructed: {volume_fiat_delegate}")
 
     result = BuyTrigger(
-        session=session,
+        datastore=datastore,
         source=source,
         market=market,
         coin=trigger_spec["coin"].upper(),
@@ -348,9 +337,13 @@ def get_minutes(trigger_spec: dict, key: str) -> Optional[int]:
 
 
 def make_triggers(
-    config, session, source: historical.HistoricalSource, market, dry_run: bool = False
+    config: Dict,
+    datastore: datastorage.Datastore,
+    source: historical.HistoricalSource,
+    market: marketplace.Marketplace,
+    dry_run: bool = False,
 ) -> Sequence[Trigger]:
-    buy_triggers = make_buy_triggers(config, session, source, market, dry_run)
+    buy_triggers = make_buy_triggers(config, datastore, source, market, dry_run)
     longest_cooldown = max(
         (
             trigger.triggered_delegate.delay_minutes
@@ -363,7 +356,7 @@ def make_triggers(
     active_triggers.append(CheckinTrigger())
     active_triggers.append(
         DatabaseCleaningTrigger(
-            session, 2 * datetime.timedelta(minutes=longest_cooldown)
+            datastore, 2 * datetime.timedelta(minutes=longest_cooldown)
         )
     )
 

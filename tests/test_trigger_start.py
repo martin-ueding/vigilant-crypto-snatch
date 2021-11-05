@@ -1,7 +1,8 @@
 import datetime
 
 import pytest
-from vigilant_crypto_snatch import datamodel
+from vigilant_crypto_snatch import core
+from vigilant_crypto_snatch import datastorage
 from vigilant_crypto_snatch import triggers
 
 from . import mock_historical
@@ -9,7 +10,7 @@ from . import mock_historical
 
 @pytest.fixture
 def drop_trigger_with_start() -> triggers.BuyTrigger:
-    session = datamodel.open_memory_db_session()
+    datastore = datastorage.ListDatastore()
     source = mock_historical.MockHistorical()
     market = mock_historical.MockMarketplace()
     trigger_spec = {
@@ -20,7 +21,7 @@ def drop_trigger_with_start() -> triggers.BuyTrigger:
         "delay_minutes": 10,
         "start": "2021-07-16 00:00:00",
     }
-    result = triggers.make_buy_trigger(session, source, market, trigger_spec)
+    result = triggers.make_buy_trigger(datastore, source, market, trigger_spec)
     return result
 
 

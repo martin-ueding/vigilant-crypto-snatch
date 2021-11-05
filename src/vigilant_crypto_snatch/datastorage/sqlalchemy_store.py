@@ -1,12 +1,11 @@
 import datetime
 import logging
 import os
-from typing import List
+from typing import *
 
 import sqlalchemy.ext.declarative
-import sqlalchemy.orm
+import sqlalchemy.orm.exc
 from vigilant_crypto_snatch import core
-from vigilant_crypto_snatch import triggers
 
 from .. import configuration
 from .. import logger
@@ -23,6 +22,14 @@ class AlchemyPrice(Base):  # type: ignore
     last = sqlalchemy.Column(sqlalchemy.Float, nullable=False)
     coin = sqlalchemy.Column(sqlalchemy.String, nullable=False)
     fiat = sqlalchemy.Column(sqlalchemy.String, nullable=False)
+
+    def to_core(self):
+        return core.Price(
+            timestamp=self.timestamp,
+            last=self.last,
+            coin=self.coin,
+            fiat=self.fiat,
+        )
 
 
 def price_to_alchemy_price(price: core.Price) -> AlchemyPrice:
@@ -81,26 +88,50 @@ class SqlAlchemyDatastore(Datastore):
         self.session.commit()
 
     def get_price_around(
-        self, then: datetime.datetime, tolerance: datetime.timedelta
-    ) -> core.Price:
-        pass
+        self,
+        then: datetime.datetime,
+        coin: str,
+        fiat: str,
+        tolerance: datetime.timedelta,
+    ) -> Optional[core.Price]:
+        try:
+            q = (
+                self.session.query(AlchemyPrice)
+                .filter(
+                    AlchemyPrice.timestamp < then,
+                    AlchemyPrice.coin == coin,
+                    AlchemyPrice.fiat == fiat,
+                )
+                .order_by(AlchemyPrice.timestamp.desc())[0]
+            )
+            if q.timestamp > then - tolerance:
+                logger.debug(
+                    f"Found historical price for {then} in database: {q.last} {fiat}/{coin}."
+                )
+                return q.to_core()
+        except sqlalchemy.orm.exc.NoResultFound:
+            pass
+        except IndexError:
+            pass
+
+        return None
 
     def was_triggered_since(
-        self, trigger: triggers.BuyTrigger, then: datetime.datetime
+        self, trigger_name: str, coin: str, fiat: str, then: datetime.datetime
     ) -> bool:
         trade_count = (
             self.session.query(AlchemyTrade)
             .filter(
-                AlchemyTrade.trigger_name == trigger.get_name(),
+                AlchemyTrade.trigger_name == trigger_name,
                 AlchemyTrade.timestamp > then,
-                AlchemyTrade.coin == trigger.coin,
-                AlchemyTrade.fiat == trigger.fiat,
+                AlchemyTrade.coin == coin,
+                AlchemyTrade.fiat == fiat,
             )
             .count()
         )
-        return trade_count == 0
+        return trade_count != 0
 
-    def get_all_trades(self) -> List[core.Price]:
+    def get_all_trades(self) -> List[core.Trade]:
         pass
 
     def clean_old(self, cutoff: datetime.datetime):

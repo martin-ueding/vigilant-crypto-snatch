@@ -1,7 +1,7 @@
 import datetime
 import typing
 
-from vigilant_crypto_snatch import datamodel
+from vigilant_crypto_snatch import core
 from vigilant_crypto_snatch import logger
 
 
@@ -11,7 +11,7 @@ class Marketplace(object):
 
     def get_spot_price(
         self, coin: str, fiat: str, now: datetime.datetime
-    ) -> datamodel.Price:
+    ) -> core.Price:
         raise NotImplementedError()
 
     def get_name(self) -> str:

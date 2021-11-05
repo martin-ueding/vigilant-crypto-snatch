@@ -1,11 +1,11 @@
 from . import bitstamp_adaptor
+from . import interface
 from . import krakenex_adaptor
-from . import marketplace
 
 
 def make_marketplace(
     marketplace_str: str, config: dict, dry_run: bool = False
-) -> marketplace.Marketplace:
+) -> interface.Marketplace:
     if marketplace_str == "bitstamp":
         return bitstamp_adaptor.BitstampMarketplace(
             config["bitstamp"]["username"],

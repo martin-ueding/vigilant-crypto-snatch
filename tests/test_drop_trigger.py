@@ -1,16 +1,15 @@
 import datetime
+from typing import Tuple
 
-import pytest
-
-from vigilant_crypto_snatch import datamodel
+from vigilant_crypto_snatch import core
+from vigilant_crypto_snatch import datastorage
 from vigilant_crypto_snatch import triggers
 
 from . import mock_historical
 
 
-@pytest.fixture
-def drop_trigger() -> triggers.BuyTrigger:
-    session = datamodel.open_memory_db_session()
+def make_drop_trigger() -> Tuple[triggers.BuyTrigger, mock_historical.MockHistorical]:
+    datastore = datastorage.ListDatastore()
     source = mock_historical.MockHistorical()
     market = mock_historical.MockMarketplace()
     trigger_spec = {
@@ -21,27 +20,29 @@ def drop_trigger() -> triggers.BuyTrigger:
         "cooldown_minutes": 10,
         "delay_minutes": 10,
     }
-    result = triggers.make_buy_trigger(session, source, market, trigger_spec)
-    return result
+    result = triggers.make_buy_trigger(datastore, source, market, trigger_spec)
+    return result, source
 
 
-def test_triggered(drop_trigger: triggers.BuyTrigger) -> None:
+def test_triggered() -> None:
+    drop_trigger, source = make_drop_trigger()
     # The drop is so extreme that it can never be triggered.
     assert not drop_trigger.is_triggered(datetime.datetime.now())
-    session = drop_trigger.session
-    assert session.query(datamodel.Price).count() == 0
-    assert drop_trigger.source.calls == 2
+    assert len(drop_trigger.datastore.get_all_prices()) == 0
+    assert source.calls == 2
 
 
-def test_cooled_off(drop_trigger: triggers.BuyTrigger) -> None:
+def test_cooled_off() -> None:
+    drop_trigger, source = make_drop_trigger()
     # There are no trades in the DB yet.
     assert drop_trigger.has_cooled_off(datetime.datetime.now())
 
 
-def test_waiting(drop_trigger: triggers.BuyTrigger) -> None:
+def test_waiting() -> None:
+    drop_trigger, source = make_drop_trigger()
     now = datetime.datetime.now()
-    session = drop_trigger.session
-    trade = datamodel.Trade(
+    datastore = drop_trigger.datastore
+    trade = core.Trade(
         timestamp=now,
         trigger_name=drop_trigger.get_name(),
         volume_coin=1.0,
@@ -49,6 +50,5 @@ def test_waiting(drop_trigger: triggers.BuyTrigger) -> None:
         coin="BTC",
         fiat="EUR",
     )
-    session.add(trade)
-    session.commit()
+    datastore.add_trade(trade)
     assert not drop_trigger.has_cooled_off(now)

@@ -4,17 +4,15 @@ import os
 import typing
 
 import requests
-import sqlalchemy.orm.exc
 
-from . import datamodel
+from . import core
+from . import datastorage
 from . import logger
 from . import marketplace
 
 
 class HistoricalSource(object):
-    def get_price(
-        self, then: datetime.datetime, coin: str, fiat: str
-    ) -> datamodel.Price:
+    def get_price(self, then: datetime.datetime, coin: str, fiat: str) -> core.Price:
         raise NotImplementedError()
 
 
@@ -26,9 +24,7 @@ class CryptoCompareHistoricalSource(HistoricalSource):
     def __init__(self, api_key: str):
         self.api_key = api_key
 
-    def get_price(
-        self, when: datetime.datetime, coin: str, fiat: str
-    ) -> datamodel.Price:
+    def get_price(self, when: datetime.datetime, coin: str, fiat: str) -> core.Price:
         logger.debug(f"Retrieving historical price at {when} for {fiat}/{coin} …")
         timestamp = int(when.timestamp())
         kind = self.get_kind(when)
@@ -48,7 +44,7 @@ class CryptoCompareHistoricalSource(HistoricalSource):
             )
         close = j["Data"][-1]["close"]
         logger.debug(f"Retrieved a price of {close} at {when} from Cryptocompare.")
-        return datamodel.Price(timestamp=when, coin=coin, fiat=fiat, last=close)
+        return core.Price(timestamp=when, coin=coin, fiat=fiat, last=close)
 
     @staticmethod
     def get_kind(when: datetime.datetime) -> str:
@@ -66,45 +62,22 @@ class CryptoCompareHistoricalSource(HistoricalSource):
 
 
 class DatabaseHistoricalSource(HistoricalSource):
-    def __init__(
-        self, session: sqlalchemy.orm.session.Session, tolerance: datetime.timedelta
-    ):
-        self.session = session
+    def __init__(self, datastore: datastorage.Datastore, tolerance: datetime.timedelta):
+        self.datastore = datastore
         self.tolerance = tolerance
 
-    def get_price(
-        self, when: datetime.datetime, coin: str, fiat: str
-    ) -> datamodel.Price:
-        try:
-            q = (
-                self.session.query(datamodel.Price)
-                .filter(
-                    datamodel.Price.timestamp < when,
-                    datamodel.Price.coin == coin,
-                    datamodel.Price.fiat == fiat,
-                )
-                .order_by(datamodel.Price.timestamp.desc())[0]
-            )
-            if q.timestamp > when - self.tolerance:
-                logger.debug(
-                    f"Found historical price for {when} in database: {q.last} {fiat}/{coin}."
-                )
-                return q
-        except sqlalchemy.orm.exc.NoResultFound:
-            pass
-        except IndexError:
-            pass
-
-        raise HistoricalError("Could not find entry in the database.")
+    def get_price(self, when: datetime.datetime, coin: str, fiat: str) -> core.Price:
+        price = self.datastore.get_price_around(when, coin, fiat, self.tolerance)
+        if price is None:
+            raise HistoricalError("Could not find entry in the database.")
+        return price
 
 
 class MarketSource(HistoricalSource):
     def __init__(self, market: marketplace.Marketplace):
         self.market = market
 
-    def get_price(
-        self, then: datetime.datetime, coin: str, fiat: str
-    ) -> datamodel.Price:
+    def get_price(self, then: datetime.datetime, coin: str, fiat: str) -> core.Price:
         if then < datetime.datetime.now() - datetime.timedelta(seconds=30):
             raise HistoricalError(
                 f"Cannot retrieve price that far in the past ({then})."
@@ -121,15 +94,13 @@ class CachingHistoricalSource(HistoricalSource):
         self,
         database_source: HistoricalSource,
         live_sources: typing.List[HistoricalSource],
-        session: sqlalchemy.orm.session.Session,
+        datastore: datastorage.Datastore,
     ):
         self.database_source = database_source
         self.live_sources = live_sources
-        self.session = session
+        self.datastore = datastore
 
-    def get_price(
-        self, then: datetime.datetime, coin: str, fiat: str
-    ) -> datamodel.Price:
+    def get_price(self, then: datetime.datetime, coin: str, fiat: str) -> core.Price:
         try:
             price = self.database_source.get_price(then, coin, fiat)
         except HistoricalError as e:
@@ -145,8 +116,7 @@ class CachingHistoricalSource(HistoricalSource):
             except HistoricalError as e:
                 logger.debug(f"Error from live source: {repr(e)}")
             else:
-                self.session.add(price)
-                self.session.commit()
+                self.datastore.add_price(price)
                 return price
 
         raise HistoricalError("No source could deliver.")

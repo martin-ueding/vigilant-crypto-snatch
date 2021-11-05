@@ -1,16 +1,15 @@
 import datetime
+from typing import Tuple
 
-import pytest
-
-from vigilant_crypto_snatch import datamodel
+from vigilant_crypto_snatch import core
+from vigilant_crypto_snatch import datastorage
 from vigilant_crypto_snatch import triggers
 
 from . import mock_historical
 
 
-@pytest.fixture
-def true_trigger() -> triggers.BuyTrigger:
-    session = datamodel.open_memory_db_session()
+def make_true_trigger() -> Tuple[triggers.BuyTrigger, mock_historical.MockMarketplace]:
+    datastore = datastorage.ListDatastore()
     source = mock_historical.MockHistorical()
     market = mock_historical.MockMarketplace()
     trigger_spec = {
@@ -19,24 +18,27 @@ def true_trigger() -> triggers.BuyTrigger:
         "volume_fiat": 25.0,
         "cooldown_minutes": 10,
     }
-    result = triggers.make_buy_trigger(session, source, market, trigger_spec)
-    return result
+    result = triggers.make_buy_trigger(datastore, source, market, trigger_spec)
+    return result, market
 
 
-def test_triggered(true_trigger: triggers.BuyTrigger) -> None:
+def test_triggered() -> None:
+    true_trigger, market = make_true_trigger()
     # This trigger type must always be triggered.
     assert true_trigger.is_triggered(datetime.datetime.now())
 
 
-def test_cooled_off(true_trigger: triggers.BuyTrigger) -> None:
+def test_cooled_off() -> None:
+    true_trigger, market = make_true_trigger()
     # There are no trades in the DB yet.
     assert true_trigger.has_cooled_off(datetime.datetime.now())
 
 
-def test_waiting(true_trigger: triggers.BuyTrigger) -> None:
+def test_waiting() -> None:
+    true_trigger, market = make_true_trigger()
     now = datetime.datetime.now()
-    session = true_trigger.session
-    trade = datamodel.Trade(
+    datastore = true_trigger.datastore
+    trade = core.Trade(
         timestamp=now,
         trigger_name=true_trigger.get_name(),
         volume_coin=1.0,
@@ -44,14 +46,14 @@ def test_waiting(true_trigger: triggers.BuyTrigger) -> None:
         coin="BTC",
         fiat="EUR",
     )
-    session.add(trade)
-    session.commit()
+    datastore.add_trade(trade)
     assert not true_trigger.has_cooled_off(now)
 
 
-def test_trade(true_trigger: triggers.BuyTrigger) -> None:
+def test_trade() -> None:
+    true_trigger, market = make_true_trigger()
     now = datetime.datetime.now()
     true_trigger.fire(now)
-    session = true_trigger.session
-    assert session.query(datamodel.Trade).count() == 1
-    assert true_trigger.market.orders == 1
+    datastore = true_trigger.datastore
+    assert len(datastore.get_all_trades()) == 1
+    assert market.orders == 1

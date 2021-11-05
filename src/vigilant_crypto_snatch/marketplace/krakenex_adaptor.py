@@ -2,10 +2,10 @@ import datetime
 import typing
 
 import krakenex
-import vigilant_crypto_snatch.datamodel
-from vigilant_crypto_snatch import logger
 
-from . import marketplace
+from . import interface
+from .. import core
+from .. import logger
 
 
 mapping_normal_to_kraken = {"BTC": "XBT"}
@@ -24,7 +24,7 @@ def map_kraken_to_normal(coin: str) -> str:
     return mapping_kraken_to_normal.get(coin, coin)
 
 
-class KrakenexMarketplace(marketplace.Marketplace):
+class KrakenexMarketplace(interface.Marketplace):
     def __init__(
         self,
         api_key: str,
@@ -43,21 +43,19 @@ class KrakenexMarketplace(marketplace.Marketplace):
 
     def get_spot_price(
         self, coin: str, fiat: str, now: datetime.datetime
-    ) -> vigilant_crypto_snatch.datamodel.Price:
+    ) -> core.Price:
         answer = self.handle.query_public(
             "Ticker", {"pair": f"{map_normal_to_kraken(coin)}{fiat}"}
         )
-        raise_error(answer, marketplace.TickerError)
+        raise_error(answer, interface.TickerError)
         close = float(list(answer["result"].values())[0]["c"][0])
         logger.debug(f"Retrieved {close} for {fiat}/{coin} from Krakenex.")
-        price = vigilant_crypto_snatch.datamodel.Price(
-            timestamp=now, last=close, coin=coin, fiat=fiat
-        )
+        price = core.Price(timestamp=now, last=close, coin=coin, fiat=fiat)
         return price
 
     def get_balance(self) -> dict:
         answer = self.handle.query_private("Balance")
-        raise_error(answer, marketplace.TickerError)
+        raise_error(answer, interface.TickerError)
         # The key `result` will only be present if the user has any balances.
         if "result" in answer:
             return {
@@ -78,8 +76,8 @@ class KrakenexMarketplace(marketplace.Marketplace):
         if self.dry_run:
             arguments["validate"] = "true"
         answer = self.handle.query_private("AddOrder", arguments)
-        raise_error(answer, marketplace.BuyError)
-        marketplace.check_and_perform_widthdrawal(self)
+        raise_error(answer, interface.BuyError)
+        interface.check_and_perform_widthdrawal(self)
 
     def get_withdrawal_fee(self, coin: str, volume: float) -> float:
         target = self.withdrawal_config[coin]["target"]
@@ -91,7 +89,7 @@ class KrakenexMarketplace(marketplace.Marketplace):
                 "key": target,
             },
         )
-        raise_error(answer, marketplace.WithdrawalError)
+        raise_error(answer, interface.WithdrawalError)
         fee = float(answer["result"]["fee"])
         logger.debug(f"Withdrawal fee for {coin} is {fee} {coin}.")
         return fee
@@ -118,7 +116,7 @@ class KrakenexMarketplace(marketplace.Marketplace):
                     "key": target,
                 },
             )
-            raise_error(answer, marketplace.WithdrawalError)
+            raise_error(answer, interface.WithdrawalError)
         else:
             logger.debug(
                 f"Not withdrawing {volume} {coin} as fee is {fee} {coin} and above limit."

@@ -7,7 +7,7 @@ import pandas as pd
 import scipy.interpolate
 import sqlalchemy.orm
 
-from . import datamodel
+from . import core
 from . import historical
 from . import logger
 from . import marketplace
@@ -25,15 +25,13 @@ class InterpolatingSource(historical.HistoricalSource):
         self.start = np.min(data["datetime"])
         self.end = np.max(data["datetime"])
 
-    def get_price(
-        self, then: datetime.datetime, coin: str, fiat: str
-    ) -> datamodel.Price:
+    def get_price(self, then: datetime.datetime, coin: str, fiat: str) -> core.Price:
         try:
             last = self.interpolator(then.timestamp())
         except ValueError as e:
             raise historical.HistoricalError(e)
 
-        return datamodel.Price(
+        return core.Price(
             timestamp=then,
             last=last,
             coin=coin,
@@ -46,7 +44,7 @@ def json_to_database(
 ) -> None:
     logger.info(f"Writing {len(data)} prices to the DB …")
     for elem in data:
-        price = datamodel.Price(
+        price = core.Price(
             timestamp=datetime.datetime.fromtimestamp(elem["time"]),
             last=elem["close"],
             coin=coin,
@@ -101,5 +99,5 @@ class SimulationMarketplace(marketplace.Marketplace):
 
     def get_spot_price(
         self, coin: str, fiat: str, now: datetime.datetime
-    ) -> datamodel.Price:
+    ) -> core.Price:
         return self.source.get_price(now, coin, fiat)

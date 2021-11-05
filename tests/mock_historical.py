@@ -1,7 +1,7 @@
 import datetime
 import math
 
-import vigilant_crypto_snatch.datamodel
+import vigilant_crypto_snatch.core
 import vigilant_crypto_snatch.historical
 import vigilant_crypto_snatch.marketplace
 
@@ -25,9 +25,9 @@ class MockHistorical(vigilant_crypto_snatch.historical.HistoricalSource):
 
     def get_price(
         self, then: datetime.datetime, coin: str, fiat: str
-    ) -> vigilant_crypto_snatch.datamodel.Price:
+    ) -> vigilant_crypto_snatch.core.Price:
         self.calls += 1
-        return vigilant_crypto_snatch.datamodel.Price(
+        return vigilant_crypto_snatch.core.Price(
             timestamp=then,
             last=mock_price(then),
             coin=coin,
@@ -53,10 +53,10 @@ class MockMarketplace(vigilant_crypto_snatch.marketplace.Marketplace):
 
     def get_spot_price(
         self, coin: str, fiat: str, now: datetime.datetime
-    ) -> vigilant_crypto_snatch.datamodel.Price:
+    ) -> vigilant_crypto_snatch.core.Price:
         self.prices += 1
         then = datetime.datetime.now()
-        return vigilant_crypto_snatch.datamodel.Price(
+        return vigilant_crypto_snatch.core.Price(
             timestamp=then,
             last=mock_price(then),
             coin=coin,

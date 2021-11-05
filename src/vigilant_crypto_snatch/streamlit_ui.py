@@ -9,7 +9,8 @@ import requests
 import streamlit as st
 import streamlit.cli as st_cli
 from vigilant_crypto_snatch import configuration
-from vigilant_crypto_snatch import datamodel
+from vigilant_crypto_snatch import core
+from vigilant_crypto_snatch import datastorage
 from vigilant_crypto_snatch import evaluation
 from vigilant_crypto_snatch import historical
 from vigilant_crypto_snatch import migrations
@@ -84,7 +85,7 @@ def sub_drop_survey(sidebar_settings):
 
 
 def make_trigger_ui(
-    session, source, market, sidebar_settings, i
+    datastore, source, market, sidebar_settings, i
 ) -> triggers.BuyTrigger:
     trigger_spec = {"fiat": sidebar_settings.fiat, "coin": sidebar_settings.coin}
 
@@ -130,13 +131,13 @@ def make_trigger_ui(
             key=f"drop_percentage{i}",
         )
 
-    return triggers.make_buy_trigger(session, source, market, trigger_spec)
+    return triggers.make_buy_trigger(datastore, source, market, trigger_spec)
 
 
 def sub_trigger_simulation(sidebar_settings):
     st.title("Trigger simulation")
 
-    session = datamodel.open_memory_db_session()
+    datastore = datastorage.make_datastore(persistent=False)
     source = evaluation.InterpolatingSource(sidebar_settings.data)
     market = evaluation.SimulationMarketplace(source)
 
@@ -155,7 +156,7 @@ def sub_trigger_simulation(sidebar_settings):
                 col = st.beta_columns(min(number_of_triggers - i, 3))
             with col[i % 3]:
                 active_triggers.append(
-                    make_trigger_ui(session, source, market, sidebar_settings, i)
+                    make_trigger_ui(datastore, source, market, sidebar_settings, i)
                 )
         if not st.form_submit_button("Go!"):
             return
@@ -283,7 +284,7 @@ def simulate_triggers(
     coin: str,
     fiat: str,
     active_triggers,
-    session,
+    datastore: datastorage.Datastore,
     progress_callback=lambda n: None,
 ) -> pd.DataFrame:
     for i in data.index:
@@ -302,7 +303,7 @@ def simulate_triggers(
                 pass
         progress_callback((i + 1) / len(data))
 
-    all_trades = session.query(datamodel.Trade).all()
+    all_trades = datastore.get_all_trades()
     trade_df = pd.DataFrame([trade.to_dict() for trade in all_trades])
     return trade_df
 
