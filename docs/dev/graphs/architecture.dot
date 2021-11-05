@@ -10,13 +10,11 @@ node [style=filled, fillcolor=white, shape=box]
     "bitstamp"
     "krakenex"
     "sqlalchemy"
-    "Telegram"
     "requests"
     "appdirs"
     "streamlit"
     "pandas"
     "yaml"
-    "logging.logger"
 }
 
 subgraph cluster_triggers {
@@ -280,8 +278,6 @@ node [shape=component, fillcolor=gray80, style=filled]
 "streamlit_ui" -> "streamlit"
 "add_telegram_logger()" -> "TelegramLogger"
 "add_telegram_logger()" -> "TelegramSender"
-"TelegramLogger" -> "logging.logger" [arrowhead=onormal]
-"TelegramSender" -> "Telegram"
 "TelegramSender" -> "TelegramBotException"
 "TriggerLoop" -> "BuyError"
 "TriggerLoop" -> "TelegramSender"
@@ -302,7 +298,6 @@ node [shape=component, fillcolor=gray80, style=filled]
 "watchloop" -> "requests"
 "watchloop" -> "TickerError"
 "watchloop" -> "Trigger"
-"TelegramSender" -> "requests"
 "make_datastore()" -> "SqlAlchemyDatastore"
 "make_datastore()" -> "Datastore"
 
