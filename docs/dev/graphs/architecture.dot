@@ -52,6 +52,12 @@ label = "datastore"
 fillcolor = gray85
 style=filled
 "Datastore" [shape=ellipse]
+}
+
+subgraph cluster_datastore_factory {
+label = "datastore.factory"
+fillcolor = gray85
+style=filled
 "make_datastore()" [shape=box]
 }
 
@@ -141,13 +147,6 @@ node [shape=component, fillcolor=gray90, style=filled]
 }
 
 
-{
-node [shape=note]
-"watchloop.process_trigger()"
-"watchloop.main()"
-}
-
-
 "testdrive" -> "configuration"
 "testdrive" -> "make_marketplace()"
 "testdrive" -> "make_datastore()"
@@ -228,20 +227,23 @@ node [shape=note]
 "TriggerLoop" -> "TelegramSender"
 "TriggerLoop" -> "Trigger"
 "TrueTriggeredDelegate" -> "TriggeredDelegate" [arrowhead=onormal]
-"watchloop.main()" -> "CachingHistoricalSource"
-"watchloop.main()" -> "configuration"
-"watchloop.main()" -> "CryptoCompareHistoricalSource"
-"watchloop.main()" -> "DatabaseHistoricalSource"
-"watchloop.main()" -> "make_marketplace()"
-"watchloop.main()" -> "make_triggers()"
-"watchloop.main()" -> "Marketplace"
-"watchloop.main()" -> "MarketSource"
-"watchloop.main()" -> "migrations"
-"watchloop.main()" -> "telegram.add_telegram_logger()"
-"watchloop.main()" -> "TriggerLoop"
-"watchloop.process_trigger()" -> "BuyError"
-"watchloop.process_trigger()" -> "requests"
-"watchloop.process_trigger()" -> "TickerError"
-"watchloop.process_trigger()" -> "Trigger"
+"watchloop" -> "CachingHistoricalSource"
+"watchloop" -> "configuration"
+"watchloop" -> "CryptoCompareHistoricalSource"
+"watchloop" -> "DatabaseHistoricalSource"
+"watchloop" -> "make_marketplace()"
+"watchloop" -> "make_triggers()"
+"watchloop" -> "Marketplace"
+"watchloop" -> "MarketSource"
+"watchloop" -> "migrations"
+"watchloop" -> "telegram.add_telegram_logger()"
+"watchloop" -> "TriggerLoop"
+"watchloop" -> "BuyError"
+"watchloop" -> "requests"
+"watchloop" -> "TickerError"
+"watchloop" -> "Trigger"
+"make_datastore()" -> "SqlAlchemyDatastore"
+"make_datastore()" -> "Datastore"
+"make_datastore()" -> "configuration"
 
 } 

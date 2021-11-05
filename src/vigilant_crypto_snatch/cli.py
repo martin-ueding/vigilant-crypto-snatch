@@ -1,5 +1,6 @@
 import click
 import coloredlogs
+import vigilant_crypto_snatch.commands.watch
 
 
 @click.group()
@@ -53,7 +54,9 @@ def watch(marketplace, keepalive, one_shot, dry_run):
     """
     from . import watchloop
 
-    watchloop.main(marketplace, keepalive, one_shot, dry_run)
+    vigilant_crypto_snatch.commands.watch.main(
+        marketplace, keepalive, one_shot, dry_run
+    )
 
 
 @main.command()
@@ -72,6 +75,6 @@ def evaluate() -> None:
     help="Marketplace to place orders on.",
 )
 def test_drive(marketplace: str) -> None:
-    from . import testdrive
+    from vigilant_crypto_snatch.commands import testdrive
 
     testdrive.main(marketplace)

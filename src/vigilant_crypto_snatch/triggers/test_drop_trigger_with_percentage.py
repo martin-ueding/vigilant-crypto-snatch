@@ -5,14 +5,15 @@ import pytest
 from . import BuyTrigger
 from . import make_buy_trigger
 from .. import datastorage
-from ..historical import mock_historical
+from ..historical.mock import MockHistorical
+from ..marketplace.mock import MockMarketplace
 
 
 @pytest.fixture
 def drop_trigger_with_percentage() -> BuyTrigger:
     datastore = datastorage.ListDatastore()
-    source = mock_historical.MockHistorical()
-    market = mock_historical.MockMarketplace()
+    source = MockHistorical()
+    market = MockMarketplace()
     trigger_spec = {
         "coin": "BTC",
         "fiat": "EUR",

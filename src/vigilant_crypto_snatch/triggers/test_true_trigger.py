@@ -6,13 +6,14 @@ from vigilant_crypto_snatch import datastorage
 
 from . import BuyTrigger
 from . import make_buy_trigger
-from ..historical import mock_historical
+from ..historical.mock import MockHistorical
+from ..marketplace.mock import MockMarketplace
 
 
-def make_true_trigger() -> Tuple[BuyTrigger, mock_historical.MockMarketplace]:
+def make_true_trigger() -> Tuple[BuyTrigger, MockMarketplace]:
     datastore = datastorage.ListDatastore()
-    source = mock_historical.MockHistorical()
-    market = mock_historical.MockMarketplace()
+    source = MockHistorical()
+    market = MockMarketplace()
     trigger_spec = {
         "coin": "BTC",
         "fiat": "EUR",
