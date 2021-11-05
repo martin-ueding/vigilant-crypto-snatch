@@ -5,7 +5,6 @@ import traceback
 import typing
 
 import requests.exceptions
-import sqlalchemy.exc
 
 from . import configuration
 from . import datastorage
@@ -77,11 +76,8 @@ def process_trigger(trigger: triggers.Trigger, keepalive: bool):
         notify_and_continue(e, logging.ERROR)
     except requests.exceptions.HTTPError as e:
         notify_and_continue(e, logging.ERROR)
-    except sqlalchemy.exc.OperationalError as e:
-        logger.critical(
-            f"Something went wrong with the database. Perhaps it is easiest to just delete the database file at `{configuration.user_db_path}`. The original exception was this: `{repr(e)}`"
-        )
-        raise
+    except datastorage.DatastoreException as e:
+        notify_and_continue(e, logging.ERROR)
     except KeyboardInterrupt:
         raise
     except Exception as e:

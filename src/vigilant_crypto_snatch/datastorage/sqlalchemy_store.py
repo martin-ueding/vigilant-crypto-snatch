@@ -4,10 +4,11 @@ from typing import *
 
 import sqlalchemy.ext.declarative
 import sqlalchemy.orm.exc
-from vigilant_crypto_snatch import core
 
+from .. import core
 from .. import logger
 from .interface import Datastore
+from .interface import DatastoreException
 
 Base = sqlalchemy.ext.declarative.declarative_base()
 
@@ -70,20 +71,37 @@ class SqlAlchemyDatastore(Datastore):
             assert os.path.isdir(os.path.dirname(db_path))
 
         db_url = f"sqlite://{db_path}"
-        engine = sqlalchemy.create_engine(db_url)
-        Base.metadata.create_all(engine)
-        Session = sqlalchemy.orm.sessionmaker(bind=engine)
-        self.session = Session()  # type: ignore
+        try:
+            engine = sqlalchemy.create_engine(db_url)
+            Base.metadata.create_all(engine)
+            Session = sqlalchemy.orm.sessionmaker(bind=engine)
+            self.session = Session()  # type: ignore
+        except sqlalchemy.exc.OperationalError as e:
+            raise DatastoreException(
+                f"Something went wrong with the database. Perhaps it is easiest to just delete the database file."
+            ) from e
 
     def add_price(self, price: core.Price) -> None:
         alchemy_price = price_to_alchemy_price(price)
-        self.session.add(alchemy_price)
-        self.session.commit()
+
+        try:
+            self.session.add(alchemy_price)
+            self.session.commit()
+        except sqlalchemy.exc.OperationalError as e:
+            raise DatastoreException(
+                f"Something went wrong with the database. Perhaps it is easiest to just delete the database file."
+            ) from e
 
     def add_trade(self, trade: core.Trade) -> None:
         alchemy_trade = trade_to_alchemy_trade(trade)
-        self.session.add(alchemy_trade)
-        self.session.commit()
+
+        try:
+            self.session.add(alchemy_trade)
+            self.session.commit()
+        except sqlalchemy.exc.OperationalError as e:
+            raise DatastoreException(
+                f"Something went wrong with the database. Perhaps it is easiest to just delete the database file."
+            ) from e
 
     def get_price_around(
         self,
@@ -111,23 +129,32 @@ class SqlAlchemyDatastore(Datastore):
             pass
         except IndexError:
             pass
+        except sqlalchemy.exc.OperationalError as e:
+            raise DatastoreException(
+                f"Something went wrong with the database. Perhaps it is easiest to just delete the database file."
+            ) from e
 
         return None
 
     def was_triggered_since(
         self, trigger_name: str, coin: str, fiat: str, then: datetime.datetime
     ) -> bool:
-        trade_count = (
-            self.session.query(AlchemyTrade)
-            .filter(
-                AlchemyTrade.trigger_name == trigger_name,
-                AlchemyTrade.timestamp > then,
-                AlchemyTrade.coin == coin,
-                AlchemyTrade.fiat == fiat,
+        try:
+            trade_count = (
+                self.session.query(AlchemyTrade)
+                .filter(
+                    AlchemyTrade.trigger_name == trigger_name,
+                    AlchemyTrade.timestamp > then,
+                    AlchemyTrade.coin == coin,
+                    AlchemyTrade.fiat == fiat,
+                )
+                .count()
             )
-            .count()
-        )
-        return trade_count != 0
+            return trade_count != 0
+        except sqlalchemy.exc.OperationalError as e:
+            raise DatastoreException(
+                f"Something went wrong with the database. Perhaps it is easiest to just delete the database file."
+            ) from e
 
     def get_all_trades(self) -> List[core.Trade]:
         pass
@@ -135,8 +162,15 @@ class SqlAlchemyDatastore(Datastore):
     def clean_old(self, cutoff: datetime.datetime):
         logger.debug(f"Start cleaning of database before {cutoff} …")
 
-        q = self.session.query(AlchemyPrice).filter(AlchemyPrice.timestamp < cutoff)
-        logger.debug(f"Found {q.count()} old prices, which are going to get deleted.")
-        for elem in q:
-            self.session.delete(elem)
-        self.session.commit()
+        try:
+            q = self.session.query(AlchemyPrice).filter(AlchemyPrice.timestamp < cutoff)
+            logger.debug(
+                f"Found {q.count()} old prices, which are going to get deleted."
+            )
+            for elem in q:
+                self.session.delete(elem)
+            self.session.commit()
+        except sqlalchemy.exc.OperationalError as e:
+            raise DatastoreException(
+                f"Something went wrong with the database. Perhaps it is easiest to just delete the database file."
+            ) from e

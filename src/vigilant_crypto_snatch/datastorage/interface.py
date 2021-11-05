@@ -4,6 +4,10 @@ from typing import *
 from vigilant_crypto_snatch import core
 
 
+class DatastoreException(Exception):
+    pass
+
+
 class Datastore:
     def add_price(self, price: core.Price) -> None:
         raise NotImplementedError()
