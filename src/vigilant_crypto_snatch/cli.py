@@ -1,6 +1,5 @@
 import click
 import coloredlogs
-import vigilant_crypto_snatch.commands.watch
 
 
 @click.group()
@@ -52,11 +51,9 @@ def watch(marketplace, keepalive, one_shot, dry_run):
     """
     Watch the market and execute defined triggers.
     """
-    from . import watchloop
+    from .commands import watch
 
-    vigilant_crypto_snatch.commands.watch.main(
-        marketplace, keepalive, one_shot, dry_run
-    )
+    watch.main(marketplace, keepalive, one_shot, dry_run)
 
 
 @main.command()
