@@ -1,7 +1,6 @@
 import datetime
 
 import pytest
-from vigilant_crypto_snatch import core
 from vigilant_crypto_snatch import datastorage
 
 from . import BuyTrigger

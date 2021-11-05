@@ -1,75 +1,63 @@
-import argparse
-import sys
-
+import click
 import coloredlogs
 
 
-def main():
-    parser = argparse.ArgumentParser(
-        description="""Vigiliant Crypto Snatch is a 
-    little program that observes the current market price for your choice of currency 
-    pairs, looks for drastic reductions (dips) and then places buy orders.""",
-        epilog="See https://martin-ueding.github.io/vigilant-crypto-snatch/ for the full documentation.",
-    )
-    parser.add_argument(
-        "--loglevel",
-        choices=["debug", "info", "warning", "error", "critical"],
-        default="info",
-        help="Controls the verbosity of logging. Default: %(default)s.",
-    )
-    parser.set_defaults(func=None)
+@click.group()
+@click.option(
+    "--loglevel",
+    type=click.Choice(["debug", "info", "warning", "error", "critical"]),
+    default="info",
+    show_default=True,
+    help="Controls the verbosity of logging.",
+)
+def main(loglevel) -> None:
+    """
+    Vigiliant Crypto Snatch is a
+    little program that observes the current market price for your choice of currency
+    pairs, looks for drastic reductions (dips) and then places buy orders.
 
-    subcommands = parser.add_subparsers(title="subcommands")
-
-    evaluate = subcommands.add_parser("evaluate")
-    evaluate.set_defaults(func=main_streamlit)
-
-    watch = subcommands.add_parser(
-        "watch", help="Watch the market and execute defined triggers."
-    )
-    watch.set_defaults(func=main_watch)
-    watch.add_argument(
-        "--marketplace",
-        default="kraken",
-        choices=["bitstamp", "clikraken", "clikraken-api", "kraken"],
-        help="Marketplace to place orders on. Default: %(default)s.",
-    )
-    watch.add_argument(
-        "--keepalive",
-        action="store_true",
-        default=False,
-        help="Ignore all Exceptions and just report them.",
-    )
-    watch.add_argument(
-        "--one-shot",
-        action="store_true",
-        default=False,
-        help="Only check once and then exit.",
-    )
-    watch.add_argument(
-        "--dry-run",
-        action="store_true",
-        default=False,
-        help="Do not place actual orders to the marketplace.",
-    )
-
-    options = parser.parse_args()
-    if options.func is None:
-        parser.print_help()
-        sys.exit(1)
-
-    coloredlogs.install(level=options.loglevel.upper())
-
-    options.func(options)
+    See https://martin-ueding.github.io/vigilant-crypto-snatch/ for the full documentation.
+    """
+    coloredlogs.install(level=loglevel.upper())
 
 
-def main_watch(options):
+@main.command()
+@click.option(
+    "--marketplace",
+    type=click.Choice(["bitstamp", "kraken"]),
+    default="kraken",
+    show_default=True,
+    help="Marketplace to place orders on.",
+)
+@click.option(
+    "--keepalive/--no-keepalive",
+    default=False,
+    show_default=True,
+    help="Ignore all Exceptions and just report them.",
+)
+@click.option(
+    "--one-shot/--no-one-shot",
+    default=False,
+    show_default=True,
+    help="Only check once and then exit.",
+)
+@click.option(
+    "--dry-run/--no-dry-run",
+    default=False,
+    show_default=True,
+    help="Do not place actual orders to the marketplace.",
+)
+def watch(marketplace, keepalive, one_shot, dry_run):
+    """
+    Watch the market and execute defined triggers.
+    """
     from . import watchloop
 
-    watchloop.main(options)
+    watchloop.main(marketplace, keepalive, one_shot, dry_run)
 
 
-def main_streamlit(options) -> None:
+@main.command()
+def evaluate() -> None:
     from . import streamlit_ui
 
-    streamlit_ui.main(options)
+    streamlit_ui.main()

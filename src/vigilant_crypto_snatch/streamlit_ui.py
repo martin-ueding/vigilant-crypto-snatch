@@ -388,7 +388,7 @@ if __name__ == "__main__" and st._is_running_with_streamlit:
     ui()
 
 
-def main(options):
+def main():
     migrations.run_migrations()
     sys.argv = ["streamlit", "run", __file__]
     sys.exit(st_cli.main())

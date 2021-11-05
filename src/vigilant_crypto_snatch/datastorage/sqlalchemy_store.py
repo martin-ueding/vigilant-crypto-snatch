@@ -1,5 +1,4 @@
 import datetime
-import logging
 import os
 from typing import *
 
@@ -7,7 +6,6 @@ import sqlalchemy.ext.declarative
 import sqlalchemy.orm.exc
 from vigilant_crypto_snatch import core
 
-from .. import configuration
 from .. import logger
 from .interface import Datastore
 

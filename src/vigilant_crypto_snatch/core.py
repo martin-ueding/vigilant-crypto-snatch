@@ -26,7 +26,6 @@ class Trade:
     def __repr__(self):
         return (
             f"Trade("
-            f"id={repr(self.id)}, "
             f"timestamp={repr(self.timestamp)}, "
             f"trigger_name={repr(self.trigger_name)}, "
             f"volume_coin={repr(self.volume_coin)}, "
