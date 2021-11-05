@@ -256,7 +256,6 @@ node [shape=component, fillcolor=gray80, style=filled]
 "make_buy_trigger()" -> "RatioVolumeFiatDelegate"
 "make_buy_trigger()" -> "TrueTriggeredDelegate"
 "make_marketplace()" -> "BitstampMarketplace"
-"make_marketplace()" -> "configuration"
 "make_marketplace()" -> "KrakenexMarketplace"
 "make_triggers()" -> "make_buy_trigger()"
 "Marketplace" -> "Price"
@@ -279,7 +278,6 @@ node [shape=component, fillcolor=gray80, style=filled]
 "streamlit_ui" -> "requests"
 "streamlit_ui" -> "SimulationMarketplace"
 "streamlit_ui" -> "streamlit"
-"add_telegram_logger()" -> "configuration"
 "add_telegram_logger()" -> "TelegramLogger"
 "add_telegram_logger()" -> "TelegramSender"
 "TelegramLogger" -> "logging.logger" [arrowhead=onormal]

@@ -15,13 +15,13 @@ from ..watchloop import TriggerLoop
 
 def main(marketplace_name, keepalive, one_shot, dry_run):
     migrations.run_migrations()
+    config = configuration.load_config()
 
-    vigilant_crypto_snatch.telegram.logger.add_telegram_logger()
+    vigilant_crypto_snatch.telegram.logger.add_telegram_logger(config)
     if not one_shot:
         logger.info("Starting up …")
 
     datastore = datastorage.make_datastore(configuration.user_db_path)
-    config = configuration.load_config()
     market = marketplace.make_marketplace(marketplace_name, config, dry_run)
     marketplace.check_and_perform_widthdrawal(market)
 

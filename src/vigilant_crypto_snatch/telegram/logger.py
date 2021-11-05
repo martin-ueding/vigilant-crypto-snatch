@@ -22,8 +22,7 @@ class TelegramLogger(logging.Handler):
         self.sender.queue_message(self.format(record))
 
 
-def add_telegram_logger() -> None:
-    config = configuration.load_config()
+def add_telegram_logger(config: dict) -> None:
     if "telegram" in config:
         my_sender = make_telegram_sender(config)
         sender.telegram_sender = my_sender
