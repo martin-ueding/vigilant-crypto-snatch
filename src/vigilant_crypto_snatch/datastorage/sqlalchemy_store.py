@@ -51,6 +51,16 @@ class AlchemyTrade(Base):  # type: ignore
     coin = sqlalchemy.Column(sqlalchemy.String, nullable=False)
     fiat = sqlalchemy.Column(sqlalchemy.String, nullable=False)
 
+    def to_core(self):
+        return core.Trade(
+            timestamp=self.timestamp,
+            trigger_name=self.trigger_name,
+            volume_coin=self.volume_coin,
+            volume_fiat=self.volume_fiat,
+            coin=self.coin,
+            fiat=self.fiat,
+        )
+
 
 def trade_to_alchemy_trade(trade: core.Trade) -> AlchemyTrade:
     return AlchemyTrade(
@@ -157,7 +167,14 @@ class SqlAlchemyDatastore(Datastore):
             ) from e
 
     def get_all_trades(self) -> List[core.Trade]:
-        pass
+        q = self.session.query(AlchemyTrade)
+        result = [elem.to_core() for elem in q]
+        return result
+
+    def get_all_prices(self) -> List[core.Price]:
+        q = self.session.query(AlchemyPrice)
+        result = [elem.to_core() for elem in q]
+        return result
 
     def clean_old(self, cutoff: datetime.datetime):
         logger.debug(f"Start cleaning of database before {cutoff} …")
