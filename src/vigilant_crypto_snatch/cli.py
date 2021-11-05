@@ -72,6 +72,6 @@ def evaluate() -> None:
     help="Marketplace to place orders on.",
 )
 def test_drive(marketplace: str) -> None:
-    from vigilant_crypto_snatch.commands import testdrive
+    from .commands import testdrive
 
     testdrive.main(marketplace)

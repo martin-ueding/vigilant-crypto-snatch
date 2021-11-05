@@ -2,9 +2,8 @@ import datetime
 from typing import List
 from typing import Optional
 
-from vigilant_crypto_snatch import core
-
 from . import interface
+from .. import core
 
 
 class ListDatastore(interface.Datastore):

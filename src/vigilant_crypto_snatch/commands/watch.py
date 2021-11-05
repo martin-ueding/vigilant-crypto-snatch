@@ -1,15 +1,13 @@
 import datetime
 
-import vigilant_crypto_snatch.telegram.logger
-from vigilant_crypto_snatch.configuration import migrations
-
 from .. import configuration
 from .. import datastorage
 from .. import logger
 from .. import marketplace
-from .. import telegram
 from .. import triggers
+from ..configuration import migrations
 from ..historical import concrete
+from ..telegram.logger import add_telegram_logger
 from ..watchloop import TriggerLoop
 
 
@@ -17,7 +15,7 @@ def main(marketplace_name, keepalive, one_shot, dry_run):
     migrations.run_migrations()
     config = configuration.load_config()
 
-    vigilant_crypto_snatch.telegram.logger.add_telegram_logger(config)
+    add_telegram_logger(config)
     if not one_shot:
         logger.info("Starting up …")
 

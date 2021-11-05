@@ -1,9 +1,8 @@
 import datetime
 import math
 
-import vigilant_crypto_snatch.core
-import vigilant_crypto_snatch.historical
-import vigilant_crypto_snatch.marketplace
+from .. import core
+from .. import historical
 
 reference_time = datetime.datetime(2021, 1, 1, 00, 00, 00)
 
@@ -18,16 +17,14 @@ def mock_price(then: datetime.datetime):
     return amount
 
 
-class MockHistorical(vigilant_crypto_snatch.historical.HistoricalSource):
+class MockHistorical(historical.HistoricalSource):
     def __init__(self):
         super().__init__()
         self.calls = 0
 
-    def get_price(
-        self, then: datetime.datetime, coin: str, fiat: str
-    ) -> vigilant_crypto_snatch.core.Price:
+    def get_price(self, then: datetime.datetime, coin: str, fiat: str) -> core.Price:
         self.calls += 1
-        return vigilant_crypto_snatch.core.Price(
+        return core.Price(
             timestamp=then,
             last=mock_price(then),
             coin=coin,

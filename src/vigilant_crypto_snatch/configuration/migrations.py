@@ -1,8 +1,8 @@
 import os
 import shutil
 
-from vigilant_crypto_snatch import configuration
-from vigilant_crypto_snatch import logger
+from .. import configuration
+from .. import logger
 
 
 old_config_path = os.path.expanduser("~/.config/vigilant-crypto-snatch.yml")

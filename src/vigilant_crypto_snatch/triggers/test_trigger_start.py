@@ -1,10 +1,10 @@
 import datetime
 
 import pytest
-from vigilant_crypto_snatch import datastorage
 
 from . import BuyTrigger
 from . import make_buy_trigger
+from .. import datastorage
 from ..historical.mock import MockHistorical
 from ..marketplace.mock import MockMarketplace
 

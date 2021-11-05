@@ -1,16 +1,14 @@
 import datetime
 
-import vigilant_crypto_snatch.telegram.sender
-from vigilant_crypto_snatch.configuration import migrations
-
 from .. import configuration
 from .. import datastorage
 from .. import logger
 from .. import marketplace
-from .. import telegram
 from .. import triggers
+from ..configuration import migrations
 from ..historical import concrete
 from ..historical.mock import MockHistorical
+from ..telegram import make_telegram_sender
 
 
 def main(marketplace_name) -> None:
@@ -58,9 +56,7 @@ def try_triggers(config: dict) -> None:
 
 def try_telegram(config: dict) -> None:
     if "telegram" in config:
-        telegram_sender = vigilant_crypto_snatch.telegram.sender.make_telegram_sender(
-            config
-        )
+        telegram_sender = make_telegram_sender(config)
         telegram_sender.queue_message("Telegram is set up correctly!")
         telegram_sender.shutdown()
     else:

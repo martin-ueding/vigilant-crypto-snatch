@@ -1,7 +1,7 @@
 import datetime
 from typing import *
 
-from vigilant_crypto_snatch import core
+from .. import core
 
 
 class DatastoreException(Exception):

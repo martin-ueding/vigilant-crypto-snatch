@@ -1,11 +1,10 @@
 import datetime
 from typing import Tuple
 
-from vigilant_crypto_snatch import core
-from vigilant_crypto_snatch import datastorage
-
 from . import BuyTrigger
 from . import make_buy_trigger
+from .. import core
+from .. import datastorage
 from ..historical.mock import MockHistorical
 from ..marketplace.mock import MockMarketplace
 
