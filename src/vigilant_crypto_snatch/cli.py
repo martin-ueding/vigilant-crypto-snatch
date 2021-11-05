@@ -61,3 +61,17 @@ def evaluate() -> None:
     from . import streamlit_ui
 
     streamlit_ui.main()
+
+
+@main.command()
+@click.option(
+    "--marketplace",
+    type=click.Choice(["bitstamp", "kraken"]),
+    default="kraken",
+    show_default=True,
+    help="Marketplace to place orders on.",
+)
+def test_drive(marketplace: str) -> None:
+    from . import testdrive
+
+    testdrive.main(marketplace)
