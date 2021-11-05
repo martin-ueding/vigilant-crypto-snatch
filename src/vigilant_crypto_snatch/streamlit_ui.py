@@ -12,8 +12,8 @@ from vigilant_crypto_snatch import configuration
 from vigilant_crypto_snatch import datastorage
 from vigilant_crypto_snatch import evaluation
 from vigilant_crypto_snatch import historical
-from vigilant_crypto_snatch import migrations
 from vigilant_crypto_snatch import triggers
+from vigilant_crypto_snatch.configuration import migrations
 
 
 def get_currency_pairs(api_key: str) -> list:

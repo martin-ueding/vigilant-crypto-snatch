@@ -1,10 +1,11 @@
 import datetime
 
+from vigilant_crypto_snatch.configuration import migrations
+
 from .. import configuration
 from .. import datastorage
 from .. import logger
 from .. import marketplace
-from .. import migrations
 from .. import telegram
 from .. import triggers
 from ..historical import concrete
