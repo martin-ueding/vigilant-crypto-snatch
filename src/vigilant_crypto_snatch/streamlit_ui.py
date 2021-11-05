@@ -333,9 +333,11 @@ def ui():
     )
     available_coins = list({c for c, f in available_pairs if f == fiat})
     available_coins.sort()
-    coin = st.sidebar.selectbox(
-        "Coin", available_coins, index=available_coins.index("BTC")
-    )
+    if "BTC" in available_coins:
+        index = available_coins.index("BTC")
+    else:
+        index = 0
+    coin = st.sidebar.selectbox("Coin", available_coins, index=index)
 
     data = historical.get_hourly_data(coin, fiat, api_key)
     data = evaluation.make_dataframe_from_json(data)
