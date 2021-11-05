@@ -58,16 +58,6 @@ def trade_to_alchemy_trade(trade: core.Trade) -> AlchemyTrade:
 
 
 class SqlAlchemyDatastore(Datastore):
-    def add_price(self, price: core.Price) -> None:
-        alchemy_price = price_to_alchemy_price(price)
-        self.session.add(alchemy_price)
-        self.session.commit()
-
-    def add_trade(self, trade: core.Trade) -> None:
-        alchemy_trade = trade_to_alchemy_trade(trade)
-        self.session.add(alchemy_trade)
-        self.session.commit()
-
     def __init__(self, db_path: str):
         if db_path != "":
             if not os.path.isdir(os.path.dirname(db_path)):
@@ -79,6 +69,16 @@ class SqlAlchemyDatastore(Datastore):
         Base.metadata.create_all(engine)
         Session = sqlalchemy.orm.sessionmaker(bind=engine)
         self.session = Session()  # type: ignore
+
+    def add_price(self, price: core.Price) -> None:
+        alchemy_price = price_to_alchemy_price(price)
+        self.session.add(alchemy_price)
+        self.session.commit()
+
+    def add_trade(self, trade: core.Trade) -> None:
+        alchemy_trade = trade_to_alchemy_trade(trade)
+        self.session.add(alchemy_trade)
+        self.session.commit()
 
     def get_price_around(
         self, then: datetime.datetime, tolerance: datetime.timedelta
