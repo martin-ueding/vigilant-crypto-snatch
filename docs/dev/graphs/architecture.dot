@@ -171,14 +171,12 @@ subgraph cluster_marketplace {
 }
 
 subgraph cluster_configuration {
-label = "configuration"
-fillcolor = gray90
-style=filled
-"parse_trigger_spec()" [shape=note]
-"DropTriggeredDelegate"
-"FixedVolumeFiatDelegate"
-"VolumeFiatDelegate"
-"TriggeredDelegate"
+    label = "configuration"
+    fillcolor = gray90
+    style=filled
+    "parse_trigger_spec()" [shape=note]
+    "migrations" [shape=component]
+    "configuration" [shape=component]
 }
 
 
@@ -193,9 +191,7 @@ node [shape=box]
 {
 node [shape=component, fillcolor=gray80, style=filled]
 "streamlit_ui"
-"configuration"
 "cli"
-"migrations"
 "testdrive"
 "watchloop"
 }
