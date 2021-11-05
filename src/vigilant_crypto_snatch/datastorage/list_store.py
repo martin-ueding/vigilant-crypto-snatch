@@ -29,7 +29,7 @@ class ListDatastore(interface.Datastore):
             if (
                 price.coin == coin
                 and price.fiat == fiat
-                and then - tolerance < price.timestamp < then
+                and then - tolerance <= price.timestamp <= then
             ):
                 return price
         return None

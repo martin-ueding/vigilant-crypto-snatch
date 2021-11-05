@@ -74,7 +74,7 @@ def trade_to_alchemy_trade(trade: core.Trade) -> AlchemyTrade:
 
 
 class SqlAlchemyDatastore(Datastore):
-    def __init__(self, db_path: str):
+    def __init__(self, db_path: str = ""):
         if db_path != "":
             if not os.path.isdir(os.path.dirname(db_path)):
                 os.makedirs(os.path.dirname(db_path))
@@ -124,13 +124,13 @@ class SqlAlchemyDatastore(Datastore):
             q = (
                 self.session.query(AlchemyPrice)
                 .filter(
-                    AlchemyPrice.timestamp < then,
+                    AlchemyPrice.timestamp <= then,
                     AlchemyPrice.coin == coin,
                     AlchemyPrice.fiat == fiat,
                 )
                 .order_by(AlchemyPrice.timestamp.desc())[0]
             )
-            if q.timestamp > then - tolerance:
+            if q.timestamp >= then - tolerance:
                 logger.debug(
                     f"Found historical price for {then} in database: {q.last} {fiat}/{coin}."
                 )
