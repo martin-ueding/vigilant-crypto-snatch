@@ -10,7 +10,6 @@ node [style=filled, fillcolor=white, shape=box]
     "bitstamp"
     "krakenex"
     "sqlalchemy"
-    "Telegram"
     "requests"
     "appdirs"
     "streamlit"
@@ -65,6 +64,17 @@ subgraph cluster_triggers {
         "RatioVolumeFiatDelegate"
         "FixedVolumeFiatDelegate"
     }
+}
+
+subgraph cluster_telegram {
+    label = "telegram"
+    fillcolor = gray80
+    style=filled
+    
+    "TelegramLogger"
+    "TelegramSender"
+    "TelegramBotException"
+    "add_telegram_logger()"
 }
 
 subgraph cluster_core {
@@ -171,14 +181,12 @@ subgraph cluster_marketplace {
 }
 
 subgraph cluster_configuration {
-label = "configuration"
-fillcolor = gray90
-style=filled
-"parse_trigger_spec()" [shape=note]
-"DropTriggeredDelegate"
-"FixedVolumeFiatDelegate"
-"VolumeFiatDelegate"
-"TriggeredDelegate"
+    label = "configuration"
+    fillcolor = gray90
+    style=filled
+    "parse_trigger_spec()" [shape=note]
+    "migrations" [shape=component]
+    "configuration" [shape=component]
 }
 
 
@@ -193,9 +201,7 @@ node [shape=box]
 {
 node [shape=component, fillcolor=gray80, style=filled]
 "streamlit_ui"
-"configuration"
 "cli"
-"migrations"
 "testdrive"
 "watchloop"
 }
@@ -248,7 +254,6 @@ node [shape=component, fillcolor=gray80, style=filled]
 "make_buy_trigger()" -> "RatioVolumeFiatDelegate"
 "make_buy_trigger()" -> "TrueTriggeredDelegate"
 "make_marketplace()" -> "BitstampMarketplace"
-"make_marketplace()" -> "configuration"
 "make_marketplace()" -> "KrakenexMarketplace"
 "make_triggers()" -> "make_buy_trigger()"
 "Marketplace" -> "Price"
@@ -271,11 +276,8 @@ node [shape=component, fillcolor=gray80, style=filled]
 "streamlit_ui" -> "requests"
 "streamlit_ui" -> "SimulationMarketplace"
 "streamlit_ui" -> "streamlit"
-"telegram.add_telegram_logger()" -> "configuration"
-"telegram.add_telegram_logger()" -> "TelegramLogger"
-"telegram.add_telegram_logger()" -> "TelegramSender"
-"TelegramLogger" -> "logging.logger" [arrowhead=onormal]
-"TelegramSender" -> "Telegram"
+"add_telegram_logger()" -> "TelegramLogger"
+"add_telegram_logger()" -> "TelegramSender"
 "TelegramSender" -> "TelegramBotException"
 "TriggerLoop" -> "BuyError"
 "TriggerLoop" -> "TelegramSender"
@@ -290,7 +292,7 @@ node [shape=component, fillcolor=gray80, style=filled]
 "watchloop" -> "Marketplace"
 "watchloop" -> "MarketSource"
 "watchloop" -> "migrations"
-"watchloop" -> "telegram.add_telegram_logger()"
+"watchloop" -> "add_telegram_logger()"
 "watchloop" -> "TriggerLoop"
 "watchloop" -> "BuyError"
 "watchloop" -> "requests"
@@ -298,6 +300,5 @@ node [shape=component, fillcolor=gray80, style=filled]
 "watchloop" -> "Trigger"
 "make_datastore()" -> "SqlAlchemyDatastore"
 "make_datastore()" -> "Datastore"
-"make_datastore()" -> "configuration"
 
 } 
