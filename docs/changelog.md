@@ -4,6 +4,10 @@ This is a list of changes, from new to older.
 
 ## 4.0 Series
 
+### Version 4.4.1
+
+- More refactoring. Also update the versions of various dependencies.
+
 ### Version 4.4.0
 
 - Major architectural change, without changes to the user.

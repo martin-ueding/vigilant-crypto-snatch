@@ -12,13 +12,13 @@ repos:
         files: '.*\.py'
       - id: mypy
         name: mypy
-        entry: poetry run mypy -p src.vigilant_crypto_snatch
+        entry: poetry run mypy -p vigilant_crypto_snatch
         language: system
         files: '.*\.py'
         pass_filenames: false
       - id: pytest
         name: pytest
-        entry: poetry run pytest -vv src
+        entry: poetry run pytest -vv
         pass_filenames: false
         language: system
         files: '.*\.py'
