@@ -8,6 +8,7 @@ import pandas as pd
 import requests
 import streamlit as st
 import streamlit.cli as st_cli
+
 from vigilant_crypto_snatch import configuration
 from vigilant_crypto_snatch import datastorage
 from vigilant_crypto_snatch import evaluation
