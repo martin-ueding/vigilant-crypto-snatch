@@ -7,4 +7,4 @@ h.setFormatter(logging.Formatter("%(name)s %(levelname)s %(message)s"))
 h.setLevel(logging.INFO)
 logger.addHandler(h)
 
-__version__ = "4.4.0"
+__version__ = "4.4.3"

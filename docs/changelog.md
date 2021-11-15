@@ -4,6 +4,10 @@ This is a list of changes, from new to older.
 
 ## 4.0 Series
 
+### Version 4.4.3
+
+- I've accidentially deleted the source code. This should be fixed now.
+
 ### Version 4.4.2
 
 - Streamlit doesn't easily work on the Raspberry Pi due to issues with py-arrow and the ARM CPU. I have therefore reverted these dependencies to be an extra again.
