@@ -5,6 +5,7 @@ set -u
 set -x
 
 poetry run pytest
+poetry run vigilant-crypto-snatch test-drive
 git push
 git push --tags
 poetry run mkdocs gh-deploy
