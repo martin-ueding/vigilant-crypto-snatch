@@ -9,9 +9,8 @@ import requests.exceptions
 from . import datastorage
 from . import logger
 from . import marketplace
-from . import telegram
 from . import triggers
-from .telegram.sender import telegram_sender
+from .telegram.sender import get_sender
 
 
 class TriggerLoop(object):
@@ -32,13 +31,13 @@ class TriggerLoop(object):
             while True:
                 self.loop_body()
                 if self.one_shot:
-                    if telegram_sender is not None:
-                        telegram_sender.shutdown()
+                    if get_sender() is not None:
+                        get_sender().shutdown()
                     break
         except KeyboardInterrupt:
             logger.info("User interrupted, shutting down.")
-            if telegram_sender is not None:
-                telegram_sender.shutdown()
+            if get_sender() is not None:
+                get_sender().shutdown()
 
     def loop_body(self) -> None:
         for trigger in self.active_triggers:

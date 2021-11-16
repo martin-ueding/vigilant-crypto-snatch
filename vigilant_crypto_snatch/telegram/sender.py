@@ -40,6 +40,7 @@ class TelegramSender(object):
         return self.running or self.has_messages()
 
     def shutdown(self) -> None:
+        logger.debug("Telegram Sender has received shutdown.")
         self.running = False
         with self.cv:
             self.cv.notify()
@@ -90,6 +91,10 @@ def make_telegram_sender(config: dict) -> TelegramSender:
     return TelegramSender(
         config["telegram"]["token"], config["telegram"].get("chat_id", None)
     )
+
+
+def get_sender() -> TelegramSender:
+    return telegram_sender
 
 
 telegram_sender: Optional[TelegramSender] = None
