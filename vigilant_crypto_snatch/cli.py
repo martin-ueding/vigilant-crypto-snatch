@@ -1,8 +1,11 @@
 import click
 import coloredlogs
 
+from . import __version__
+
 
 @click.group()
+@click.version_option(__version__)
 @click.option(
     "--loglevel",
     type=click.Choice(["debug", "info", "warning", "error", "critical"]),

@@ -4,9 +4,14 @@ This is a list of changes, from new to older.
 
 ## 4.0 Series
 
+### Version 4.4.4
+
+- The Telegram sender would not shut down gracefully. I have fixed that now.
+- Add `--version` option.
+
 ### Version 4.4.3
 
-- I've accidentially deleted the source code. This should be fixed now.
+- I've accidentally deleted the source code. This should be fixed now.
 
 ### Version 4.4.2
 
