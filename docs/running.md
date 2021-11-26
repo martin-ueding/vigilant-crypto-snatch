@@ -70,7 +70,7 @@ We provide a fun experimentation interface which is built with [Streamlit](https
 
 ![](streamlit.png)
 
-This interface can be [used online using the hosted version](https://share.streamlit.io/martin-ueding/vigilant-crypto-snatch/src/vigilant_crypto_snatch/streamlit_ui.py). Alternatively it can be started locally using the `evaluate` subcommand without any additional parameters:
+This interface can be [used online using the hosted version](https://share.streamlit.io/martin-ueding/vigilant-crypto-snatch/vigilant_crypto_snatch/streamlit_ui.py). Alternatively it can be started locally using the `evaluate` subcommand without any additional parameters:
 
 ```
 vigilant-crypto-snatch evaluate
