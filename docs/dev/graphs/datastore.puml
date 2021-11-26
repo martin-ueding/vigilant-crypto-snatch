@@ -1,0 +1,34 @@
+@startuml
+
+allowmixing
+
+namespace datastorage {
+    component sqlalchemy
+
+interface Datastore {
+    add_price()
+    add_trade()
+    get_price_around()
+    was_triggered_since()
+    get_all_prices()
+    get_all_trades()
+    clean_old()
+}
+class ListStore implements Datastore
+class SqlAlchemyStore implements Datastore
+
+core.Price <-- Datastore
+core.Trade <-- Datastore
+
+class AlchemyTrade
+class AlchemyPrice
+
+SqlAlchemyStore --> AlchemyTrade
+SqlAlchemyStore --> AlchemyPrice
+
+AlchemyTrade --> sqlalchemy
+
+
+}
+
+@enduml

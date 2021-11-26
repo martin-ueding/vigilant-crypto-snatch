@@ -1,0 +1,55 @@
+@startuml
+
+allowmixing
+
+!if ($standalone)
+interface marketplace.Marketplace
+interface datastorage.Datastore
+interface historical.HistoricalSource
+!endif
+
+namespace triggers {
+
+interface Trigger {
+    get_name()
+    fire()
+    has_cooled_off()
+    is_triggered()
+}
+
+datastorage.Datastore <-- BuyTrigger
+marketplace.Marketplace <-- BuyTrigger
+historical.HistoricalSource <-- BuyTrigger
+
+interface TriggeredDelegate {
+    is_triggered()
+}
+Trigger --> TriggeredDelegate
+
+interface VolumeFiatDelegate {
+    get_volume_fiat()
+}
+Trigger --> VolumeFiatDelegate
+
+class FixedVolumeFiatDelegate implements VolumeFiatDelegate
+class RatioVolumeFiatDelegate implements VolumeFiatDelegate
+
+class DropTriggeredDelegate implements TriggeredDelegate
+class TrueTriggeredDelegate implements TriggeredDelegate
+
+class FailureTimeout
+BuyTrigger --> FailureTimeout
+
+class BuyTrigger implements Trigger
+
+class CheckinTrigger implements Trigger
+class DatabaseCleaningTrigger implements Trigger
+
+datastorage.Datastore <-- DatabaseCleaningTrigger
+
+marketplace.Marketplace <-- RatioVolumeFiatDelegate
+
+
+}
+
+@enduml

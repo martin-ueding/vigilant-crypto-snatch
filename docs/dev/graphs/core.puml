@@ -1,13 +1,15 @@
 @startuml
 
-class core.Price {
+namespace core {
+
+class Price {
     timestamp: datetime.datetime
     last: float
     coin: str
     fiat: str
 }
 
-class core.Trade {
+class Trade {
     timestamp: datetime.datetime
     trigger_name: str
     volume_coin: float
@@ -16,7 +18,7 @@ class core.Trade {
     fiat: str
 }
 
-class core.TriggerSpec {
+class TriggerSpec {
     name: Optional[str]
     coin: str
     fiat: str
@@ -28,11 +30,6 @@ class core.TriggerSpec {
     start: Optional[datetime.datetime]
 }
 
-class datastore.Datastore
-class datastore.ListStore
-class datastore.SqlAlchemyStore
-
-datastore.Datastore <|-- datastore.ListStore
-datastore.Datastore <|-- datastore.SqlAlchemyStore
+}
 
 @enduml

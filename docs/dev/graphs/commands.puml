@@ -1,0 +1,25 @@
+@startuml
+
+allowmixing
+
+!if ($standalone)
+interface marketplace.Marketplace
+interface datastorage.Datastore
+!endif
+
+namespace commands {
+
+usecase watch
+
+marketplace.Marketplace <-- watch
+datastorage.Datastore <-- watch
+configuration.configuration <-- watch
+historical.DatabaseHistoricalSource <-- watch
+historical.CryptoCompareHistoricalSource <-- watch
+historical.MarketSource <-- watch
+historical.CachingHistoricalSource <-- watch
+TriggerLoop <-- watch
+
+}
+
+@enduml

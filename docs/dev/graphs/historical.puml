@@ -1,0 +1,34 @@
+@startuml
+
+allowmixing
+
+!if ($standalone)
+interface datastorage.Datastore
+interface marketplace.Marketplace
+!endif
+
+namespace historical {
+
+interface HistoricalSource {
+    get_price()
+}
+
+core.Price <-- HistoricalSource
+
+class HistoricalError
+
+HistoricalSource -> HistoricalError
+
+component requests
+CryptoCompareHistoricalSource --> requests
+
+class CryptoCompareHistoricalSource implements HistoricalSource
+class DatabaseHistoricalSource implements HistoricalSource
+datastorage.Datastore <-- DatabaseHistoricalSource
+
+class MarketSource implements HistoricalSource
+marketplace.Marketplace <-- MarketSource
+class CachingHistoricalSource implements HistoricalSource
+}
+
+@enduml
