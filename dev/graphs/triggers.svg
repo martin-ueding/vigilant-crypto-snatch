@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" contentScriptType="application/ecmascript" contentStyleType="text/css" height="500px" preserveAspectRatio="none" style="width:1401px;height:500px;background:#FFFFFF;" version="1.1" viewBox="0 0 1401 500" width="1401px" zoomAndPan="magnify"><defs><filter height="300%" id="f1ea27d8h2g0o7" width="300%" x="-1" y="-1"><feGaussianBlur result="blurOut" stdDeviation="2.0"/><feColorMatrix in="blurOut" result="blurOut2" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 .4 0"/><feOffset dx="4.0" dy="4.0" in="blurOut2" result="blurOut3"/><feBlend in="SourceGraphic" in2="blurOut3" mode="normal"/></filter></defs><g><!--MD5=[d4330e39c0bf177a52e24a65d7200b78]
+cluster marketplace--><polygon fill="#FFFFFF" filter="url(#f1ea27d8h2g0o7)" points="1246,31.5,1349,31.5,1356,53.7969,1384,53.7969,1384,130.5,1246,130.5,1246,31.5" style="stroke:#000000;stroke-width:1.5;"/><line style="stroke:#000000;stroke-width:1.5;" x1="1246" x2="1356" y1="53.7969" y2="53.7969"/><text fill="#000000" font-family="sans-serif" font-size="14" font-weight="bold" lengthAdjust="spacing" textLength="97" x="1250" y="46.4951">marketplace</text><!--MD5=[3a12f334ad339c3f929352d17702c725]
+cluster datastorage--><polygon fill="#FFFFFF" filter="url(#f1ea27d8h2g0o7)" points="914,31.5,1015,31.5,1022,53.7969,1036,53.7969,1036,130.5,914,130.5,914,31.5" style="stroke:#000000;stroke-width:1.5;"/><line style="stroke:#000000;stroke-width:1.5;" x1="914" x2="1022" y1="53.7969" y2="53.7969"/><text fill="#000000" font-family="sans-serif" font-size="14" font-weight="bold" lengthAdjust="spacing" textLength="95" x="918" y="46.4951">datastorage</text><!--MD5=[3432f98d5359c989e82dcf30fd9f5b3c]
+cluster historical--><polygon fill="#FFFFFF" filter="url(#f1ea27d8h2g0o7)" points="1060,31.5,1138,31.5,1145,53.7969,1222,53.7969,1222,130.5,1060,130.5,1060,31.5" style="stroke:#000000;stroke-width:1.5;"/><line style="stroke:#000000;stroke-width:1.5;" x1="1060" x2="1145" y1="53.7969" y2="53.7969"/><text fill="#000000" font-family="sans-serif" font-size="14" font-weight="bold" lengthAdjust="spacing" textLength="72" x="1064" y="46.4951">historical</text><!--MD5=[46d8b77e367c80f16bb0e7f2e6ffd342]
+cluster triggers--><polygon fill="#FFFFFF" filter="url(#f1ea27d8h2g0o7)" points="16,6,85,6,92,28.2969,890,28.2969,890,493,16,493,16,6" style="stroke:#000000;stroke-width:1.5;"/><line style="stroke:#000000;stroke-width:1.5;" x1="16" x2="92" y1="28.2969" y2="28.2969"/><text fill="#000000" font-family="sans-serif" font-size="14" font-weight="bold" lengthAdjust="spacing" textLength="63" x="20" y="20.9951">triggers</text><!--MD5=[065dc3da9c284527079846358774397a]
+class marketplace.Marketplace--><rect codeLine="5" fill="#FEFECE" filter="url(#f1ea27d8h2g0o7)" height="48" id="marketplace.Marketplace" style="stroke:#A80036;stroke-width:1.5;" width="105" x="1262.5" y="66.5"/><ellipse cx="1277.5" cy="82.5" fill="#B4A7E5" rx="11" ry="11" style="stroke:#A80036;stroke-width:1.0;"/><path d="M1273.4219,78.2656 L1273.4219,76.1094 L1280.8125,76.1094 L1280.8125,78.2656 L1278.3438,78.2656 L1278.3438,86.3438 L1280.8125,86.3438 L1280.8125,88.5 L1273.4219,88.5 L1273.4219,86.3438 L1275.8906,86.3438 L1275.8906,78.2656 L1273.4219,78.2656 Z " fill="#000000"/><text fill="#000000" font-family="sans-serif" font-size="12" font-style="italic" lengthAdjust="spacing" textLength="73" x="1291.5" y="86.6543">Marketplace</text><line style="stroke:#A80036;stroke-width:1.5;" x1="1263.5" x2="1366.5" y1="98.5" y2="98.5"/><line style="stroke:#A80036;stroke-width:1.5;" x1="1263.5" x2="1366.5" y1="106.5" y2="106.5"/><!--MD5=[8517a981d95b6e55c7376ba6ab15c18f]
+class datastorage.Datastore--><rect codeLine="6" fill="#FEFECE" filter="url(#f1ea27d8h2g0o7)" height="48" id="datastorage.Datastore" style="stroke:#A80036;stroke-width:1.5;" width="90" x="930" y="66.5"/><ellipse cx="945" cy="82.5" fill="#B4A7E5" rx="11" ry="11" style="stroke:#A80036;stroke-width:1.0;"/><path d="M940.9219,78.2656 L940.9219,76.1094 L948.3125,76.1094 L948.3125,78.2656 L945.8438,78.2656 L945.8438,86.3438 L948.3125,86.3438 L948.3125,88.5 L940.9219,88.5 L940.9219,86.3438 L943.3906,86.3438 L943.3906,78.2656 L940.9219,78.2656 Z " fill="#000000"/><text fill="#000000" font-family="sans-serif" font-size="12" font-style="italic" lengthAdjust="spacing" textLength="58" x="959" y="86.6543">Datastore</text><line style="stroke:#A80036;stroke-width:1.5;" x1="931" x2="1019" y1="98.5" y2="98.5"/><line style="stroke:#A80036;stroke-width:1.5;" x1="931" x2="1019" y1="106.5" y2="106.5"/><!--MD5=[58efee17b1f40170c11d46c3e3028c9a]
+class historical.HistoricalSource--><rect codeLine="7" fill="#FEFECE" filter="url(#f1ea27d8h2g0o7)" height="48" id="historical.HistoricalSource" style="stroke:#A80036;stroke-width:1.5;" width="129" x="1076.5" y="66.5"/><ellipse cx="1091.5" cy="82.5" fill="#B4A7E5" rx="11" ry="11" style="stroke:#A80036;stroke-width:1.0;"/><path d="M1087.4219,78.2656 L1087.4219,76.1094 L1094.8125,76.1094 L1094.8125,78.2656 L1092.3438,78.2656 L1092.3438,86.3438 L1094.8125,86.3438 L1094.8125,88.5 L1087.4219,88.5 L1087.4219,86.3438 L1089.8906,86.3438 L1089.8906,78.2656 L1087.4219,78.2656 Z " fill="#000000"/><text fill="#000000" font-family="sans-serif" font-size="12" font-style="italic" lengthAdjust="spacing" textLength="97" x="1105.5" y="86.6543">HistoricalSource</text><line style="stroke:#A80036;stroke-width:1.5;" x1="1077.5" x2="1204.5" y1="98.5" y2="98.5"/><line style="stroke:#A80036;stroke-width:1.5;" x1="1077.5" x2="1204.5" y1="106.5" y2="106.5"/><!--MD5=[67e5731679d9702fccb1e2cb16fcfe2d]
+class triggers.Trigger--><rect codeLine="12" fill="#FEFECE" filter="url(#f1ea27d8h2g0o7)" height="99.2188" id="triggers.Trigger" style="stroke:#A80036;stroke-width:1.5;" width="105" x="592.5" y="41"/><ellipse cx="621" cy="57" fill="#B4A7E5" rx="11" ry="11" style="stroke:#A80036;stroke-width:1.0;"/><path d="M616.9219,52.7656 L616.9219,50.6094 L624.3125,50.6094 L624.3125,52.7656 L621.8438,52.7656 L621.8438,60.8438 L624.3125,60.8438 L624.3125,63 L616.9219,63 L616.9219,60.8438 L619.3906,60.8438 L619.3906,52.7656 L616.9219,52.7656 Z " fill="#000000"/><text fill="#000000" font-family="sans-serif" font-size="12" font-style="italic" lengthAdjust="spacing" textLength="43" x="638" y="61.1543">Trigger</text><line style="stroke:#A80036;stroke-width:1.5;" x1="593.5" x2="696.5" y1="73" y2="73"/><line style="stroke:#A80036;stroke-width:1.5;" x1="593.5" x2="696.5" y1="81" y2="81"/><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacing" textLength="64" x="598.5" y="95.2104">get_name()</text><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacing" textLength="27" x="598.5" y="108.0151">fire()</text><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacing" textLength="93" x="598.5" y="120.8198">has_cooled_off()</text><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacing" textLength="76" x="598.5" y="133.6245">is_triggered()</text><!--MD5=[4ac843e9712a980cc164291831f7dd49]
+class triggers.BuyTrigger--><rect codeLine="19" fill="#FEFECE" filter="url(#f1ea27d8h2g0o7)" height="48" id="triggers.BuyTrigger" style="stroke:#A80036;stroke-width:1.5;" width="98" x="776" y="200"/><ellipse cx="791" cy="216" fill="#ADD1B2" rx="11" ry="11" style="stroke:#A80036;stroke-width:1.0;"/><path d="M793.9688,221.6406 Q793.3906,221.9375 792.75,222.0781 Q792.1094,222.2344 791.4063,222.2344 Q788.9063,222.2344 787.5781,220.5938 Q786.2656,218.9375 786.2656,215.8125 Q786.2656,212.6875 787.5781,211.0313 Q788.9063,209.375 791.4063,209.375 Q792.1094,209.375 792.75,209.5313 Q793.4063,209.6875 793.9688,209.9844 L793.9688,212.7031 Q793.3438,212.125 792.75,211.8594 Q792.1563,211.5781 791.5313,211.5781 Q790.1875,211.5781 789.5,212.6563 Q788.8125,213.7188 788.8125,215.8125 Q788.8125,217.9063 789.5,218.9844 Q790.1875,220.0469 791.5313,220.0469 Q792.1563,220.0469 792.75,219.7813 Q793.3438,219.5 793.9688,218.9219 L793.9688,221.6406 Z " fill="#000000"/><text fill="#000000" font-family="sans-serif" font-size="12" lengthAdjust="spacing" textLength="66" x="805" y="220.1543">BuyTrigger</text><line style="stroke:#A80036;stroke-width:1.5;" x1="777" x2="873" y1="232" y2="232"/><line style="stroke:#A80036;stroke-width:1.5;" x1="777" x2="873" y1="240" y2="240"/><!--MD5=[dd9481e499a6d8af493fe7163f299284]
+class triggers.TriggeredDelegate--><rect codeLine="25" fill="#FEFECE" filter="url(#f1ea27d8h2g0o7)" height="60.8047" id="triggers.TriggeredDelegate" style="stroke:#A80036;stroke-width:1.5;" width="143" x="394.5" y="308"/><ellipse cx="409.5" cy="324" fill="#B4A7E5" rx="11" ry="11" style="stroke:#A80036;stroke-width:1.0;"/><path d="M405.4219,319.7656 L405.4219,317.6094 L412.8125,317.6094 L412.8125,319.7656 L410.3438,319.7656 L410.3438,327.8438 L412.8125,327.8438 L412.8125,330 L405.4219,330 L405.4219,327.8438 L407.8906,327.8438 L407.8906,319.7656 L405.4219,319.7656 Z " fill="#000000"/><text fill="#000000" font-family="sans-serif" font-size="12" font-style="italic" lengthAdjust="spacing" textLength="111" x="423.5" y="328.1543">TriggeredDelegate</text><line style="stroke:#A80036;stroke-width:1.5;" x1="395.5" x2="536.5" y1="340" y2="340"/><line style="stroke:#A80036;stroke-width:1.5;" x1="395.5" x2="536.5" y1="348" y2="348"/><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacing" textLength="76" x="400.5" y="362.2104">is_triggered()</text><!--MD5=[198dfad344f4bd10e61868cbee1e68c3]
+class triggers.VolumeFiatDelegate--><rect codeLine="30" fill="#FEFECE" filter="url(#f1ea27d8h2g0o7)" height="60.8047" id="triggers.VolumeFiatDelegate" style="stroke:#A80036;stroke-width:1.5;" width="151" x="703.5" y="308"/><ellipse cx="718.5" cy="324" fill="#B4A7E5" rx="11" ry="11" style="stroke:#A80036;stroke-width:1.0;"/><path d="M714.4219,319.7656 L714.4219,317.6094 L721.8125,317.6094 L721.8125,319.7656 L719.3438,319.7656 L719.3438,327.8438 L721.8125,327.8438 L721.8125,330 L714.4219,330 L714.4219,327.8438 L716.8906,327.8438 L716.8906,319.7656 L714.4219,319.7656 Z " fill="#000000"/><text fill="#000000" font-family="sans-serif" font-size="12" font-style="italic" lengthAdjust="spacing" textLength="119" x="732.5" y="328.1543">VolumeFiatDelegate</text><line style="stroke:#A80036;stroke-width:1.5;" x1="704.5" x2="853.5" y1="340" y2="340"/><line style="stroke:#A80036;stroke-width:1.5;" x1="704.5" x2="853.5" y1="348" y2="348"/><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacing" textLength="97" x="709.5" y="362.2104">get_volume_fiat()</text><!--MD5=[261f33e917e2c31f975f6021c4f92eb1]
+class triggers.FixedVolumeFiatDelegate--><rect codeLine="35" fill="#FEFECE" filter="url(#f1ea27d8h2g0o7)" height="48" id="triggers.FixedVolumeFiatDelegate" style="stroke:#A80036;stroke-width:1.5;" width="190" x="459" y="429"/><ellipse cx="474" cy="445" fill="#ADD1B2" rx="11" ry="11" style="stroke:#A80036;stroke-width:1.0;"/><path d="M476.9688,450.6406 Q476.3906,450.9375 475.75,451.0781 Q475.1094,451.2344 474.4063,451.2344 Q471.9063,451.2344 470.5781,449.5938 Q469.2656,447.9375 469.2656,444.8125 Q469.2656,441.6875 470.5781,440.0313 Q471.9063,438.375 474.4063,438.375 Q475.1094,438.375 475.75,438.5313 Q476.4063,438.6875 476.9688,438.9844 L476.9688,441.7031 Q476.3438,441.125 475.75,440.8594 Q475.1563,440.5781 474.5313,440.5781 Q473.1875,440.5781 472.5,441.6563 Q471.8125,442.7188 471.8125,444.8125 Q471.8125,446.9063 472.5,447.9844 Q473.1875,449.0469 474.5313,449.0469 Q475.1563,449.0469 475.75,448.7813 Q476.3438,448.5 476.9688,447.9219 L476.9688,450.6406 Z " fill="#000000"/><text fill="#000000" font-family="sans-serif" font-size="12" lengthAdjust="spacing" textLength="158" x="488" y="449.1543">FixedVolumeFiatDelegate</text><line style="stroke:#A80036;stroke-width:1.5;" x1="460" x2="648" y1="461" y2="461"/><line style="stroke:#A80036;stroke-width:1.5;" x1="460" x2="648" y1="469" y2="469"/><!--MD5=[caf76d24cabcd3a63f545a39ea188bac]
+class triggers.RatioVolumeFiatDelegate--><rect codeLine="36" fill="#FEFECE" filter="url(#f1ea27d8h2g0o7)" height="48" id="triggers.RatioVolumeFiatDelegate" style="stroke:#A80036;stroke-width:1.5;" width="190" x="684" y="429"/><ellipse cx="699" cy="445" fill="#ADD1B2" rx="11" ry="11" style="stroke:#A80036;stroke-width:1.0;"/><path d="M701.9688,450.6406 Q701.3906,450.9375 700.75,451.0781 Q700.1094,451.2344 699.4063,451.2344 Q696.9063,451.2344 695.5781,449.5938 Q694.2656,447.9375 694.2656,444.8125 Q694.2656,441.6875 695.5781,440.0313 Q696.9063,438.375 699.4063,438.375 Q700.1094,438.375 700.75,438.5313 Q701.4063,438.6875 701.9688,438.9844 L701.9688,441.7031 Q701.3438,441.125 700.75,440.8594 Q700.1563,440.5781 699.5313,440.5781 Q698.1875,440.5781 697.5,441.6563 Q696.8125,442.7188 696.8125,444.8125 Q696.8125,446.9063 697.5,447.9844 Q698.1875,449.0469 699.5313,449.0469 Q700.1563,449.0469 700.75,448.7813 Q701.3438,448.5 701.9688,447.9219 L701.9688,450.6406 Z " fill="#000000"/><text fill="#000000" font-family="sans-serif" font-size="12" lengthAdjust="spacing" textLength="158" x="713" y="449.1543">RatioVolumeFiatDelegate</text><line style="stroke:#A80036;stroke-width:1.5;" x1="685" x2="873" y1="461" y2="461"/><line style="stroke:#A80036;stroke-width:1.5;" x1="685" x2="873" y1="469" y2="469"/><!--MD5=[55e76aa8bf0b51b09ae1df3ad3079e4f]
+class triggers.DropTriggeredDelegate--><rect codeLine="38" fill="#FEFECE" filter="url(#f1ea27d8h2g0o7)" height="48" id="triggers.DropTriggeredDelegate" style="stroke:#A80036;stroke-width:1.5;" width="179" x="32.5" y="429"/><ellipse cx="47.5" cy="445" fill="#ADD1B2" rx="11" ry="11" style="stroke:#A80036;stroke-width:1.0;"/><path d="M50.4688,450.6406 Q49.8906,450.9375 49.25,451.0781 Q48.6094,451.2344 47.9063,451.2344 Q45.4063,451.2344 44.0781,449.5938 Q42.7656,447.9375 42.7656,444.8125 Q42.7656,441.6875 44.0781,440.0313 Q45.4063,438.375 47.9063,438.375 Q48.6094,438.375 49.25,438.5313 Q49.9063,438.6875 50.4688,438.9844 L50.4688,441.7031 Q49.8438,441.125 49.25,440.8594 Q48.6563,440.5781 48.0313,440.5781 Q46.6875,440.5781 46,441.6563 Q45.3125,442.7188 45.3125,444.8125 Q45.3125,446.9063 46,447.9844 Q46.6875,449.0469 48.0313,449.0469 Q48.6563,449.0469 49.25,448.7813 Q49.8438,448.5 50.4688,447.9219 L50.4688,450.6406 Z " fill="#000000"/><text fill="#000000" font-family="sans-serif" font-size="12" lengthAdjust="spacing" textLength="147" x="61.5" y="449.1543">DropTriggeredDelegate</text><line style="stroke:#A80036;stroke-width:1.5;" x1="33.5" x2="210.5" y1="461" y2="461"/><line style="stroke:#A80036;stroke-width:1.5;" x1="33.5" x2="210.5" y1="469" y2="469"/><!--MD5=[9ca618c9d0c6de5df66c6856bbffc72c]
+class triggers.TrueTriggeredDelegate--><rect codeLine="39" fill="#FEFECE" filter="url(#f1ea27d8h2g0o7)" height="48" id="triggers.TrueTriggeredDelegate" style="stroke:#A80036;stroke-width:1.5;" width="177" x="246.5" y="429"/><ellipse cx="261.5" cy="445" fill="#ADD1B2" rx="11" ry="11" style="stroke:#A80036;stroke-width:1.0;"/><path d="M264.4688,450.6406 Q263.8906,450.9375 263.25,451.0781 Q262.6094,451.2344 261.9063,451.2344 Q259.4063,451.2344 258.0781,449.5938 Q256.7656,447.9375 256.7656,444.8125 Q256.7656,441.6875 258.0781,440.0313 Q259.4063,438.375 261.9063,438.375 Q262.6094,438.375 263.25,438.5313 Q263.9063,438.6875 264.4688,438.9844 L264.4688,441.7031 Q263.8438,441.125 263.25,440.8594 Q262.6563,440.5781 262.0313,440.5781 Q260.6875,440.5781 260,441.6563 Q259.3125,442.7188 259.3125,444.8125 Q259.3125,446.9063 260,447.9844 Q260.6875,449.0469 262.0313,449.0469 Q262.6563,449.0469 263.25,448.7813 Q263.8438,448.5 264.4688,447.9219 L264.4688,450.6406 Z " fill="#000000"/><text fill="#000000" font-family="sans-serif" font-size="12" lengthAdjust="spacing" textLength="145" x="275.5" y="449.1543">TrueTriggeredDelegate</text><line style="stroke:#A80036;stroke-width:1.5;" x1="247.5" x2="422.5" y1="461" y2="461"/><line style="stroke:#A80036;stroke-width:1.5;" x1="247.5" x2="422.5" y1="469" y2="469"/><!--MD5=[e3b3d43bda50e796ca89ad4963a92eb5]
+class triggers.FailureTimeout--><rect codeLine="41" fill="#FEFECE" filter="url(#f1ea27d8h2g0o7)" height="48" id="triggers.FailureTimeout" style="stroke:#A80036;stroke-width:1.5;" width="124" x="235" y="314.5"/><ellipse cx="250" cy="330.5" fill="#ADD1B2" rx="11" ry="11" style="stroke:#A80036;stroke-width:1.0;"/><path d="M252.9688,336.1406 Q252.3906,336.4375 251.75,336.5781 Q251.1094,336.7344 250.4063,336.7344 Q247.9063,336.7344 246.5781,335.0938 Q245.2656,333.4375 245.2656,330.3125 Q245.2656,327.1875 246.5781,325.5313 Q247.9063,323.875 250.4063,323.875 Q251.1094,323.875 251.75,324.0313 Q252.4063,324.1875 252.9688,324.4844 L252.9688,327.2031 Q252.3438,326.625 251.75,326.3594 Q251.1563,326.0781 250.5313,326.0781 Q249.1875,326.0781 248.5,327.1563 Q247.8125,328.2188 247.8125,330.3125 Q247.8125,332.4063 248.5,333.4844 Q249.1875,334.5469 250.5313,334.5469 Q251.1563,334.5469 251.75,334.2813 Q252.3438,334 252.9688,333.4219 L252.9688,336.1406 Z " fill="#000000"/><text fill="#000000" font-family="sans-serif" font-size="12" lengthAdjust="spacing" textLength="92" x="264" y="334.6543">FailureTimeout</text><line style="stroke:#A80036;stroke-width:1.5;" x1="236" x2="358" y1="346.5" y2="346.5"/><line style="stroke:#A80036;stroke-width:1.5;" x1="236" x2="358" y1="354.5" y2="354.5"/><!--MD5=[623cb3f834b9df798f859f54b7560db1]
+class triggers.CheckinTrigger--><rect codeLine="45" fill="#FEFECE" filter="url(#f1ea27d8h2g0o7)" height="48" id="triggers.CheckinTrigger" style="stroke:#A80036;stroke-width:1.5;" width="125" x="389.5" y="200"/><ellipse cx="404.5" cy="216" fill="#ADD1B2" rx="11" ry="11" style="stroke:#A80036;stroke-width:1.0;"/><path d="M407.4688,221.6406 Q406.8906,221.9375 406.25,222.0781 Q405.6094,222.2344 404.9063,222.2344 Q402.4063,222.2344 401.0781,220.5938 Q399.7656,218.9375 399.7656,215.8125 Q399.7656,212.6875 401.0781,211.0313 Q402.4063,209.375 404.9063,209.375 Q405.6094,209.375 406.25,209.5313 Q406.9063,209.6875 407.4688,209.9844 L407.4688,212.7031 Q406.8438,212.125 406.25,211.8594 Q405.6563,211.5781 405.0313,211.5781 Q403.6875,211.5781 403,212.6563 Q402.3125,213.7188 402.3125,215.8125 Q402.3125,217.9063 403,218.9844 Q403.6875,220.0469 405.0313,220.0469 Q405.6563,220.0469 406.25,219.7813 Q406.8438,219.5 407.4688,218.9219 L407.4688,221.6406 Z " fill="#000000"/><text fill="#000000" font-family="sans-serif" font-size="12" lengthAdjust="spacing" textLength="93" x="418.5" y="220.1543">CheckinTrigger</text><line style="stroke:#A80036;stroke-width:1.5;" x1="390.5" x2="513.5" y1="232" y2="232"/><line style="stroke:#A80036;stroke-width:1.5;" x1="390.5" x2="513.5" y1="240" y2="240"/><!--MD5=[9716889831a367cc9aa0ec8d5684fc33]
+class triggers.DatabaseCleaningTrigger--><rect codeLine="46" fill="#FEFECE" filter="url(#f1ea27d8h2g0o7)" height="48" id="triggers.DatabaseCleaningTrigger" style="stroke:#A80036;stroke-width:1.5;" width="191" x="549.5" y="200"/><ellipse cx="564.5" cy="216" fill="#ADD1B2" rx="11" ry="11" style="stroke:#A80036;stroke-width:1.0;"/><path d="M567.4688,221.6406 Q566.8906,221.9375 566.25,222.0781 Q565.6094,222.2344 564.9063,222.2344 Q562.4063,222.2344 561.0781,220.5938 Q559.7656,218.9375 559.7656,215.8125 Q559.7656,212.6875 561.0781,211.0313 Q562.4063,209.375 564.9063,209.375 Q565.6094,209.375 566.25,209.5313 Q566.9063,209.6875 567.4688,209.9844 L567.4688,212.7031 Q566.8438,212.125 566.25,211.8594 Q565.6563,211.5781 565.0313,211.5781 Q563.6875,211.5781 563,212.6563 Q562.3125,213.7188 562.3125,215.8125 Q562.3125,217.9063 563,218.9844 Q563.6875,220.0469 565.0313,220.0469 Q565.6563,220.0469 566.25,219.7813 Q566.8438,219.5 567.4688,218.9219 L567.4688,221.6406 Z " fill="#000000"/><text fill="#000000" font-family="sans-serif" font-size="12" lengthAdjust="spacing" textLength="159" x="578.5" y="220.1543">DatabaseCleaningTrigger</text><line style="stroke:#A80036;stroke-width:1.5;" x1="550.5" x2="739.5" y1="232" y2="232"/><line style="stroke:#A80036;stroke-width:1.5;" x1="550.5" x2="739.5" y1="240" y2="240"/><!--MD5=[f41a43c1344e5fc0d5a282c79b8520e1]
+reverse link triggers.Trigger to triggers.BuyTrigger--><path d="M713.7,141.69 C741.09,161.7 771.27,183.75 793.29,199.83 " fill="none" id="triggers.Trigger-backto-triggers.BuyTrigger" style="stroke:#A80036;stroke-width:1.0;stroke-dasharray:7.0,7.0;"/><polygon fill="none" points="709.57,147.34,697.55,129.89,717.83,136.03,709.57,147.34" style="stroke:#A80036;stroke-width:1.0;"/><!--MD5=[44184787bbb6225207e0a6f5b2860e07]
+reverse link datastorage.Datastore to triggers.BuyTrigger--><path codeLine="21" d="M944.59,118.16 C917.25,142.13 877.51,176.97 851.46,199.8 " fill="none" id="datastorage.Datastore-backto-triggers.BuyTrigger" style="stroke:#A80036;stroke-width:1.0;"/><polygon fill="#A80036" points="948.53,114.71,939.1283,117.6439,944.7733,118.0096,944.4076,123.6546,948.53,114.71" style="stroke:#A80036;stroke-width:1.0;"/><!--MD5=[b12b6cc7d2de22e54d0729c8b67b4417]
+reverse link marketplace.Marketplace to triggers.BuyTrigger--><path codeLine="22" d="M1271.6,117.28 C1256.33,125.5 1238.78,134 1222,140 C1100.83,183.33 950.35,207.09 874.15,217.14 " fill="none" id="marketplace.Marketplace-backto-triggers.BuyTrigger" style="stroke:#A80036;stroke-width:1.0;"/><polygon fill="#A80036" points="1276.26,114.75,1266.4426,115.5369,1271.8678,117.1392,1270.2654,122.5644,1276.26,114.75" style="stroke:#A80036;stroke-width:1.0;"/><!--MD5=[72fbb86a72fdf1bf47350a2d1c3b75b0]
+reverse link historical.HistoricalSource to triggers.BuyTrigger--><path codeLine="23" d="M1088.02,116.7 C1071.45,124.38 1053.05,132.72 1036,140 C981.16,163.43 917.33,188.2 874.36,204.51 " fill="none" id="historical.HistoricalSource-backto-triggers.BuyTrigger" style="stroke:#A80036;stroke-width:1.0;"/><polygon fill="#A80036" points="1092.65,114.55,1082.8028,114.7329,1088.1194,116.6652,1086.1872,121.9818,1092.65,114.55" style="stroke:#A80036;stroke-width:1.0;"/><!--MD5=[bb5254896304a024ba0d71917e9d65b1]
+link triggers.BuyTrigger to triggers.TriggeredDelegate--><path codeLine="28" d="M775.67,242.14 C769.72,244.15 763.73,246.14 758,248 C685.16,271.66 601.56,297.11 542.53,314.8 " fill="none" id="triggers.BuyTrigger-to-triggers.TriggeredDelegate" style="stroke:#A80036;stroke-width:1.0;"/><polygon fill="#A80036" points="537.61,316.28,547.3771,317.5465,542.4023,314.8537,545.0951,309.8789,537.61,316.28" style="stroke:#A80036;stroke-width:1.0;"/><!--MD5=[1e3dc84ca8033789771a6fa062a92b5b]
+link triggers.BuyTrigger to triggers.VolumeFiatDelegate--><path codeLine="33" d="M815.58,248.04 C809.14,263.79 800.49,284.94 793.22,302.73 " fill="none" id="triggers.BuyTrigger-to-triggers.VolumeFiatDelegate" style="stroke:#A80036;stroke-width:1.0;"/><polygon fill="#A80036" points="791.21,307.65,798.31,300.8244,793.0965,303.0195,790.9013,297.806,791.21,307.65" style="stroke:#A80036;stroke-width:1.0;"/><!--MD5=[982910b2fc161227c8c872fc2bf1fdff]
+reverse link triggers.VolumeFiatDelegate to triggers.FixedVolumeFiatDelegate--><path d="M701.71,378.15 C667.96,395.02 629.51,414.25 600.3,428.85 " fill="none" id="triggers.VolumeFiatDelegate-backto-triggers.FixedVolumeFiatDelegate" style="stroke:#A80036;stroke-width:1.0;stroke-dasharray:7.0,7.0;"/><polygon fill="none" points="698.86,371.74,719.88,369.06,705.13,384.26,698.86,371.74" style="stroke:#A80036;stroke-width:1.0;"/><!--MD5=[aa8eb89a91776665b5bd7c6c0a560e6f]
+reverse link triggers.VolumeFiatDelegate to triggers.RatioVolumeFiatDelegate--><path d="M779,389.11 C779,402.88 779,417.18 779,428.67 " fill="none" id="triggers.VolumeFiatDelegate-backto-triggers.RatioVolumeFiatDelegate" style="stroke:#A80036;stroke-width:1.0;stroke-dasharray:7.0,7.0;"/><polygon fill="none" points="772,389.06,779,369.06,786,389.06,772,389.06" style="stroke:#A80036;stroke-width:1.0;"/><!--MD5=[3d90b7c591c207a24e3fafa25628b849]
+reverse link triggers.TriggeredDelegate to triggers.DropTriggeredDelegate--><path d="M375.2,369.26 C302.89,392.92 239.51,413.63 192.63,428.94 " fill="none" id="triggers.TriggeredDelegate-backto-triggers.DropTriggeredDelegate" style="stroke:#A80036;stroke-width:1.0;stroke-dasharray:7.0,7.0;"/><polygon fill="none" points="373.09,362.58,394.28,363.01,377.45,375.89,373.09,362.58" style="stroke:#A80036;stroke-width:1.0;"/><!--MD5=[ee2b6543ec0cfe89602f5b5e399db819]
+reverse link triggers.TriggeredDelegate to triggers.TrueTriggeredDelegate--><path d="M416.37,382.12 C397.98,397.91 377.82,415.23 362.17,428.67 " fill="none" id="triggers.TriggeredDelegate-backto-triggers.TrueTriggeredDelegate" style="stroke:#A80036;stroke-width:1.0;stroke-dasharray:7.0,7.0;"/><polygon fill="none" points="411.85,376.78,431.58,369.06,420.97,387.4,411.85,376.78" style="stroke:#A80036;stroke-width:1.0;"/><!--MD5=[8fc45a17d566f5e265230e73970bf8d5]
+link triggers.BuyTrigger to triggers.FailureTimeout--><path codeLine="42" d="M775.9,242.95 C769.91,244.81 763.85,246.55 758,248 C591.63,289.32 542.89,264.8 377,308 C371.63,309.4 366.11,311.02 360.61,312.77 " fill="none" id="triggers.BuyTrigger-to-triggers.FailureTimeout" style="stroke:#A80036;stroke-width:1.0;"/><polygon fill="#A80036" points="355.56,314.41,365.3578,315.4118,360.3119,312.8546,362.8691,307.8087,355.56,314.41" style="stroke:#A80036;stroke-width:1.0;"/><!--MD5=[c5c2132b6fc965b774ba11c035074401]
+reverse link triggers.Trigger to triggers.CheckinTrigger--><path d="M575.35,138.96 C544.88,159.71 510.54,183.12 485.84,199.94 " fill="none" id="triggers.Trigger-backto-triggers.CheckinTrigger" style="stroke:#A80036;stroke-width:1.0;stroke-dasharray:7.0,7.0;"/><polygon fill="none" points="571.79,132.91,592.26,127.43,579.68,144.48,571.79,132.91" style="stroke:#A80036;stroke-width:1.0;"/><!--MD5=[c2805841786dc06294fe6da0ec69333d]
+reverse link triggers.Trigger to triggers.DatabaseCleaningTrigger--><path d="M645,160.23 C645,174.58 645,188.75 645,199.98 " fill="none" id="triggers.Trigger-backto-triggers.DatabaseCleaningTrigger" style="stroke:#A80036;stroke-width:1.0;stroke-dasharray:7.0,7.0;"/><polygon fill="none" points="638,160.09,645,140.09,652,160.09,638,160.09" style="stroke:#A80036;stroke-width:1.0;"/><!--MD5=[528946d0c711293faf5d32cce7cac59f]
+reverse link datastorage.Datastore to triggers.DatabaseCleaningTrigger--><path codeLine="48" d="M933.61,117.23 C920,125.11 904.62,133.43 890,140 C836.65,163.99 774.17,185.05 725.65,199.96 " fill="none" id="datastorage.Datastore-backto-triggers.DatabaseCleaningTrigger" style="stroke:#A80036;stroke-width:1.0;"/><polygon fill="#A80036" points="938.15,114.58,928.3627,115.6799,933.8363,117.1082,932.4079,122.5818,938.15,114.58" style="stroke:#A80036;stroke-width:1.0;"/><!--MD5=[7f6360a8cde8745a9d00ca7dbae50562]
+reverse link marketplace.Marketplace to triggers.RatioVolumeFiatDelegate--><path codeLine="50" d="M1276.29,117.53 C1175.98,185 908.76,364.73 813.4,428.86 " fill="none" id="marketplace.Marketplace-backto-triggers.RatioVolumeFiatDelegate" style="stroke:#A80036;stroke-width:1.0;"/><polygon fill="#A80036" points="1280.66,114.6,1270.9594,116.3026,1276.5108,117.39,1275.4234,122.9413,1280.66,114.6" style="stroke:#A80036;stroke-width:1.0;"/><!--MD5=[f6fa92a159cd624a05982efe0d8b9687]
+@startuml
+
+allowmixing
+
+!if ($standalone)
+interface marketplace.Marketplace
+interface datastorage.Datastore
+interface historical.HistoricalSource
+!endif
+
+namespace triggers {
+
+interface Trigger {
+    get_name()
+    fire()
+    has_cooled_off()
+    is_triggered()
+}
+
+class BuyTrigger implements Trigger
+
+datastorage.Datastore <- - BuyTrigger
+marketplace.Marketplace <- - BuyTrigger
+historical.HistoricalSource <- - BuyTrigger
+
+interface TriggeredDelegate {
+    is_triggered()
+}
+BuyTrigger - -> TriggeredDelegate
+
+interface VolumeFiatDelegate {
+    get_volume_fiat()
+}
+BuyTrigger - -> VolumeFiatDelegate
+
+class FixedVolumeFiatDelegate implements VolumeFiatDelegate
+class RatioVolumeFiatDelegate implements VolumeFiatDelegate
+
+class DropTriggeredDelegate implements TriggeredDelegate
+class TrueTriggeredDelegate implements TriggeredDelegate
+
+class FailureTimeout
+BuyTrigger - -> FailureTimeout
+
+
+class CheckinTrigger implements Trigger
+class DatabaseCleaningTrigger implements Trigger
+
+datastorage.Datastore <- - DatabaseCleaningTrigger
+
+marketplace.Marketplace <- - RatioVolumeFiatDelegate
+
+
+}
+
+@enduml
+
+@startuml
+
+allowmixing
+
+interface marketplace.Marketplace
+interface datastorage.Datastore
+interface historical.HistoricalSource
+
+namespace triggers {
+
+interface Trigger {
+    get_name()
+    fire()
+    has_cooled_off()
+    is_triggered()
+}
+
+class BuyTrigger implements Trigger
+
+datastorage.Datastore <- - BuyTrigger
+marketplace.Marketplace <- - BuyTrigger
+historical.HistoricalSource <- - BuyTrigger
+
+interface TriggeredDelegate {
+    is_triggered()
+}
+BuyTrigger - -> TriggeredDelegate
+
+interface VolumeFiatDelegate {
+    get_volume_fiat()
+}
+BuyTrigger - -> VolumeFiatDelegate
+
+class FixedVolumeFiatDelegate implements VolumeFiatDelegate
+class RatioVolumeFiatDelegate implements VolumeFiatDelegate
+
+class DropTriggeredDelegate implements TriggeredDelegate
+class TrueTriggeredDelegate implements TriggeredDelegate
+
+class FailureTimeout
+BuyTrigger - -> FailureTimeout
+
+
+class CheckinTrigger implements Trigger
+class DatabaseCleaningTrigger implements Trigger
+
+datastorage.Datastore <- - DatabaseCleaningTrigger
+
+marketplace.Marketplace <- - RatioVolumeFiatDelegate
+
+
+}
+
+@enduml
+
+PlantUML version 1.2021.14(Fri Nov 12 17:46:50 CET 2021)
+(GPL source distribution)
+Java Runtime: OpenJDK Runtime Environment
+JVM: OpenJDK 64-Bit Server VM
+Default Encoding: UTF-8
+Language: de
+Country: DE
+--></g></svg>

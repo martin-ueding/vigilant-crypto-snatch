@@ -1,0 +1,14 @@
+@startuml
+
+!$standalone = 0
+
+!include commands.puml
+!include configuration.puml
+!include core.puml
+!include datastore.puml
+!include historical.puml
+!include marketplace.puml
+!include telegram.puml
+!include triggers.puml
+
+@enduml

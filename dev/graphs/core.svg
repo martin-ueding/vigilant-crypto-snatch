@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" contentScriptType="application/ecmascript" contentStyleType="text/css" height="412px" preserveAspectRatio="none" style="width:468px;height:412px;background:#FFFFFF;" version="1.1" viewBox="0 0 468 412" width="468px" zoomAndPan="magnify"><defs><filter height="300%" id="f1h7uzyoknrv4u" width="300%" x="-1" y="-1"><feGaussianBlur result="blurOut" stdDeviation="2.0"/><feColorMatrix in="blurOut" result="blurOut2" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 .4 0"/><feOffset dx="4.0" dy="4.0" in="blurOut2" result="blurOut3"/><feBlend in="SourceGraphic" in2="blurOut3" mode="normal"/></filter></defs><g><!--MD5=[01435ace8273dc3cae88e7f376e4d373]
+cluster core--><polygon fill="#FFFFFF" filter="url(#f1h7uzyoknrv4u)" points="16,6,58,6,65,28.2969,451,28.2969,451,405,16,405,16,6" style="stroke:#000000;stroke-width:1.5;"/><line style="stroke:#000000;stroke-width:1.5;" x1="16" x2="65" y1="28.2969" y2="28.2969"/><text fill="#000000" font-family="sans-serif" font-size="14" font-weight="bold" lengthAdjust="spacing" textLength="36" x="20" y="20.9951">core</text><!--MD5=[929807f1eccb93c38cdadbb33fa14cf8]
+class core.Price--><rect codeLine="4" fill="#FEFECE" filter="url(#f1h7uzyoknrv4u)" height="99.2188" id="core.Price" style="stroke:#A80036;stroke-width:1.5;" width="184" x="32" y="54"/><ellipse cx="104.25" cy="70" fill="#ADD1B2" rx="11" ry="11" style="stroke:#A80036;stroke-width:1.0;"/><path d="M107.2188,75.6406 Q106.6406,75.9375 106,76.0781 Q105.3594,76.2344 104.6563,76.2344 Q102.1563,76.2344 100.8281,74.5938 Q99.5156,72.9375 99.5156,69.8125 Q99.5156,66.6875 100.8281,65.0313 Q102.1563,63.375 104.6563,63.375 Q105.3594,63.375 106,63.5313 Q106.6563,63.6875 107.2188,63.9844 L107.2188,66.7031 Q106.5938,66.125 106,65.8594 Q105.4063,65.5781 104.7813,65.5781 Q103.4375,65.5781 102.75,66.6563 Q102.0625,67.7188 102.0625,69.8125 Q102.0625,71.9063 102.75,72.9844 Q103.4375,74.0469 104.7813,74.0469 Q105.4063,74.0469 106,73.7813 Q106.5938,73.5 107.2188,72.9219 L107.2188,75.6406 Z " fill="#000000"/><text fill="#000000" font-family="sans-serif" font-size="12" lengthAdjust="spacing" textLength="31" x="124.75" y="74.1543">Price</text><line style="stroke:#A80036;stroke-width:1.5;" x1="33" x2="215" y1="86" y2="86"/><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacing" textLength="172" x="38" y="100.2104">timestamp: datetime.datetime</text><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacing" textLength="53" x="38" y="113.0151">last: float</text><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacing" textLength="46" x="38" y="125.8198">coin: str</text><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacing" textLength="41" x="38" y="138.6245">fiat: str</text><line style="stroke:#A80036;stroke-width:1.5;" x1="33" x2="215" y1="145.2188" y2="145.2188"/><!--MD5=[a671954594137fb4e68cdef5fd3fc06a]
+class core.Trade--><rect codeLine="11" fill="#FEFECE" filter="url(#f1h7uzyoknrv4u)" height="124.8281" id="core.Trade" style="stroke:#A80036;stroke-width:1.5;" width="184" x="251" y="41"/><ellipse cx="320.75" cy="57" fill="#ADD1B2" rx="11" ry="11" style="stroke:#A80036;stroke-width:1.0;"/><path d="M323.7188,62.6406 Q323.1406,62.9375 322.5,63.0781 Q321.8594,63.2344 321.1563,63.2344 Q318.6563,63.2344 317.3281,61.5938 Q316.0156,59.9375 316.0156,56.8125 Q316.0156,53.6875 317.3281,52.0313 Q318.6563,50.375 321.1563,50.375 Q321.8594,50.375 322.5,50.5313 Q323.1563,50.6875 323.7188,50.9844 L323.7188,53.7031 Q323.0938,53.125 322.5,52.8594 Q321.9063,52.5781 321.2813,52.5781 Q319.9375,52.5781 319.25,53.6563 Q318.5625,54.7188 318.5625,56.8125 Q318.5625,58.9063 319.25,59.9844 Q319.9375,61.0469 321.2813,61.0469 Q321.9063,61.0469 322.5,60.7813 Q323.0938,60.5 323.7188,59.9219 L323.7188,62.6406 Z " fill="#000000"/><text fill="#000000" font-family="sans-serif" font-size="12" lengthAdjust="spacing" textLength="36" x="341.25" y="61.1543">Trade</text><line style="stroke:#A80036;stroke-width:1.5;" x1="252" x2="434" y1="73" y2="73"/><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacing" textLength="172" x="257" y="87.2104">timestamp: datetime.datetime</text><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacing" textLength="99" x="257" y="100.0151">trigger_name: str</text><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacing" textLength="102" x="257" y="112.8198">volume_coin: float</text><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacing" textLength="97" x="257" y="125.6245">volume_fiat: float</text><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacing" textLength="46" x="257" y="138.4292">coin: str</text><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacing" textLength="41" x="257" y="151.2339">fiat: str</text><line style="stroke:#A80036;stroke-width:1.5;" x1="252" x2="434" y1="157.8281" y2="157.8281"/><!--MD5=[63aaf1790c3e9de2248db2720443adcd]
+class core.TriggerSpec--><rect codeLine="20" fill="#FEFECE" filter="url(#f1h7uzyoknrv4u)" height="163.2422" id="core.TriggerSpec" style="stroke:#A80036;stroke-width:1.5;" width="205" x="32.5" y="226"/><ellipse cx="93.25" cy="242" fill="#ADD1B2" rx="11" ry="11" style="stroke:#A80036;stroke-width:1.0;"/><path d="M96.2188,247.6406 Q95.6406,247.9375 95,248.0781 Q94.3594,248.2344 93.6563,248.2344 Q91.1563,248.2344 89.8281,246.5938 Q88.5156,244.9375 88.5156,241.8125 Q88.5156,238.6875 89.8281,237.0313 Q91.1563,235.375 93.6563,235.375 Q94.3594,235.375 95,235.5313 Q95.6563,235.6875 96.2188,235.9844 L96.2188,238.7031 Q95.5938,238.125 95,237.8594 Q94.4063,237.5781 93.7813,237.5781 Q92.4375,237.5781 91.75,238.6563 Q91.0625,239.7188 91.0625,241.8125 Q91.0625,243.9063 91.75,244.9844 Q92.4375,246.0469 93.7813,246.0469 Q94.4063,246.0469 95,245.7813 Q95.5938,245.5 96.2188,244.9219 L96.2188,247.6406 Z " fill="#000000"/><text fill="#000000" font-family="sans-serif" font-size="12" lengthAdjust="spacing" textLength="75" x="113.75" y="246.1543">TriggerSpec</text><line style="stroke:#A80036;stroke-width:1.5;" x1="33.5" x2="236.5" y1="258" y2="258"/><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacing" textLength="110" x="38.5" y="272.2104">name: Optional[str]</text><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacing" textLength="46" x="38.5" y="285.0151">coin: str</text><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacing" textLength="41" x="38.5" y="297.8198">fiat: str</text><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacing" textLength="126" x="38.5" y="310.6245">cooldown_minutes: int</text><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacing" textLength="158" x="38.5" y="323.4292">delay_minutes: Optional[int]</text><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacing" textLength="183" x="38.5" y="336.2339">drop_percentage: Optional[float]</text><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacing" textLength="152" x="38.5" y="349.0386">volume_fiat: Optional[float]</text><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacing" textLength="175" x="38.5" y="361.8433">percentage_fiat: Optional[float]</text><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacing" textLength="193" x="38.5" y="374.6479">start: Optional[datetime.datetime]</text><line style="stroke:#A80036;stroke-width:1.5;" x1="33.5" x2="236.5" y1="381.2422" y2="381.2422"/><!--MD5=[0f985d82fd36182b3f759abfb54d30bf]
+link core.Price to core.Trade--><!--MD5=[395061ba0a17f7a774dec63a6ff792eb]
+link core.Price to core.TriggerSpec--><!--MD5=[5673fb17fa0e8660a236aebf302a9f6c]
+@startuml
+
+namespace core {
+
+class Price {
+    timestamp: datetime.datetime
+    last: float
+    coin: str
+    fiat: str
+}
+
+class Trade {
+    timestamp: datetime.datetime
+    trigger_name: str
+    volume_coin: float
+    volume_fiat: float
+    coin: str
+    fiat: str
+}
+
+class TriggerSpec {
+    name: Optional[str]
+    coin: str
+    fiat: str
+    cooldown_minutes: int
+    delay_minutes: Optional[int]
+    drop_percentage: Optional[float]
+    volume_fiat: Optional[float]
+    percentage_fiat: Optional[float]
+    start: Optional[datetime.datetime]
+}
+
+}
+
+@enduml
+
+PlantUML version 1.2021.14(Fri Nov 12 17:46:50 CET 2021)
+(GPL source distribution)
+Java Runtime: OpenJDK Runtime Environment
+JVM: OpenJDK 64-Bit Server VM
+Default Encoding: UTF-8
+Language: de
+Country: DE
+--></g></svg>

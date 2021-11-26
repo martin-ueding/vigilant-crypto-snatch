@@ -1,0 +1,35 @@
+@startuml
+
+namespace core {
+
+class Price {
+    timestamp: datetime.datetime
+    last: float
+    coin: str
+    fiat: str
+}
+
+class Trade {
+    timestamp: datetime.datetime
+    trigger_name: str
+    volume_coin: float
+    volume_fiat: float
+    coin: str
+    fiat: str
+}
+
+class TriggerSpec {
+    name: Optional[str]
+    coin: str
+    fiat: str
+    cooldown_minutes: int
+    delay_minutes: Optional[int]
+    drop_percentage: Optional[float]
+    volume_fiat: Optional[float]
+    percentage_fiat: Optional[float]
+    start: Optional[datetime.datetime]
+}
+
+}
+
+@enduml

@@ -1,0 +1,27 @@
+@startuml
+
+allowmixing
+
+namespace configuation {
+component appdirs
+component yaml
+component dateutil
+
+class configuration {
+    {static} load_config()
+    {static} update_config()
+    {static} get_used_currencies()
+    {static} run_migrations()
+    {static} parse_trigger_spec()
+    {static} get_start()
+    {static} get_minutes()
+}
+
+configuration::load_config --> yaml
+configuration::get_start --> dateutil
+core.TriggerSpec <-- configuration::parse_trigger_spec
+
+configuration --> appdirs
+
+}
+@enduml

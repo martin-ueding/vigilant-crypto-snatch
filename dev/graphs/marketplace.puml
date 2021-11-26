@@ -1,0 +1,44 @@
+@startuml
+
+allowmixing
+
+namespace marketplace {
+    component bitstamp
+    component krakenex
+
+interface Marketplace {
+    place_order()
+    get_spot_price()
+    get_name()
+    get_balance()
+    get_withdrawal_fee()
+    withdrawal()
+}
+
+class BuyError
+class TickerError
+class WithdrawalError
+
+Marketplace -> BuyError
+Marketplace -> TickerError
+Marketplace -> WithdrawalError
+
+core.Price <-- Marketplace
+core.Trade <-- Marketplace
+
+class KrakenexMarketplace implements Marketplace
+KrakenexMarketplace --> krakenex
+
+class BitstampMarketplace implements Marketplace
+BitstampMarketplace --> bitstamp
+
+class marketplace {
+{static} make_marketplace()
+}
+
+KrakenexMarketplace <-- marketplace::make_marketplace
+BitstampMarketplace <-- marketplace::make_marketplace
+
+}
+
+@enduml
