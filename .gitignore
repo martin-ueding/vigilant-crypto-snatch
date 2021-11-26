@@ -7,13 +7,11 @@ __pycache__
 dist
 *.egg-info
 site/
+.coverage
 .ipynb_checkpoints/
+coverage.xml
+docs/dev/graphs/*.pdf
+docs/dev/graphs/*.svg
 gains.pdf
 gains.png
-.coverage
 htmlcov/
-docs/dev/graphs/architecture.pdf
-docs/dev/graphs/old_architecture.pdf
-docs/dev/graphs/old_architecture.svg
-docs/dev/graphs/architecture.svg
-coverage.xml

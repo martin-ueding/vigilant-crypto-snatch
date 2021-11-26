@@ -17,6 +17,8 @@ interface Trigger {
     is_triggered()
 }
 
+class BuyTrigger implements Trigger
+
 datastorage.Datastore <-- BuyTrigger
 marketplace.Marketplace <-- BuyTrigger
 historical.HistoricalSource <-- BuyTrigger
@@ -24,12 +26,12 @@ historical.HistoricalSource <-- BuyTrigger
 interface TriggeredDelegate {
     is_triggered()
 }
-Trigger --> TriggeredDelegate
+BuyTrigger --> TriggeredDelegate
 
 interface VolumeFiatDelegate {
     get_volume_fiat()
 }
-Trigger --> VolumeFiatDelegate
+BuyTrigger --> VolumeFiatDelegate
 
 class FixedVolumeFiatDelegate implements VolumeFiatDelegate
 class RatioVolumeFiatDelegate implements VolumeFiatDelegate
@@ -40,7 +42,6 @@ class TrueTriggeredDelegate implements TriggeredDelegate
 class FailureTimeout
 BuyTrigger --> FailureTimeout
 
-class BuyTrigger implements Trigger
 
 class CheckinTrigger implements Trigger
 class DatabaseCleaningTrigger implements Trigger

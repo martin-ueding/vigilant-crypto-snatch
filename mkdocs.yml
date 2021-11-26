@@ -12,7 +12,9 @@ nav:
   - deployment.md
   - support.md
   - changelog.md
-  - developing.md
+  - Development:
+    - developing.md
+    - dev/components.md
   - license.md
   - donation.md
 
