@@ -1,0 +1,38 @@
+@startuml
+
+class core.Price {
+    timestamp: datetime.datetime
+    last: float
+    coin: str
+    fiat: str
+}
+
+class core.Trade {
+    timestamp: datetime.datetime
+    trigger_name: str
+    volume_coin: float
+    volume_fiat: float
+    coin: str
+    fiat: str
+}
+
+class core.TriggerSpec {
+    name: Optional[str]
+    coin: str
+    fiat: str
+    cooldown_minutes: int
+    delay_minutes: Optional[int]
+    drop_percentage: Optional[float]
+    volume_fiat: Optional[float]
+    percentage_fiat: Optional[float]
+    start: Optional[datetime.datetime]
+}
+
+class datastore.Datastore
+class datastore.ListStore
+class datastore.SqlAlchemyStore
+
+datastore.Datastore <|-- datastore.ListStore
+datastore.Datastore <|-- datastore.SqlAlchemyStore
+
+@enduml
