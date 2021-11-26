@@ -35,5 +35,5 @@ class Datastore:
     def get_all_trades(self) -> List[core.Trade]:
         raise NotImplementedError()
 
-    def clean_old(self, before: datetime.datetime):
+    def clean_old(self, before: datetime.datetime) -> None:
         raise NotImplementedError()

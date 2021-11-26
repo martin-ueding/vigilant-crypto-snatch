@@ -176,7 +176,7 @@ class SqlAlchemyDatastore(Datastore):
         result = [elem.to_core() for elem in q]
         return result
 
-    def clean_old(self, cutoff: datetime.datetime):
+    def clean_old(self, cutoff: datetime.datetime) -> None:
         logger.debug(f"Start cleaning of database before {cutoff} …")
 
         try:

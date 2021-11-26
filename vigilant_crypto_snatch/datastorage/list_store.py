@@ -53,5 +53,5 @@ class ListDatastore(interface.Datastore):
     def get_all_trades(self) -> List[core.Trade]:
         return self.trades
 
-    def clean_old(self, before: datetime.datetime):
-        pass
+    def clean_old(self, before: datetime.datetime) -> None:
+        self.prices = [price for price in self.prices if price.timestamp >= before]

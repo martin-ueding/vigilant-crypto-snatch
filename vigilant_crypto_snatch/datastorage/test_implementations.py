@@ -74,3 +74,16 @@ def test_get_price_around(datastore: Datastore) -> None:
         )
         is None
     )
+
+
+def test_clean_old(datastore: Datastore) -> None:
+    then = datetime.datetime(2021, 1, 1)
+    now = datetime.datetime(2021, 1, 2)
+    assert len(datastore.get_all_prices()) == 0
+    datastore.clean_old(now)
+    assert len(datastore.get_all_prices()) == 0
+    price = Price(then, 12.3, "BTC", "EUR")
+    datastore.add_price(price)
+    assert len(datastore.get_all_prices()) == 1
+    datastore.clean_old(now)
+    assert len(datastore.get_all_prices()) == 0
