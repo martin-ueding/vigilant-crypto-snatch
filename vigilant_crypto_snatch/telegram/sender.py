@@ -94,6 +94,7 @@ def make_telegram_sender(config: dict) -> TelegramSender:
 
 
 def get_sender() -> TelegramSender:
+    assert telegram_sender is not None
     return telegram_sender
 
 
