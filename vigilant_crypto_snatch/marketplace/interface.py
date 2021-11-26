@@ -1,3 +1,4 @@
+import abc
 import datetime
 import typing
 
@@ -5,7 +6,7 @@ from .. import core
 from .. import logger
 
 
-class Marketplace(object):
+class Marketplace(abc.ABC):
     def place_order(self, coin: str, fiat: str, volume: float) -> None:
         raise NotImplementedError()
 
