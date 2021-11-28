@@ -158,7 +158,7 @@ def sub_trigger_simulation(sidebar_settings):
         active_triggers = []
         for i in range(number_of_triggers):
             if i % 3 == 0:
-                col = st.beta_columns(min(number_of_triggers - i, 3))
+                col = st.columns(min(number_of_triggers - i, 3))
             with col[i % 3]:
                 active_triggers.append(
                     make_trigger_ui(datastore, source, market, sidebar_settings, i)
