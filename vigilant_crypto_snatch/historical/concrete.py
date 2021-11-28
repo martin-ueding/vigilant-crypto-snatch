@@ -1,3 +1,4 @@
+import dataclasses
 import datetime
 import typing
 
@@ -9,6 +10,11 @@ from .. import core
 from .. import datastorage
 from .. import logger
 from .. import marketplace
+
+
+@dataclasses.dataclass()
+class CryptoCompareConfig:
+    api_key: str
 
 
 class CryptoCompareHistoricalSource(HistoricalSource):

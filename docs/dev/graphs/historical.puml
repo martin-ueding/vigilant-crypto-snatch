@@ -9,6 +9,8 @@ interface marketplace.Marketplace
 
 namespace historical {
 
+
+
 interface HistoricalSource {
     get_price()
 }
@@ -25,6 +27,12 @@ CryptoCompareHistoricalSource --> requests
 class CryptoCompareHistoricalSource implements HistoricalSource
 class DatabaseHistoricalSource implements HistoricalSource
 datastorage.Datastore <-- DatabaseHistoricalSource
+
+class CryptoCompareConfig {
+    api_key: str
+}
+
+CryptoCompareConfig <-- CryptoCompareHistoricalSource
 
 class MarketSource implements HistoricalSource
 marketplace.Marketplace <-- MarketSource

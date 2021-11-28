@@ -1,3 +1,4 @@
+import dataclasses
 import json
 import sys
 import threading
@@ -8,6 +9,13 @@ import requests
 
 from .. import logger
 from .message_helper import chunk_message
+
+
+@dataclasses.dataclass()
+class TelegramConfig:
+    token: str
+    level: str
+    chat_id: Optional[int] = None
 
 
 class TelegramBotException(Exception):

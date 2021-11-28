@@ -17,6 +17,19 @@ class configuration {
     {static} get_minutes()
 }
 
+interface Configuration {
+    get_polling_interval()
+    get_crypto_compare_config()
+    get_kraken_config()
+    get_bitstamp_config()
+    get_telegram_config()
+}
+
+historical.CryptoCompareConfig <-- Configuration
+marketplace.KrakenConfig <-- Configuration
+marketplace.BitstampConfig <-- Configuration
+telegram.TelegramConfig <-- Configuration
+
 configuration::load_config --> yaml
 configuration::get_start --> dateutil
 core.TriggerSpec <-- configuration::parse_trigger_spec

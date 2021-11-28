@@ -1,6 +1,31 @@
+import dataclasses
+from typing import List
+
 from . import bitstamp_adaptor
 from . import interface
 from . import krakenex_adaptor
+
+
+@dataclasses.dataclass()
+class KrakenWithdrawalConfig:
+    coin: str
+    target: str
+    fee_limit_percent: float
+
+
+@dataclasses.dataclass()
+class KrakenConfig:
+    key: str
+    secret: str
+    prefer_fee_in_base_currency: bool
+    withdrawal: List[KrakenWithdrawalConfig]
+
+
+@dataclasses.dataclass()
+class BitstampConfig:
+    username: str
+    key: str
+    secret: str
 
 
 def make_marketplace(
