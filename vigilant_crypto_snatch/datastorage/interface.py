@@ -1,7 +1,8 @@
 import datetime
 from typing import *
 
-from .. import core
+from vigilant_crypto_snatch.core import Price
+from vigilant_crypto_snatch.core import Trade
 
 
 class DatastoreException(Exception):
@@ -9,10 +10,10 @@ class DatastoreException(Exception):
 
 
 class Datastore:
-    def add_price(self, price: core.Price) -> None:
+    def add_price(self, price: Price) -> None:
         raise NotImplementedError()
 
-    def add_trade(self, trade: core.Trade) -> None:
+    def add_trade(self, trade: Trade) -> None:
         raise NotImplementedError()
 
     def get_price_around(
@@ -21,7 +22,7 @@ class Datastore:
         coin: str,
         fiat: str,
         tolerance: datetime.timedelta,
-    ) -> Optional[core.Price]:
+    ) -> Optional[Price]:
         raise NotImplementedError()
 
     def was_triggered_since(
@@ -29,10 +30,10 @@ class Datastore:
     ) -> bool:
         raise NotImplementedError()
 
-    def get_all_prices(self) -> List[core.Price]:
+    def get_all_prices(self) -> List[Price]:
         raise NotImplementedError()
 
-    def get_all_trades(self) -> List[core.Trade]:
+    def get_all_trades(self) -> List[Trade]:
         raise NotImplementedError()
 
     def clean_old(self, before: datetime.datetime) -> None:

@@ -9,12 +9,19 @@ import requests
 import streamlit as st
 import streamlit.cli as st_cli
 
-from vigilant_crypto_snatch import configuration
-from vigilant_crypto_snatch import datastorage
-from vigilant_crypto_snatch import evaluation
-from vigilant_crypto_snatch import historical
-from vigilant_crypto_snatch import triggers
 from vigilant_crypto_snatch.configuration import migrations
+from vigilant_crypto_snatch.configuration.yaml_configuration import parse_trigger_spec
+from vigilant_crypto_snatch.configuration.yaml_configuration import YamlConfiguration
+from vigilant_crypto_snatch.datastorage.factory import make_datastore
+from vigilant_crypto_snatch.datastorage.interface import Datastore
+from vigilant_crypto_snatch.evaluation import drop_survey
+from vigilant_crypto_snatch.evaluation import InterpolatingSource
+from vigilant_crypto_snatch.evaluation import make_dataframe_from_json
+from vigilant_crypto_snatch.evaluation import SimulationMarketplace
+from vigilant_crypto_snatch.historical.batch import get_hourly_data
+from vigilant_crypto_snatch.historical.interface import HistoricalError
+from vigilant_crypto_snatch.triggers.concrete import BuyTrigger
+from vigilant_crypto_snatch.triggers.factory import make_buy_trigger
 
 
 def get_currency_pairs(api_key: str) -> list:
@@ -84,9 +91,7 @@ def sub_drop_survey(sidebar_settings):
     )
 
 
-def make_trigger_ui(
-    datastore, source, market, sidebar_settings, i
-) -> triggers.BuyTrigger:
+def make_trigger_ui(datastore, source, market, sidebar_settings, i) -> BuyTrigger:
     trigger_spec = {"fiat": sidebar_settings.fiat, "coin": sidebar_settings.coin}
 
     trigger_spec["name"] = st.text_input(
@@ -131,15 +136,15 @@ def make_trigger_ui(
             key=f"drop_percentage{i}",
         )
 
-    return triggers.make_buy_trigger(datastore, source, market, trigger_spec)
+    return make_buy_trigger(datastore, source, market, parse_trigger_spec(trigger_spec))
 
 
 def sub_trigger_simulation(sidebar_settings):
     st.title("Trigger simulation")
 
-    datastore = datastorage.make_datastore(None)
-    source = evaluation.InterpolatingSource(sidebar_settings.data)
-    market = evaluation.SimulationMarketplace(source)
+    datastore = make_datastore(None)
+    source = InterpolatingSource(sidebar_settings.data)
+    market = SimulationMarketplace(source)
 
     time_begin, time_end = make_time_slider(sidebar_settings)
 
@@ -284,7 +289,7 @@ def simulate_triggers(
     coin: str,
     fiat: str,
     active_triggers,
-    datastore: datastorage.Datastore,
+    datastore: Datastore,
     progress_callback=lambda n: None,
 ) -> pd.DataFrame:
     for i in data.index:
@@ -299,7 +304,7 @@ def simulate_triggers(
                         trigger.fire(now)
                     else:
                         pass
-            except historical.HistoricalError as e:
+            except HistoricalError as e:
                 pass
         progress_callback((i + 1) / len(data))
 
@@ -318,8 +323,8 @@ def get_api_key() -> str:
     if key is not None:
         return key
     else:
-        config = configuration.load_config()
-        return config["cryptocompare"]["api_key"]
+        config = YamlConfiguration()
+        return config.get_crypto_compare_config().api_key
 
 
 def ui():
@@ -340,8 +345,8 @@ def ui():
         index = 0
     coin = st.sidebar.selectbox("Coin", available_coins, index=index)
 
-    data = historical.get_hourly_data(coin, fiat, api_key)
-    data = evaluation.make_dataframe_from_json(data)
+    data = get_hourly_data(coin, fiat, api_key)
+    data = make_dataframe_from_json(data)
 
     sidebar_settings = Namespace()
     sidebar_settings.coin = coin
@@ -361,7 +366,7 @@ def ui():
 
 @st.cache(allow_output_mutation=True)
 def make_survey_chart(data, range_delay, range_percentage, coin, fiat):
-    hours, drops, factors = evaluation.drop_survey(
+    hours, drops, factors = drop_survey(
         data, np.arange(*range_delay), np.linspace(*range_percentage, 15) / 100.0
     )
     x, y = np.meshgrid(hours, drops)

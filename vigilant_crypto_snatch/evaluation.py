@@ -7,10 +7,11 @@ import pandas as pd
 import scipy.interpolate
 import sqlalchemy.orm
 
-from . import core
-from . import historical
 from . import logger
-from . import marketplace
+from .core import Price
+from .historical.interface import HistoricalError
+from .historical.interface import HistoricalSource
+from .marketplace.interface import Marketplace
 
 
 def make_interpolator(data: pd.DataFrame):
@@ -19,19 +20,19 @@ def make_interpolator(data: pd.DataFrame):
     return scipy.interpolate.interp1d(x, y)
 
 
-class InterpolatingSource(historical.HistoricalSource):
+class InterpolatingSource(HistoricalSource):
     def __init__(self, data: pd.DataFrame):
         self.interpolator = make_interpolator(data)
         self.start = np.min(data["datetime"])
         self.end = np.max(data["datetime"])
 
-    def get_price(self, then: datetime.datetime, coin: str, fiat: str) -> core.Price:
+    def get_price(self, then: datetime.datetime, coin: str, fiat: str) -> Price:
         try:
             last = self.interpolator(then.timestamp())
         except ValueError as e:
-            raise historical.HistoricalError(e)
+            raise HistoricalError(e)
 
-        return core.Price(
+        return Price(
             timestamp=then,
             last=last,
             coin=coin,
@@ -44,7 +45,7 @@ def json_to_database(
 ) -> None:
     logger.info(f"Writing {len(data)} prices to the DB …")
     for elem in data:
-        price = core.Price(
+        price = Price(
             timestamp=datetime.datetime.fromtimestamp(elem["time"]),
             last=elem["close"],
             coin=coin,
@@ -86,8 +87,8 @@ def compute_gains(
     return btc, eur, btc / eur if eur > 0 else 0.0
 
 
-class SimulationMarketplace(marketplace.Marketplace):
-    def __init__(self, source: historical.HistoricalSource):
+class SimulationMarketplace(Marketplace):
+    def __init__(self, source: HistoricalSource):
         super().__init__()
         self.source = source
 
@@ -97,7 +98,5 @@ class SimulationMarketplace(marketplace.Marketplace):
     def get_name(self) -> str:
         return "Simulation"
 
-    def get_spot_price(
-        self, coin: str, fiat: str, now: datetime.datetime
-    ) -> core.Price:
+    def get_spot_price(self, coin: str, fiat: str, now: datetime.datetime) -> Price:
         return self.source.get_price(now, coin, fiat)

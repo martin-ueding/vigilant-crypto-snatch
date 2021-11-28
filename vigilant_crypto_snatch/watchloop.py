@@ -6,17 +6,18 @@ import typing
 
 import requests.exceptions
 
-from . import datastorage
 from . import logger
-from . import marketplace
-from . import triggers
+from .datastorage.interface import DatastoreException
+from .marketplace.interface import BuyError
+from .marketplace.interface import TickerError
 from .telegram.sender import get_sender
+from .triggers.interface import Trigger
 
 
 class TriggerLoop(object):
     def __init__(
         self,
-        active_triggers: typing.List[triggers.Trigger],
+        active_triggers: typing.List[Trigger],
         sleep: int,
         keepalive: bool,
         one_shot: bool,
@@ -53,15 +54,15 @@ def notify_and_continue(exception: Exception, severity: int) -> None:
     )
 
 
-def process_trigger(trigger: triggers.Trigger, keepalive: bool):
+def process_trigger(trigger: Trigger, keepalive: bool):
     logger.debug(f"Checking trigger “{trigger.get_name()}” …")
     try:
         now = datetime.datetime.now()
         if trigger.has_cooled_off(now) and trigger.is_triggered(now):
             trigger.fire(now)
-    except marketplace.TickerError as e:
+    except TickerError as e:
         notify_and_continue(e, logging.ERROR)
-    except marketplace.BuyError as e:
+    except BuyError as e:
         notify_and_continue(e, logging.CRITICAL)
     except requests.exceptions.ReadTimeout as e:
         logger.error(
@@ -72,7 +73,7 @@ def process_trigger(trigger: triggers.Trigger, keepalive: bool):
         notify_and_continue(e, logging.ERROR)
     except requests.exceptions.HTTPError as e:
         notify_and_continue(e, logging.ERROR)
-    except datastorage.DatastoreException as e:
+    except DatastoreException as e:
         notify_and_continue(e, logging.ERROR)
     except KeyboardInterrupt:
         raise

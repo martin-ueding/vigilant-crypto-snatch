@@ -1,7 +1,7 @@
 import os
 import tempfile
 
-from vigilant_crypto_snatch.datastorage import make_datastore
+from vigilant_crypto_snatch.datastorage.factory import make_datastore
 
 
 def test_create_file_db() -> None:

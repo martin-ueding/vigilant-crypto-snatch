@@ -22,3 +22,8 @@ repos:
         pass_filenames: false
         language: system
         files: '.*\.py'
+      - id: test-drive
+        name: Test-Drive
+        entry: poetry run vigilant-crypto-snatch test-drive
+        pass_filenames: false
+        language: system

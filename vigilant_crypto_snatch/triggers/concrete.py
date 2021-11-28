@@ -1,11 +1,20 @@
 import abc
-from typing import *
+import datetime
+from typing import Optional
 
-from .. import core
-from .. import datastorage
-from .interface import Trigger
-from .triggered_delegates import *
-from .volume_fiat_delegates import *
+from vigilant_crypto_snatch import core
+from vigilant_crypto_snatch import datastorage
+from vigilant_crypto_snatch import historical
+from vigilant_crypto_snatch import logger
+from vigilant_crypto_snatch import marketplace
+from vigilant_crypto_snatch.core import Trade
+from vigilant_crypto_snatch.datastorage.interface import Datastore
+from vigilant_crypto_snatch.historical.interface import HistoricalSource
+from vigilant_crypto_snatch.marketplace.interface import Marketplace
+from vigilant_crypto_snatch.marketplace.interface import report_balances
+from vigilant_crypto_snatch.triggers.interface import Trigger
+from vigilant_crypto_snatch.triggers.triggered_delegates import TriggeredDelegate
+from vigilant_crypto_snatch.triggers.volume_fiat_delegates import VolumeFiatDelegate
 
 
 class FailureTimeout(object):
@@ -37,9 +46,9 @@ class FailureTimeout(object):
 class BuyTrigger(Trigger, abc.ABC):
     def __init__(
         self,
-        datastore: datastorage.Datastore,
-        source: historical.HistoricalSource,
-        market: marketplace.Marketplace,
+        datastore: Datastore,
+        source: HistoricalSource,
+        market: Marketplace,
         coin: str,
         fiat: str,
         cooldown_minutes: int,
@@ -90,7 +99,7 @@ class BuyTrigger(Trigger, abc.ABC):
         self, volume_coin: float, volume_fiat: float, now: datetime.datetime
     ) -> None:
         self.market.place_order(self.coin, self.fiat, volume_coin)
-        trade = core.Trade(
+        trade = Trade(
             timestamp=now,
             trigger_name=self.get_name(),
             volume_coin=volume_coin,
@@ -103,7 +112,7 @@ class BuyTrigger(Trigger, abc.ABC):
         rate = volume_fiat / volume_coin
         buy_message = f"{volume_coin} {self.coin} for {volume_fiat} {self.fiat} ({rate} {self.fiat}/{self.coin}) on {self.market.get_name()} due to “{self.get_name()}”"
         logger.info(f"Bought {buy_message}.")
-        marketplace.report_balances(self.market, {self.coin, self.fiat})
+        report_balances(self.market, {self.coin, self.fiat})
 
     def get_name(self) -> str:
         if self.name is None:
@@ -132,7 +141,7 @@ class CheckinTrigger(Trigger):
 
 
 class DatabaseCleaningTrigger(Trigger):
-    def __init__(self, datastore: datastorage.Datastore, interval: datetime.timedelta):
+    def __init__(self, datastore: Datastore, interval: datetime.timedelta):
         super().__init__()
         self.datastore = datastore
         self.interval = interval

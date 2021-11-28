@@ -1,24 +1,25 @@
 import datetime
 from typing import Tuple
 
-from . import BuyTrigger
-from . import make_buy_trigger
-from .. import core
-from .. import datastorage
-from ..historical.mock import MockHistorical
-from ..marketplace.mock import MockMarketplace
+from vigilant_crypto_snatch.core import Trade
+from vigilant_crypto_snatch.core import TriggerSpec
+from vigilant_crypto_snatch.datastorage.list_store import ListDatastore
+from vigilant_crypto_snatch.historical.mock import MockHistorical
+from vigilant_crypto_snatch.marketplace.mock import MockMarketplace
+from vigilant_crypto_snatch.triggers.concrete import BuyTrigger
+from vigilant_crypto_snatch.triggers.factory import make_buy_trigger
 
 
 def make_true_trigger() -> Tuple[BuyTrigger, MockMarketplace]:
-    datastore = datastorage.ListDatastore()
+    datastore = ListDatastore()
     source = MockHistorical()
     market = MockMarketplace()
-    trigger_spec = {
-        "coin": "BTC",
-        "fiat": "EUR",
-        "volume_fiat": 25.0,
-        "cooldown_minutes": 10,
-    }
+    trigger_spec = TriggerSpec(
+        coin="BTC",
+        fiat="EUR",
+        volume_fiat=25.0,
+        cooldown_minutes=10,
+    )
     result = make_buy_trigger(datastore, source, market, trigger_spec)
     return result, market
 
@@ -39,7 +40,7 @@ def test_waiting() -> None:
     true_trigger, market = make_true_trigger()
     now = datetime.datetime.now()
     datastore = true_trigger.datastore
-    trade = core.Trade(
+    trade = Trade(
         timestamp=now,
         trigger_name=true_trigger.get_name(),
         volume_coin=1.0,

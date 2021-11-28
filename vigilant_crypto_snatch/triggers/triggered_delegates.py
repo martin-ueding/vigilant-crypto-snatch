@@ -1,7 +1,8 @@
 import datetime
 
-from .. import historical
 from .. import logger
+from ..historical.interface import HistoricalError
+from ..historical.interface import HistoricalSource
 
 
 class TriggeredDelegate(object):
@@ -16,7 +17,7 @@ class DropTriggeredDelegate(TriggeredDelegate):
         fiat: str,
         delay_minutes: int,
         drop_percentage: float,
-        source: historical.HistoricalSource,
+        source: HistoricalSource,
     ):
         self.coin = coin
         self.fiat = fiat
@@ -29,7 +30,7 @@ class DropTriggeredDelegate(TriggeredDelegate):
         then = now - datetime.timedelta(minutes=self.delay_minutes)
         try:
             then_price = self.source.get_price(then, self.coin, self.fiat)
-        except historical.HistoricalError as e:
+        except HistoricalError as e:
             logger.warning(
                 f"Could not retrieve a historical price, so cannot determine if strategy “{self}” was triggered."
                 f" The original error is: {e}"

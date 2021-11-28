@@ -1,4 +1,4 @@
-from .. import marketplace
+from vigilant_crypto_snatch.marketplace.interface import Marketplace
 
 
 class VolumeFiatDelegate(object):
@@ -18,9 +18,7 @@ class FixedVolumeFiatDelegate(VolumeFiatDelegate):
 
 
 class RatioVolumeFiatDelegate(VolumeFiatDelegate):
-    def __init__(
-        self, fiat: str, percentage_fiat: float, market: marketplace.Marketplace
-    ):
+    def __init__(self, fiat: str, percentage_fiat: float, market: Marketplace):
         self.fiat = fiat
         self.market = market
         self.percentage_fiat = percentage_fiat

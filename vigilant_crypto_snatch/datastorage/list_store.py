@@ -2,19 +2,20 @@ import datetime
 from typing import List
 from typing import Optional
 
-from . import interface
-from .. import core
+from vigilant_crypto_snatch.core import Price
+from vigilant_crypto_snatch.core import Trade
+from vigilant_crypto_snatch.datastorage.interface import Datastore
 
 
-class ListDatastore(interface.Datastore):
+class ListDatastore(Datastore):
     def __init__(self):
         self.trades = []
         self.prices = []
 
-    def add_price(self, price: core.Price) -> None:
+    def add_price(self, price: Price) -> None:
         self.prices.append(price)
 
-    def add_trade(self, trade: core.Trade) -> None:
+    def add_trade(self, trade: Trade) -> None:
         self.trades.append(trade)
 
     def get_price_around(
@@ -23,7 +24,7 @@ class ListDatastore(interface.Datastore):
         coin: str,
         fiat: str,
         tolerance: datetime.timedelta,
-    ) -> Optional[core.Price]:
+    ) -> Optional[Price]:
         self.prices.sort(key=lambda price: price.timestamp)
         for price in reversed(self.prices):
             if (
@@ -47,10 +48,10 @@ class ListDatastore(interface.Datastore):
                 return True
         return False
 
-    def get_all_prices(self) -> List[core.Price]:
+    def get_all_prices(self) -> List[Price]:
         return self.prices
 
-    def get_all_trades(self) -> List[core.Trade]:
+    def get_all_trades(self) -> List[Trade]:
         return self.trades
 
     def clean_old(self, before: datetime.datetime) -> None:

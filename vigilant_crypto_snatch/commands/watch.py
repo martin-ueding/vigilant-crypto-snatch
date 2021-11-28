@@ -1,44 +1,50 @@
 import datetime
 
-from .. import configuration
-from .. import datastorage
-from .. import logger
-from .. import marketplace
-from .. import triggers
-from ..configuration import migrations
-from ..historical import concrete
+from ..configuration.interface import Configuration
+from ..configuration.interface import get_used_currencies
+from ..configuration.migrations import run_migrations
+from ..configuration.paths import user_db_path
+from ..configuration.yaml_configuration import YamlConfiguration
+from ..datastorage.factory import make_datastore
+from ..historical.concrete import CachingHistoricalSource
+from ..historical.concrete import CryptoCompareHistoricalSource
+from ..historical.concrete import DatabaseHistoricalSource
+from ..historical.concrete import MarketSource
+from ..marketplace.interface import check_and_perform_widthdrawal
+from ..marketplace.interface import report_balances
 from ..telegram.logger import add_telegram_logger
+from ..triggers.factory import make_triggers
 from ..watchloop import TriggerLoop
 
 
 def main(marketplace_name, keepalive, one_shot, dry_run):
-    migrations.run_migrations()
-    config = configuration.load_config()
+    run_migrations()
+    config = YamlConfiguration()
 
-    add_telegram_logger(config)
+    add_telegram_logger(config.get_telegram_config())
     if not one_shot:
         logger.info("Starting up …")
 
-    datastore = datastorage.make_datastore(configuration.user_db_path)
-    market = marketplace.make_marketplace(marketplace_name, config, dry_run)
-    marketplace.check_and_perform_widthdrawal(market)
+    datastore = make_datastore(user_db_path)
+    market = make_marketplace(marketplace_name, config, dry_run)
+    check_and_perform_widthdrawal(market)
 
     if not one_shot:
-        marketplace.report_balances(market, configuration.get_used_currencies(config))
+        report_balances(market, get_used_currencies(config.get_trigger_config()))
 
-    database_source = concrete.DatabaseHistoricalSource(
-        datastore, datetime.timedelta(minutes=5)
+    database_source = DatabaseHistoricalSource(datastore, datetime.timedelta(minutes=5))
+    crypto_compare_source = CryptoCompareHistoricalSource(
+        config.get_crypto_compare_config()
     )
-    crypto_compare_source = concrete.CryptoCompareHistoricalSource(
-        config["cryptocompare"]["api_key"]
-    )
-    market_source = concrete.MarketSource(market)
-    caching_source = concrete.CachingHistoricalSource(
+    market_source = MarketSource(market)
+    caching_source = CachingHistoricalSource(
         database_source, [market_source, crypto_compare_source], datastore
     )
-    active_triggers = triggers.make_triggers(
-        config, datastore, caching_source, market, dry_run
+    active_triggers = make_triggers(
+        config.get_trigger_config(), datastore, caching_source, market, dry_run
     )
 
-    trigger_loop = TriggerLoop(active_triggers, config["sleep"], keepalive, one_shot)
+    trigger_loop = TriggerLoop(
+        active_triggers, config.get_polling_interval(), keepalive, one_shot
+    )
     trigger_loop.loop()

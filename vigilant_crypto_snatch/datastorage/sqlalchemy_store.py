@@ -5,8 +5,9 @@ from typing import *
 import sqlalchemy.ext.declarative
 import sqlalchemy.orm.exc
 
-from .. import core
 from .. import logger
+from ..core import Price
+from ..core import Trade
 from .interface import Datastore
 from .interface import DatastoreException
 
@@ -23,7 +24,7 @@ class AlchemyPrice(Base):  # type: ignore
     fiat = sqlalchemy.Column(sqlalchemy.String, nullable=False)
 
     def to_core(self):
-        return core.Price(
+        return Price(
             timestamp=self.timestamp,
             last=self.last,
             coin=self.coin,
@@ -31,7 +32,7 @@ class AlchemyPrice(Base):  # type: ignore
         )
 
 
-def price_to_alchemy_price(price: core.Price) -> AlchemyPrice:
+def price_to_alchemy_price(price: Price) -> AlchemyPrice:
     return AlchemyPrice(
         timestamp=price.timestamp,
         last=price.last,
@@ -52,7 +53,7 @@ class AlchemyTrade(Base):  # type: ignore
     fiat = sqlalchemy.Column(sqlalchemy.String, nullable=False)
 
     def to_core(self):
-        return core.Trade(
+        return Trade(
             timestamp=self.timestamp,
             trigger_name=self.trigger_name,
             volume_coin=self.volume_coin,
@@ -62,7 +63,7 @@ class AlchemyTrade(Base):  # type: ignore
         )
 
 
-def trade_to_alchemy_trade(trade: core.Trade) -> AlchemyTrade:
+def trade_to_alchemy_trade(trade: Trade) -> AlchemyTrade:
     return AlchemyTrade(
         timestamp=trade.timestamp,
         trigger_name=trade.trigger_name,
@@ -91,7 +92,7 @@ class SqlAlchemyDatastore(Datastore):
                 f"Something went wrong with the database. Perhaps it is easiest to just delete the database file."
             ) from e
 
-    def add_price(self, price: core.Price) -> None:
+    def add_price(self, price: Price) -> None:
         alchemy_price = price_to_alchemy_price(price)
 
         try:
@@ -102,7 +103,7 @@ class SqlAlchemyDatastore(Datastore):
                 f"Something went wrong with the database. Perhaps it is easiest to just delete the database file."
             ) from e
 
-    def add_trade(self, trade: core.Trade) -> None:
+    def add_trade(self, trade: Trade) -> None:
         alchemy_trade = trade_to_alchemy_trade(trade)
 
         try:
@@ -119,7 +120,7 @@ class SqlAlchemyDatastore(Datastore):
         coin: str,
         fiat: str,
         tolerance: datetime.timedelta,
-    ) -> Optional[core.Price]:
+    ) -> Optional[Price]:
         try:
             q = (
                 self.session.query(AlchemyPrice)
@@ -166,12 +167,12 @@ class SqlAlchemyDatastore(Datastore):
                 f"Something went wrong with the database. Perhaps it is easiest to just delete the database file."
             ) from e
 
-    def get_all_trades(self) -> List[core.Trade]:
+    def get_all_trades(self) -> List[Trade]:
         q = self.session.query(AlchemyTrade)
         result = [elem.to_core() for elem in q]
         return result
 
-    def get_all_prices(self) -> List[core.Price]:
+    def get_all_prices(self) -> List[Price]:
         q = self.session.query(AlchemyPrice)
         result = [elem.to_core() for elem in q]
         return result

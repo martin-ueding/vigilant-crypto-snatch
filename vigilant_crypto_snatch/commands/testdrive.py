@@ -1,62 +1,83 @@
 import datetime
+from typing import List
+from typing import Optional
 
-from .. import configuration
-from .. import datastorage
 from .. import logger
-from .. import marketplace
-from .. import triggers
-from ..configuration import migrations
-from ..historical import concrete
+from ..configuration.interface import Configuration
+from ..configuration.interface import get_used_currencies
+from ..configuration.migrations import run_migrations
+from ..configuration.paths import user_db_path
+from ..configuration.yaml_configuration import YamlConfiguration
+from ..core import TriggerSpec
+from ..datastorage.factory import make_datastore
+from ..datastorage.list_store import ListDatastore
+from ..historical.concrete import CryptoCompareConfig
+from ..historical.concrete import CryptoCompareHistoricalSource
 from ..historical.mock import MockHistorical
-from ..telegram import make_telegram_sender
+from ..marketplace.bitstamp_adaptor import BitstampMarketplace
+from ..marketplace.interface import report_balances
+from ..marketplace.krakenex_adaptor import KrakenexMarketplace
+from ..marketplace.mock import MockMarketplace
+from ..telegram.sender import TelegramConfig
+from ..telegram.sender import TelegramSender
+from ..triggers.factory import make_triggers
 
 
 def main(marketplace_name) -> None:
-    migrations.run_migrations()
-    config = configuration.load_config()
+    run_migrations()
+    config = YamlConfiguration()
 
     try_database()
     try_balance(config, marketplace_name)
-    try_historical(config)
-    try_triggers(config)
-    try_telegram(config)
+    try_historical(config.get_crypto_compare_config())
+    try_triggers(config.get_trigger_config())
+    try_telegram(config.get_telegram_config())
 
     print("Success! Everything seems to be configured correctly.")
 
 
 def try_database() -> None:
     logger.info("Trying to open persistent database …")
-    persistent_datastore = datastorage.make_datastore(configuration.user_db_path)
+    make_datastore(user_db_path)
 
 
-def try_balance(config: dict, marketplace_name: str) -> None:
+def try_balance(config: Configuration, marketplace_name: str) -> None:
     logger.info("Trying get balances from marketplace …")
-    real_market = marketplace.make_marketplace(marketplace_name, config)
-    marketplace.report_balances(real_market, configuration.get_used_currencies(config))
+    real_market = make_marketplace(config, marketplace_name)
+    report_balances(real_market, get_used_currencies(config.get_trigger_config()))
 
 
-def try_historical(config: dict) -> None:
+def make_marketplace(config, marketplace_name):
+    if marketplace_name == "bitstamp":
+        real_market = BitstampMarketplace(config.get_bitstamp_config())
+    elif marketplace_name == "kraken":
+        real_market = KrakenexMarketplace(config.get_kraken_config())
+    else:
+        raise RuntimeError(f"Unsupported marketplace: {marketplace_name}")
+    return real_market
+
+
+def try_historical(config: CryptoCompareConfig) -> None:
     logger.info("Trying to get data from Crypto Compare …")
-    crypto_compare_source = concrete.CryptoCompareHistoricalSource(
-        config["cryptocompare"]["api_key"]
-    )
+    crypto_compare_source = CryptoCompareHistoricalSource(config)
     current_btc_eur = crypto_compare_source.get_price(
         datetime.datetime.now(), "BTC", "EUR"
     )
     logger.info(f"Got current price: {current_btc_eur} EUR/BTC.")
 
 
-def try_triggers(config: dict) -> None:
+def try_triggers(config: List[TriggerSpec]) -> None:
     logger.info("Trying to construct triggers …")
-    datastore = datastorage.ListDatastore()
-    market = marketplace.MockMarketplace()
+    datastore = ListDatastore()
+    market = MockMarketplace()
     caching_source = MockHistorical()
-    active_triggers = triggers.make_triggers(config, datastore, caching_source, market)
+    make_triggers(config, datastore, caching_source, market)
 
 
-def try_telegram(config: dict) -> None:
-    if "telegram" in config:
-        telegram_sender = make_telegram_sender(config)
+def try_telegram(config: Optional[TelegramConfig]) -> None:
+    logger.info("Trying to send a message to Telegram …")
+    if config:
+        telegram_sender = TelegramSender(config)
         telegram_sender.queue_message("Telegram is set up correctly!")
         telegram_sender.shutdown()
     else:

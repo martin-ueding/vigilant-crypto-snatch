@@ -1,28 +1,45 @@
-from .. import configuration
-from .concrete import *
-from .triggered_delegates import *
-from .volume_fiat_delegates import *
+import datetime
+from typing import List
+
+from vigilant_crypto_snatch import logger
+from vigilant_crypto_snatch.core import TriggerSpec
+from vigilant_crypto_snatch.datastorage.interface import Datastore
+from vigilant_crypto_snatch.historical.interface import HistoricalSource
+from vigilant_crypto_snatch.marketplace.interface import Marketplace
+from vigilant_crypto_snatch.triggers.concrete import BuyTrigger
+from vigilant_crypto_snatch.triggers.concrete import CheckinTrigger
+from vigilant_crypto_snatch.triggers.concrete import DatabaseCleaningTrigger
+from vigilant_crypto_snatch.triggers.interface import Trigger
+from vigilant_crypto_snatch.triggers.triggered_delegates import DropTriggeredDelegate
+from vigilant_crypto_snatch.triggers.triggered_delegates import TriggeredDelegate
+from vigilant_crypto_snatch.triggers.triggered_delegates import TrueTriggeredDelegate
+from vigilant_crypto_snatch.triggers.volume_fiat_delegates import (
+    FixedVolumeFiatDelegate,
+)
+from vigilant_crypto_snatch.triggers.volume_fiat_delegates import (
+    RatioVolumeFiatDelegate,
+)
+from vigilant_crypto_snatch.triggers.volume_fiat_delegates import VolumeFiatDelegate
 
 
 def make_buy_triggers(
-    config, session, source, market, dry_run: bool = False
+    config: List[TriggerSpec], session, source, market, dry_run: bool = False
 ) -> List[BuyTrigger]:
     active_triggers = []
-    for trigger_spec in config["triggers"]:
+    for trigger_spec in config:
         trigger = make_buy_trigger(session, source, market, trigger_spec, dry_run)
         active_triggers.append(trigger)
     return active_triggers
 
 
 def make_buy_trigger(
-    datastore: datastorage.Datastore,
-    source: historical.HistoricalSource,
-    market: marketplace.Marketplace,
-    trigger_spec_dict: Dict,
+    datastore: Datastore,
+    source: HistoricalSource,
+    market: Marketplace,
+    trigger_spec: TriggerSpec,
     dry_run: bool = False,
 ) -> BuyTrigger:
-    logger.debug(f"Processing trigger spec: {trigger_spec_dict}")
-    trigger_spec = configuration.parse_trigger_spec(trigger_spec_dict)
+    logger.debug(f"Processing trigger spec: {trigger_spec}")
 
     # We first need to construct the `TriggeredDelegate` and find out which type it is.
     triggered_delegate: TriggeredDelegate
@@ -71,12 +88,12 @@ def make_buy_trigger(
 
 
 def make_triggers(
-    config: Dict,
-    datastore: datastorage.Datastore,
-    source: historical.HistoricalSource,
-    market: marketplace.Marketplace,
+    config: List[TriggerSpec],
+    datastore: Datastore,
+    source: HistoricalSource,
+    market: Marketplace,
     dry_run: bool = False,
-) -> Sequence[Trigger]:
+) -> List[Trigger]:
     buy_triggers = make_buy_triggers(config, datastore, source, market, dry_run)
     longest_cooldown = max(
         (

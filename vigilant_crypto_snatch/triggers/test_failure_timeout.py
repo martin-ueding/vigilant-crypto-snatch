@@ -2,7 +2,7 @@ import datetime
 
 import pytest
 
-from .concrete import FailureTimeout
+from vigilant_crypto_snatch.triggers.concrete import FailureTimeout
 
 
 @pytest.fixture

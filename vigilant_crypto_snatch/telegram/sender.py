@@ -8,7 +8,7 @@ from typing import Optional
 import requests
 
 from .. import logger
-from .message_helper import chunk_message
+from ..configuration.paths import chat_id_path
 
 
 @dataclasses.dataclass()
@@ -23,12 +23,12 @@ class TelegramBotException(Exception):
 
 
 class TelegramSender(object):
-    def __init__(self, token: str, chat_id: int = None):
-        self.token = token
-        if chat_id is None:
+    def __init__(self, config: TelegramConfig):
+        self.token = config.token
+        if config.chat_id is None:
             self.get_chat_id()
         else:
-            self.chat_id = chat_id
+            self.chat_id = config.chat_id
         self.running = True
         self.queue: List[str] = []
         self.cv = threading.Condition()
@@ -70,6 +70,10 @@ class TelegramSender(object):
                         pass
 
     def get_chat_id(self) -> None:
+        if chat_id_path.exists():
+            with open(chat_id_path) as f:
+                self.chat_id = json.load(f)
+                return
         response = requests.get(f"https://api.telegram.org/bot{self.token}/getUpdates")
         response.raise_for_status()
         data = response.json()
@@ -80,6 +84,8 @@ class TelegramSender(object):
             )
             sys.exit(1)
         self.chat_id = int(data["result"][-1]["message"]["chat"]["id"])
+        with open(chat_id_path, "w") as f:
+            json.dump(self.chat_id, f)
         logger.info(f"Your Telegram chat ID is {self.chat_id}.")
 
     def send_message(self, message: str) -> None:
@@ -95,15 +101,38 @@ class TelegramSender(object):
                 )
 
 
-def make_telegram_sender(config: dict) -> TelegramSender:
-    return TelegramSender(
-        config["telegram"]["token"], config["telegram"].get("chat_id", None)
-    )
-
-
 def get_sender() -> TelegramSender:
     assert telegram_sender is not None
     return telegram_sender
 
 
 telegram_sender: Optional[TelegramSender] = None
+
+
+def chunk_message(message: str, char_limit: int = 4000) -> List[str]:
+    lines = message.split("\n")
+    capped_lines = []
+    for line in lines:
+        if len(line) < char_limit:
+            capped_lines.append(line)
+        else:
+            lines += split_long_line(line, char_limit)
+    chunks = []
+    current_chunk: List[str] = []
+    current_size = 0
+    for line in capped_lines:
+        if len(line) + current_size >= char_limit:
+            chunks.append("\n".join(current_chunk))
+            current_chunk = []
+            current_size = 0
+        current_chunk.append(line)
+        current_size += len(line) + 1
+    if len(current_chunk) > 0:
+        chunks.append("\n".join(current_chunk))
+    return chunks
+
+
+def split_long_line(line: str, char_limit: int = 4000) -> List[str]:
+    intervals = len(line) // char_limit + 1
+    chunks = [line[(i * char_limit) : ((i + 1) * char_limit)] for i in range(intervals)]
+    return chunks

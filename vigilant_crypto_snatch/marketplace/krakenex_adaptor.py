@@ -1,12 +1,16 @@
 import datetime
-import typing
+from typing import Type
 
 import krakenex
 
-from . import interface
-from .. import core
 from .. import logger
-
+from ..core import Price
+from .interface import BuyError
+from .interface import check_and_perform_widthdrawal
+from .interface import KrakenConfig
+from .interface import Marketplace
+from .interface import TickerError
+from .interface import WithdrawalError
 
 mapping_normal_to_kraken = {"BTC": "XBT"}
 mapping_kraken_to_normal = {
@@ -24,38 +28,28 @@ def map_kraken_to_normal(coin: str) -> str:
     return mapping_kraken_to_normal.get(coin, coin)
 
 
-class KrakenexMarketplace(interface.Marketplace):
-    def __init__(
-        self,
-        api_key: str,
-        api_secret: str,
-        withdrawal_config: dict,
-        prefer_fee_in_base_currency: bool,
-        dry_run: bool,
-    ):
-        self.handle = krakenex.API(api_key, api_secret)
-        self.withdrawal_config = withdrawal_config
-        self.prefer_fee_in_base_currency = prefer_fee_in_base_currency
-        self.dry_run = dry_run
+class KrakenexMarketplace(Marketplace):
+    def __init__(self, config: KrakenConfig):
+        self.handle = krakenex.API(config.key, config.secret)
+        self.withdrawal_config = config.withdrawal
+        self.prefer_fee_in_base_currency = config.prefer_fee_in_base_currency
 
     def get_name(self) -> str:
         return "Kraken"
 
-    def get_spot_price(
-        self, coin: str, fiat: str, now: datetime.datetime
-    ) -> core.Price:
+    def get_spot_price(self, coin: str, fiat: str, now: datetime.datetime) -> Price:
         answer = self.handle.query_public(
             "Ticker", {"pair": f"{map_normal_to_kraken(coin)}{fiat}"}
         )
-        raise_error(answer, interface.TickerError)
+        raise_error(answer, TickerError)
         close = float(list(answer["result"].values())[0]["c"][0])
         logger.debug(f"Retrieved {close} for {fiat}/{coin} from Krakenex.")
-        price = core.Price(timestamp=now, last=close, coin=coin, fiat=fiat)
+        price = Price(timestamp=now, last=close, coin=coin, fiat=fiat)
         return price
 
     def get_balance(self) -> dict:
         answer = self.handle.query_private("Balance")
-        raise_error(answer, interface.TickerError)
+        raise_error(answer, TickerError)
         # The key `result` will only be present if the user has any balances.
         if "result" in answer:
             return {
@@ -73,14 +67,12 @@ class KrakenexMarketplace(interface.Marketplace):
             "volume": str(volume),
             "oflags": "fcib" if self.prefer_fee_in_base_currency else "fciq",
         }
-        if self.dry_run:
-            arguments["validate"] = "true"
         answer = self.handle.query_private("AddOrder", arguments)
-        raise_error(answer, interface.BuyError)
-        interface.check_and_perform_widthdrawal(self)
+        raise_error(answer, BuyError)
+        check_and_perform_widthdrawal(self)
 
     def get_withdrawal_fee(self, coin: str, volume: float) -> float:
-        target = self.withdrawal_config[coin]["target"]
+        target = self.withdrawal_config[coin].target
         answer = self.handle.query_private(
             "WithdrawInfo",
             {
@@ -89,7 +81,7 @@ class KrakenexMarketplace(interface.Marketplace):
                 "key": target,
             },
         )
-        raise_error(answer, interface.WithdrawalError)
+        raise_error(answer, WithdrawalError)
         fee = float(answer["result"]["fee"])
         logger.debug(f"Withdrawal fee for {coin} is {fee} {coin}.")
         return fee
@@ -100,14 +92,12 @@ class KrakenexMarketplace(interface.Marketplace):
             return
         if volume == 0:
             return
-        target = self.withdrawal_config[coin]["target"]
+        target = self.withdrawal_config[coin].target
         fee = self.get_withdrawal_fee(coin, volume)
-        if fee / volume <= self.withdrawal_config[coin]["fee_limit_percent"] / 100:
+        if fee / volume <= self.withdrawal_config[coin].fee_limit_percent / 100:
             logger.info(
                 f"Trying to withdraw {volume} {coin} as fee is just {fee} {coin} and below limit."
             )
-            if self.dry_run:
-                return
             answer = self.handle.query_private(
                 "Withdraw",
                 {
@@ -116,13 +106,13 @@ class KrakenexMarketplace(interface.Marketplace):
                     "key": target,
                 },
             )
-            raise_error(answer, interface.WithdrawalError)
+            raise_error(answer, WithdrawalError)
         else:
             logger.debug(
                 f"Not withdrawing {volume} {coin} as fee is {fee} {coin} and above limit."
             )
 
 
-def raise_error(answer: dict, exception: typing.Type[Exception]):
+def raise_error(answer: dict, exception: Type[Exception]):
     if len(answer["error"]) > 0:
         raise exception(answer["error"])

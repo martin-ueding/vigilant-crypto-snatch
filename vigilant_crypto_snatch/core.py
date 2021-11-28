@@ -48,12 +48,12 @@ class Trade:
 
 @dataclasses.dataclass()
 class TriggerSpec:
-    name: Optional[str]
     coin: str
     fiat: str
     cooldown_minutes: int
-    delay_minutes: Optional[int]
-    drop_percentage: Optional[float]
-    volume_fiat: Optional[float]
-    percentage_fiat: Optional[float]
-    start: Optional[datetime.datetime]
+    name: Optional[str] = None
+    delay_minutes: Optional[int] = None
+    drop_percentage: Optional[float] = None
+    volume_fiat: Optional[float] = None
+    percentage_fiat: Optional[float] = None
+    start: Optional[datetime.datetime] = None

@@ -1,10 +1,10 @@
 import datetime
 
-from .. import core
+from vigilant_crypto_snatch.core import Price
 
 
 class HistoricalSource(object):
-    def get_price(self, then: datetime.datetime, coin: str, fiat: str) -> core.Price:
+    def get_price(self, then: datetime.datetime, coin: str, fiat: str) -> Price:
         raise NotImplementedError()
 
 

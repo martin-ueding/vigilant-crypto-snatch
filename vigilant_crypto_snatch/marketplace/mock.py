@@ -1,7 +1,7 @@
 import datetime
 
-from .. import core
-from .interface import Marketplace
+from vigilant_crypto_snatch.core import Price
+from vigilant_crypto_snatch.marketplace.interface import Marketplace
 
 
 class MockMarketplace(Marketplace):
@@ -20,12 +20,10 @@ class MockMarketplace(Marketplace):
     def get_name(self) -> str:
         return "Mock"
 
-    def get_spot_price(
-        self, coin: str, fiat: str, now: datetime.datetime
-    ) -> core.Price:
+    def get_spot_price(self, coin: str, fiat: str, now: datetime.datetime) -> Price:
         self.prices += 1
         then = datetime.datetime.now()
-        return core.Price(
+        return Price(
             timestamp=then,
             last=100,
             coin=coin,

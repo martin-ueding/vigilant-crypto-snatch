@@ -1,18 +1,39 @@
 import abc
+import dataclasses
 import datetime
 import typing
 
-from .. import core
 from .. import logger
+from ..core import Price
+
+
+@dataclasses.dataclass()
+class BitstampConfig:
+    username: str
+    key: str
+    secret: str
+
+
+@dataclasses.dataclass()
+class KrakenWithdrawalConfig:
+    coin: str
+    target: str
+    fee_limit_percent: float
+
+
+@dataclasses.dataclass()
+class KrakenConfig:
+    key: str
+    secret: str
+    prefer_fee_in_base_currency: bool
+    withdrawal: typing.Dict[str, KrakenWithdrawalConfig]
 
 
 class Marketplace(abc.ABC):
     def place_order(self, coin: str, fiat: str, volume: float) -> None:
         raise NotImplementedError()
 
-    def get_spot_price(
-        self, coin: str, fiat: str, now: datetime.datetime
-    ) -> core.Price:
+    def get_spot_price(self, coin: str, fiat: str, now: datetime.datetime) -> Price:
         raise NotImplementedError()
 
     def get_name(self) -> str:
