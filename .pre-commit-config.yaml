@@ -27,3 +27,4 @@ repos:
         entry: poetry run vigilant-crypto-snatch test-drive
         pass_filenames: false
         language: system
+        files: '.*\.py'
