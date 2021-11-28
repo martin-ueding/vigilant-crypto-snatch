@@ -1,5 +1,3 @@
-import dataclasses
-
 from vigilant_crypto_snatch.historical.concrete import CryptoCompareConfig
 from vigilant_crypto_snatch.marketplace.factory import BitstampConfig
 from vigilant_crypto_snatch.marketplace.factory import KrakenConfig
