@@ -39,6 +39,31 @@ class marketplace {
 KrakenexMarketplace <-- marketplace::make_marketplace
 BitstampMarketplace <-- marketplace::make_marketplace
 
+class KrakenWithdrawalConfig {
+    coin: str
+    target: str
+    fee_limit_percent: float
+}
+
+class KrakenConfig {
+    key: str
+    secret: str
+    prefer_fee_in_base_currency: bool
+    withdrawal: List[KrakenWithdrawalConfig]
+}
+
+KrakenWithdrawalConfig --* KrakenConfig
+
+KrakenConfig <-- KrakenexMarketplace
+
+class BitstampConfig {
+    username: str
+    key: str
+    secret: str
+}
+
+BitstampConfig <-- BitstampMarketplace
+
 }
 
 @enduml

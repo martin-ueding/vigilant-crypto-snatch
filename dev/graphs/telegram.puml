@@ -5,6 +5,12 @@ allowmixing
 namespace telegram {
 component requests
 
+class TelegramConfig {
+    token: str
+    level: str
+    chat_id: Optional[int]
+}
+
 class TelegramLogger extends python.logging.Handler {
 format()
 emit()
@@ -21,6 +27,8 @@ class TelegramSender {
     get_chat_id()
     send_message()
 }
+
+TelegramConfig <-- TelegramSender
 
 TelegramLogger -> TelegramSender
 TelegramSender --> requests

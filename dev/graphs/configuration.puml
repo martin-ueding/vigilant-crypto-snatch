@@ -7,19 +7,25 @@ component appdirs
 component yaml
 component dateutil
 
-class configuration {
-    {static} load_config()
-    {static} update_config()
-    {static} get_used_currencies()
-    {static} run_migrations()
-    {static} parse_trigger_spec()
-    {static} get_start()
-    {static} get_minutes()
+interface Configuration {
+    get_polling_interval()
+    get_crypto_compare_config()
+    get_kraken_config()
+    get_bitstamp_config()
+    get_telegram_config()
 }
 
-configuration::load_config --> yaml
-configuration::get_start --> dateutil
-core.TriggerSpec <-- configuration::parse_trigger_spec
+class YamlConfiguration implements Configuration
+
+historical.CryptoCompareConfig <-- Configuration
+marketplace.KrakenConfig <-- Configuration
+marketplace.BitstampConfig <-- Configuration
+telegram.TelegramConfig <-- Configuration
+core.TriggerSpec <-- Configuration
+
+YamlConfiguration --> dateutil
+YamlConfiguration --> yaml
+
 
 configuration --> appdirs
 
