@@ -13,11 +13,6 @@ from .interface import Marketplace
 from .interface import TickerError
 from .interface import WithdrawalError
 
-mapping_normal_to_kraken = {"BTC": "XBT"}
-mapping_kraken_to_normal = {
-    kraken: normal for normal, kraken in mapping_normal_to_kraken.items()
-}
-
 
 class KrakenexInterface(Protocol):
     def query_public(self, command: str, parameters: Dict = None) -> Dict:
@@ -25,6 +20,12 @@ class KrakenexInterface(Protocol):
 
     def query_private(self, command: str, parameters: Dict = None) -> Dict:
         raise NotImplementedError()
+
+
+mapping_normal_to_kraken = {"BTC": "XBT"}
+mapping_kraken_to_normal = {
+    kraken: normal for normal, kraken in mapping_normal_to_kraken.items()
+}
 
 
 def map_normal_to_kraken(coin: str) -> str:
