@@ -16,10 +16,10 @@ from .interface import WithdrawalError
 
 class KrakenexInterface(Protocol):
     def query_public(self, command: str, parameters: Dict = None) -> Dict:
-        raise NotImplementedError()
+        raise NotImplementedError()  # pragma: no cover
 
     def query_private(self, command: str, parameters: Dict = None) -> Dict:
-        raise NotImplementedError()
+        raise NotImplementedError()  # pragma: no cover
 
 
 mapping_normal_to_kraken = {"BTC": "XBT"}
