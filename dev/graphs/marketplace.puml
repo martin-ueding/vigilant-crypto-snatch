@@ -27,7 +27,6 @@ core.Price <-- Marketplace
 core.Trade <-- Marketplace
 
 class KrakenexMarketplace implements Marketplace
-KrakenexMarketplace --> krakenex
 
 class BitstampMarketplace implements Marketplace
 BitstampMarketplace --> bitstamp
@@ -63,6 +62,17 @@ class BitstampConfig {
 }
 
 BitstampConfig <-- BitstampMarketplace
+
+interface KrakenexInterface {
+    query_public()
+    query_private()
+}
+
+class KrakenexMock implements KrakenexInterface
+
+KrakenexMarketplace --> KrakenexInterface
+
+KrakenexInterface <|.. krakenex
 
 }
 

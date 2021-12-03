@@ -1,0 +1,10 @@
+@startuml
+allowmixing
+namespace myrequests {
+    component requests
+    class MyRequests {
+        {static} perform_http_request()
+    }
+    MyRequests --> requests
+}
+@enduml

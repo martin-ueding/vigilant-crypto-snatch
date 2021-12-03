@@ -3,7 +3,6 @@
 allowmixing
 
 namespace telegram {
-component requests
 
 class TelegramConfig {
     token: str
@@ -31,8 +30,9 @@ class TelegramSender {
 TelegramConfig <-- TelegramSender
 
 TelegramLogger -> TelegramSender
-TelegramSender --> requests
+myrequests.MyRequests <-- TelegramSender
 TelegramSender -> TelegramBotException
+paths.Paths <-- TelegramSender
 
 }
 @enduml

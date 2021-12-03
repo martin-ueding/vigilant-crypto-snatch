@@ -385,6 +385,13 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#my-requests" class="md-nav__link">
+    My Requests
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#historical" class="md-nav__link">
     Historical
   </a>
@@ -394,6 +401,13 @@
         <li class="md-nav__item">
   <a href="#triggers" class="md-nav__link">
     Triggers
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#paths" class="md-nav__link">
+    Paths
   </a>
   
 </li>
@@ -520,6 +534,13 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#my-requests" class="md-nav__link">
+    My Requests
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#historical" class="md-nav__link">
     Historical
   </a>
@@ -529,6 +550,13 @@
         <li class="md-nav__item">
   <a href="#triggers" class="md-nav__link">
     Triggers
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#paths" class="md-nav__link">
+    Paths
   </a>
   
 </li>
@@ -578,7 +606,7 @@
 <p>This project aims to be organized according to the <a href="https://blog.cleancoder.com/uncle-bob/2012/08/13/the-clean-architecture.html"><em>Clean Architecture</em></a>. There are many components, and they only depend on each other in a acyclic way.</p>
 <p>On this page we will go through all the components and how they interact with each other. This shall give you an overview of the architecture of this software.</p>
 <h2 id="core">Core</h2>
-<p>At the center there are the core entities, the data classes which don't depend on anything else. These are the classes representing <code>Price</code> and <code>Trade</code>, as well as the specification for the triggers, the <code>TriggerSpec</code>.</p>
+<p>At the center there are the core entities, the data classes which don't depend on anything else. These are the classes representing <code>Price</code> and <code>Trade</code>.</p>
 <p><a href="../graphs/core.svg"><img alt="" src="../graphs/core.svg" /></a></p>
 <p>These are implemented as <code>dataclasses</code>.</p>
 <h2 id="datastore">Datastore</h2>
@@ -589,15 +617,22 @@
 <p>Since we buy crypto currency, we need to have a marketplace. This is also hidden behind the <code>Marketplace</code> interface which offers a few functions. It is not a complete wrapper of any particular marketplace, but just what we need in this project.</p>
 <p><a href="../graphs/marketplace.svg"><img alt="" src="../graphs/marketplace.svg" /></a></p>
 <p>There are two concrete implementations, namely for the Kraken and Bitstamp exchanges. These implementations depend on the external libraries. Again the remainder of the code only depends on the interface.</p>
+<h2 id="my-requests">My Requests</h2>
+<p>There are multiple parts in the code where I need to issue HTTP requests. For this the <code>requests</code> library is an excellent choice. I just don't want the exception handling to spill all over my code, so I wrap it and just catch all possible exceptions there.</p>
+<p><a href="../graphs/myrequests.svg"><img alt="" src="../graphs/myrequests.svg" /></a></p>
 <h2 id="historical">Historical</h2>
 <p>In order to find drops, we need to know the prices in the past. These are provided by a historical source, which delivers price objects.</p>
 <p><a href="../graphs/historical.svg"><img alt="" src="../graphs/historical.svg" /></a></p>
 <p>There are many different implementations. One just asks the marketplace for the current price, that only works when the specified time is right now. For older times we can have a look into the database. But if there is no appropriate price available, it will ask on Crypto Compare. To the remainder of the program everything is hidden behind that interface.</p>
 <h2 id="triggers">Triggers</h2>
-<p>The triggers get specified by the user. I have generalized the trigger concept such that it just handles regular actions. These also include database cleaning and sending a Telegram notification.</p>
+<p>The triggers get specified by the user. I have generalized the trigger concept such that it just handles regular actions. These also include database cleaning and sending a Telegram notification. For the buy triggers there is a specification, the <code>TriggerSpec</code>.</p>
 <p><a href="../graphs/triggers.svg"><img alt="" src="../graphs/triggers.svg" /></a></p>
 <p>The buy trigger uses two <em>delegates</em> as part of the <em>strategy pattern</em>. One is used to determine the amount of fiat money to spend, the other is whether the trigger should be considered active. This lets us mix and match these algorithms without having an exploding inheritance hierarchy.</p>
 <p>Dependencies to other parts of the code are via the interfaces only, this way it is decoupled.</p>
+<h2 id="paths">Paths</h2>
+<p>We need to know where to store and load configuration files, database files and cached information. For this we have the collected the paths in a module.</p>
+<p><a href="../graphs/paths.svg"><img alt="" src="../graphs/paths.svg" /></a></p>
+<p>This uses the <code>appdir</code> library to get user directories in a system independent manner.</p>
 <h2 id="configuration">Configuration</h2>
 <p>The configuration shall be independent of the file format used, it should provide some migrations and so on. All the parsing should be done there as well. At the moment I have a bunch of free functions, and they pass around lists and dicts.</p>
 <p><a href="../graphs/configuration.svg"><img alt="" src="../graphs/configuration.svg" /></a></p>

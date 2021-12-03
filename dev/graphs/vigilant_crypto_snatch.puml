@@ -8,6 +8,7 @@
 !include datastore.puml
 !include historical.puml
 !include marketplace.puml
+!include paths.puml
 !include telegram.puml
 !include triggers.puml
 

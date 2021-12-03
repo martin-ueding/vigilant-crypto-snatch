@@ -3,7 +3,6 @@
 allowmixing
 
 namespace configuation {
-component appdirs
 component yaml
 component dateutil
 
@@ -27,7 +26,10 @@ YamlConfiguration --> dateutil
 YamlConfiguration --> yaml
 
 
-configuration --> appdirs
+paths.Paths <-- YamlConfiguration
 
 }
+
+
+
 @enduml
