@@ -8,7 +8,6 @@ import krakenex
 from .. import logger
 from ..core import Price
 from .interface import BuyError
-from .interface import check_and_perform_widthdrawal
 from .interface import KrakenConfig
 from .interface import Marketplace
 from .interface import TickerError
@@ -82,7 +81,6 @@ class KrakenexMarketplace(Marketplace):
         }
         answer = self.handle.query_private("AddOrder", arguments)
         raise_error(answer, BuyError)
-        check_and_perform_widthdrawal(self)
 
     def get_withdrawal_fee(self, coin: str, volume: float) -> float:
         target = self.withdrawal_config[coin].target

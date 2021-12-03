@@ -4,6 +4,7 @@ from typing import Dict
 
 import pytest
 
+from .interface import BuyError
 from .interface import KrakenConfig
 from .interface import TickerError
 from .krakenex_adaptor import KrakenexMarketplace
@@ -114,3 +115,41 @@ def test_balance_error() -> None:
     market = KrakenexMarketplace(config, krakenex_interface)
     with pytest.raises(TickerError):
         market.get_balance()
+
+
+def test_place_order_success() -> None:
+    def mock_add_order(parameters: Dict) -> Dict:
+        assert parameters["pair"] == "XBTEUR"
+        assert parameters["ordertype"] == "market"
+        assert parameters["type"] == "buy"
+        assert parameters["volume"] == "100.0"
+        assert parameters["oflags"] == "fciq"
+
+        return {
+            "error": [],
+            "result": {
+                "descr": {
+                    "order": "buy 2.12340000 XBTUSD @ limit 45000.1 with 2:1 leverage",
+                    "close": "close position @ stop loss 38000.0 -> limit 36000.0",
+                },
+                "txid": ["OUF4EM-FRGI2-MQMWZD"],
+            },
+        }
+
+    krakenex_interface = KrakenexMock({"AddOrder": mock_add_order})
+    config = KrakenConfig("mock", "mock", False, {})
+    market = KrakenexMarketplace(config, krakenex_interface)
+    market.place_order("BTC", "EUR", 100.0)
+
+
+def test_place_order_error() -> None:
+    def mock_add_order(parameters: Dict) -> Dict:
+        return {
+            "error": ["EOrder:Insufficient funds"],
+        }
+
+    krakenex_interface = KrakenexMock({"AddOrder": mock_add_order})
+    config = KrakenConfig("mock", "mock", False, {})
+    market = KrakenexMarketplace(config, krakenex_interface)
+    with pytest.raises(BuyError):
+        market.place_order("BTC", "EUR", 100.0)

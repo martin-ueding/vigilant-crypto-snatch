@@ -10,6 +10,7 @@ from vigilant_crypto_snatch import marketplace
 from vigilant_crypto_snatch.core import Trade
 from vigilant_crypto_snatch.datastorage.interface import Datastore
 from vigilant_crypto_snatch.historical.interface import HistoricalSource
+from vigilant_crypto_snatch.marketplace.interface import check_and_perform_widthdrawal
 from vigilant_crypto_snatch.marketplace.interface import Marketplace
 from vigilant_crypto_snatch.marketplace.interface import report_balances
 from vigilant_crypto_snatch.triggers.interface import Trigger
@@ -99,6 +100,12 @@ class BuyTrigger(Trigger, abc.ABC):
         self, volume_coin: float, volume_fiat: float, now: datetime.datetime
     ) -> None:
         self.market.place_order(self.coin, self.fiat, volume_coin)
+        try:
+            check_and_perform_widthdrawal(self.market)
+        except NotImplementedError as e:
+            logger.warning(
+                f"Marketplace {self.market.get_name()} doesn't support withdrawal."
+            )
         trade = Trade(
             timestamp=now,
             trigger_name=self.get_name(),
