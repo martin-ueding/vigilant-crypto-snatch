@@ -46,6 +46,14 @@ The buy trigger uses two *delegates* as part of the *strategy pattern*. One is u
 
 Dependencies to other parts of the code are via the interfaces only, this way it is decoupled.
 
+## Paths
+
+We need to know where to store and load configuration files, database files and cached information. For this we have the collected the paths in a module.
+
+[![](graphs/paths.svg)](graphs/paths.svg)
+
+This uses the `appdir` library to get user directories in a system independent manner.
+
 ## Configuration
 
 The configuration shall be independent of the file format used, it should provide some migrations and so on. All the parsing should be done there as well. At the moment I have a bunch of free functions, and they pass around lists and dicts.
