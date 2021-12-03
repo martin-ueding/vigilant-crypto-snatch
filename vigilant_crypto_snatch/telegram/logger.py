@@ -2,7 +2,6 @@ import logging
 from typing import Optional
 
 from .. import logger
-from ..configuration.yaml_configuration import update_config
 from .sender import TelegramConfig
 from .sender import TelegramSender
 

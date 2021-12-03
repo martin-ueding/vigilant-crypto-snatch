@@ -10,8 +10,8 @@ import streamlit as st
 import streamlit.cli as st_cli
 
 from vigilant_crypto_snatch.configuration import migrations
-from vigilant_crypto_snatch.configuration.yaml_configuration import parse_trigger_spec
-from vigilant_crypto_snatch.configuration.yaml_configuration import YamlConfiguration
+from vigilant_crypto_snatch.configuration import parse_trigger_spec
+from vigilant_crypto_snatch.configuration import YamlConfiguration
 from vigilant_crypto_snatch.datastorage.factory import make_datastore
 from vigilant_crypto_snatch.datastorage.interface import Datastore
 from vigilant_crypto_snatch.evaluation import drop_survey

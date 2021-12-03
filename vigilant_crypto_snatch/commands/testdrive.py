@@ -6,7 +6,6 @@ from .. import logger
 from ..configuration import Configuration
 from ..configuration import get_used_currencies
 from ..configuration import run_migrations
-from ..configuration import user_db_path
 from ..configuration import YamlConfiguration
 from ..core import TriggerSpec
 from ..datastorage.factory import make_datastore
@@ -14,10 +13,10 @@ from ..datastorage.list_store import ListDatastore
 from ..historical.concrete import CryptoCompareConfig
 from ..historical.concrete import CryptoCompareHistoricalSource
 from ..historical.mock import MockHistorical
-from ..marketplace.bitstamp_adaptor import BitstampMarketplace
+from ..marketplace.factory import make_marketplace
 from ..marketplace.interface import report_balances
-from ..marketplace.krakenex_adaptor import KrakenexMarketplace
 from ..marketplace.mock import MockMarketplace
+from ..paths import user_db_path
 from ..telegram.sender import TelegramConfig
 from ..telegram.sender import TelegramSender
 from ..triggers.factory import make_triggers
@@ -45,16 +44,6 @@ def try_balance(config: Configuration, marketplace_name: str) -> None:
     logger.info("Trying get balances from marketplace …")
     real_market = make_marketplace(config, marketplace_name)
     report_balances(real_market, get_used_currencies(config.get_trigger_config()))
-
-
-def make_marketplace(config, marketplace_name):
-    if marketplace_name == "bitstamp":
-        real_market = BitstampMarketplace(config.get_bitstamp_config())
-    elif marketplace_name == "kraken":
-        real_market = KrakenexMarketplace(config.get_kraken_config())
-    else:
-        raise RuntimeError(f"Unsupported marketplace: {marketplace_name}")
-    return real_market
 
 
 def try_historical(config: CryptoCompareConfig) -> None:

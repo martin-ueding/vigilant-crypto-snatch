@@ -8,7 +8,7 @@ from typing import Optional
 import requests
 
 from .. import logger
-from ..configuration.paths import chat_id_path
+from ..paths import chat_id_path
 
 
 @dataclasses.dataclass()

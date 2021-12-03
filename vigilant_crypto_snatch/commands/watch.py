@@ -1,17 +1,17 @@
 import datetime
 
-from ..configuration.interface import Configuration
-from ..configuration.interface import get_used_currencies
-from ..configuration.migrations import run_migrations
-from ..configuration.paths import user_db_path
-from ..configuration.yaml_configuration import YamlConfiguration
+from ..configuration import get_used_currencies
+from ..configuration import run_migrations
+from ..configuration import YamlConfiguration
 from ..datastorage.factory import make_datastore
 from ..historical.concrete import CachingHistoricalSource
 from ..historical.concrete import CryptoCompareHistoricalSource
 from ..historical.concrete import DatabaseHistoricalSource
 from ..historical.concrete import MarketSource
+from ..marketplace.factory import make_marketplace
 from ..marketplace.interface import check_and_perform_widthdrawal
 from ..marketplace.interface import report_balances
+from ..paths import user_db_path
 from ..telegram.logger import add_telegram_logger
 from ..triggers.factory import make_triggers
 from ..watchloop import TriggerLoop
