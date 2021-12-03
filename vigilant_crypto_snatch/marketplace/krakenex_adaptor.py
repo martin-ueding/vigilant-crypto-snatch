@@ -1,5 +1,6 @@
 import datetime
 from typing import Dict
+from typing import Optional
 from typing import Type
 
 import krakenex
@@ -20,11 +21,17 @@ mapping_kraken_to_normal = {
 
 
 class KrakenexMock:
-    def query_public(self, command: str, parameters: Dict):
+    def query_public(self, command: str, parameters: Dict = None) -> Dict:
         if command == "Ticker":
-            self._ticker(parameters)
+            assert parameters
+            return self._ticker(parameters)
+        else:
+            raise NotImplementedError()
 
-    def _ticker(self, parameters: Dict):
+    def query_private(self, command: str, parameters: Dict = None) -> Dict:
+        raise NotImplementedError()
+
+    def _ticker(self, parameters: Dict) -> Dict:
         if parameters["pair"] in ["XBTEUR", "BTCEUR", "XXBTZEUR"]:
             return {
                 "error": [],
@@ -58,7 +65,10 @@ def map_kraken_to_normal(coin: str) -> str:
 
 class KrakenexMarketplace(Marketplace):
     def __init__(self, config: KrakenConfig):
-        self.handle = krakenex.API(config.key, config.secret)
+        if config.key == "mock":
+            self.handle = KrakenexMock()
+        else:
+            self.handle = krakenex.API(config.key, config.secret)
         self.withdrawal_config = config.withdrawal
         self.prefer_fee_in_base_currency = config.prefer_fee_in_base_currency
 
