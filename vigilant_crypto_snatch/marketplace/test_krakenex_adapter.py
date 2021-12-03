@@ -6,6 +6,7 @@ import pytest
 
 from .interface import BuyError
 from .interface import KrakenConfig
+from .interface import KrakenWithdrawalConfig
 from .interface import TickerError
 from .krakenex_adaptor import KrakenexMarketplace
 
@@ -95,6 +96,19 @@ def stub_add_order_error(parameters: Dict) -> Dict:
     }
 
 
+def stub_withdraw_info_success(parameters: Dict) -> Dict:
+    assert parameters["asset"] == "XBT"
+    return {
+        "error": [],
+        "result": {
+            "method": "Bitcoin",
+            "limit": "332.00956139",
+            "amount": "0.72485000",
+            "fee": "0.00015000",
+        },
+    }
+
+
 def test_get_name() -> None:
     config = KrakenConfig("mock", "mock", False, {})
     market = KrakenexMarketplace(config)
@@ -159,3 +173,12 @@ def test_place_order_error() -> None:
     market = KrakenexMarketplace(config, krakenex_interface)
     with pytest.raises(BuyError):
         market.place_order("BTC", "EUR", 100.0)
+
+
+def test_withdawal_fee_success() -> None:
+    krakenex_interface = KrakenexMock({"WithdrawInfo": stub_withdraw_info_success})
+    config = KrakenConfig(
+        "mock", "mock", False, {"BTC": KrakenWithdrawalConfig("BTC", "target", 0.01)}
+    )
+    market = KrakenexMarketplace(config, krakenex_interface)
+    assert market.get_withdrawal_fee("BTC", 100.0) == 0.00015000
