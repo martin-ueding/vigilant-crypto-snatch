@@ -13,7 +13,7 @@ from ..marketplace import make_marketplace
 from ..marketplace import report_balances
 from ..paths import user_db_path
 from ..telegram import add_telegram_logger
-from ..triggers.factory import make_triggers
+from ..triggers import make_triggers
 from ..watchloop import TriggerLoop
 
 

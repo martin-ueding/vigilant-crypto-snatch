@@ -19,7 +19,7 @@ from ..marketplace import report_balances
 from ..paths import user_db_path
 from ..telegram import TelegramConfig
 from ..telegram import TelegramSender
-from ..triggers.factory import make_triggers
+from ..triggers import make_triggers
 
 
 def main(marketplace_name) -> None:

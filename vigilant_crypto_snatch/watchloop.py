@@ -11,7 +11,7 @@ from .datastorage import DatastoreException
 from .marketplace import BuyError
 from .marketplace import TickerError
 from .telegram import get_sender
-from .triggers.interface import Trigger
+from .triggers import Trigger
 
 
 class TriggerLoop(object):
