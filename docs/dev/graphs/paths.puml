@@ -1,0 +1,6 @@
+
+namespace paths {
+    component appdirs
+    class Paths
+    Paths --> appdirs
+}
