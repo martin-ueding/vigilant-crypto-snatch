@@ -12,7 +12,7 @@ user_db_path = os.path.join(dirs.user_data_dir, "db.sqlite")
 chat_id_path = pathlib.Path(dirs.user_data_dir) / "telegram_chat_id.json"
 
 
-def report_app_dirs() -> None:
+def report_app_dirs() -> None:  # pragma: no cover
     print(f"user_config_dir: {dirs.user_config_dir}")
     print(f"user_log_dir: {dirs.user_log_dir}")
     print(f"user_data_dir: {dirs.user_data_dir}")
