@@ -74,11 +74,18 @@ def test_get_spot_price_error() -> None:
 
 
 def test_balance_full() -> None:
-    def balance(self) -> Dict:
+    def mock_balance(parameters: Dict) -> Dict:
         return {
             "error": [],
             "result": {
-                "ZEUR": "504861.8946",
-                "XXBT": "504861.8946",
+                "ZEUR": "6789.1234",
+                "XXBT": "1234.5678",
             },
         }
+
+    krakenex_interface = KrakenexMock({"Balance": mock_balance})
+    config = KrakenConfig("mock", "mock", False, {})
+    market = KrakenexMarketplace(config, krakenex_interface)
+    now = datetime.datetime.now()
+    balances = market.get_balance()
+    assert balances == {"EUR": 6789.1234, "BTC": 1234.5678}
