@@ -24,6 +24,77 @@ class KrakenexMock:
         return self.methods[command](parameters)
 
 
+def stub_ticker_success(parameters: Dict) -> Dict:
+    assert parameters["pair"] in ["XBTEUR", "BTCEUR", "XXBTZEUR"]
+    return {
+        "error": [],
+        "result": {
+            "XXBTZEUR": {
+                "a": ["50162.20000", "1", "1.000"],
+                "b": ["50162.10000", "2", "2.000"],
+                "c": ["50162.20000", "0.00196431"],
+                "v": ["1194.93544125", "3142.87839034"],
+                "p": ["50218.07897", "50141.26546"],
+                "t": [7355, 32353],
+                "l": ["49750.00000", "49517.80000"],
+                "h": ["50552.70000", "50657.00000"],
+                "o": "50023.50000",
+            }
+        },
+    }
+
+
+def stub_ticker_error(parameters: Dict) -> Dict:
+    return {"error": ["EQuery:Unknown asset pair"]}
+
+
+def stub_balance_full(parameters: Dict) -> Dict:
+    return {
+        "error": [],
+        "result": {
+            "ZEUR": "6789.1234",
+            "XXBT": "1234.5678",
+        },
+    }
+
+
+def stub_balance_empty(parameters: Dict) -> Dict:
+    return {
+        "error": [],
+    }
+
+
+def stub_balance_error(parameters: Dict) -> Dict:
+    return {
+        "error": ["Some error"],
+    }
+
+
+def stub_add_order_success(parameters: Dict) -> Dict:
+    assert parameters["pair"] == "XBTEUR"
+    assert parameters["ordertype"] == "market"
+    assert parameters["type"] == "buy"
+    assert parameters["volume"] == "100.0"
+    assert parameters["oflags"] == "fciq"
+
+    return {
+        "error": [],
+        "result": {
+            "descr": {
+                "order": "buy 2.12340000 XBTUSD @ limit 45000.1 with 2:1 leverage",
+                "close": "close position @ stop loss 38000.0 -> limit 36000.0",
+            },
+            "txid": ["OUF4EM-FRGI2-MQMWZD"],
+        },
+    }
+
+
+def stub_add_order_error(parameters: Dict) -> Dict:
+    return {
+        "error": ["EOrder:Insufficient funds"],
+    }
+
+
 def test_get_name() -> None:
     config = KrakenConfig("mock", "mock", False, {})
     market = KrakenexMarketplace(config)
@@ -31,27 +102,7 @@ def test_get_name() -> None:
 
 
 def test_get_spot_price_success() -> None:
-    def ticker(parameters: Dict) -> Dict:
-        assert parameters["pair"] in ["XBTEUR", "BTCEUR", "XXBTZEUR"]
-        return {
-            "error": [],
-            "result": {
-                "XXBTZEUR": {
-                    "a": ["50162.20000", "1", "1.000"],
-                    "b": ["50162.10000", "2", "2.000"],
-                    "c": ["50162.20000", "0.00196431"],
-                    "v": ["1194.93544125", "3142.87839034"],
-                    "p": ["50218.07897", "50141.26546"],
-                    "t": [7355, 32353],
-                    "l": ["49750.00000", "49517.80000"],
-                    "h": ["50552.70000", "50657.00000"],
-                    "o": "50023.50000",
-                }
-            },
-        }
-
-    krakenex_interface = KrakenexMock({"Ticker": ticker})
-
+    krakenex_interface = KrakenexMock({"Ticker": stub_ticker_success})
     config = KrakenConfig("mock", "mock", False, {})
     market = KrakenexMarketplace(config, krakenex_interface)
     now = datetime.datetime.now()
@@ -63,10 +114,7 @@ def test_get_spot_price_success() -> None:
 
 
 def test_get_spot_price_error() -> None:
-    def ticker(parameters: Dict) -> Dict:
-        return {"error": ["EQuery:Unknown asset pair"]}
-
-    krakenex_interface = KrakenexMock({"Ticker": ticker})
+    krakenex_interface = KrakenexMock({"Ticker": stub_ticker_error})
     config = KrakenConfig("mock", "mock", False, {})
     market = KrakenexMarketplace(config, krakenex_interface)
     now = datetime.datetime.now()
@@ -75,16 +123,7 @@ def test_get_spot_price_error() -> None:
 
 
 def test_balance_full() -> None:
-    def mock_balance(parameters: Dict) -> Dict:
-        return {
-            "error": [],
-            "result": {
-                "ZEUR": "6789.1234",
-                "XXBT": "1234.5678",
-            },
-        }
-
-    krakenex_interface = KrakenexMock({"Balance": mock_balance})
+    krakenex_interface = KrakenexMock({"Balance": stub_balance_full})
     config = KrakenConfig("mock", "mock", False, {})
     market = KrakenexMarketplace(config, krakenex_interface)
     balances = market.get_balance()
@@ -92,12 +131,7 @@ def test_balance_full() -> None:
 
 
 def test_balance_empty() -> None:
-    def mock_balance(parameters: Dict) -> Dict:
-        return {
-            "error": [],
-        }
-
-    krakenex_interface = KrakenexMock({"Balance": mock_balance})
+    krakenex_interface = KrakenexMock({"Balance": stub_balance_empty})
     config = KrakenConfig("mock", "mock", False, {})
     market = KrakenexMarketplace(config, krakenex_interface)
     balances = market.get_balance()
@@ -105,12 +139,7 @@ def test_balance_empty() -> None:
 
 
 def test_balance_error() -> None:
-    def mock_balance(parameters: Dict) -> Dict:
-        return {
-            "error": ["Some error"],
-        }
-
-    krakenex_interface = KrakenexMock({"Balance": mock_balance})
+    krakenex_interface = KrakenexMock({"Balance": stub_balance_error})
     config = KrakenConfig("mock", "mock", False, {})
     market = KrakenexMarketplace(config, krakenex_interface)
     with pytest.raises(TickerError):
@@ -118,37 +147,14 @@ def test_balance_error() -> None:
 
 
 def test_place_order_success() -> None:
-    def mock_add_order(parameters: Dict) -> Dict:
-        assert parameters["pair"] == "XBTEUR"
-        assert parameters["ordertype"] == "market"
-        assert parameters["type"] == "buy"
-        assert parameters["volume"] == "100.0"
-        assert parameters["oflags"] == "fciq"
-
-        return {
-            "error": [],
-            "result": {
-                "descr": {
-                    "order": "buy 2.12340000 XBTUSD @ limit 45000.1 with 2:1 leverage",
-                    "close": "close position @ stop loss 38000.0 -> limit 36000.0",
-                },
-                "txid": ["OUF4EM-FRGI2-MQMWZD"],
-            },
-        }
-
-    krakenex_interface = KrakenexMock({"AddOrder": mock_add_order})
+    krakenex_interface = KrakenexMock({"AddOrder": stub_add_order_success})
     config = KrakenConfig("mock", "mock", False, {})
     market = KrakenexMarketplace(config, krakenex_interface)
     market.place_order("BTC", "EUR", 100.0)
 
 
 def test_place_order_error() -> None:
-    def mock_add_order(parameters: Dict) -> Dict:
-        return {
-            "error": ["EOrder:Insufficient funds"],
-        }
-
-    krakenex_interface = KrakenexMock({"AddOrder": mock_add_order})
+    krakenex_interface = KrakenexMock({"AddOrder": stub_add_order_error})
     config = KrakenConfig("mock", "mock", False, {})
     market = KrakenexMarketplace(config, krakenex_interface)
     with pytest.raises(BuyError):
