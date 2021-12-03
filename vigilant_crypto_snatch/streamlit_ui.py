@@ -5,7 +5,6 @@ import sys
 import altair as alt
 import numpy as np
 import pandas as pd
-import requests
 import streamlit as st
 import streamlit.cli as st_cli
 
@@ -20,17 +19,18 @@ from vigilant_crypto_snatch.evaluation import make_dataframe_from_json
 from vigilant_crypto_snatch.evaluation import SimulationMarketplace
 from vigilant_crypto_snatch.historical import get_hourly_data
 from vigilant_crypto_snatch.historical import HistoricalError
+from vigilant_crypto_snatch.myrequests import perform_http_request
 from vigilant_crypto_snatch.triggers import BuyTrigger
 from vigilant_crypto_snatch.triggers import make_buy_trigger
 
 
 def get_currency_pairs(api_key: str) -> list:
-    r = requests.get(
+    r = perform_http_request(
         f"https://min-api.cryptocompare.com/data/v2/pair/mapping/exchange"
         f"?e=Kraken"
         f"&api_key={api_key}"
     )
-    data = r.json()["Data"]["current"]
+    data = r["Data"]["current"]
     pairs = [(e["fsym"], e["tsym"]) for e in data]
     return pairs
 

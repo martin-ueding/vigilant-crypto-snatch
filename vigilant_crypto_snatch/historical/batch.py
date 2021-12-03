@@ -3,9 +3,8 @@ import json
 import os
 from typing import List
 
-import requests
-
 from .. import logger
+from ..myrequests import perform_http_request
 
 
 def get_hourly_data(coin: str, fiat: str, api_key: str) -> List[dict]:
@@ -28,8 +27,8 @@ def get_hourly_data(coin: str, fiat: str, api_key: str) -> List[dict]:
         f"&fsym={coin}&tsym={fiat}"
         f"&limit=2000&toTs={timestamp}"
     )
-    r = requests.get(url)
-    data = r.json()["Data"]
+    r = perform_http_request(url)
+    data = r["Data"]
     with open(cache_file, "w") as f:
         json.dump(data, f)
     return data

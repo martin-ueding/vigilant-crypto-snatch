@@ -2,12 +2,12 @@ import dataclasses
 import datetime
 from typing import List
 
-import requests
-
 from .. import logger
 from ..core import Price
 from ..datastorage import Datastore
 from ..marketplace import Marketplace
+from ..myrequests import HttpRequestError
+from ..myrequests import perform_http_request
 from .interface import HistoricalError
 from .interface import HistoricalSource
 
@@ -27,14 +27,9 @@ class CryptoCompareHistoricalSource(HistoricalSource):
         kind = self.get_kind(when)
         url = self.base_url(kind, coin, fiat) + f"&limit=1&toTs={timestamp}"
         try:
-            r = requests.get(url)
-        except requests.exceptions.ConnectionError as e:
-            raise HistoricalError(e)
-        if r.status_code != 200:
-            raise HistoricalError(
-                f"The historical API has not returned a success: {r.status_code}"
-            )
-        j = r.json()
+            j = perform_http_request(url)
+        except HttpRequestError as e:
+            raise HistoricalError() from e
         if len(j["Data"]) == 0:
             raise HistoricalError(
                 f"There is no payload from the historical API: {str(j)}"

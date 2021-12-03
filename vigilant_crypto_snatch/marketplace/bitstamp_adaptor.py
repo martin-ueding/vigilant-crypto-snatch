@@ -26,17 +26,17 @@ class BitstampMarketplace(Marketplace):
             )
             pprint.pprint(response, compact=True, width=100)
         except bitstamp.client.BitstampError as e:
-            raise BuyError(str(e))
+            raise BuyError() from e
 
     def get_spot_price(self, coin: str, fiat: str, now: datetime.datetime) -> Price:
         try:
             ticker = self.public_client.ticker(base=coin, quote=fiat)
         except requests.exceptions.ChunkedEncodingError as e:
-            raise TickerError(str(e))
+            raise TickerError() from e
         except requests.exceptions.HTTPError as e:
-            raise TickerError(str(e))
+            raise TickerError() from e
         except urllib3.exceptions.ProtocolError as e:
-            raise TickerError(str(e))
+            raise TickerError() from e
         else:
             now = datetime.datetime.fromtimestamp(int(ticker["timestamp"]))
             price = Price(timestamp=now, last=ticker["last"], coin=coin, fiat=fiat)

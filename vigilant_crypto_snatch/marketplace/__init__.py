@@ -7,4 +7,5 @@ from .interface import KrakenWithdrawalConfig
 from .interface import Marketplace
 from .interface import report_balances
 from .interface import TickerError
+from .interface import WithdrawalError
 from .mock import MockMarketplace

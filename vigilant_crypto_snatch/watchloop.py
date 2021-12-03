@@ -4,12 +4,12 @@ import time
 import traceback
 import typing
 
-import requests.exceptions
-
 from . import logger
 from .datastorage import DatastoreException
 from .marketplace import BuyError
 from .marketplace import TickerError
+from .marketplace import WithdrawalError
+from .myrequests import HttpRequestError
 from .telegram import get_sender
 from .triggers import Trigger
 
@@ -51,19 +51,14 @@ def process_trigger(trigger: Trigger):
         now = datetime.datetime.now()
         if trigger.has_cooled_off(now) and trigger.is_triggered(now):
             trigger.fire(now)
+    except HttpRequestError as e:
+        notify_and_continue(e, logging.ERROR)
     except TickerError as e:
         notify_and_continue(e, logging.ERROR)
     except BuyError as e:
         notify_and_continue(e, logging.CRITICAL)
-    except requests.exceptions.ReadTimeout as e:
-        logger.error(
-            f"We have had a read timeout, likely just a temporary internet or API availability glitch."
-            f"Details: {e}"
-        )
-    except requests.exceptions.ConnectionError as e:
-        notify_and_continue(e, logging.ERROR)
-    except requests.exceptions.HTTPError as e:
-        notify_and_continue(e, logging.ERROR)
+    except WithdrawalError as e:
+        notify_and_continue(e, logging.CRITICAL)
     except DatastoreException as e:
         notify_and_continue(e, logging.ERROR)
     except KeyboardInterrupt:

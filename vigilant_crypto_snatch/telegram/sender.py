@@ -5,9 +5,9 @@ import threading
 from typing import List
 from typing import Optional
 
-import requests
-
 from .. import logger
+from ..myrequests import HttpRequestError
+from ..myrequests import perform_http_request
 from ..paths import chat_id_path
 
 
@@ -66,7 +66,9 @@ class TelegramSender(object):
                         message = self.queue[0]
                         self.send_message(message)
                         del self.queue[0]
-                    except requests.exceptions.ConnectionError as e:
+                    except TelegramBotException:
+                        pass
+                    except HttpRequestError:
                         pass
 
     def get_chat_id(self) -> None:
@@ -74,9 +76,9 @@ class TelegramSender(object):
             with open(chat_id_path) as f:
                 self.chat_id = json.load(f)
                 return
-        response = requests.get(f"https://api.telegram.org/bot{self.token}/getUpdates")
-        response.raise_for_status()
-        data = response.json()
+        data = perform_http_request(
+            f"https://api.telegram.org/bot{self.token}/getUpdates"
+        )
         result = data["result"]
         if len(result) == 0:
             logger.critical(
@@ -93,8 +95,7 @@ class TelegramSender(object):
         url = f"https://api.telegram.org/bot{self.token}/sendMessage"
         for chunk in chunk_message(message):
             data = {"chat_id": self.chat_id, "text": chunk}
-            response = requests.post(url, json=data)
-            j = response.json()
+            j = perform_http_request(url, json=data)
             if not j["ok"]:
                 raise TelegramBotException(
                     f"Error sending to telegram. Response: `{json.dumps(j)}`"
