@@ -33,6 +33,7 @@ TelegramConfig <-- TelegramSender
 TelegramLogger -> TelegramSender
 TelegramSender --> requests
 TelegramSender -> TelegramBotException
+paths.Paths <-- TelegramSender
 
 }
 @enduml
