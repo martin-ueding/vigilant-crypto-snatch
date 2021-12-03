@@ -211,3 +211,12 @@ def test_withdrawal_success() -> None:
     market.withdrawal("BTC", 100.0)
     market.withdrawal("BTC", 0.0)
     market.withdrawal("BTC", 0.000001)
+
+
+def test_withdrawal_not_specified() -> None:
+    krakenex_interface = KrakenexMock(
+        {"WithdrawInfo": stub_withdraw_info_success, "Withdraw": stub_withdraw_success}
+    )
+    config = KrakenConfig("mock", "mock", False, {})
+    market = KrakenexMarketplace(config, krakenex_interface)
+    market.withdrawal("BTC", 100.0)
