@@ -37,9 +37,6 @@ The main command is `watch`.  It will monitor the market and place buy orders.
 There are a couple of command line options:
 
 - `--marketplace MARKETPLACE`: We support two marketplaces, you can select either `bitstamp` or `kraken`.
-- `--keepalive`: The program handles various error cases. Sometimes there are exceptions that we haven't encountered yet. When you use the watch subcommand in production, you can specify this option. It will catch *any* exception and just report it. Please [open a ticket](https://github.com/martin-ueding/vigilant-crypto-snatch/issues) when you encounter a new exception type.
-- `--one-shot`: One execute one iteration of the watch loop. This way one can call the program periodically with an external scheduler like Cron.
-- `--dry-run`: The program runs as usual, it just tells the marketplace that orders should not be actually placed. This will let you see whether you have set up everything like you want without actually spending money on trades.
 
 When you want to quit, just press <kbd>Ctrl</kbd>+<kbd>C</kbd>.
 

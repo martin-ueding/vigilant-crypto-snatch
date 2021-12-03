@@ -32,31 +32,13 @@ def main(loglevel) -> None:
     show_default=True,
     help="Marketplace to place orders on.",
 )
-@click.option(
-    "--keepalive/--no-keepalive",
-    default=False,
-    show_default=True,
-    help="Ignore all Exceptions and just report them.",
-)
-@click.option(
-    "--one-shot/--no-one-shot",
-    default=False,
-    show_default=True,
-    help="Only check once and then exit.",
-)
-@click.option(
-    "--dry-run/--no-dry-run",
-    default=False,
-    show_default=True,
-    help="Do not place actual orders to the marketplace.",
-)
-def watch(marketplace, keepalive, one_shot, dry_run):
+def watch(marketplace):
     """
     Watch the market and execute defined triggers.
     """
     from .commands import watch
 
-    watch.main(marketplace, keepalive, one_shot, dry_run)
+    watch.main(marketplace)
 
 
 @main.command()

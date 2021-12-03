@@ -4,6 +4,13 @@ This is a list of changes, from new to older.
 
 ## 4.0 Series
 
+### Version 4.5.0
+
+- Refactor a lot more.
+- Remove `--keepalive` feature, this is on by default now.
+- Remove `--dry-run` feature, use the `test-drive` command instead.
+- Remove `--one-shot` feature, use the loop instead.
+
 ### Version 4.4.4
 
 - The Telegram sender would not shut down gracefully. I have fixed that now.

@@ -19,11 +19,11 @@ from .volume_fiat_delegates import VolumeFiatDelegate
 
 
 def make_buy_triggers(
-    config: List[TriggerSpec], session, source, market, dry_run: bool = False
+    config: List[TriggerSpec], session, source, market
 ) -> List[BuyTrigger]:
     active_triggers = []
     for trigger_spec in config:
-        trigger = make_buy_trigger(session, source, market, trigger_spec, dry_run)
+        trigger = make_buy_trigger(session, source, market, trigger_spec)
         active_triggers.append(trigger)
     return active_triggers
 
@@ -33,7 +33,6 @@ def make_buy_trigger(
     source: HistoricalSource,
     market: Marketplace,
     trigger_spec: TriggerSpec,
-    dry_run: bool = False,
 ) -> BuyTrigger:
     logger.debug(f"Processing trigger spec: {trigger_spec}")
 
@@ -77,7 +76,6 @@ def make_buy_trigger(
         volume_fiat_delegate=volume_fiat_delegate,
         name=trigger_spec.name,
         start=trigger_spec.start,
-        dry_run=dry_run,
     )
     logger.debug(f"Constructed trigger: {result.get_name()}")
     return result
@@ -88,9 +86,8 @@ def make_triggers(
     datastore: Datastore,
     source: HistoricalSource,
     market: Marketplace,
-    dry_run: bool = False,
 ) -> List[Trigger]:
-    buy_triggers = make_buy_triggers(config, datastore, source, market, dry_run)
+    buy_triggers = make_buy_triggers(config, datastore, source, market)
     longest_cooldown = max(
         (
             trigger.triggered_delegate.delay_minutes

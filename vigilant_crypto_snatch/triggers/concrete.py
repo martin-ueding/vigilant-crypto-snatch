@@ -53,7 +53,6 @@ class BuyTrigger(Trigger, abc.ABC):
         volume_fiat_delegate: VolumeFiatDelegate,
         name: Optional[str] = None,
         start: Optional[datetime.datetime] = None,
-        dry_run: bool = False,
     ):
         super().__init__()
         self.datastore = datastore
@@ -67,7 +66,6 @@ class BuyTrigger(Trigger, abc.ABC):
         self.name = name
         self.start = start
         self.failure_timeout = FailureTimeout()
-        self.dry_run = dry_run
 
     def is_triggered(self, now: datetime.datetime) -> bool:
         return self.triggered_delegate.is_triggered(now)

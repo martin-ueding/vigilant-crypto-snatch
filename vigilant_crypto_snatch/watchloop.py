@@ -19,22 +19,14 @@ class TriggerLoop(object):
         self,
         active_triggers: typing.List[Trigger],
         sleep: int,
-        keepalive: bool,
-        one_shot: bool,
     ):
         self.active_triggers = active_triggers
         self.sleep = sleep
-        self.keepalive = keepalive
-        self.one_shot = one_shot
 
     def loop(self) -> None:
         try:
             while True:
                 self.loop_body()
-                if self.one_shot:
-                    if get_sender() is not None:
-                        get_sender().shutdown()
-                    break
         except KeyboardInterrupt:
             logger.info("User interrupted, shutting down.")
             if get_sender() is not None:
@@ -42,10 +34,9 @@ class TriggerLoop(object):
 
     def loop_body(self) -> None:
         for trigger in self.active_triggers:
-            process_trigger(trigger, self.keepalive)
-        if not self.one_shot:
-            logger.debug(f"All triggers checked, sleeping for {self.sleep} seconds …")
-            time.sleep(self.sleep)
+            process_trigger(trigger)
+        logger.debug(f"All triggers checked, sleeping for {self.sleep} seconds …")
+        time.sleep(self.sleep)
 
 
 def notify_and_continue(exception: Exception, severity: int) -> None:
@@ -54,7 +45,7 @@ def notify_and_continue(exception: Exception, severity: int) -> None:
     )
 
 
-def process_trigger(trigger: Trigger, keepalive: bool):
+def process_trigger(trigger: Trigger):
     logger.debug(f"Checking trigger “{trigger.get_name()}” …")
     try:
         now = datetime.datetime.now()
@@ -83,5 +74,3 @@ def process_trigger(trigger: Trigger, keepalive: bool):
             f"\n"
             f"{traceback.format_exc()}\n"
         )
-        if not keepalive:
-            raise
