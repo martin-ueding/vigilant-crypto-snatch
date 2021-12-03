@@ -28,7 +28,7 @@ Since we buy crypto currency, we need to have a marketplace. This is also hidden
 
 There are two concrete implementations, namely for the Kraken and Bitstamp exchanges. These implementations depend on the external libraries. Again the remainder of the code only depends on the interface.
 
-## Myrequests
+## My Requests
 
 There are multiple parts in the code where I need to issue HTTP requests. For this the `requests` library is an excellent choice. I just don't want the exception handling to spill all over my code, so I wrap it and just catch all possible exceptions there.
 
