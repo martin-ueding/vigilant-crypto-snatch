@@ -1,31 +1,54 @@
+default_stages:
+  - commit
 fail_fast: true
 repos:
   - repo: https://github.com/asottile/reorder_python_imports
     rev: v2.5.0
     hooks:
       - id: reorder-python-imports
+        name: Import reordering
   - repo: local
     hooks:
       - id: black
-        name: black
+        name: Code formatting
         entry: poetry run black
         language: system
         files: '.*\.py'
       - id: mypy
-        name: mypy
+        name: Static type checking
         entry: poetry run mypy -p vigilant_crypto_snatch
         language: system
         files: '.*\.py'
         pass_filenames: false
       - id: pytest
-        name: pytest
-        entry: poetry run pytest -vv
+        name: Unit tests
+        entry: poetry run coverage run -m pytest
         pass_filenames: false
         language: system
         files: '.*\.py'
       - id: test-drive
-        name: Test-Drive
+        name: Test drive
         entry: poetry run vigilant-crypto-snatch test-drive
         pass_filenames: false
         language: system
         files: '.*\.py'
+      - id: coverage-xml
+        name: Coverage XML
+        entry: poetry run coverage xml
+        pass_filenames: false
+        language: system
+        files: '.*\.py'
+      - id: coverage-html
+        name: Coverage HTML
+        entry: poetry run coverage html
+        pass_filenames: false
+        language: system
+        files: '.*\.py'
+      - id: codecov
+        name: Upload coverage
+        entry: codecov-full
+        pass_filenames: false
+        language: system
+        files: '.*\.py'
+        stages:
+          - post-commit
