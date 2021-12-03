@@ -3,7 +3,7 @@ import datetime
 from ..configuration import get_used_currencies
 from ..configuration import run_migrations
 from ..configuration import YamlConfiguration
-from ..datastorage.factory import make_datastore
+from ..datastorage import make_datastore
 from ..historical.concrete import CachingHistoricalSource
 from ..historical.concrete import CryptoCompareHistoricalSource
 from ..historical.concrete import DatabaseHistoricalSource

@@ -7,7 +7,7 @@ import typing
 import requests.exceptions
 
 from . import logger
-from .datastorage.interface import DatastoreException
+from .datastorage import DatastoreException
 from .marketplace.interface import BuyError
 from .marketplace.interface import TickerError
 from .telegram.sender import get_sender

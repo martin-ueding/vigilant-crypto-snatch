@@ -12,8 +12,8 @@ import streamlit.cli as st_cli
 from vigilant_crypto_snatch.configuration import migrations
 from vigilant_crypto_snatch.configuration import parse_trigger_spec
 from vigilant_crypto_snatch.configuration import YamlConfiguration
-from vigilant_crypto_snatch.datastorage.factory import make_datastore
-from vigilant_crypto_snatch.datastorage.interface import Datastore
+from vigilant_crypto_snatch.datastorage import Datastore
+from vigilant_crypto_snatch.datastorage import make_datastore
 from vigilant_crypto_snatch.evaluation import drop_survey
 from vigilant_crypto_snatch.evaluation import InterpolatingSource
 from vigilant_crypto_snatch.evaluation import make_dataframe_from_json

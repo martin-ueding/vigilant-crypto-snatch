@@ -8,8 +8,8 @@ from ..configuration import get_used_currencies
 from ..configuration import run_migrations
 from ..configuration import YamlConfiguration
 from ..core import TriggerSpec
-from ..datastorage.factory import make_datastore
-from ..datastorage.list_store import ListDatastore
+from ..datastorage import ListDatastore
+from ..datastorage import make_datastore
 from ..historical.concrete import CryptoCompareConfig
 from ..historical.concrete import CryptoCompareHistoricalSource
 from ..historical.mock import MockHistorical

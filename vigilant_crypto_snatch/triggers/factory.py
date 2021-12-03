@@ -3,7 +3,7 @@ from typing import List
 
 from vigilant_crypto_snatch import logger
 from vigilant_crypto_snatch.core import TriggerSpec
-from vigilant_crypto_snatch.datastorage.interface import Datastore
+from vigilant_crypto_snatch.datastorage import Datastore
 from vigilant_crypto_snatch.historical.interface import HistoricalSource
 from vigilant_crypto_snatch.marketplace.interface import Marketplace
 from vigilant_crypto_snatch.triggers.concrete import BuyTrigger

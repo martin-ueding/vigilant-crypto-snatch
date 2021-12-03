@@ -3,7 +3,7 @@ from typing import Tuple
 
 from vigilant_crypto_snatch.core import Trade
 from vigilant_crypto_snatch.core import TriggerSpec
-from vigilant_crypto_snatch.datastorage.list_store import ListDatastore
+from vigilant_crypto_snatch.datastorage import ListDatastore
 from vigilant_crypto_snatch.historical.mock import MockHistorical
 from vigilant_crypto_snatch.marketplace.mock import MockMarketplace
 from vigilant_crypto_snatch.triggers.concrete import BuyTrigger
