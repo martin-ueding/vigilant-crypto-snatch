@@ -89,3 +89,17 @@ def test_balance_full() -> None:
     now = datetime.datetime.now()
     balances = market.get_balance()
     assert balances == {"EUR": 6789.1234, "BTC": 1234.5678}
+
+
+def test_balance_empty() -> None:
+    def mock_balance(parameters: Dict) -> Dict:
+        return {
+            "error": [],
+        }
+
+    krakenex_interface = KrakenexMock({"Balance": mock_balance})
+    config = KrakenConfig("mock", "mock", False, {})
+    market = KrakenexMarketplace(config, krakenex_interface)
+    now = datetime.datetime.now()
+    balances = market.get_balance()
+    assert balances == {}
