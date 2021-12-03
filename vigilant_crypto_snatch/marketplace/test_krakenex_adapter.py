@@ -209,3 +209,5 @@ def test_withdrawal_success() -> None:
     )
     market = KrakenexMarketplace(config, krakenex_interface)
     market.withdrawal("BTC", 100.0)
+    market.withdrawal("BTC", 0.0)
+    market.withdrawal("BTC", 0.000001)
