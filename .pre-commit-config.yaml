@@ -49,6 +49,5 @@ repos:
         entry: codecov-full
         pass_filenames: false
         language: system
-        files: '.*\.py'
         stages:
           - post-commit
