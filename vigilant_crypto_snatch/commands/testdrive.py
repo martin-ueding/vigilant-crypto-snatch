@@ -3,11 +3,11 @@ from typing import List
 from typing import Optional
 
 from .. import logger
-from ..configuration.interface import Configuration
-from ..configuration.interface import get_used_currencies
-from ..configuration.migrations import run_migrations
-from ..configuration.paths import user_db_path
-from ..configuration.yaml_configuration import YamlConfiguration
+from ..configuration import Configuration
+from ..configuration import get_used_currencies
+from ..configuration import run_migrations
+from ..configuration import user_db_path
+from ..configuration import YamlConfiguration
 from ..core import TriggerSpec
 from ..datastorage.factory import make_datastore
 from ..datastorage.list_store import ListDatastore
