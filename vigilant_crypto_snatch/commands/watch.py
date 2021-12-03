@@ -8,9 +8,9 @@ from ..historical import CachingHistoricalSource
 from ..historical import CryptoCompareHistoricalSource
 from ..historical import DatabaseHistoricalSource
 from ..historical import MarketSource
-from ..marketplace.factory import make_marketplace
-from ..marketplace.interface import check_and_perform_widthdrawal
-from ..marketplace.interface import report_balances
+from ..marketplace import check_and_perform_widthdrawal
+from ..marketplace import make_marketplace
+from ..marketplace import report_balances
 from ..paths import user_db_path
 from ..telegram.logger import add_telegram_logger
 from ..triggers.factory import make_triggers

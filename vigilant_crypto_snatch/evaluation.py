@@ -11,7 +11,7 @@ from . import logger
 from .core import Price
 from .historical import HistoricalError
 from .historical import HistoricalSource
-from .marketplace.interface import Marketplace
+from .marketplace import Marketplace
 
 
 def make_interpolator(data: pd.DataFrame):

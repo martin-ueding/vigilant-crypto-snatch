@@ -8,11 +8,11 @@ import dateutil.parser
 import yaml
 
 from ..core import TriggerSpec
-from ..marketplace.interface import BitstampConfig
-from ..marketplace.interface import KrakenConfig
-from ..marketplace.interface import KrakenWithdrawalConfig
+from ..marketplace import BitstampConfig
+from ..marketplace import KrakenConfig
+from ..marketplace import KrakenWithdrawalConfig
 from vigilant_crypto_snatch import logger
-from vigilant_crypto_snatch.configuration.interface import Configuration
+from vigilant_crypto_snatch.configuration import Configuration
 from vigilant_crypto_snatch.historical import CryptoCompareConfig
 from vigilant_crypto_snatch.paths import config_path
 from vigilant_crypto_snatch.telegram.sender import TelegramConfig

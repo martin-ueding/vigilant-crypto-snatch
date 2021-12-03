@@ -7,7 +7,7 @@ import requests
 from .. import logger
 from ..core import Price
 from ..datastorage import Datastore
-from ..marketplace.interface import Marketplace
+from ..marketplace import Marketplace
 from .interface import HistoricalError
 from .interface import HistoricalSource
 

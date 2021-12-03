@@ -5,7 +5,7 @@ import pytest
 from vigilant_crypto_snatch.core import TriggerSpec
 from vigilant_crypto_snatch.datastorage import ListDatastore
 from vigilant_crypto_snatch.historical import MockHistorical
-from vigilant_crypto_snatch.marketplace.mock import MockMarketplace
+from vigilant_crypto_snatch.marketplace import MockMarketplace
 from vigilant_crypto_snatch.triggers.concrete import BuyTrigger
 from vigilant_crypto_snatch.triggers.factory import make_buy_trigger
 

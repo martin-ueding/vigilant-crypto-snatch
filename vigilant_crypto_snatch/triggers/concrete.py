@@ -6,9 +6,9 @@ from vigilant_crypto_snatch import logger
 from vigilant_crypto_snatch.core import Trade
 from vigilant_crypto_snatch.datastorage import Datastore
 from vigilant_crypto_snatch.historical import HistoricalSource
-from vigilant_crypto_snatch.marketplace.interface import check_and_perform_widthdrawal
-from vigilant_crypto_snatch.marketplace.interface import Marketplace
-from vigilant_crypto_snatch.marketplace.interface import report_balances
+from vigilant_crypto_snatch.marketplace import check_and_perform_widthdrawal
+from vigilant_crypto_snatch.marketplace import Marketplace
+from vigilant_crypto_snatch.marketplace import report_balances
 from vigilant_crypto_snatch.triggers.interface import Trigger
 from vigilant_crypto_snatch.triggers.triggered_delegates import TriggeredDelegate
 from vigilant_crypto_snatch.triggers.volume_fiat_delegates import VolumeFiatDelegate

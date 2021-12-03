@@ -8,8 +8,8 @@ import requests.exceptions
 
 from . import logger
 from .datastorage import DatastoreException
-from .marketplace.interface import BuyError
-from .marketplace.interface import TickerError
+from .marketplace import BuyError
+from .marketplace import TickerError
 from .telegram.sender import get_sender
 from .triggers.interface import Trigger
 

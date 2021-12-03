@@ -13,9 +13,9 @@ from ..datastorage import make_datastore
 from ..historical import CryptoCompareConfig
 from ..historical import CryptoCompareHistoricalSource
 from ..historical import MockHistorical
-from ..marketplace.factory import make_marketplace
-from ..marketplace.interface import report_balances
-from ..marketplace.mock import MockMarketplace
+from ..marketplace import make_marketplace
+from ..marketplace import MockMarketplace
+from ..marketplace import report_balances
 from ..paths import user_db_path
 from ..telegram.sender import TelegramConfig
 from ..telegram.sender import TelegramSender
