@@ -8,6 +8,7 @@ from .interface import BuyError
 from .interface import KrakenConfig
 from .interface import KrakenWithdrawalConfig
 from .interface import TickerError
+from .interface import WithdrawalError
 from .krakenex_adaptor import KrakenexMarketplace
 
 
@@ -65,7 +66,7 @@ def stub_balance_empty(parameters: Dict) -> Dict:
     }
 
 
-def stub_balance_error(parameters: Dict) -> Dict:
+def stub_some_error(parameters: Dict) -> Dict:
     return {
         "error": ["Some error"],
     }
@@ -107,6 +108,11 @@ def stub_withdraw_info_success(parameters: Dict) -> Dict:
             "fee": "0.00015000",
         },
     }
+
+
+def stub_withdraw_success(parameters: Dict) -> Dict:
+    assert parameters["asset"] == "XBT"
+    return {"error": [], "result": {"refid": "AGBSO6T-UFMTTQ-I7KGS6"}}
 
 
 def test_get_name() -> None:
@@ -153,7 +159,7 @@ def test_balance_empty() -> None:
 
 
 def test_balance_error() -> None:
-    krakenex_interface = KrakenexMock({"Balance": stub_balance_error})
+    krakenex_interface = KrakenexMock({"Balance": stub_some_error})
     config = KrakenConfig("mock", "mock", False, {})
     market = KrakenexMarketplace(config, krakenex_interface)
     with pytest.raises(TickerError):
@@ -182,3 +188,24 @@ def test_withdawal_fee_success() -> None:
     )
     market = KrakenexMarketplace(config, krakenex_interface)
     assert market.get_withdrawal_fee("BTC", 100.0) == 0.00015000
+
+
+def test_withdawal_fee_failure() -> None:
+    krakenex_interface = KrakenexMock({"WithdrawInfo": stub_some_error})
+    config = KrakenConfig(
+        "mock", "mock", False, {"BTC": KrakenWithdrawalConfig("BTC", "target", 0.01)}
+    )
+    market = KrakenexMarketplace(config, krakenex_interface)
+    with pytest.raises(WithdrawalError):
+        market.get_withdrawal_fee("BTC", 100.0)
+
+
+def test_withdrawal_success() -> None:
+    krakenex_interface = KrakenexMock(
+        {"WithdrawInfo": stub_withdraw_info_success, "Withdraw": stub_withdraw_success}
+    )
+    config = KrakenConfig(
+        "mock", "mock", False, {"BTC": KrakenWithdrawalConfig("BTC", "target", 0.01)}
+    )
+    market = KrakenexMarketplace(config, krakenex_interface)
+    market.withdrawal("BTC", 100.0)
