@@ -10,9 +10,9 @@ from ..configuration import YamlConfiguration
 from ..core import TriggerSpec
 from ..datastorage import ListDatastore
 from ..datastorage import make_datastore
-from ..historical.concrete import CryptoCompareConfig
-from ..historical.concrete import CryptoCompareHistoricalSource
-from ..historical.mock import MockHistorical
+from ..historical import CryptoCompareConfig
+from ..historical import CryptoCompareHistoricalSource
+from ..historical import MockHistorical
 from ..marketplace.factory import make_marketplace
 from ..marketplace.interface import report_balances
 from ..marketplace.mock import MockMarketplace

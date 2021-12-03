@@ -9,8 +9,8 @@ import sqlalchemy.orm
 
 from . import logger
 from .core import Price
-from .historical.interface import HistoricalError
-from .historical.interface import HistoricalSource
+from .historical import HistoricalError
+from .historical import HistoricalSource
 from .marketplace.interface import Marketplace
 
 

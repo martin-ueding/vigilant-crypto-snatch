@@ -13,7 +13,7 @@ from ..marketplace.interface import KrakenConfig
 from ..marketplace.interface import KrakenWithdrawalConfig
 from vigilant_crypto_snatch import logger
 from vigilant_crypto_snatch.configuration.interface import Configuration
-from vigilant_crypto_snatch.historical.concrete import CryptoCompareConfig
+from vigilant_crypto_snatch.historical import CryptoCompareConfig
 from vigilant_crypto_snatch.paths import config_path
 from vigilant_crypto_snatch.telegram.sender import TelegramConfig
 

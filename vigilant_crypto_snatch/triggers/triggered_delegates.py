@@ -1,8 +1,8 @@
 import datetime
 
 from .. import logger
-from ..historical.interface import HistoricalError
-from ..historical.interface import HistoricalSource
+from ..historical import HistoricalError
+from ..historical import HistoricalSource
 
 
 class TriggeredDelegate(object):

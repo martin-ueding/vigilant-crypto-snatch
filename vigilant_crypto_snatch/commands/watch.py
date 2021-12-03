@@ -4,10 +4,10 @@ from ..configuration import get_used_currencies
 from ..configuration import run_migrations
 from ..configuration import YamlConfiguration
 from ..datastorage import make_datastore
-from ..historical.concrete import CachingHistoricalSource
-from ..historical.concrete import CryptoCompareHistoricalSource
-from ..historical.concrete import DatabaseHistoricalSource
-from ..historical.concrete import MarketSource
+from ..historical import CachingHistoricalSource
+from ..historical import CryptoCompareHistoricalSource
+from ..historical import DatabaseHistoricalSource
+from ..historical import MarketSource
 from ..marketplace.factory import make_marketplace
 from ..marketplace.interface import check_and_perform_widthdrawal
 from ..marketplace.interface import report_balances

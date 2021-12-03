@@ -4,7 +4,7 @@ from typing import Set
 
 from vigilant_crypto_snatch import logger
 from vigilant_crypto_snatch.core import TriggerSpec
-from vigilant_crypto_snatch.historical.concrete import CryptoCompareConfig
+from vigilant_crypto_snatch.historical import CryptoCompareConfig
 from vigilant_crypto_snatch.marketplace.interface import BitstampConfig
 from vigilant_crypto_snatch.marketplace.interface import KrakenConfig
 from vigilant_crypto_snatch.telegram.sender import TelegramConfig
