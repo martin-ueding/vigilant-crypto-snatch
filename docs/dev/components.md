@@ -6,7 +6,7 @@ On this page we will go through all the components and how they interact with ea
 
 ## Core
 
-At the center there are the core entities, the data classes which don't depend on anything else. These are the classes representing `Price` and `Trade`, as well as the specification for the triggers, the `TriggerSpec`.
+At the center there are the core entities, the data classes which don't depend on anything else. These are the classes representing `Price` and `Trade`.
 
 [![](graphs/core.svg)](graphs/core.svg)
 
@@ -28,6 +28,12 @@ Since we buy crypto currency, we need to have a marketplace. This is also hidden
 
 There are two concrete implementations, namely for the Kraken and Bitstamp exchanges. These implementations depend on the external libraries. Again the remainder of the code only depends on the interface.
 
+## Myrequests
+
+There are multiple parts in the code where I need to issue HTTP requests. For this the `requests` library is an excellent choice. I just don't want the exception handling to spill all over my code, so I wrap it and just catch all possible exceptions there.
+
+[![](graphs/myrequests.svg)](graphs/myrequests.svg)
+
 ## Historical
 
 In order to find drops, we need to know the prices in the past. These are provided by a historical source, which delivers price objects.
@@ -38,7 +44,7 @@ There are many different implementations. One just asks the marketplace for the 
 
 ## Triggers
 
-The triggers get specified by the user. I have generalized the trigger concept such that it just handles regular actions. These also include database cleaning and sending a Telegram notification.
+The triggers get specified by the user. I have generalized the trigger concept such that it just handles regular actions. These also include database cleaning and sending a Telegram notification. For the buy triggers there is a specification, the `TriggerSpec`.
 
 [![](graphs/triggers.svg)](graphs/triggers.svg)
 

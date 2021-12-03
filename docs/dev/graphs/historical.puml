@@ -21,8 +21,7 @@ class HistoricalError
 
 HistoricalSource -> HistoricalError
 
-component requests
-CryptoCompareHistoricalSource --> requests
+myrequests.MyRequests <-- CryptoCompareHistoricalSource
 
 class CryptoCompareHistoricalSource implements HistoricalSource
 class DatabaseHistoricalSource implements HistoricalSource
