@@ -10,7 +10,7 @@ from . import logger
 from .datastorage import DatastoreException
 from .marketplace import BuyError
 from .marketplace import TickerError
-from .telegram.sender import get_sender
+from .telegram import get_sender
 from .triggers.interface import Trigger
 
 

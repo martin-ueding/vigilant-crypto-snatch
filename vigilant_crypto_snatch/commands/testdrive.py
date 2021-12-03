@@ -17,8 +17,8 @@ from ..marketplace import make_marketplace
 from ..marketplace import MockMarketplace
 from ..marketplace import report_balances
 from ..paths import user_db_path
-from ..telegram.sender import TelegramConfig
-from ..telegram.sender import TelegramSender
+from ..telegram import TelegramConfig
+from ..telegram import TelegramSender
 from ..triggers.factory import make_triggers
 
 

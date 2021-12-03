@@ -7,7 +7,7 @@ from vigilant_crypto_snatch.core import TriggerSpec
 from vigilant_crypto_snatch.historical import CryptoCompareConfig
 from vigilant_crypto_snatch.marketplace import BitstampConfig
 from vigilant_crypto_snatch.marketplace import KrakenConfig
-from vigilant_crypto_snatch.telegram.sender import TelegramConfig
+from vigilant_crypto_snatch.telegram import TelegramConfig
 
 
 class Configuration:

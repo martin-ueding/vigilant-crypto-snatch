@@ -15,7 +15,7 @@ from vigilant_crypto_snatch import logger
 from vigilant_crypto_snatch.configuration import Configuration
 from vigilant_crypto_snatch.historical import CryptoCompareConfig
 from vigilant_crypto_snatch.paths import config_path
-from vigilant_crypto_snatch.telegram.sender import TelegramConfig
+from vigilant_crypto_snatch.telegram import TelegramConfig
 
 
 class YamlConfiguration(Configuration):

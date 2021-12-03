@@ -12,7 +12,7 @@ from ..marketplace import check_and_perform_widthdrawal
 from ..marketplace import make_marketplace
 from ..marketplace import report_balances
 from ..paths import user_db_path
-from ..telegram.logger import add_telegram_logger
+from ..telegram import add_telegram_logger
 from ..triggers.factory import make_triggers
 from ..watchloop import TriggerLoop
 
