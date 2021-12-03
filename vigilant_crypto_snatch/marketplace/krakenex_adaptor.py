@@ -1,6 +1,6 @@
 import datetime
 from typing import Dict
-from typing import Optional
+from typing import Protocol
 from typing import Type
 
 import krakenex
@@ -20,37 +20,12 @@ mapping_kraken_to_normal = {
 }
 
 
-class KrakenexMock:
+class KrakenexInterface(Protocol):
     def query_public(self, command: str, parameters: Dict = None) -> Dict:
-        if command == "Ticker":
-            assert parameters
-            return self._ticker(parameters)
-        else:
-            raise NotImplementedError()
+        raise NotImplementedError()
 
     def query_private(self, command: str, parameters: Dict = None) -> Dict:
         raise NotImplementedError()
-
-    def _ticker(self, parameters: Dict) -> Dict:
-        if parameters["pair"] in ["XBTEUR", "BTCEUR", "XXBTZEUR"]:
-            return {
-                "error": [],
-                "result": {
-                    "XXBTZEUR": {
-                        "a": ["50162.20000", "1", "1.000"],
-                        "b": ["50162.10000", "2", "2.000"],
-                        "c": ["50162.20000", "0.00196431"],
-                        "v": ["1194.93544125", "3142.87839034"],
-                        "p": ["50218.07897", "50141.26546"],
-                        "t": [7355, 32353],
-                        "l": ["49750.00000", "49517.80000"],
-                        "h": ["50552.70000", "50657.00000"],
-                        "o": "50023.50000",
-                    }
-                },
-            }
-        else:
-            return {"error": ["EQuery:Unknown asset pair"]}
 
 
 def map_normal_to_kraken(coin: str) -> str:
@@ -64,9 +39,9 @@ def map_kraken_to_normal(coin: str) -> str:
 
 
 class KrakenexMarketplace(Marketplace):
-    def __init__(self, config: KrakenConfig):
-        if config.key == "mock":
-            self.handle = KrakenexMock()
+    def __init__(self, config: KrakenConfig, handle: KrakenexInterface = None):
+        if handle:
+            self.handle = handle
         else:
             self.handle = krakenex.API(config.key, config.secret)
         self.withdrawal_config = config.withdrawal
