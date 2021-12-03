@@ -4,6 +4,10 @@ This is a list of changes, from new to older.
 
 ## 5.0 Series
 
+### Version 5.0.1
+
+- Fix bug with marketplace factory function. Would emit `RuntimeError: Unsupported marketplace: <vigilant_crypto_snatch.configuration.yaml_configuration.YamlConfiguration object at 0x7f2b3a031840>`.
+
 ### Version 5.0.0
 
 - Refactor a lot more.
