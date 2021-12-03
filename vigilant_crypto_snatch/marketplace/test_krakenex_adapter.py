@@ -7,6 +7,12 @@ from .interface import TickerError
 from .krakenex_adaptor import KrakenexMarketplace
 
 
+def test_get_name() -> None:
+    config = KrakenConfig("mock", "mock", False, {})
+    market = KrakenexMarketplace(config)
+    assert market.get_name() == "Kraken"
+
+
 def test_get_spot_price_success() -> None:
     config = KrakenConfig("mock", "mock", False, {})
     market = KrakenexMarketplace(config)
