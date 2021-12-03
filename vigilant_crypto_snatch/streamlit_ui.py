@@ -319,7 +319,7 @@ class Namespace(object):
 
 def get_api_key() -> str:
     var_name = "CRYPTOCOMPARE_API_KEY"
-    key = os.environ.get(var_name, None)
+    key = st.secrets.get(var_name, None)
     if key is not None:
         return key
     else:
