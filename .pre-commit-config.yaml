@@ -49,5 +49,6 @@ repos:
         entry: codecov-full
         pass_filenames: false
         language: system
+        always_run: true
         stages:
           - post-commit
