@@ -26,7 +26,7 @@ def main(marketplace_name):
     logger.info("Starting up …")
 
     datastore = make_datastore(user_db_path)
-    market = make_marketplace(marketplace_name, config)
+    market = make_marketplace(config, marketplace_name)
     check_and_perform_widthdrawal(market)
 
     report_balances(market, get_used_currencies(config.get_trigger_config()))
