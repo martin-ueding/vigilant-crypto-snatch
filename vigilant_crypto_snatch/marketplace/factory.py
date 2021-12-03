@@ -1,5 +1,5 @@
-from vigilant_crypto_snatch.marketplace.bitstamp_adaptor import BitstampMarketplace
-from vigilant_crypto_snatch.marketplace.krakenex_adaptor import KrakenexMarketplace
+from .bitstamp_adaptor import BitstampMarketplace
+from .krakenex_adaptor import KrakenexMarketplace
 
 
 def make_marketplace(config, marketplace_name):

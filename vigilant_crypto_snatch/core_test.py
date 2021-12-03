@@ -1,7 +1,7 @@
 import datetime
 
-from vigilant_crypto_snatch.core import Price
-from vigilant_crypto_snatch.core import Trade
+from .core import Price
+from .core import Trade
 
 
 def test_price() -> None:

@@ -1,6 +1,6 @@
 import datetime
 
-from vigilant_crypto_snatch.triggers.concrete import CheckinTrigger
+from .concrete import CheckinTrigger
 
 
 def test_checkin():

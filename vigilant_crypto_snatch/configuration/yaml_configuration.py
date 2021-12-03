@@ -7,15 +7,15 @@ from typing import Optional
 import dateutil.parser
 import yaml
 
+from .. import logger
+from ..configuration import Configuration
 from ..core import TriggerSpec
+from ..historical import CryptoCompareConfig
 from ..marketplace import BitstampConfig
 from ..marketplace import KrakenConfig
 from ..marketplace import KrakenWithdrawalConfig
-from vigilant_crypto_snatch import logger
-from vigilant_crypto_snatch.configuration import Configuration
-from vigilant_crypto_snatch.historical import CryptoCompareConfig
-from vigilant_crypto_snatch.paths import config_path
-from vigilant_crypto_snatch.telegram import TelegramConfig
+from ..paths import config_path
+from ..telegram import TelegramConfig
 
 
 class YamlConfiguration(Configuration):

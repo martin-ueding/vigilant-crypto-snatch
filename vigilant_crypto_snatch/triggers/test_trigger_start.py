@@ -2,12 +2,12 @@ import datetime
 
 import pytest
 
-from vigilant_crypto_snatch.core import TriggerSpec
-from vigilant_crypto_snatch.datastorage import ListDatastore
-from vigilant_crypto_snatch.historical import MockHistorical
-from vigilant_crypto_snatch.marketplace import MockMarketplace
-from vigilant_crypto_snatch.triggers.concrete import BuyTrigger
-from vigilant_crypto_snatch.triggers.factory import make_buy_trigger
+from ..core import TriggerSpec
+from ..datastorage import ListDatastore
+from ..historical import MockHistorical
+from ..marketplace import MockMarketplace
+from .concrete import BuyTrigger
+from .factory import make_buy_trigger
 
 
 @pytest.fixture

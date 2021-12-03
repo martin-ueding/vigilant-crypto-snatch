@@ -1,13 +1,13 @@
 import datetime
 from typing import Tuple
 
-from vigilant_crypto_snatch.core import Trade
-from vigilant_crypto_snatch.core import TriggerSpec
-from vigilant_crypto_snatch.datastorage import ListDatastore
-from vigilant_crypto_snatch.historical import MockHistorical
-from vigilant_crypto_snatch.marketplace import MockMarketplace
-from vigilant_crypto_snatch.triggers.concrete import BuyTrigger
-from vigilant_crypto_snatch.triggers.factory import make_buy_trigger
+from ..core import Trade
+from ..core import TriggerSpec
+from ..datastorage import ListDatastore
+from ..historical import MockHistorical
+from ..marketplace import MockMarketplace
+from .concrete import BuyTrigger
+from .factory import make_buy_trigger
 
 
 def make_true_trigger() -> Tuple[BuyTrigger, MockMarketplace]:

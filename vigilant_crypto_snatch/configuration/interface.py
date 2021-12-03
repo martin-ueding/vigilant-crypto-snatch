@@ -2,12 +2,12 @@ from typing import List
 from typing import Optional
 from typing import Set
 
-from vigilant_crypto_snatch import logger
-from vigilant_crypto_snatch.core import TriggerSpec
-from vigilant_crypto_snatch.historical import CryptoCompareConfig
-from vigilant_crypto_snatch.marketplace import BitstampConfig
-from vigilant_crypto_snatch.marketplace import KrakenConfig
-from vigilant_crypto_snatch.telegram import TelegramConfig
+from .. import logger
+from ..core import TriggerSpec
+from ..historical import CryptoCompareConfig
+from ..marketplace import BitstampConfig
+from ..marketplace import KrakenConfig
+from ..telegram import TelegramConfig
 
 
 class Configuration:

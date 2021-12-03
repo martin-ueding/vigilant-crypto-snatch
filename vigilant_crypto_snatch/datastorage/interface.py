@@ -1,8 +1,8 @@
 import datetime
 from typing import *
 
-from vigilant_crypto_snatch.core import Price
-from vigilant_crypto_snatch.core import Trade
+from ..core import Price
+from ..core import Trade
 
 
 class DatastoreException(Exception):

@@ -1,4 +1,4 @@
-from vigilant_crypto_snatch.marketplace import Marketplace
+from ..marketplace import Marketplace
 
 
 class VolumeFiatDelegate(object):

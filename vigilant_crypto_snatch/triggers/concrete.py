@@ -2,16 +2,16 @@ import abc
 import datetime
 from typing import Optional
 
-from vigilant_crypto_snatch import logger
-from vigilant_crypto_snatch.core import Trade
-from vigilant_crypto_snatch.datastorage import Datastore
-from vigilant_crypto_snatch.historical import HistoricalSource
-from vigilant_crypto_snatch.marketplace import check_and_perform_widthdrawal
-from vigilant_crypto_snatch.marketplace import Marketplace
-from vigilant_crypto_snatch.marketplace import report_balances
-from vigilant_crypto_snatch.triggers.interface import Trigger
-from vigilant_crypto_snatch.triggers.triggered_delegates import TriggeredDelegate
-from vigilant_crypto_snatch.triggers.volume_fiat_delegates import VolumeFiatDelegate
+from .. import logger
+from ..core import Trade
+from ..datastorage import Datastore
+from ..historical import HistoricalSource
+from ..marketplace import check_and_perform_widthdrawal
+from ..marketplace import Marketplace
+from ..marketplace import report_balances
+from .interface import Trigger
+from .triggered_delegates import TriggeredDelegate
+from .volume_fiat_delegates import VolumeFiatDelegate
 
 
 class FailureTimeout(object):

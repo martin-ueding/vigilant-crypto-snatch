@@ -1,5 +1,5 @@
-from vigilant_crypto_snatch.configuration.interface import get_used_currencies
-from vigilant_crypto_snatch.core import TriggerSpec
+from ..core import TriggerSpec
+from .interface import get_used_currencies
 
 
 def test_used_currencies_empty() -> None:

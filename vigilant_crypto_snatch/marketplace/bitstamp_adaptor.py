@@ -5,11 +5,11 @@ import bitstamp.client
 import requests
 import urllib3
 
-from vigilant_crypto_snatch.core import Price
-from vigilant_crypto_snatch.marketplace.interface import BitstampConfig
-from vigilant_crypto_snatch.marketplace.interface import BuyError
-from vigilant_crypto_snatch.marketplace.interface import Marketplace
-from vigilant_crypto_snatch.marketplace.interface import TickerError
+from ..core import Price
+from .interface import BitstampConfig
+from .interface import BuyError
+from .interface import Marketplace
+from .interface import TickerError
 
 
 class BitstampMarketplace(Marketplace):

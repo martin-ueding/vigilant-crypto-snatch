@@ -1,8 +1,8 @@
 import datetime
 import math
 
-from vigilant_crypto_snatch.core import Price
-from vigilant_crypto_snatch.historical.interface import HistoricalSource
+from ..core import Price
+from .interface import HistoricalSource
 
 reference_time = datetime.datetime(2021, 1, 1, 00, 00, 00)
 

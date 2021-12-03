@@ -2,9 +2,9 @@ import datetime
 from typing import List
 from typing import Optional
 
-from vigilant_crypto_snatch.core import Price
-from vigilant_crypto_snatch.core import Trade
-from vigilant_crypto_snatch.datastorage.interface import Datastore
+from ..core import Price
+from ..core import Trade
+from .interface import Datastore
 
 
 class ListDatastore(Datastore):

@@ -1,6 +1,6 @@
 import datetime
 
-from vigilant_crypto_snatch.core import Price
+from ..core import Price
 
 
 class HistoricalSource(object):

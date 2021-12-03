@@ -1,25 +1,21 @@
 import datetime
 from typing import List
 
-from vigilant_crypto_snatch import logger
-from vigilant_crypto_snatch.core import TriggerSpec
-from vigilant_crypto_snatch.datastorage import Datastore
-from vigilant_crypto_snatch.historical import HistoricalSource
-from vigilant_crypto_snatch.marketplace import Marketplace
-from vigilant_crypto_snatch.triggers.concrete import BuyTrigger
-from vigilant_crypto_snatch.triggers.concrete import CheckinTrigger
-from vigilant_crypto_snatch.triggers.concrete import DatabaseCleaningTrigger
-from vigilant_crypto_snatch.triggers.interface import Trigger
-from vigilant_crypto_snatch.triggers.triggered_delegates import DropTriggeredDelegate
-from vigilant_crypto_snatch.triggers.triggered_delegates import TriggeredDelegate
-from vigilant_crypto_snatch.triggers.triggered_delegates import TrueTriggeredDelegate
-from vigilant_crypto_snatch.triggers.volume_fiat_delegates import (
-    FixedVolumeFiatDelegate,
-)
-from vigilant_crypto_snatch.triggers.volume_fiat_delegates import (
-    RatioVolumeFiatDelegate,
-)
-from vigilant_crypto_snatch.triggers.volume_fiat_delegates import VolumeFiatDelegate
+from .. import logger
+from ..core import TriggerSpec
+from ..datastorage import Datastore
+from ..historical import HistoricalSource
+from ..marketplace import Marketplace
+from .concrete import BuyTrigger
+from .concrete import CheckinTrigger
+from .concrete import DatabaseCleaningTrigger
+from .interface import Trigger
+from .triggered_delegates import DropTriggeredDelegate
+from .triggered_delegates import TriggeredDelegate
+from .triggered_delegates import TrueTriggeredDelegate
+from .volume_fiat_delegates import FixedVolumeFiatDelegate
+from .volume_fiat_delegates import RatioVolumeFiatDelegate
+from .volume_fiat_delegates import VolumeFiatDelegate
 
 
 def make_buy_triggers(
