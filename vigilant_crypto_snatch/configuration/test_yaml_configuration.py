@@ -1,7 +1,7 @@
 import datetime
 
 from . import yaml_configuration
-from ..core import TriggerSpec
+from ..triggers import TriggerSpec
 
 
 def test_minutes_minutes() -> None:

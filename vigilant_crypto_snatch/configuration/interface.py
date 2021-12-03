@@ -3,11 +3,11 @@ from typing import Optional
 from typing import Set
 
 from .. import logger
-from ..core import TriggerSpec
 from ..historical import CryptoCompareConfig
 from ..marketplace import BitstampConfig
 from ..marketplace import KrakenConfig
 from ..telegram import TelegramConfig
+from ..triggers import TriggerSpec
 
 
 class Configuration:

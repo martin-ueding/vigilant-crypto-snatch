@@ -7,7 +7,6 @@ from ..configuration import Configuration
 from ..configuration import get_used_currencies
 from ..configuration import run_migrations
 from ..configuration import YamlConfiguration
-from ..core import TriggerSpec
 from ..datastorage import ListDatastore
 from ..datastorage import make_datastore
 from ..historical import CryptoCompareConfig
@@ -20,6 +19,7 @@ from ..paths import user_db_path
 from ..telegram import TelegramConfig
 from ..telegram import TelegramSender
 from ..triggers import make_triggers
+from ..triggers import TriggerSpec
 
 
 def main(marketplace_name) -> None:

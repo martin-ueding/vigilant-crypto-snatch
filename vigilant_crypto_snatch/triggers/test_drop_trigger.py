@@ -2,12 +2,12 @@ import datetime
 from typing import Tuple
 
 from ..core import Trade
-from ..core import TriggerSpec
 from ..datastorage import ListDatastore
 from ..historical import MockHistorical
 from ..marketplace import MockMarketplace
 from .concrete import BuyTrigger
 from .factory import make_buy_trigger
+from .interface import TriggerSpec
 
 
 def make_drop_trigger() -> Tuple[BuyTrigger, MockHistorical]:

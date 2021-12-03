@@ -1,4 +1,4 @@
-from ..core import TriggerSpec
+from ..triggers import TriggerSpec
 from .interface import get_used_currencies
 
 

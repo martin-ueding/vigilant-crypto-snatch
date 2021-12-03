@@ -2,12 +2,12 @@ import datetime
 
 import pytest
 
-from ..core import TriggerSpec
 from ..datastorage import ListDatastore
 from ..historical import MockHistorical
 from ..marketplace import MockMarketplace
 from .concrete import BuyTrigger
 from .factory import make_buy_trigger
+from .interface import TriggerSpec
 
 
 @pytest.fixture

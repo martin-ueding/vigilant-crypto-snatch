@@ -2,7 +2,6 @@ import datetime
 from typing import List
 
 from .. import logger
-from ..core import TriggerSpec
 from ..datastorage import Datastore
 from ..historical import HistoricalSource
 from ..marketplace import Marketplace
@@ -10,6 +9,7 @@ from .concrete import BuyTrigger
 from .concrete import CheckinTrigger
 from .concrete import DatabaseCleaningTrigger
 from .interface import Trigger
+from .interface import TriggerSpec
 from .triggered_delegates import DropTriggeredDelegate
 from .triggered_delegates import TriggeredDelegate
 from .triggered_delegates import TrueTriggeredDelegate

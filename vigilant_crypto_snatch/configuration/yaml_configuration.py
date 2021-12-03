@@ -9,13 +9,13 @@ import yaml
 
 from .. import logger
 from ..configuration import Configuration
-from ..core import TriggerSpec
 from ..historical import CryptoCompareConfig
 from ..marketplace import BitstampConfig
 from ..marketplace import KrakenConfig
 from ..marketplace import KrakenWithdrawalConfig
 from ..paths import config_path
 from ..telegram import TelegramConfig
+from ..triggers import TriggerSpec
 
 
 class YamlConfiguration(Configuration):
