@@ -7,7 +7,7 @@ from ..historical.interface import HistoricalSource
 
 class TriggeredDelegate(object):
     def is_triggered(self, now: datetime.datetime) -> bool:
-        raise NotImplementedError()
+        raise NotImplementedError()  # pragma: no cover
 
 
 class DropTriggeredDelegate(TriggeredDelegate):

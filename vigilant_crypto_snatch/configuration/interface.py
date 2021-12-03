@@ -12,22 +12,22 @@ from vigilant_crypto_snatch.telegram.sender import TelegramConfig
 
 class Configuration:
     def get_polling_interval(self) -> int:
-        raise NotImplementedError()
+        raise NotImplementedError()  # pragma: no cover
 
     def get_crypto_compare_config(self) -> CryptoCompareConfig:
-        raise NotImplementedError()
+        raise NotImplementedError()  # pragma: no cover
 
     def get_kraken_config(self) -> Optional[KrakenConfig]:
-        raise NotImplementedError()
+        raise NotImplementedError()  # pragma: no cover
 
     def get_bitstamp_config(self) -> Optional[BitstampConfig]:
-        raise NotImplementedError()
+        raise NotImplementedError()  # pragma: no cover
 
     def get_telegram_config(self) -> Optional[TelegramConfig]:
-        raise NotImplementedError()
+        raise NotImplementedError()  # pragma: no cover
 
     def get_trigger_config(self) -> List[TriggerSpec]:
-        raise NotImplementedError()
+        raise NotImplementedError()  # pragma: no cover
 
 
 def get_used_currencies(config: List[TriggerSpec]) -> Set[str]:

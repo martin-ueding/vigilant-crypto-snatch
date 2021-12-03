@@ -31,24 +31,26 @@ class KrakenConfig:
 
 class Marketplace(abc.ABC):
     def place_order(self, coin: str, fiat: str, volume: float) -> None:
-        raise NotImplementedError()
+        raise NotImplementedError()  # pragma: no cover
 
     def get_spot_price(self, coin: str, fiat: str, now: datetime.datetime) -> Price:
-        raise NotImplementedError()
+        raise NotImplementedError()  # pragma: no cover
 
     def get_name(self) -> str:
-        raise NotImplementedError()
+        raise NotImplementedError()  # pragma: no cover
 
     def get_balance(self) -> dict:
-        raise NotImplementedError()
+        raise NotImplementedError()  # pragma: no cover
 
     def get_withdrawal_fee(self, coin: str, volume: float) -> float:
         raise NotImplementedError(
             "Selected marketplace does not support withdrawal fee."
-        )
+        )  # pragma: no cover
 
     def withdrawal(self, coin: str, volume: float) -> None:
-        raise NotImplementedError("Selected marketplace does not support withdrawal.")
+        raise NotImplementedError(
+            "Selected marketplace does not support withdrawal."
+        )  # pragma: no cover
 
 
 def check_and_perform_widthdrawal(market: Marketplace) -> None:

@@ -3,7 +3,7 @@ from vigilant_crypto_snatch.marketplace.interface import Marketplace
 
 class VolumeFiatDelegate(object):
     def get_volume_fiat(self) -> float:
-        raise NotImplementedError()
+        raise NotImplementedError()  # pragma: no cover
 
 
 class FixedVolumeFiatDelegate(VolumeFiatDelegate):
