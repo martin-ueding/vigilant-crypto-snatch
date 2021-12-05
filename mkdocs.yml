@@ -11,7 +11,11 @@ nav:
   - running.md
   - deployment.md
   - support.md
-  - changelog.md
+  - Changelog:
+    - changelog/version-2.md
+    - changelog/version-3.md
+    - changelog/version-4.md
+    - changelog/version-5.md
   - Development:
     - developing.md
     - dev/components.md
