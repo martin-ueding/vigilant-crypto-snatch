@@ -2,6 +2,7 @@ import logging
 from typing import Optional
 
 from .. import logger
+from .sender import telegram_sender_holder
 from .sender import TelegramConfig
 from .sender import TelegramSender
 
@@ -24,6 +25,6 @@ class TelegramLogger(logging.Handler):
 def add_telegram_logger(config: Optional[TelegramConfig]) -> None:
     if config:
         my_sender = TelegramSender(config)
-        telegram_sender = my_sender
-        telegram_handler = TelegramLogger(config.level, telegram_sender)
+        telegram_handler = TelegramLogger(config.level, my_sender)
+        telegram_sender_holder.set_sender(my_sender)
         logger.addHandler(telegram_handler)

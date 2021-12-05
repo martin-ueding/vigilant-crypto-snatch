@@ -102,12 +102,19 @@ class TelegramSender(object):
                 )
 
 
-def get_sender() -> TelegramSender:
-    assert telegram_sender is not None
-    return telegram_sender
+class TelegramSenderHolder:
+    def __init__(self):
+        self._telegram_sender: Optional[TelegramSender] = None
+
+    def get_sender(self) -> TelegramSender:
+        assert self._telegram_sender
+        return self._telegram_sender
+
+    def set_sender(self, telegram_sender: TelegramSender) -> None:
+        self._telegram_sender = telegram_sender
 
 
-telegram_sender: Optional[TelegramSender] = None
+telegram_sender_holder = TelegramSenderHolder()
 
 
 def chunk_message(message: str, char_limit: int = 4000) -> List[str]:

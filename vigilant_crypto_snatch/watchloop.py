@@ -10,7 +10,7 @@ from .marketplace import BuyError
 from .marketplace import TickerError
 from .marketplace import WithdrawalError
 from .myrequests import HttpRequestError
-from .telegram import get_sender
+from .telegram import telegram_sender_holder
 from .triggers import Trigger
 
 
@@ -29,8 +29,8 @@ class TriggerLoop(object):
                 self.loop_body()
         except KeyboardInterrupt:
             logger.info("User interrupted, shutting down.")
-            if get_sender() is not None:
-                get_sender().shutdown()
+            if telegram_sender_holder.get_sender() is not None:
+                telegram_sender_holder.get_sender().shutdown()
 
     def loop_body(self) -> None:
         for trigger in self.active_triggers:
