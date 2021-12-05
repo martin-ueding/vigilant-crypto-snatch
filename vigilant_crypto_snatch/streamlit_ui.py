@@ -319,7 +319,7 @@ class Namespace(object):
 
 def get_api_key() -> str:
     var_name = "CRYPTOCOMPARE_API_KEY"
-    key = st.secrets.get(var_name, None)
+    key = os.environ.get(var_name, None)
     if key is not None:
         return key
     else:
@@ -332,6 +332,8 @@ def ui():
     st.sidebar.title("Vigilant Crypto Snatch Evaluation")
 
     available_pairs = get_currency_pairs(api_key)
+    if ("BTC", "EUR") not in available_pairs:
+        available_pairs.append(("BTC", "EUR"))
     available_fiats = list({f for c, f in available_pairs})
     available_fiats.sort()
     fiat = st.sidebar.selectbox(
@@ -339,11 +341,9 @@ def ui():
     )
     available_coins = list({c for c, f in available_pairs if f == fiat})
     available_coins.sort()
-    if "BTC" in available_coins:
-        index = available_coins.index("BTC")
-    else:
-        index = 0
-    coin = st.sidebar.selectbox("Coin", available_coins, index=index)
+    coin = st.sidebar.selectbox(
+        "Coin", available_coins, index=available_coins.index("BTC")
+    )
 
     data = get_hourly_data(coin, fiat, api_key)
     data = make_dataframe_from_json(data)
