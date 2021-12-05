@@ -35,35 +35,6 @@ Now you can logout via SSH, and the program will still run. Later you can log ba
 
 You might have set up your Raspberry Pi with a graphical user interface and a running session. In that case you log into that session using Team Viewer or any other remote administration tool. Just open a terminal window and start the program. It will keep running when you disconnect from Team Viewer.
 
-## Planned execution with cron
-
-You can let the program run the whole time with the `watch` command as described on the [usage](running.md) page. If you want to regularly start the program and not have it running continually, you can use a _cron_ job for that. Reasons for not keeping it running the whole time could be that you want it executed only during certain times of day or certain weekdays. It could also be that it happen to crash for you often (though please report that) and you want it restarted regularly. Personally I use it with cron because I don't have a machine which is running the whole time.
-
-First you need to find the path to the executable using the `type` command:
-
-```console
-$ type vigilant-crypto-snatch
-vigilant-crypto-snatch is /home/mu/.local/bin/vigilant-crypto-snatch
-```
-
-This path comes because my local user is `mu` and I have installed it just for my user. It may be `/usr/local/bin/vigilant-crypto-snatch` on your machine, or something different.
-
-Then use `crontab -e` to edit the cron tab and add a new entry like this, where you have to adjust the path to the one that the above command has given you.
-
-```cron
-*/15 * * * * /home/mu/.local/bin/vigilant-crypto-snatch watch --one-shot
-```
-
-The syntax for the first five columns can be read with `man 5 crontab`. In short, they are
-
-1. Minute (0 to 59)
-2. Hour (0 to 23)
-3. Day of month (1 to 31)
-4. Month (1 to 12)
-5. Weekday (0 to 7, 0 and 7 are Sunday)
-
-You can pass a `*` to specify all values, and `*/15` means all values which are multiples of 15. The above line calls the program every 15 minutes on every hour, every day of month, every month and every weekday.
-
 ## Systemd unit
 
 A very modern approach for continuous running is to use systemd. That is the program which starts all the other programs on a modern Linux system. It needs to have a definition of the service. It is a text file which looks like this:
