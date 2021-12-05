@@ -1,0 +1,1028 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+      
+        <link rel="canonical" href="https://martin-ueding.github.io/vigilant-crypto-snatch/changelog/version-4/">
+      
+      <link rel="icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.2.3, mkdocs-material-7.3.6">
+    
+    
+      
+        <title>Version 4 - Vigilant Crypto Snatch</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.a57b2b03.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.3f5d1f46.min.css">
+        
+      
+    
+    
+    
+      
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,400i,700%7CRoboto+Mono&display=fallback">
+        <style>:root{--md-text-font-family:"Roboto";--md-code-font-family:"Roboto Mono"}</style>
+      
+    
+    
+    
+    
+      
+
+
+    
+    
+  </head>
+  
+  
+    
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="" data-md-color-primary="none" data-md-color-accent="none">
+  
+    
+    <script>function __prefix(e){return new URL("../..",location).pathname+"."+e}function __get(e,t=localStorage){return JSON.parse(t.getItem(__prefix(e)))}</script>
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#version-4" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../.." title="Vigilant Crypto Snatch" class="md-header__button md-logo" aria-label="Vigilant Crypto Snatch" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54z"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3V6m0 5h18v2H3v-2m0 5h18v2H3v-2z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Vigilant Crypto Snatch
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Version 4
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5z"/></svg>
+      </label>
+      
+<div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5z"/></svg>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" aria-label="Clear" tabindex="-1">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="Vigilant Crypto Snatch" class="md-nav__button md-logo" aria-label="Vigilant Crypto Snatch" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54z"/></svg>
+
+    </a>
+    Vigilant Crypto Snatch
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        Welcome
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../installation/" class="md-nav__link">
+        Installation
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../configuration/" class="md-nav__link">
+        Configuration
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../running/" class="md-nav__link">
+        Usage
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../deployment/" class="md-nav__link">
+        Deployment
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../support/" class="md-nav__link">
+        Support
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+    
+  
+  
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_7" type="checkbox" id="__nav_7" checked>
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_7">
+          Changelog
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="Changelog" data-md-level="1">
+        <label class="md-nav__title" for="__nav_7">
+          <span class="md-nav__icon md-icon"></span>
+          Changelog
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../version-2/" class="md-nav__link">
+        Version 2
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../version-3/" class="md-nav__link">
+        Version 3
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+    
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" data-md-toggle="toc" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          Version 4
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        Version 4
+      </a>
+      
+        
+
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#version-400" class="md-nav__link">
+    Version 4.0.0
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#version-410" class="md-nav__link">
+    Version 4.1.0
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#version-420" class="md-nav__link">
+    Version 4.2.0
+  </a>
+  
+    <nav class="md-nav" aria-label="Version 4.2.0">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#version-421" class="md-nav__link">
+    Version 4.2.1
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#version-422" class="md-nav__link">
+    Version 4.2.2
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#version-423" class="md-nav__link">
+    Version 4.2.3
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#version-424" class="md-nav__link">
+    Version 4.2.4
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#version-430" class="md-nav__link">
+    Version 4.3.0
+  </a>
+  
+    <nav class="md-nav" aria-label="Version 4.3.0">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#version-431" class="md-nav__link">
+    Version 4.3.1
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#version-432" class="md-nav__link">
+    Version 4.3.2
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#version-433" class="md-nav__link">
+    Version 4.3.3
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#version-434" class="md-nav__link">
+    Version 4.3.4
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#version-435" class="md-nav__link">
+    Version 4.3.5
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#version-440" class="md-nav__link">
+    Version 4.4.0
+  </a>
+  
+    <nav class="md-nav" aria-label="Version 4.4.0">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#version-441" class="md-nav__link">
+    Version 4.4.1
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#version-442" class="md-nav__link">
+    Version 4.4.2
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#version-443" class="md-nav__link">
+    Version 4.4.3
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#version-444" class="md-nav__link">
+    Version 4.4.4
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../version-5/" class="md-nav__link">
+        Version 5
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_8" type="checkbox" id="__nav_8" >
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_8">
+          Development
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="Development" data-md-level="1">
+        <label class="md-nav__title" for="__nav_8">
+          <span class="md-nav__icon md-icon"></span>
+          Development
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../developing/" class="md-nav__link">
+        Developing
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../dev/components/" class="md-nav__link">
+        Components
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../license/" class="md-nav__link">
+        License
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../donation/" class="md-nav__link">
+        Donation
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#version-400" class="md-nav__link">
+    Version 4.0.0
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#version-410" class="md-nav__link">
+    Version 4.1.0
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#version-420" class="md-nav__link">
+    Version 4.2.0
+  </a>
+  
+    <nav class="md-nav" aria-label="Version 4.2.0">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#version-421" class="md-nav__link">
+    Version 4.2.1
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#version-422" class="md-nav__link">
+    Version 4.2.2
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#version-423" class="md-nav__link">
+    Version 4.2.3
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#version-424" class="md-nav__link">
+    Version 4.2.4
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#version-430" class="md-nav__link">
+    Version 4.3.0
+  </a>
+  
+    <nav class="md-nav" aria-label="Version 4.3.0">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#version-431" class="md-nav__link">
+    Version 4.3.1
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#version-432" class="md-nav__link">
+    Version 4.3.2
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#version-433" class="md-nav__link">
+    Version 4.3.3
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#version-434" class="md-nav__link">
+    Version 4.3.4
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#version-435" class="md-nav__link">
+    Version 4.3.5
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#version-440" class="md-nav__link">
+    Version 4.4.0
+  </a>
+  
+    <nav class="md-nav" aria-label="Version 4.4.0">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#version-441" class="md-nav__link">
+    Version 4.4.1
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#version-442" class="md-nav__link">
+    Version 4.4.2
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#version-443" class="md-nav__link">
+    Version 4.4.3
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#version-444" class="md-nav__link">
+    Version 4.4.4
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          <div class="md-content" data-md-component="content">
+            <article class="md-content__inner md-typeset">
+              
+                
+                
+                <h1 id="version-4">Version 4</h1>
+<h2 id="version-400">Version 4.0.0</h2>
+<ul>
+<li>The trigger specification is significantly changed. Consult the documentation to learn about the new format. I'm sorry for breaking your configuration, but I didn't want to provide a migration and rather deliver more new features.</li>
+</ul>
+<h2 id="version-410">Version 4.1.0</h2>
+<ul>
+<li>Use <a href="https://github.com/veox/python3-krakenex"><code>krakenex</code></a> instead of <a href="https://github.com/zertrin/clikraken"><code>clikraken</code></a> to communicate with Kraken. The old implementation is deprecated but retained with <code>--marketplace clikraken</code>.</li>
+<li>Add automatic withdrawal for currency when the amount exceeds a certain threshold determined by the fee. See the configuration of the Kraken marketplace for details.</li>
+</ul>
+<h2 id="version-420">Version 4.2.0</h2>
+<p>🧪 New features:</p>
+<ul>
+<li>Triggers can be given names in the evaluation interface.</li>
+<li>For the Kraken marketplace you can now specify whether the fees should be applied to base or quote currency.</li>
+<li>Attach a stack trace of exceptions to the Telegram message.</li>
+<li>In the drop survey evaluation one now also has a time range slider such that one can get a feeling for the drops. Some are one-time events, and others are regular patterns.</li>
+</ul>
+<p>🔧 Improvements:</p>
+<ul>
+<li>The reported balance at startup will only contain currencies which are used in triggers. This will remove some leftover shitcoins that people might left in their account. After a trade only the balances for that currency pair will be reported to give a cleaner report.</li>
+<li>The legend in the trigger simulation plot is shown below the plot to allow for longer trigger names without having them cropped.</li>
+<li>Triggers with failures used to get deactivated completely. Once no more triggers were active, the program was shut down. Failures stemming from insufficient funds are easily recovered from by transferring more money to the marketplace. The bot would have to be restarted afterwards. In order to make this unnecessary, failed triggers are just silenced for 12 hours. Another attempt is made automatically afterwards. This keeps the number of messages relatively low.</li>
+</ul>
+<p>🪲 Bug fixes:</p>
+<ul>
+<li>Historical API was broken, it now retrieves data again.</li>
+<li>Specifying a lower-case fiat currency and using the percentage based fiat volume strategy led to an error. This is now fixed and the fiat currency is again case-insensitive.</li>
+<li>Make sure that errors from the Telegram API are reported and not ignored.</li>
+<li>Do not use Markdown with Telegram as parsing errors prevent messages from being sent. Plain text is not as pretty, but better have it reliable no matter which names the Triggers have.</li>
+<li>Errors from the historical price source have been silently ignored. They now issue a warning.</li>
+</ul>
+<p>⚙️ Implementation details:</p>
+<ul>
+<li>
+<p><code>clikraken</code> has been retired and we now use <code>krakenex</code> in version 2. This version is in conflice with <code>clikraken</code>, which needs <code>krakenex</code> version 1. When you upgrade, you might see this message:</p>
+<p><code>ERROR: pip's dependency resolver does not currently take into account all the packages that are installed. This behaviour is the source of the following dependency conflicts.
+clikraken 0.8.3.2 requires krakenex&lt;1.0,&gt;=0.1, but you have krakenex 2.1.0 which is incompatible.</code></p>
+<p>To resolve this, run <code>pip uninstall clikraken</code> or <code>sudo pip uninstall clikraken</code>, depending on whether you have installed it with <code>--user</code> in the past.</p>
+</li>
+<li>
+<p>Send Telegram messages via POST (and not GET).</p>
+</li>
+<li>Automatically move the SQLite database into the appropriate user data directory on Windows on macOS, no change on Linux.</li>
+</ul>
+<h3 id="version-421">Version 4.2.1</h3>
+<ul>
+<li>When a trigger was disabled after three consecutive failures, a message stating that would be shown every time the trigger was processed. In this way the user got the same amount of messages. This message is now removed. The initial errors speak for themselves, there is no need to have this additional message.</li>
+</ul>
+<h3 id="version-422">Version 4.2.2</h3>
+<ul>
+<li>Another warning message would use a constant that was moved to another place in the meantime. The program crashed when the message was going to be emitted. It has been removed now.</li>
+</ul>
+<h3 id="version-423">Version 4.2.3</h3>
+<ul>
+<li>Log output is also put into the Linux system log. In this way one can do post-mortem debugging.</li>
+<li>Crashes have been reported when the Telegram message was longer than their limit of 4096 characters. Messages are now chunked to prevent this from happening.</li>
+<li>Telegram messages are no longer directly send but stored in a send-queue. This way connection outages do not yield lost messages but rather just delay sending.</li>
+<li>Use a proper form instead of the plain button in Streamlit.</li>
+</ul>
+<h3 id="version-424">Version 4.2.4</h3>
+<ul>
+<li>Also handle <code>ReadTimeout</code> errors that can happen when the API doesn't answer before the connection breaks. These have been ignored previously, but now the error message is a bit cleaner.</li>
+</ul>
+<h2 id="version-430">Version 4.3.0</h2>
+<p>New features:</p>
+<ul>
+<li>Add a <code>start</code> attributes to triggers.</li>
+<li>Add <code>--dry-run</code> option to <code>watch</code> command such that it can be tested without spending money.</li>
+<li>Allow specifying <code>delay</code> and <code>cooldown</code> not only in minutes as <code>delay_minutes</code> and <code>cooldown_minutes</code>, but also as <code>delay_hours</code>, <code>delay_days</code>, <code>cooldown_hours</code> and <code>cooldown_days</code>.</li>
+<li>Add documentation for cron to <em>Configuration</em>.</li>
+</ul>
+<p>Fixes:</p>
+<ul>
+<li>Remove double reports of connection errors.</li>
+<li>In case that the user has no drop triggers, the database cleaning interval is set to 120 minutes.</li>
+<li>Handle <code>requests.exceptions.ConnectionError</code> without crashing.</li>
+<li>Fix <code>--one-shot</code> mode. It would previously sleep for another interval and not shut down the Telegram logger, preventing the program from a clean exit.</li>
+</ul>
+<p>Development:</p>
+<ul>
+<li>Introduce a new pre-commit hook that sorts the import statements.</li>
+</ul>
+<h3 id="version-431">Version 4.3.1</h3>
+<p>Fixes:</p>
+<ul>
+<li>Apparently all Kraken trades were sent in the validation mode. I have tried to fix that.</li>
+</ul>
+<h3 id="version-432">Version 4.3.2</h3>
+<p>Fixes:</p>
+<ul>
+<li>Fix automatic detection of Telegram chat ID.</li>
+<li>Do not crash when there is no balance at Kraken.</li>
+<li>Also handle <code>requests.exceptions.HTTPError</code>.</li>
+</ul>
+<p>Development:</p>
+<ul>
+<li>Make the <code>marketplace</code> package isolated, only expose a limited set of attributes in <code>__init__.py</code>.</li>
+</ul>
+<h3 id="version-433">Version 4.3.3</h3>
+<p>Fixes:</p>
+<ul>
+<li>Due to an incomplete refactoring the program would crash whenever there was a non-fatal exception regarding the marketplace. This should be fixed now.</li>
+</ul>
+<h3 id="version-434">Version 4.3.4</h3>
+<ul>
+<li>The <code>--dry-run</code> option would write buys into the database, although it would not buy anything on the market. Now the database should now be changed. If you need to clean up your database, you might find <a href="https://sourceforge.net/projects/sqliteman/">sqliteman</a> helpful for that.</li>
+<li>I now use the mypy static analysis and type checker, and also found a few subtle bugs with that in code paths which aren't used often.</li>
+</ul>
+<h3 id="version-435">Version 4.3.5</h3>
+<ul>
+<li>When the balance on the marketplace is zero, withdrawals would fail and therefore crash the whole program. This is now fixed.</li>
+</ul>
+<h2 id="version-440">Version 4.4.0</h2>
+<ul>
+<li>Major architectural change, without changes to the user.</li>
+<li>Add <code>test-drive</code> command to verify configuration.</li>
+</ul>
+<h3 id="version-441">Version 4.4.1</h3>
+<ul>
+<li>More refactoring. Also update the versions of various dependencies. The Streamlit interface is now part of the main dependencies.</li>
+</ul>
+<h3 id="version-442">Version 4.4.2</h3>
+<ul>
+<li>Streamlit doesn't easily work on the Raspberry Pi due to issues with py-arrow and the ARM CPU. I have therefore reverted these dependencies to be an extra again.</li>
+</ul>
+<h3 id="version-443">Version 4.4.3</h3>
+<ul>
+<li>I've accidentally deleted the source code. This should be fixed now.</li>
+</ul>
+<h3 id="version-444">Version 4.4.4</h3>
+<ul>
+<li>The Telegram sender would not shut down gracefully. I have fixed that now.</li>
+<li>Add <code>--version</code> option.</li>
+</ul>
+                
+              
+              
+                
+
+
+              
+            </article>
+          </div>
+        </div>
+        
+      </main>
+      
+        
+<footer class="md-footer">
+  
+    <nav class="md-footer__inner md-grid" aria-label="Footer">
+      
+        
+        <a href="../version-3/" class="md-footer__link md-footer__link--prev" aria-label="Previous: Version 3" rel="prev">
+          <div class="md-footer__button md-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"/></svg>
+          </div>
+          <div class="md-footer__title">
+            <div class="md-ellipsis">
+              <span class="md-footer__direction">
+                Previous
+              </span>
+              Version 3
+            </div>
+          </div>
+        </a>
+      
+      
+        
+        <a href="../version-5/" class="md-footer__link md-footer__link--next" aria-label="Next: Version 5" rel="next">
+          <div class="md-footer__title">
+            <div class="md-ellipsis">
+              <span class="md-footer__direction">
+                Next
+              </span>
+              Version 5
+            </div>
+          </div>
+          <div class="md-footer__button md-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11H4z"/></svg>
+          </div>
+        </a>
+      
+    </nav>
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-footer-copyright">
+        
+        
+          Made with
+          <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+            Material for MkDocs
+          </a>
+        
+        
+      </div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    <script id="__config" type="application/json">{"base": "../..", "features": [], "translations": {"clipboard.copy": "Copy to clipboard", "clipboard.copied": "Copied to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "Search", "search.result.placeholder": "Type to start searching", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.term.missing": "Missing", "select.version.title": "Select version"}, "search": "../../assets/javascripts/workers/search.fcfe8b6d.min.js", "version": null}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.b1047164.min.js"></script>
+      
+    
+  </body>
+</html>

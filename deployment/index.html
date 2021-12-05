@@ -291,13 +291,6 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#planned-execution-with-cron" class="md-nav__link">
-    Planned execution with cron
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
   <a href="#systemd-unit" class="md-nav__link">
     Systemd unit
   </a>
@@ -334,10 +327,85 @@
   
   
   
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_7" type="checkbox" id="__nav_7" >
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_7">
+          Changelog
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="Changelog" data-md-level="1">
+        <label class="md-nav__title" for="__nav_7">
+          <span class="md-nav__icon md-icon"></span>
+          Changelog
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
     <li class="md-nav__item">
-      <a href="../changelog/" class="md-nav__link">
-        Changelog
+      <a href="../changelog/version-2/" class="md-nav__link">
+        Version 2
       </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../changelog/version-3/" class="md-nav__link">
+        Version 3
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../changelog/version-4/" class="md-nav__link">
+        Version 4
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../changelog/version-5/" class="md-nav__link">
+        Version 5
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
     </li>
   
 
@@ -476,13 +544,6 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#planned-execution-with-cron" class="md-nav__link">
-    Planned execution with cron
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
   <a href="#systemd-unit" class="md-nav__link">
     Systemd unit
   </a>
@@ -522,25 +583,6 @@
 <p>Now you can logout via SSH, and the program will still run. Later you can log back in and use <code>screen -r vigilant</code> to <em>reattach</em> the session and control it or look at the log output.</p>
 <h2 id="team-viewer">Team Viewer</h2>
 <p>You might have set up your Raspberry Pi with a graphical user interface and a running session. In that case you log into that session using Team Viewer or any other remote administration tool. Just open a terminal window and start the program. It will keep running when you disconnect from Team Viewer.</p>
-<h2 id="planned-execution-with-cron">Planned execution with cron</h2>
-<p>You can let the program run the whole time with the <code>watch</code> command as described on the <a href="../running/">usage</a> page. If you want to regularly start the program and not have it running continually, you can use a <em>cron</em> job for that. Reasons for not keeping it running the whole time could be that you want it executed only during certain times of day or certain weekdays. It could also be that it happen to crash for you often (though please report that) and you want it restarted regularly. Personally I use it with cron because I don't have a machine which is running the whole time.</p>
-<p>First you need to find the path to the executable using the <code>type</code> command:</p>
-<div class="highlight"><pre><span></span><code><span class="gp">$ </span><span class="nb">type</span> vigilant-crypto-snatch
-<span class="go">vigilant-crypto-snatch is /home/mu/.local/bin/vigilant-crypto-snatch</span>
-</code></pre></div>
-<p>This path comes because my local user is <code>mu</code> and I have installed it just for my user. It may be <code>/usr/local/bin/vigilant-crypto-snatch</code> on your machine, or something different.</p>
-<p>Then use <code>crontab -e</code> to edit the cron tab and add a new entry like this, where you have to adjust the path to the one that the above command has given you.</p>
-<div class="highlight"><pre><span></span><code>*/15 * * * * /home/mu/.local/bin/vigilant-crypto-snatch watch --one-shot
-</code></pre></div>
-<p>The syntax for the first five columns can be read with <code>man 5 crontab</code>. In short, they are</p>
-<ol>
-<li>Minute (0 to 59)</li>
-<li>Hour (0 to 23)</li>
-<li>Day of month (1 to 31)</li>
-<li>Month (1 to 12)</li>
-<li>Weekday (0 to 7, 0 and 7 are Sunday)</li>
-</ol>
-<p>You can pass a <code>*</code> to specify all values, and <code>*/15</code> means all values which are multiples of 15. The above line calls the program every 15 minutes on every hour, every day of month, every month and every weekday.</p>
 <h2 id="systemd-unit">Systemd unit</h2>
 <p>A very modern approach for continuous running is to use systemd. That is the program which starts all the other programs on a modern Linux system. It needs to have a definition of the service. It is a text file which looks like this:</p>
 <div class="highlight"><pre><span></span><code><span class="k">[Unit]</span>
