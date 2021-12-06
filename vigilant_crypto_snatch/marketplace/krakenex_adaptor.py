@@ -4,9 +4,11 @@ from typing import Protocol
 from typing import Type
 
 import krakenex
+import requests
 
 from .. import logger
 from ..core import Price
+from ..myrequests import HttpRequestError
 from .interface import BuyError
 from .interface import KrakenConfig
 from .interface import Marketplace
@@ -51,9 +53,12 @@ class KrakenexMarketplace(Marketplace):
         return "Kraken"
 
     def get_spot_price(self, coin: str, fiat: str, now: datetime.datetime) -> Price:
-        answer = self.handle.query_public(
-            "Ticker", {"pair": f"{map_normal_to_kraken(coin)}{fiat}"}
-        )
+        try:
+            answer = self.handle.query_public(
+                "Ticker", {"pair": f"{map_normal_to_kraken(coin)}{fiat}"}
+            )
+        except requests.exceptions.ConnectionError as e:
+            raise HttpRequestError() from e
         raise_error(answer, TickerError)
         close = float(list(answer["result"].values())[0]["c"][0])
         logger.debug(f"Retrieved {close} for {fiat}/{coin} from Krakenex.")
@@ -61,7 +66,10 @@ class KrakenexMarketplace(Marketplace):
         return price
 
     def get_balance(self) -> dict:
-        answer = self.handle.query_private("Balance")
+        try:
+            answer = self.handle.query_private("Balance")
+        except requests.exceptions.ConnectionError as e:
+            raise HttpRequestError() from e
         raise_error(answer, TickerError)
         # The key `result` will only be present if the user has any balances.
         if "result" in answer:
@@ -80,19 +88,25 @@ class KrakenexMarketplace(Marketplace):
             "volume": str(volume),
             "oflags": "fcib" if self.prefer_fee_in_base_currency else "fciq",
         }
-        answer = self.handle.query_private("AddOrder", arguments)
+        try:
+            answer = self.handle.query_private("AddOrder", arguments)
+        except requests.exceptions.ConnectionError as e:
+            raise HttpRequestError() from e
         raise_error(answer, BuyError)
 
     def get_withdrawal_fee(self, coin: str, volume: float) -> float:
         target = self.withdrawal_config[coin].target
-        answer = self.handle.query_private(
-            "WithdrawInfo",
-            {
-                "asset": map_normal_to_kraken(coin),
-                "amount": volume,
-                "key": target,
-            },
-        )
+        try:
+            answer = self.handle.query_private(
+                "WithdrawInfo",
+                {
+                    "asset": map_normal_to_kraken(coin),
+                    "amount": volume,
+                    "key": target,
+                },
+            )
+        except requests.exceptions.ConnectionError as e:
+            raise HttpRequestError() from e
         raise_error(answer, WithdrawalError)
         fee = float(answer["result"]["fee"])
         logger.debug(f"Withdrawal fee for {coin} is {fee} {coin}.")
@@ -110,14 +124,17 @@ class KrakenexMarketplace(Marketplace):
             logger.info(
                 f"Trying to withdraw {volume} {coin} as fee is just {fee} {coin} and below limit."
             )
-            answer = self.handle.query_private(
-                "Withdraw",
-                {
-                    "asset": map_normal_to_kraken(coin),
-                    "amount": volume,
-                    "key": target,
-                },
-            )
+            try:
+                answer = self.handle.query_private(
+                    "Withdraw",
+                    {
+                        "asset": map_normal_to_kraken(coin),
+                        "amount": volume,
+                        "key": target,
+                    },
+                )
+            except requests.exceptions.ConnectionError as e:
+                raise HttpRequestError() from e
             raise_error(answer, WithdrawalError)
         else:
             logger.debug(
