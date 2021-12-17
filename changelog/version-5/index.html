@@ -398,6 +398,13 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#version-503" class="md-nav__link">
+    Version 5.0.3
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -559,6 +566,13 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#version-503" class="md-nav__link">
+    Version 5.0.3
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -592,6 +606,10 @@
 <h3 id="version-502">Version 5.0.2</h3>
 <ul>
 <li>The Telegram connector would hang during shutdown, I have fixed that again.</li>
+</ul>
+<h3 id="version-503">Version 5.0.3</h3>
+<ul>
+<li>Catch <code>requests.exceptions.ConnectionError</code>, which wasn't caught by the krakenex library. Now it will be converted into an error on the module level.</li>
 </ul>
                 
               
