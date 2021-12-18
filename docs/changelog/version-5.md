@@ -18,3 +18,7 @@
 ### Version 5.0.3
 
 - Catch `requests.exceptions.ConnectionError`, which wasn't caught by the krakenex library. Now it will be converted into an error on the module level.
+
+---
+
+- Print out version number during startup.
