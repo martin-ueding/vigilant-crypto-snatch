@@ -1,5 +1,6 @@
 import datetime
 
+from .. import __version__
 from .. import logger
 from ..configuration import get_used_currencies
 from ..configuration import run_migrations
@@ -23,7 +24,7 @@ def main(marketplace_name):
     config = YamlConfiguration()
 
     add_telegram_logger(config.get_telegram_config())
-    logger.info("Starting up …")
+    logger.info(f"Starting up with version {__version__} …")
 
     datastore = make_datastore(user_db_path)
     market = make_marketplace(config, marketplace_name)
