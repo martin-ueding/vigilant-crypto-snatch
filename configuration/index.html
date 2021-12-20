@@ -320,6 +320,26 @@
     Trigger strategy
   </a>
   
+    <nav class="md-nav" aria-label="Trigger strategy">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#drop-strategy" class="md-nav__link">
+    Drop strategy
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fear-greed-strategy" class="md-nav__link">
+    Fear &amp; Greed strategy
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
 </li>
         
           <li class="md-nav__item">
@@ -684,6 +704,26 @@
     Trigger strategy
   </a>
   
+    <nav class="md-nav" aria-label="Trigger strategy">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#drop-strategy" class="md-nav__link">
+    Drop strategy
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fear-greed-strategy" class="md-nav__link">
+    Fear &amp; Greed strategy
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
 </li>
         
           <li class="md-nav__item">
@@ -855,14 +895,21 @@
 </li>
 </ul>
 <h3 id="trigger-strategy">Trigger strategy</h3>
-<p>We currently have two trigger strategies.</p>
-<p>One is a fixed time interval, which is basically the <em>dollar cost average</em> strategy. For this you don't have any additional keys.</p>
-<p>The other is the <em>drop</em> strategy. It will look whether the price has dropped by a given <em>percentage</em> within a given <em>delay</em>. You could for instance look for a drop of 1 % within 60 minutes. You will need to specify these keys:</p>
+<p>We currently have two optional trigger strategies. All strategies also use the cooldown. If you do not specify any strategy keys, then it will just buy whenever the cooldown has expired. This is the “Dollar cost average” way.</p>
+<p>You can use as many strategies as you like. They are connected via logical <em>and</em>, meaning that all strategies have to say “buy” in order for the trigger to fire.</p>
+<h4 id="drop-strategy">Drop strategy</h4>
+<p>The first strategy is the <em>drop</em> strategy. It will look whether the price has dropped by a given <em>percentage</em> within a given <em>delay</em>. You could for instance look for a drop of 1 % within 60 minutes. You will need to specify these keys:</p>
 <ul>
 <li><code>drop_percentage</code></li>
-<li><code>delay_minutes</code>, <code>delay_hours</code> or <code>delay_days</code>. If multiple are given, only the one with the largest unit will be used.</li>
+<li><code>delay_minutes</code>, <code>delay_hours</code> or <code>delay_days</code>: If multiple are given, only the one with the largest unit will be used.</li>
 </ul>
 <p>You can specify a decimal number for the drop percentage, just be aware that it must contain a decimal point instead of a decimal comma.</p>
+<h4 id="fear-greed-strategy">Fear &amp; Greed strategy</h4>
+<p>There is the <a href="https://alternative.me/crypto/fear-and-greed-index/">Fear &amp; Greed Index</a>, which provides a market analysis via multiple factors. It is a number between 0 and 100. Low numbers mean that people are fearful and it might be good to buy. And high numbers mean that people are greedy and it might be a bad idea to buy.</p>
+<p>You can specify the following key to make use of this strategy.</p>
+<ul>
+<li><code>fear_and_greed_index_below</code>: An integer value between 0 and 101 which is the exclusive upper limit for the fear and greed index. If you specify 50, then it will only buy for 49 or below.</li>
+</ul>
 <h3 id="fiat-volume-strategy">Fiat volume strategy</h3>
 <p>There are two ways that you can determine the amount of fiat volume that you want to spend on each trigger execution.</p>
 <p>First there is the <em>fixed</em> strategy, where you always spend a fixed amount. For that you need this key:</p>

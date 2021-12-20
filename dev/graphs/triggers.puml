@@ -10,6 +10,19 @@ interface historical.HistoricalSource
 
 namespace triggers {
 
+class TriggerSpec {
+    name: Optional[str]
+    coin: str
+    fiat: str
+    cooldown_minutes: int
+    delay_minutes: Optional[int]
+    drop_percentage: Optional[float]
+    volume_fiat: Optional[float]
+    percentage_fiat: Optional[float]
+    start: Optional[datetime.datetime]
+    fear_and_greed_index_below: Optional[int]
+}
+
 interface Trigger {
     get_name()
     fire()
@@ -50,6 +63,9 @@ datastorage.Datastore <-- DatabaseCleaningTrigger
 
 marketplace.Marketplace <-- RatioVolumeFiatDelegate
 
+
+class FearAndGreedIndexTriggeredDelegate implements TriggeredDelegate
+feargreed.FearAndGreedIndex <-- FearAndGreedIndexTriggeredDelegate
 
 }
 

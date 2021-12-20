@@ -18,18 +18,6 @@ class Trade {
     fiat: str
 }
 
-class TriggerSpec {
-    name: Optional[str]
-    coin: str
-    fiat: str
-    cooldown_minutes: int
-    delay_minutes: Optional[int]
-    drop_percentage: Optional[float]
-    volume_fiat: Optional[float]
-    percentage_fiat: Optional[float]
-    start: Optional[datetime.datetime]
-}
-
 }
 
 @enduml
