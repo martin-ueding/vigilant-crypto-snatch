@@ -64,6 +64,9 @@ datastorage.Datastore <-- DatabaseCleaningTrigger
 marketplace.Marketplace <-- RatioVolumeFiatDelegate
 
 
+class FearAndGreedIndexTriggeredDelegate implements TriggeredDelegate
+feargreed.FearAndGreedIndex <-- FearAndGreedIndexTriggeredDelegate
+
 }
 
 @enduml
