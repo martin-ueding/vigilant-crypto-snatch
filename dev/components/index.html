@@ -227,7 +227,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../running/" class="md-nav__link">
+      <a href="../../usage/" class="md-nav__link">
         Usage
       </a>
     </li>
@@ -474,6 +474,13 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#fear-greed" class="md-nav__link">
+    Fear &amp; Greed
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#triggers" class="md-nav__link">
     Triggers
   </a>
@@ -623,6 +630,13 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#fear-greed" class="md-nav__link">
+    Fear &amp; Greed
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#triggers" class="md-nav__link">
     Triggers
   </a>
@@ -699,6 +713,9 @@
 <p>In order to find drops, we need to know the prices in the past. These are provided by a historical source, which delivers price objects.</p>
 <p><a href="../graphs/historical.svg"><img alt="" src="../graphs/historical.svg" /></a></p>
 <p>There are many different implementations. One just asks the marketplace for the current price, that only works when the specified time is right now. For older times we can have a look into the database. But if there is no appropriate price available, it will ask on Crypto Compare. To the remainder of the program everything is hidden behind that interface.</p>
+<h2 id="fear-greed">Fear &amp; Greed</h2>
+<p>For the “Fear &amp; Greed Index” we need to query the API. This again has an interface, such that we can test it.</p>
+<p><a href="../graphs/feargreed.svg"><img alt="" src="../graphs/feargreed.svg" /></a></p>
 <h2 id="triggers">Triggers</h2>
 <p>The triggers get specified by the user. I have generalized the trigger concept such that it just handles regular actions. These also include database cleaning and sending a Telegram notification. For the buy triggers there is a specification, the <code>TriggerSpec</code>.</p>
 <p><a href="../graphs/triggers.svg"><img alt="" src="../graphs/triggers.svg" /></a></p>

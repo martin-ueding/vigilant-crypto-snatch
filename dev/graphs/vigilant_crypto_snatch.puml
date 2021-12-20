@@ -6,6 +6,7 @@
 !include configuration.puml
 !include core.puml
 !include datastore.puml
+!include feargreed.puml
 !include historical.puml
 !include marketplace.puml
 !include paths.puml

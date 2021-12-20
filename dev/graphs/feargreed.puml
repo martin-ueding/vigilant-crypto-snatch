@@ -1,6 +1,9 @@
 @startuml
 allowmixing
 
+
+namespace feargreed {
+
 interface FearAndGreedIndex {
     get_value(datetime.datetime): int
 }
@@ -10,5 +13,9 @@ class AlternateMeFearAndGreedIndex implements FearAndGreedIndex
 class FearAndGreedException
 
 AlternateMeFearAndGreedIndex -> FearAndGreedException
+
+myrequests.MyRequests <-- AlternateMeFearAndGreedIndex
+
+}
 
 @enduml
