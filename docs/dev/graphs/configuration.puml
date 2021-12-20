@@ -12,6 +12,7 @@ interface Configuration {
     get_kraken_config()
     get_bitstamp_config()
     get_telegram_config()
+    get_trigger_config()
 }
 
 class YamlConfiguration implements Configuration
@@ -20,7 +21,7 @@ historical.CryptoCompareConfig <-- Configuration
 marketplace.KrakenConfig <-- Configuration
 marketplace.BitstampConfig <-- Configuration
 telegram.TelegramConfig <-- Configuration
-core.TriggerSpec <-- Configuration
+triggers.TriggerSpec <-- Configuration
 
 YamlConfiguration --> dateutil
 YamlConfiguration --> yaml
