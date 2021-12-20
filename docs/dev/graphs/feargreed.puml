@@ -1,0 +1,14 @@
+@startuml
+allowmixing
+
+interface FearAndGreedIndex {
+    get_value(datetime.datetime): int
+}
+
+class AlternateMeFearAndGreedIndex implements FearAndGreedIndex
+
+class FearAndGreedException
+
+AlternateMeFearAndGreedIndex -> FearAndGreedException
+
+@enduml
