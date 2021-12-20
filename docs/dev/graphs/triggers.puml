@@ -10,6 +10,18 @@ interface historical.HistoricalSource
 
 namespace triggers {
 
+class TriggerSpec {
+    name: Optional[str]
+    coin: str
+    fiat: str
+    cooldown_minutes: int
+    delay_minutes: Optional[int]
+    drop_percentage: Optional[float]
+    volume_fiat: Optional[float]
+    percentage_fiat: Optional[float]
+    start: Optional[datetime.datetime]
+}
+
 interface Trigger {
     get_name()
     fire()
