@@ -1,6 +1,7 @@
 import datetime
 
 from .. import logger
+from ..feargreed import FearAndGreedIndex
 from ..historical import HistoricalError
 from ..historical import HistoricalSource
 
@@ -49,3 +50,13 @@ class TrueTriggeredDelegate(TriggeredDelegate):
 
     def __str__(self) -> str:
         return f"True()"
+
+
+class FearAndGreedIndexTriggeredDelegate(TriggeredDelegate):
+    def __init__(self, threshold: int, index: FearAndGreedIndex):
+        self.threshold = threshold
+        self.index = index
+
+    def is_triggered(self, now: datetime.datetime) -> bool:
+        value = self.index.get_value(now)
+        return value < self.threshold

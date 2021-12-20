@@ -20,6 +20,7 @@ class TriggerSpec {
     volume_fiat: Optional[float]
     percentage_fiat: Optional[float]
     start: Optional[datetime.datetime]
+    fear_and_greed_index_below: Optional[int]
 }
 
 interface Trigger {

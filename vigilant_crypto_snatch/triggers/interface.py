@@ -28,3 +28,4 @@ class TriggerSpec:
     volume_fiat: Optional[float] = None
     percentage_fiat: Optional[float] = None
     start: Optional[datetime.datetime] = None
+    fear_and_greed_index_below: Optional[int] = None

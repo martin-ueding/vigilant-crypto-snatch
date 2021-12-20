@@ -4,5 +4,5 @@ from vigilant_crypto_snatch.feargreed.alternateme import AlternateMeFearAndGreed
 
 
 def test_alternate_me() -> None:
-    index = AlternateMeFearAndGreedIndex()
+    index = AlternateMeFearAndGreedIndex(test=True)
     assert index.get_value(datetime.datetime.now()) == 25
