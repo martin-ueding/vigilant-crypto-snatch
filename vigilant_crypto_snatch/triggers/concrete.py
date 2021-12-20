@@ -1,5 +1,6 @@
 import abc
 import datetime
+from typing import List
 from typing import Optional
 
 from .. import logger
@@ -49,7 +50,7 @@ class BuyTrigger(Trigger, abc.ABC):
         coin: str,
         fiat: str,
         cooldown_minutes: int,
-        triggered_delegate: TriggeredDelegate,
+        triggered_delegates: List[TriggeredDelegate],
         volume_fiat_delegate: VolumeFiatDelegate,
         name: Optional[str] = None,
         start: Optional[datetime.datetime] = None,
@@ -61,14 +62,17 @@ class BuyTrigger(Trigger, abc.ABC):
         self.coin = coin
         self.fiat = fiat
         self.cooldown_minutes = cooldown_minutes
-        self.triggered_delegate = triggered_delegate
+        self.triggered_delegates = triggered_delegates
         self.volume_fiat_delegate = volume_fiat_delegate
         self.name = name
         self.start = start
         self.failure_timeout = FailureTimeout()
 
     def is_triggered(self, now: datetime.datetime) -> bool:
-        return self.triggered_delegate.is_triggered(now)
+        return all(
+            triggered_delegate.is_triggered(now)
+            for triggered_delegate in self.triggered_delegates
+        )
 
     def has_cooled_off(self, now: datetime.datetime) -> bool:
         if self.failure_timeout.has_timeout(now):
@@ -117,7 +121,7 @@ class BuyTrigger(Trigger, abc.ABC):
 
     def get_name(self) -> str:
         if self.name is None:
-            return f"Buy(cooldown_minutes={self.cooldown_minutes}, trigger={str(self.triggered_delegate)}, volume_fiat={str(self.volume_fiat_delegate)})"
+            return f"Buy(cooldown_minutes={self.cooldown_minutes}, trigger={str(self.triggered_delegates)}, volume_fiat={str(self.volume_fiat_delegate)})"
         else:
             return self.name
 

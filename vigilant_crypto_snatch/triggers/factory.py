@@ -3,6 +3,7 @@ from typing import List
 
 from .. import logger
 from ..datastorage import Datastore
+from ..feargreed import AlternateMeFearAndGreedIndex
 from ..historical import HistoricalSource
 from ..marketplace import Marketplace
 from .concrete import BuyTrigger
@@ -11,6 +12,7 @@ from .concrete import DatabaseCleaningTrigger
 from .interface import Trigger
 from .interface import TriggerSpec
 from .triggered_delegates import DropTriggeredDelegate
+from .triggered_delegates import FearAndGreedIndexTriggeredDelegate
 from .triggered_delegates import TriggeredDelegate
 from .triggered_delegates import TrueTriggeredDelegate
 from .volume_fiat_delegates import FixedVolumeFiatDelegate
@@ -37,21 +39,30 @@ def make_buy_trigger(
     logger.debug(f"Processing trigger spec: {trigger_spec}")
 
     # We first need to construct the `TriggeredDelegate` and find out which type it is.
-    triggered_delegate: TriggeredDelegate
+    triggered_delegates: List[TriggeredDelegate] = []
     if (
         trigger_spec.delay_minutes is not None
         and trigger_spec.drop_percentage is not None
     ):
-        triggered_delegate = DropTriggeredDelegate(
-            coin=trigger_spec.coin,
-            fiat=trigger_spec.fiat,
-            delay_minutes=trigger_spec.delay_minutes,
-            drop_percentage=trigger_spec.drop_percentage,
-            source=source,
+        triggered_delegates.append(
+            DropTriggeredDelegate(
+                coin=trigger_spec.coin,
+                fiat=trigger_spec.fiat,
+                delay_minutes=trigger_spec.delay_minutes,
+                drop_percentage=trigger_spec.drop_percentage,
+                source=source,
+            )
         )
     else:
-        triggered_delegate = TrueTriggeredDelegate()
-    logger.debug(f"Constructed: {triggered_delegate}")
+        triggered_delegates.append(TrueTriggeredDelegate())
+    if trigger_spec.fear_and_greed_index_below:
+        triggered_delegates.append(
+            FearAndGreedIndexTriggeredDelegate(
+                trigger_spec.fear_and_greed_index_below,
+                AlternateMeFearAndGreedIndex(),
+            )
+        )
+    logger.debug(f"Constructed: {triggered_delegates}")
 
     # Then we need the `VolumeFiatDelegate`.
     volume_fiat_delegate: VolumeFiatDelegate
@@ -72,7 +83,7 @@ def make_buy_trigger(
         coin=trigger_spec.coin,
         fiat=trigger_spec.fiat,
         cooldown_minutes=trigger_spec.cooldown_minutes,
-        triggered_delegate=triggered_delegate,
+        triggered_delegates=triggered_delegates,
         volume_fiat_delegate=volume_fiat_delegate,
         name=trigger_spec.name,
         start=trigger_spec.start,
@@ -90,9 +101,9 @@ def make_triggers(
     buy_triggers = make_buy_triggers(config, datastore, source, market)
     longest_cooldown = max(
         (
-            trigger.triggered_delegate.delay_minutes
+            trigger.triggered_delegates.delay_minutes
             for trigger in buy_triggers
-            if isinstance(trigger.triggered_delegate, DropTriggeredDelegate)
+            if isinstance(trigger.triggered_delegates, DropTriggeredDelegate)
         ),
         default=120,
     )
