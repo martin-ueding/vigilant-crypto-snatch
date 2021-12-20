@@ -22,3 +22,4 @@
 ---
 
 - Print out version number during startup.
+- Add trigger option `fear_and_greed_index_below`.

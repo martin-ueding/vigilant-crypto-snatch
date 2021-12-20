@@ -154,16 +154,26 @@ There are different sub-types, but all of them have the following elements in co
 
 ### Trigger strategy
 
-We currently have two trigger strategies.
+We currently have two optional trigger strategies. All strategies also use the cooldown. If you do not specify any strategy keys, then it will just buy whenever the cooldown has expired. This is the “Dollar cost average” way.
 
-One is a fixed time interval, which is basically the *dollar cost average* strategy. For this you don't have any additional keys.
+You can use as many strategies as you like. They are connected via logical _and_, meaning that all strategies have to say “buy” in order for the trigger to fire.
 
-The other is the *drop* strategy. It will look whether the price has dropped by a given *percentage* within a given *delay*. You could for instance look for a drop of 1 % within 60 minutes. You will need to specify these keys:
+#### Drop strategy
+
+The first strategy is the *drop* strategy. It will look whether the price has dropped by a given *percentage* within a given *delay*. You could for instance look for a drop of 1 % within 60 minutes. You will need to specify these keys:
 
 - `drop_percentage`
-- `delay_minutes`, `delay_hours` or `delay_days`. If multiple are given, only the one with the largest unit will be used.
+- `delay_minutes`, `delay_hours` or `delay_days`: If multiple are given, only the one with the largest unit will be used.
 
 You can specify a decimal number for the drop percentage, just be aware that it must contain a decimal point instead of a decimal comma.
+
+#### Fear & Greed strategy
+
+There is the [Fear & Greed Index](https://alternative.me/crypto/fear-and-greed-index/), which provides a market analysis via multiple factors. It is a number between 0 and 100. Low numbers mean that people are fearful and it might be good to buy. And high numbers mean that people are greedy and it might be a bad idea to buy.
+
+You can specify the following key to make use of this strategy.
+
+- `fear_and_greed_index_below`: An integer value between 0 and 101 which is the exclusive upper limit for the fear and greed index. If you specify 50, then it will only buy for 49 or below.
 
 ### Fiat volume strategy
 
