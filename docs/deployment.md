@@ -1,6 +1,6 @@
 # Deployment
 
-Using the other pages, you should have already [configured](configuration.md) the program and [tried to use](running.md) it. It should log into the marketplace, report your balance and load the triggers. Then you can start it and have it run, but you likely want a proper deployment.
+Using the other pages, you should have already [configured](configuration.md) the program and [tried to use](usage.md) it. It should log into the marketplace, report your balance and load the triggers. Then you can start it and have it run, but you likely want a proper deployment.
 
 Most users seem to have a Raspberry Pi, which is an affordable miniature server. It is perfectly suited to run this little Python program. You can also run it on a larger server, if you want.
 
@@ -18,7 +18,7 @@ For that start a new screen session, and perhaps already give it a name (we use 
 $ screen -S vigilant
 ```
 
-Not much will change, you will get a fresh screen. Then start the program as documented in the [usage](running.md) page. It should start up.
+Not much will change, you will get a fresh screen. Then start the program as documented in the [usage](usage.md) page. It should start up.
 
 Then you can <kbd>Ctrl</kbd>+<kbd>A</kbd>, then <kbd>D</kbd>. This will *detach* the session. Use `screen -ls` to see a list of all sessions that are open. This can look like this:
 

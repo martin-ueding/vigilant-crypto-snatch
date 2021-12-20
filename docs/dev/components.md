@@ -42,6 +42,13 @@ In order to find drops, we need to know the prices in the past. These are provid
 
 There are many different implementations. One just asks the marketplace for the current price, that only works when the specified time is right now. For older times we can have a look into the database. But if there is no appropriate price available, it will ask on Crypto Compare. To the remainder of the program everything is hidden behind that interface.
 
+
+## Fear & Greed
+
+For the “Fear & Greed Index” we need to query the API. This again has an interface, such that we can test it.
+
+[![](graphs/feargreed.svg)](graphs/feargreed.svg)
+
 ## Triggers
 
 The triggers get specified by the user. I have generalized the trigger concept such that it just handles regular actions. These also include database cleaning and sending a Telegram notification. For the buy triggers there is a specification, the `TriggerSpec`.

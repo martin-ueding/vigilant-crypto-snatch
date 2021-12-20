@@ -50,7 +50,7 @@ vigilant-crypto-snatch --loglevel info watch --marketplace kraken --keepalive
 
 ### Nonce rejections with Kraken
 
-If you happen to get nonce errors with the Kraken marketplace, consider using less triggers for it, or modifying your API key according to [their guide](https://support.kraken.com/hc/en-us/articles/360001148063-Why-am-I-getting-Invalid-Nonce-Errors-)
+If you happen to get nonce errors with the Kraken marketplace, consider using less triggers for it, or modifying your API key according to [their guide](https://support.kraken.com/hc/en-us/articles/360001148063-Why-am-I-getting-Invalid-Nonce-Errors-).
 
 ## Subcommand evaluate
 
