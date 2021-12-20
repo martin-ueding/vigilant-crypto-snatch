@@ -19,7 +19,7 @@
 
 - Catch `requests.exceptions.ConnectionError`, which wasn't caught by the krakenex library. Now it will be converted into an error on the module level.
 
----
+## Version 5.1.0
 
 - Print out version number during startup.
 - Add trigger option `fear_and_greed_index_below`.
