@@ -1,8 +1,8 @@
 import datetime
 from typing import Dict
 
-from vigilant_crypto_snatch.feargreed import FearAndGreedIndex
 from vigilant_crypto_snatch.feargreed.interface import FearAndGreedException
+from vigilant_crypto_snatch.feargreed.interface import FearAndGreedIndex
 from vigilant_crypto_snatch.myrequests import HttpRequestError
 from vigilant_crypto_snatch.myrequests import perform_http_request
 
