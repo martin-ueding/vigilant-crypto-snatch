@@ -495,15 +495,15 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#configuration" class="md-nav__link">
-    Configuration
+  <a href="#telegram" class="md-nav__link">
+    Telegram
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#telegram" class="md-nav__link">
-    Telegram
+  <a href="#configuration" class="md-nav__link">
+    Configuration
   </a>
   
 </li>
@@ -651,15 +651,15 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#configuration" class="md-nav__link">
-    Configuration
+  <a href="#telegram" class="md-nav__link">
+    Telegram
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#telegram" class="md-nav__link">
-    Telegram
+  <a href="#configuration" class="md-nav__link">
+    Configuration
   </a>
   
 </li>
@@ -692,7 +692,9 @@
                 
                 
                 <h1 id="components">Components</h1>
-<p>This project aims to be organized according to the <a href="https://blog.cleancoder.com/uncle-bob/2012/08/13/the-clean-architecture.html"><em>Clean Architecture</em></a>. There are many components, and they only depend on each other in a acyclic way.</p>
+<p>This project aims to be organized according to the <a href="https://blog.cleancoder.com/uncle-bob/2012/08/13/the-clean-architecture.html"><em>Clean Architecture</em></a>. There are many components, and they only depend on each other in an acyclic way. First we show a diagram which contains just opaque components. The parts from this software are yellow, the external libraries are in blue.</p>
+<p><a href="../graphs/_components.svg"><img alt="" src="../graphs/_components.svg" /></a></p>
+<p>You can see that is a nice directed acyclic graph, and that the <em>core</em> component is independent of any external libraries.</p>
 <p>On this page we will go through all the components and how they interact with each other. This shall give you an overview of the architecture of this software.</p>
 <h2 id="core">Core</h2>
 <p>At the center there are the core entities, the data classes which don't depend on anything else. These are the classes representing <code>Price</code> and <code>Trade</code>.</p>
@@ -725,14 +727,14 @@
 <p>We need to know where to store and load configuration files, database files and cached information. For this we have the collected the paths in a module.</p>
 <p><a href="../graphs/paths.svg"><img alt="" src="../graphs/paths.svg" /></a></p>
 <p>This uses the <code>appdir</code> library to get user directories in a system independent manner.</p>
-<h2 id="configuration">Configuration</h2>
-<p>The configuration shall be independent of the file format used, it should provide some migrations and so on. All the parsing should be done there as well. At the moment I have a bunch of free functions, and they pass around lists and dicts.</p>
-<p><a href="../graphs/configuration.svg"><img alt="" src="../graphs/configuration.svg" /></a></p>
-<p>I am not that happy with that yet, I would like to have an interface there as well in order to mock that for tests.</p>
 <h2 id="telegram">Telegram</h2>
 <p>The message sending to Telegram is implemented as a logger with the Python standard library <code>logging</code> facilities. I have a logger which extends the handler. In this way I depend on something external, but it is pluggable via the logging handler mechanism in the standard library.</p>
 <p><a href="../graphs/telegram.svg"><img alt="" src="../graphs/telegram.svg" /></a></p>
 <p>I use the <em>requests</em> library for the HTTP requests, which I did not hide behind an interface.</p>
+<h2 id="configuration">Configuration</h2>
+<p>The configuration shall be independent of the file format used, it should provide some migrations and so on. All the parsing should be done there as well. At the moment I have a bunch of free functions, and they pass around lists and dicts.</p>
+<p><a href="../graphs/configuration.svg"><img alt="" src="../graphs/configuration.svg" /></a></p>
+<p>I am not that happy with that yet, I would like to have an interface there as well in order to mock that for tests.</p>
 <h2 id="commands">Commands</h2>
 <p>The main commands then import a bunch of the concrete classes and instantiates that. This is okay, because that is on the outside ring of my architecture.</p>
 <p><a href="../graphs/commands.svg"><img alt="" src="../graphs/commands.svg" /></a></p>

@@ -1,0 +1,8 @@
+@startuml
+
+namespace evaluation {
+    class SimulationMarketplace implements marketplace.Marketplace
+    class InterpolatingSource implements historical.HistoricalSource
+}
+
+@enduml

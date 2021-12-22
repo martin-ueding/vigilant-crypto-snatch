@@ -3,8 +3,8 @@
 allowmixing
 
 namespace marketplace {
-    component bitstamp
-    component krakenex
+    component bitstamp #lightskyblue
+    component krakenex #lightskyblue
 
 interface Marketplace {
     place_order()

@@ -3,7 +3,7 @@
 allowmixing
 
 namespace paths {
-    component appdirs
+    component appdirs #lightskyblue
     class Paths
     Paths --> appdirs
 }

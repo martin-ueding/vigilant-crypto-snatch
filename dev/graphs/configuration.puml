@@ -3,8 +3,8 @@
 allowmixing
 
 namespace configuation {
-component yaml
-component dateutil
+component yaml #lightskyblue
+component dateutil #lightskyblue
 
 interface Configuration {
     get_polling_interval()
