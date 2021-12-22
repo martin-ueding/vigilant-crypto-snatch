@@ -15,6 +15,7 @@ component sqlalchemy #lightskyblue
 component streamlit #lightskyblue
 component yaml #lightskyblue
 
+component cli
 component commands
 component configuration
 component core
@@ -29,13 +30,21 @@ component paths
 component streamlit_ui
 component telegram
 component triggers
+component watchloop
 
-click <-- commands
-coloredlogs <-- commands
+coloredlogs <-- cli
+commands <-- cli
+streamlit_ui <-- cli
+click <-- cli
+
 configuration <-- commands
 datastorage <-- commands
 historical <-- commands
 marketplace <-- commands
+paths <-- commands
+telegram <-- commands
+triggers <-- commands
+watchloop <-- commands
 
 dateutil <-- configuration
 historical <-- configuration
@@ -84,5 +93,11 @@ datastorage <-- triggers
 feargreed <-- triggers
 historical <-- triggers
 marketplace <-- triggers
+
+datastorage <-- watchloop
+marketplace <-- watchloop
+myrequests <-- watchloop
+telegram <-- watchloop
+triggers <-- watchloop
 
 @enduml
