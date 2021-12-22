@@ -1,3 +1,4 @@
+import copy
 import datetime
 import tempfile
 
@@ -179,3 +180,46 @@ def test_get_bitstamp_config() -> None:
         f.close()
         config = yaml_configuration.YamlConfiguration(f.name)
         assert config.get_bitstamp_config() is not None
+
+
+def test_get_kraken_config_empty() -> None:
+    with tempfile.NamedTemporaryFile("w+", delete=False) as f:
+        f.write("sleep: 1")
+        f.close()
+        config = yaml_configuration.YamlConfiguration(f.name)
+        assert config.get_kraken_config() is None
+
+
+kraken_config_full = """
+kraken:
+  key: test-key
+  secret: test-secret
+  prefer_fee_in_base_currency: true
+  withdrawal:
+    BTC:
+      target: test-target
+      fee_limit_percent: 0.7
+"""
+
+
+def test_get_kraken_config_full() -> None:
+    with tempfile.NamedTemporaryFile("w+", delete=False) as f:
+        f.write(kraken_config_full)
+        f.close()
+        config = yaml_configuration.YamlConfiguration(f.name)
+        assert config.get_kraken_config() is not None
+
+
+kraken_config_minimal = """
+kraken:
+  key: test-key
+  secret: test-secret
+"""
+
+
+def test_get_kraken_config_minimal() -> None:
+    with tempfile.NamedTemporaryFile("w+", delete=False) as f:
+        f.write(kraken_config_minimal)
+        f.close()
+        config = yaml_configuration.YamlConfiguration(f.name)
+        assert config.get_kraken_config() is not None
