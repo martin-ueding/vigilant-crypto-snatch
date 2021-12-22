@@ -118,6 +118,7 @@ triggers:
   drop_percentage: 10
   fiat: eur
   volume_fiat: 100.0
+  start: 2021-12-12T04:12:00
 
 # This uses the Fear & Greed index, as well as a start date.
 - coin: btc
@@ -137,6 +138,14 @@ triggers:
   name: Regular
   volume_fiat: 26.0
   start: 2021-12-12T04:12Z
+  
+# This one doesn't use drops and has a name.
+- coin: btc
+  cooldown_days: 20
+  fiat: eur
+  name: Regular
+  volume_fiat: 26.0
+  start: 2021-12-12 04:12:12
 """
 
 
