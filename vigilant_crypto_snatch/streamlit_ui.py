@@ -11,7 +11,6 @@ import streamlit.cli as st_cli
 from vigilant_crypto_snatch.configuration import migrations
 from vigilant_crypto_snatch.configuration import parse_trigger_spec
 from vigilant_crypto_snatch.configuration import YamlConfiguration
-from vigilant_crypto_snatch.datastorage import Datastore
 from vigilant_crypto_snatch.datastorage import make_datastore
 from vigilant_crypto_snatch.evaluation import get_available_coins
 from vigilant_crypto_snatch.evaluation import get_available_fiats
@@ -21,8 +20,8 @@ from vigilant_crypto_snatch.evaluation import InterpolatingSource
 from vigilant_crypto_snatch.evaluation import make_close_chart
 from vigilant_crypto_snatch.evaluation import make_dataframe_from_json
 from vigilant_crypto_snatch.evaluation import make_survey_chart
+from vigilant_crypto_snatch.evaluation import simulate_triggers
 from vigilant_crypto_snatch.evaluation import SimulationMarketplace
-from vigilant_crypto_snatch.historical import HistoricalError
 from vigilant_crypto_snatch.triggers import BuyTrigger
 from vigilant_crypto_snatch.triggers import make_buy_trigger
 
@@ -266,35 +265,6 @@ def make_time_slider(sidebar_settings):
     time_end = datetime.datetime.fromordinal(time_range[1])
     st.markdown(f"From {time_begin} to {time_end}")
     return time_begin, time_end
-
-
-def simulate_triggers(
-    data: pd.DataFrame,
-    coin: str,
-    fiat: str,
-    active_triggers,
-    datastore: Datastore,
-    progress_callback=lambda n: None,
-) -> pd.DataFrame:
-    for i in data.index:
-        row = data.loc[i]
-        now = row["datetime"]
-        for trigger in active_triggers:
-            if not (trigger.coin == coin and trigger.fiat == fiat):
-                continue
-            try:
-                if trigger.is_triggered(now):
-                    if trigger.has_cooled_off(now):
-                        trigger.fire(now)
-                    else:
-                        pass
-            except HistoricalError as e:
-                pass
-        progress_callback((i + 1) / len(data))
-
-    all_trades = datastore.get_all_trades()
-    trade_df = pd.DataFrame([trade.to_dict() for trade in all_trades])
-    return trade_df
 
 
 class Namespace(object):

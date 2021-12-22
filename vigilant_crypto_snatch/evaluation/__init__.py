@@ -3,6 +3,7 @@ from .currency_pairs import get_available_coins
 from .currency_pairs import get_available_fiats
 from .currency_pairs import get_currency_pairs
 from .drop_survey import make_survey_chart
+from .market_simulation import simulate_triggers
 from .market_simulation import SimulationMarketplace
 from .price_data import get_hourly_data
 from .price_data import InterpolatingSource
