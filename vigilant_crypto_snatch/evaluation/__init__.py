@@ -6,6 +6,7 @@ from .drop_survey import make_survey_chart
 from .market_simulation import accumulate_value
 from .market_simulation import simulate_triggers
 from .market_simulation import SimulationMarketplace
+from .market_simulation import summarize_simulation
 from .price_data import get_hourly_data
 from .price_data import InterpolatingSource
 from .price_data import make_dataframe_from_json

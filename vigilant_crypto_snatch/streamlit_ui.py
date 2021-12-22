@@ -20,6 +20,7 @@ from vigilant_crypto_snatch.evaluation import make_close_chart
 from vigilant_crypto_snatch.evaluation import make_dataframe_from_json
 from vigilant_crypto_snatch.evaluation import make_survey_chart
 from vigilant_crypto_snatch.evaluation import simulate_triggers
+from vigilant_crypto_snatch.evaluation import summarize_simulation
 from vigilant_crypto_snatch.triggers import TriggerSpec
 
 
@@ -171,33 +172,15 @@ def sub_trigger_simulation(sidebar_settings):
 
     st.markdown("# Summary")
 
-    summary_rows = []
-    for trigger_name in trigger_names:
-        sub_trades = trades[trades["trigger_name"] == trigger_name]
-        sub_values = value[value["trigger_name"] == trigger_name]
-        num_trigger_executions = len(sub_trades)
-        cumsum_fiat = sub_values["cumsum_fiat"].iat[-1]
-        cumsum_coin = sub_values["cumsum_coin"].iat[-1]
-        value_fiat = sub_values["value_fiat"].iat[-1]
-        average_price = cumsum_fiat / cumsum_coin
-        gain = value_fiat / cumsum_fiat - 1
-        period = (
-            data_datetime.loc[selection].iat[-1] - data_datetime.loc[selection].iat[0]
-        ).days
-        yearly_gain = np.power(gain + 1, 365 / period) - 1
-        row = {
-            "Trigger": trigger_name,
-            "Days": period,
-            "Trades": num_trigger_executions,
-            f"{sidebar_settings.fiat} invested": cumsum_fiat,
-            f"{sidebar_settings.coin} acquired": cumsum_coin,
-            f"{sidebar_settings.fiat} value": value_fiat,
-            f"Average {sidebar_settings.fiat}/{sidebar_settings.coin}": average_price,
-            "Gain %": gain,
-            "Gain %/a": yearly_gain,
-        }
-        summary_rows.append(row)
-    summary = pd.DataFrame(summary_rows)
+    summary = summarize_simulation(
+        trades,
+        value,
+        trigger_names,
+        data_datetime,
+        selection,
+        sidebar_settings.coin,
+        sidebar_settings.fiat,
+    )
     st.dataframe(summary)
 
     value_long = value.rename(
