@@ -1,4 +1,5 @@
 import datetime
+import tempfile
 
 from . import yaml_configuration
 from ..triggers import TriggerSpec
@@ -89,3 +90,11 @@ def test_parse_trigger_spec_time_ratio() -> None:
     actual = yaml_configuration.parse_trigger_spec(spec_dict)
 
     assert target == actual
+
+
+def test_get_polling_interval() -> None:
+    with tempfile.NamedTemporaryFile("w+", delete=False) as f:
+        f.write("sleep: 10")
+        f.close()
+        config = yaml_configuration.YamlConfiguration(f.name)
+        assert config.get_polling_interval() == 10
