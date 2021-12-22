@@ -1,10 +1,10 @@
 import datetime
 from typing import Dict
 
-from vigilant_crypto_snatch.feargreed.interface import FearAndGreedException
-from vigilant_crypto_snatch.feargreed.interface import FearAndGreedIndex
-from vigilant_crypto_snatch.myrequests import HttpRequestError
-from vigilant_crypto_snatch.myrequests import perform_http_request
+from ..myrequests import HttpRequestError
+from ..myrequests import perform_http_request
+from .interface import FearAndGreedException
+from .interface import FearAndGreedIndex
 
 
 def alternative_me_fear_and_greed(limit: int = 1) -> Dict:
@@ -28,22 +28,24 @@ def stub_alternative_me_fear_and_greed(limit: int) -> Dict:
     }
 
 
+cached_values: Dict[datetime.date, int] = {}
+
+
 class AlternateMeFearAndGreedIndex(FearAndGreedIndex):
     def __init__(self, test=False):
         if test:
             self.api = stub_alternative_me_fear_and_greed
         else:
             self.api = alternative_me_fear_and_greed
-        self.values: Dict[datetime.date, int] = {}
 
     def get_value(self, now: datetime.date) -> int:
-        if now not in self.values:
+        if now not in cached_values:
             days_since = (datetime.date.today() - now).days + 1
             try:
                 response = self.api(days_since)
                 for elem in response["data"]:
                     then = datetime.date.fromtimestamp(int(elem["timestamp"]))
-                    self.values[then] = int(elem["value"])
+                    cached_values[then] = int(elem["value"])
             except KeyError as e:
                 raise FearAndGreedException(
                     "Data key was missing in API response"
@@ -53,4 +55,4 @@ class AlternateMeFearAndGreedIndex(FearAndGreedIndex):
                     "Connection error to the Fear & Greed API"
                 ) from e
 
-        return self.values[now]
+        return cached_values[now]
