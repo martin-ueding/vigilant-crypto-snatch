@@ -1,14 +1,12 @@
 # Components
 
-This project aims to be organized according to the [*Clean Architecture*](https://blog.cleancoder.com/uncle-bob/2012/08/13/the-clean-architecture.html). There are many components, and they only depend on each other in a acyclic way.
-
-On this page we will go through all the components and how they interact with each other. This shall give you an overview of the architecture of this software. First we show a diagram which contains just opaque components. The parts from this software are yellow, the external libraries are in blue.
+This project aims to be organized according to the [*Clean Architecture*](https://blog.cleancoder.com/uncle-bob/2012/08/13/the-clean-architecture.html). There are many components, and they only depend on each other in an acyclic way. First we show a diagram which contains just opaque components. The parts from this software are yellow, the external libraries are in blue.
 
 [![](graphs/_components.svg)](graphs/_components.svg)
 
-You can see that is a nice directed acyclic graph, and that the core component is independent of any external libraries.
+You can see that is a nice directed acyclic graph, and that the *core* component is independent of any external libraries.
 
-We will now go through the individual components.
+On this page we will go through all the components and how they interact with each other. This shall give you an overview of the architecture of this software.
 
 ## Core
 
