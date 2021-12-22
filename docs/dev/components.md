@@ -2,7 +2,13 @@
 
 This project aims to be organized according to the [*Clean Architecture*](https://blog.cleancoder.com/uncle-bob/2012/08/13/the-clean-architecture.html). There are many components, and they only depend on each other in a acyclic way.
 
-On this page we will go through all the components and how they interact with each other. This shall give you an overview of the architecture of this software.
+On this page we will go through all the components and how they interact with each other. This shall give you an overview of the architecture of this software. First we show a diagram which contains just opaque components. The parts from this software are yellow, the external libraries are in blue.
+
+[![](graphs/_components.svg)](graphs/_components.svg)
+
+You can see that is a nice directed acyclic graph, and that the core component is independent of any external libraries.
+
+We will now go through the individual components.
 
 ## Core
 
@@ -67,14 +73,6 @@ We need to know where to store and load configuration files, database files and 
 
 This uses the `appdir` library to get user directories in a system independent manner.
 
-## Configuration
-
-The configuration shall be independent of the file format used, it should provide some migrations and so on. All the parsing should be done there as well. At the moment I have a bunch of free functions, and they pass around lists and dicts.
-
-[![](graphs/configuration.svg)](graphs/configuration.svg)
-
-I am not that happy with that yet, I would like to have an interface there as well in order to mock that for tests.
-
 ## Telegram
 
 The message sending to Telegram is implemented as a logger with the Python standard library `logging` facilities. I have a logger which extends the handler. In this way I depend on something external, but it is pluggable via the logging handler mechanism in the standard library.
@@ -82,6 +80,14 @@ The message sending to Telegram is implemented as a logger with the Python stand
 [![](graphs/telegram.svg)](graphs/telegram.svg)
 
 I use the *requests* library for the HTTP requests, which I did not hide behind an interface.
+
+## Configuration
+
+The configuration shall be independent of the file format used, it should provide some migrations and so on. All the parsing should be done there as well. At the moment I have a bunch of free functions, and they pass around lists and dicts.
+
+[![](graphs/configuration.svg)](graphs/configuration.svg)
+
+I am not that happy with that yet, I would like to have an interface there as well in order to mock that for tests.
 
 ## Commands
 

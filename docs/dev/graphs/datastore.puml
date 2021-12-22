@@ -3,7 +3,7 @@
 allowmixing
 
 namespace datastorage {
-    component sqlalchemy
+    component sqlalchemy #lightskyblue
 
 interface Datastore {
     add_price()

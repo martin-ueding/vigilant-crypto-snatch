@@ -1,7 +1,7 @@
 @startuml
 allowmixing
 namespace myrequests {
-    component requests
+    component requests #lightskyblue
     class MyRequests {
         {static} perform_http_request()
     }

@@ -1,0 +1,59 @@
+@startuml
+
+component requests #lightskyblue
+component sqlalchemy #lightskyblue
+component appdirs #lightskyblue
+component krakenex #lightskyblue
+component bitstamp #lightskyblue
+component yaml #lightskyblue
+component click #lightskyblue
+component coloredlogs #lightskyblue
+component dateutil #lightskyblue
+
+component core
+component datastorage
+component marketplace
+component myrequests
+component historical
+component marketplace
+component feargreed
+component triggers
+component paths
+component configuration
+component telegram
+component commands
+
+core <-- datastorage
+sqlalchemy <-- datastorage
+core <-- marketplace
+requests <-- myrequests
+core <-- historical
+datastorage <-- historical
+marketplace <-- historical
+myrequests <-- historical
+myrequests <-- feargreed
+datastorage <-- triggers
+historical <-- triggers
+marketplace <-- triggers
+feargreed <-- triggers
+appdirs <-- paths
+historical <-- configuration
+marketplace <-- configuration
+telegram <-- configuration
+triggers <-- configuration
+paths <-- configuration
+myrequests <-- telegram
+paths <-- telegram
+marketplace <-- commands
+datastorage <-- commands
+configuration <-- commands
+historical <-- commands
+bitstamp <-- marketplace
+krakenex <-- marketplace
+yaml <-- configuration
+click <-- commands
+coloredlogs <-- commands
+dateutil <-- configuration
+
+
+@enduml
