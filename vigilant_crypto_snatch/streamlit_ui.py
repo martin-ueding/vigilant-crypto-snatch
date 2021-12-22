@@ -2,8 +2,6 @@ import datetime
 import os
 import sys
 
-import altair as alt
-import pandas as pd
 import streamlit as st
 import streamlit.cli as st_cli
 
@@ -22,7 +20,6 @@ from vigilant_crypto_snatch.evaluation import make_gain_chart
 from vigilant_crypto_snatch.evaluation import make_survey_chart
 from vigilant_crypto_snatch.evaluation import simulate_triggers
 from vigilant_crypto_snatch.evaluation import summarize_simulation
-from vigilant_crypto_snatch.feargreed import AlternateMeFearAndGreedIndex
 from vigilant_crypto_snatch.triggers import TriggerSpec
 
 

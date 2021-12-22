@@ -23,3 +23,9 @@
 
 - Print out version number during startup.
 - Add trigger option `fear_and_greed_index_below`.
+
+## Version 5.2.0
+
+- Fear & Greed is now included in the evaluation interface.
+- More refactoring, more test coverage.
+- Developer documentation includes a component diagram.
