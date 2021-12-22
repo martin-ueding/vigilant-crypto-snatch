@@ -6,10 +6,10 @@ from typing import List
 import numpy as np
 import pandas as pd
 import scipy.interpolate
-import sqlalchemy
 
 from .. import logger
 from ..core import Price
+from ..datastorage import Datastore
 from ..historical import HistoricalError
 from ..historical import HistoricalSource
 from ..myrequests import perform_http_request
@@ -42,7 +42,7 @@ class InterpolatingSource(HistoricalSource):
 
 
 def json_to_database(
-    data: List[dict], coin: str, fiat: str, session: sqlalchemy.orm.session.Session
+    data: List[dict], coin: str, fiat: str, datastore: Datastore
 ) -> None:
     logger.info(f"Writing {len(data)} prices to the DB …")
     for elem in data:
@@ -52,8 +52,7 @@ def json_to_database(
             coin=coin,
             fiat=fiat,
         )
-        session.add(price)
-    session.commit()
+        datastore.add_price(price)
 
 
 def get_hourly_data(coin: str, fiat: str, api_key: str) -> List[dict]:
