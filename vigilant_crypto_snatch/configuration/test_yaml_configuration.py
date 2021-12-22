@@ -163,3 +163,19 @@ def test_get_bitstamp_config_empty() -> None:
         f.close()
         config = yaml_configuration.YamlConfiguration(f.name)
         assert config.get_bitstamp_config() is None
+
+
+bitstamp_config = """
+bitstamp:
+  key: test-key
+  secret: test-secret
+  username: test-username
+"""
+
+
+def test_get_bitstamp_config() -> None:
+    with tempfile.NamedTemporaryFile("w+", delete=False) as f:
+        f.write(bitstamp_config)
+        f.close()
+        config = yaml_configuration.YamlConfiguration(f.name)
+        assert config.get_bitstamp_config() is not None
