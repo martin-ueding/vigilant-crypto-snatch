@@ -11,6 +11,7 @@ import streamlit.cli as st_cli
 from vigilant_crypto_snatch.configuration import migrations
 from vigilant_crypto_snatch.configuration import parse_trigger_spec
 from vigilant_crypto_snatch.configuration import YamlConfiguration
+from vigilant_crypto_snatch.evaluation import accumulate_value
 from vigilant_crypto_snatch.evaluation import get_available_coins
 from vigilant_crypto_snatch.evaluation import get_available_fiats
 from vigilant_crypto_snatch.evaluation import get_currency_pairs
@@ -150,7 +151,7 @@ def sub_trigger_simulation(sidebar_settings):
         sidebar_settings.coin,
         sidebar_settings.fiat,
         trigger_specs,
-        lambda p: simulation_progress_bar.progress(p),
+        simulation_progress_bar.progress,
     )
 
     if len(trades) == 0:
@@ -159,27 +160,14 @@ def sub_trigger_simulation(sidebar_settings):
 
     st.markdown("Accumulating value …")
     cumsum_progress_bar = st.progress(0.0)
-
-    result = []
-    for i, elem in enumerate(data_datetime.loc[selection]):
-        for trigger_name in trigger_names:
-            sel1 = trades["timestamp"] <= elem
-            sel2 = trades["trigger_name"] == trigger_name
-            sel12 = sel1 & sel2
-            cumsum_coin = np.sum(trades["volume_coin"][sel12])
-            cumsum_fiat = np.sum(trades["volume_fiat"][sel12])
-            value_fiat = cumsum_coin * sidebar_settings.data.loc[i, "close"]
-            result.append(
-                dict(
-                    datetime=elem,
-                    trigger_name=trigger_name,
-                    cumsum_coin=cumsum_coin,
-                    cumsum_fiat=cumsum_fiat,
-                    value_fiat=value_fiat,
-                )
-            )
-        cumsum_progress_bar.progress((i + 1) / len(data_datetime.loc[selection]))
-    value = pd.DataFrame(result)
+    value = accumulate_value(
+        sidebar_settings.data,
+        data_datetime,
+        selection,
+        trades,
+        trigger_names,
+        cumsum_progress_bar.progress,
+    )
 
     st.markdown("# Summary")
 

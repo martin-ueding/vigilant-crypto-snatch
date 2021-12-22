@@ -2,6 +2,7 @@ import datetime
 from typing import List
 from typing import Tuple
 
+import numpy as np
 import pandas as pd
 
 from ..core import Price
@@ -65,3 +66,34 @@ def simulate_triggers(
     trade_df = pd.DataFrame([trade.to_dict() for trade in all_trades])
     trigger_names = [trigger.get_name() for trigger in active_triggers]
     return trade_df, trigger_names
+
+
+def accumulate_value(
+    data,
+    data_datetime,
+    selection,
+    trades,
+    trigger_names,
+    progress_callback=lambda n: None,
+) -> pd.DataFrame:
+    result = []
+    for i, elem in enumerate(data_datetime.loc[selection]):
+        for trigger_name in trigger_names:
+            sel1 = trades["timestamp"] <= elem
+            sel2 = trades["trigger_name"] == trigger_name
+            sel12 = sel1 & sel2
+            cumsum_coin = np.sum(trades["volume_coin"][sel12])
+            cumsum_fiat = np.sum(trades["volume_fiat"][sel12])
+            value_fiat = cumsum_coin * data.loc[i, "close"]
+            result.append(
+                dict(
+                    datetime=elem,
+                    trigger_name=trigger_name,
+                    cumsum_coin=cumsum_coin,
+                    cumsum_fiat=cumsum_fiat,
+                    value_fiat=value_fiat,
+                )
+            )
+        progress_callback((i + 1) / len(data_datetime.loc[selection]))
+    value = pd.DataFrame(result)
+    return value
