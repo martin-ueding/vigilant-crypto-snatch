@@ -1,4 +1,3 @@
-from .batch import get_hourly_data
 from .concrete import CachingHistoricalSource
 from .concrete import CryptoCompareConfig
 from .concrete import CryptoCompareHistoricalSource

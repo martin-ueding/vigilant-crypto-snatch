@@ -1,17 +1,18 @@
 import datetime
+import json
+import os
 from typing import List
-from typing import Tuple
 
 import numpy as np
 import pandas as pd
 import scipy.interpolate
-import sqlalchemy.orm
+import sqlalchemy
 
-from . import logger
-from .core import Price
-from .historical import HistoricalError
-from .historical import HistoricalSource
-from .marketplace import Marketplace
+from .. import logger
+from ..core import Price
+from ..historical import HistoricalError
+from ..historical import HistoricalSource
+from ..myrequests import perform_http_request
 
 
 def make_interpolator(data: pd.DataFrame):
@@ -55,48 +56,34 @@ def json_to_database(
     session.commit()
 
 
+def get_hourly_data(coin: str, fiat: str, api_key: str) -> List[dict]:
+    cache_file = f"~/.cache/vigilant-crypto-snatch/hourly_{coin}_{fiat}.js"
+    cache_file = os.path.expanduser(cache_file)
+    os.makedirs(os.path.dirname(cache_file), exist_ok=True)
+    if os.path.exists(cache_file):
+        logger.info("Cached historic data exists.")
+        mtime = datetime.datetime.fromtimestamp(os.path.getmtime(cache_file))
+        if mtime > datetime.datetime.now() - datetime.timedelta(days=1):
+            logger.info("Cached historic data is recent. Loading that.")
+            with open(cache_file) as f:
+                return json.load(f)
+
+    logger.info("Requesting historic data from Crypto Compare.")
+    timestamp = int(datetime.datetime.now().timestamp())
+    url = (
+        f"https://min-api.cryptocompare.com/data/histohour"
+        f"?api_key={api_key}"
+        f"&fsym={coin}&tsym={fiat}"
+        f"&limit=2000&toTs={timestamp}"
+    )
+    r = perform_http_request(url)
+    data = r["Data"]
+    with open(cache_file, "w") as f:
+        json.dump(data, f)
+    return data
+
+
 def make_dataframe_from_json(data: dict) -> pd.DataFrame:
     df = pd.DataFrame(data)
     df["datetime"] = list(map(datetime.datetime.fromtimestamp, df["time"]))
     return df
-
-
-def drop_survey(
-    data: pd.DataFrame, hours, drops
-) -> Tuple[np.ndarray, np.ndarray, np.ndarray]:
-    factor = np.zeros(hours.shape + drops.shape)
-    for i, hour in enumerate(hours):
-        for j, drop in enumerate(drops):
-            factor[i, j] = compute_gains(data, hour, drop)[2]
-    return hours, drops, factor.T
-
-
-def compute_gains(
-    df: pd.DataFrame, hours: int, drop: float
-) -> Tuple[float, float, float]:
-    close_shift = df["close"].shift(hours)
-    ratio = df["close"] / close_shift
-    btc = 0.0
-    eur = 0.0
-    last = -hours
-    for i in range(len(df)):
-        if ratio[i] < (1 - drop) and last + hours <= i:
-            last = i
-            btc += 1.0 / df["close"][i]
-            eur += 1.0
-    return btc, eur, btc / eur if eur > 0 else 0.0
-
-
-class SimulationMarketplace(Marketplace):
-    def __init__(self, source: HistoricalSource):
-        super().__init__()
-        self.source = source
-
-    def place_order(self, coin: str, fiat: str, volume: float) -> None:
-        pass
-
-    def get_name(self) -> str:
-        return "Simulation"
-
-    def get_spot_price(self, coin: str, fiat: str, now: datetime.datetime) -> Price:
-        return self.source.get_price(now, coin, fiat)

@@ -14,10 +14,10 @@ from vigilant_crypto_snatch.configuration import YamlConfiguration
 from vigilant_crypto_snatch.datastorage import Datastore
 from vigilant_crypto_snatch.datastorage import make_datastore
 from vigilant_crypto_snatch.evaluation import drop_survey
+from vigilant_crypto_snatch.evaluation import get_hourly_data
 from vigilant_crypto_snatch.evaluation import InterpolatingSource
 from vigilant_crypto_snatch.evaluation import make_dataframe_from_json
 from vigilant_crypto_snatch.evaluation import SimulationMarketplace
-from vigilant_crypto_snatch.historical import get_hourly_data
 from vigilant_crypto_snatch.historical import HistoricalError
 from vigilant_crypto_snatch.myrequests import perform_http_request
 from vigilant_crypto_snatch.triggers import BuyTrigger
