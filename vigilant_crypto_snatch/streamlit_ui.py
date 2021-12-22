@@ -24,17 +24,6 @@ from vigilant_crypto_snatch.triggers import BuyTrigger
 from vigilant_crypto_snatch.triggers import make_buy_trigger
 
 
-def get_currency_pairs(api_key: str) -> list:
-    r = perform_http_request(
-        f"https://min-api.cryptocompare.com/data/v2/pair/mapping/exchange"
-        f"?e=Kraken"
-        f"&api_key={api_key}"
-    )
-    data = r["Data"]["current"]
-    pairs = [(e["fsym"], e["tsym"]) for e in data]
-    return pairs
-
-
 def sub_home(sidebar_settings):
     st.title("Home")
 
