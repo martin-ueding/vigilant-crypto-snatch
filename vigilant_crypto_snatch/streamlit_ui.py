@@ -18,6 +18,7 @@ from vigilant_crypto_snatch.evaluation import get_currency_pairs
 from vigilant_crypto_snatch.evaluation import get_hourly_data
 from vigilant_crypto_snatch.evaluation import make_close_chart
 from vigilant_crypto_snatch.evaluation import make_dataframe_from_json
+from vigilant_crypto_snatch.evaluation import make_gain_chart
 from vigilant_crypto_snatch.evaluation import make_survey_chart
 from vigilant_crypto_snatch.evaluation import simulate_triggers
 from vigilant_crypto_snatch.evaluation import summarize_simulation
@@ -183,26 +184,7 @@ def sub_trigger_simulation(sidebar_settings):
     )
     st.dataframe(summary)
 
-    value_long = value.rename(
-        {"cumsum_fiat": "Invested", "value_fiat": "Value"}, axis=1
-    ).melt(["datetime", "trigger_name"], ["Invested", "Value"])
-
-    gain_chart = (
-        alt.Chart(value_long)
-        .mark_line()
-        .encode(
-            x=alt.X("datetime", title="Time"),
-            y=alt.Y("value", title=f"{sidebar_settings.fiat}"),
-            strokeDash=alt.StrokeDash(
-                "variable", title="Variable", legend=alt.Legend(orient="bottom")
-            ),
-            color=alt.Color(
-                "trigger_name", title="Trigger", legend=alt.Legend(orient="bottom")
-            ),
-        )
-        .interactive()
-    )
-
+    gain_chart = make_gain_chart(value, sidebar_settings.fiat)
     st.markdown("# Diagram with gains")
     st.altair_chart(gain_chart, use_container_width=True)
 

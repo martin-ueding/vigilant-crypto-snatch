@@ -2,6 +2,7 @@ import datetime
 from typing import List
 from typing import Tuple
 
+import altair as alt
 import numpy as np
 import pandas as pd
 
@@ -136,3 +137,26 @@ def summarize_simulation(
         summary_rows.append(row)
     summary = pd.DataFrame(summary_rows)
     return summary
+
+
+def make_gain_chart(value: pd.DataFrame, fiat: str) -> alt.Chart:
+    value_long = value.rename(
+        {"cumsum_fiat": "Invested", "value_fiat": "Value"}, axis=1
+    ).melt(["datetime", "trigger_name"], ["Invested", "Value"])
+
+    chart = (
+        alt.Chart(value_long)
+        .mark_line()
+        .encode(
+            x=alt.X("datetime", title="Time"),
+            y=alt.Y("value", title=f"{fiat}"),
+            strokeDash=alt.StrokeDash(
+                "variable", title="Variable", legend=alt.Legend(orient="bottom")
+            ),
+            color=alt.Color(
+                "trigger_name", title="Trigger", legend=alt.Legend(orient="bottom")
+            ),
+        )
+        .interactive()
+    )
+    return chart
