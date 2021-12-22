@@ -22,3 +22,17 @@ def parse_currency_pairs(response: dict) -> List[Tuple[str, str]]:
     data = response["Data"]["current"]
     pairs = [(e["fsym"], e["tsym"]) for e in data]
     return pairs
+
+
+def get_available_fiats(available_pairs: List[Tuple[str, str]]) -> List[str]:
+    if ("BTC", "EUR") not in available_pairs:
+        available_pairs.append(("BTC", "EUR"))
+    available_fiats = list({f for c, f in available_pairs})
+    available_fiats.sort()
+    return available_fiats
+
+
+def get_available_coins(available_pairs: List[Tuple[str, str]], fiat: str) -> List[str]:
+    available_coins = list({c for c, f in available_pairs if f == fiat})
+    available_coins.sort()
+    return available_coins

@@ -14,6 +14,8 @@ from vigilant_crypto_snatch.configuration import YamlConfiguration
 from vigilant_crypto_snatch.datastorage import Datastore
 from vigilant_crypto_snatch.datastorage import make_datastore
 from vigilant_crypto_snatch.evaluation import drop_survey
+from vigilant_crypto_snatch.evaluation import get_available_coins
+from vigilant_crypto_snatch.evaluation import get_available_fiats
 from vigilant_crypto_snatch.evaluation import get_currency_pairs
 from vigilant_crypto_snatch.evaluation import get_hourly_data
 from vigilant_crypto_snatch.evaluation import InterpolatingSource
@@ -310,15 +312,11 @@ def ui():
     st.sidebar.title("Vigilant Crypto Snatch Evaluation")
 
     available_pairs = get_currency_pairs(api_key)
-    if ("BTC", "EUR") not in available_pairs:
-        available_pairs.append(("BTC", "EUR"))
-    available_fiats = list({f for c, f in available_pairs})
-    available_fiats.sort()
+    available_fiats = get_available_fiats(available_pairs)
     fiat = st.sidebar.selectbox(
         "Fiat", available_fiats, index=available_fiats.index("EUR")
     )
-    available_coins = list({c for c, f in available_pairs if f == fiat})
-    available_coins.sort()
+    available_coins = get_available_coins(available_pairs, fiat)
     coin = st.sidebar.selectbox(
         "Coin", available_coins, index=available_coins.index("BTC")
     )

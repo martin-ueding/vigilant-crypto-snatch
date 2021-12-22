@@ -1,4 +1,6 @@
 from .close_chart import make_close_chart
+from .currency_pairs import get_available_coins
+from .currency_pairs import get_available_fiats
 from .currency_pairs import get_currency_pairs
 from .drop_survey import drop_survey
 from .market_simulation import SimulationMarketplace
