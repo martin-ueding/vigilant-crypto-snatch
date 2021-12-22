@@ -13,11 +13,8 @@ from .krakenex_adaptor import KrakenexMarketplace
 
 
 class KrakenexMock:
-    def __init__(self, methods: Dict[str, Callable] = None):
-        if methods:
-            self.methods = methods
-        else:
-            self.methods = {}
+    def __init__(self, methods: Dict[str, Callable]):
+        self.methods = methods
 
     def query_public(self, command: str, parameters: Dict = None) -> Dict:
         return self.methods[command](parameters)
