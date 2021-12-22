@@ -136,7 +136,7 @@ def test_get_spot_price_error() -> None:
     market = KrakenexMarketplace(config, krakenex_interface)
     now = datetime.datetime.now()
     with pytest.raises(TickerError):
-        price = market.get_spot_price("AAA", "AAA", now)
+        market.get_spot_price("AAA", "AAA", now)
 
 
 def test_balance_full() -> None:
