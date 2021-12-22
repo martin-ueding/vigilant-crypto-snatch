@@ -41,20 +41,6 @@ class InterpolatingSource(HistoricalSource):
         )
 
 
-def json_to_database(
-    data: List[dict], coin: str, fiat: str, datastore: Datastore
-) -> None:
-    logger.info(f"Writing {len(data)} prices to the DB …")
-    for elem in data:
-        price = Price(
-            timestamp=datetime.datetime.fromtimestamp(elem["time"]),
-            last=elem["close"],
-            coin=coin,
-            fiat=fiat,
-        )
-        datastore.add_price(price)
-
-
 def get_hourly_data(coin: str, fiat: str, api_key: str) -> List[dict]:
     cache_file = f"~/.cache/vigilant-crypto-snatch/hourly_{coin}_{fiat}.js"
     cache_file = os.path.expanduser(cache_file)
