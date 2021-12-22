@@ -98,3 +98,51 @@ def test_get_polling_interval() -> None:
         f.close()
         config = yaml_configuration.YamlConfiguration(f.name)
         assert config.get_polling_interval() == 10
+
+
+trigger_config = """
+triggers:
+# This is a trigger with drops and a name.
+- coin: btc
+  cooldown_days: 1
+  delay_days: 7
+  drop_percentage: 15
+  fiat: eur
+  name: Large drops
+  volume_fiat: 100.0
+  
+# This one is with drops, but doesn't contain a name.
+- coin: btc
+  cooldown_days: 1
+  delay_days: 4
+  drop_percentage: 10
+  fiat: eur
+  volume_fiat: 100.0
+
+# This uses the Fear & Greed index, as well as a start date.
+- coin: btc
+  cooldown_days: 1
+  delay_days: 2
+  drop_percentage: 5
+  fiat: eur
+  name: Small drops
+  volume_fiat: 26.0
+  fear_and_greed_index_below: 30
+  start: 2021-12-12
+  
+# This one doesn't use drops and has a name.
+- coin: btc
+  cooldown_days: 20
+  fiat: eur
+  name: Regular
+  volume_fiat: 26.0
+  start: 2021-12-12T04:12Z
+"""
+
+
+def test_get_trigger_config() -> None:
+    with tempfile.NamedTemporaryFile("w+", delete=False) as f:
+        f.write(trigger_config)
+        f.close()
+        config = yaml_configuration.YamlConfiguration(f.name)
+        config.get_trigger_config()
