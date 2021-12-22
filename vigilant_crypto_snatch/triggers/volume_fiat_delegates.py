@@ -14,7 +14,7 @@ class FixedVolumeFiatDelegate(VolumeFiatDelegate):
         return self.volume_fiat
 
     def __str__(self) -> str:
-        return f"Fixed(volume_fiat={self.volume_fiat})"
+        return f"Fixed(volume_fiat={self.volume_fiat})"  # pragma: no cover
 
 
 class RatioVolumeFiatDelegate(VolumeFiatDelegate):
@@ -29,4 +29,4 @@ class RatioVolumeFiatDelegate(VolumeFiatDelegate):
         return balance_fiat * self.percentage_fiat / 100
 
     def __str__(self) -> str:
-        return f"Ratio(percentage_fiat={self.percentage_fiat})"
+        return f"Ratio(percentage_fiat={self.percentage_fiat})"  # pragma: no cover

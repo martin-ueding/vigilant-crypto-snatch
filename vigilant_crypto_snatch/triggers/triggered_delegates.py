@@ -41,7 +41,7 @@ class DropTriggeredDelegate(TriggeredDelegate):
         return price.last < critical
 
     def __str__(self) -> str:
-        return f"Drop(delay_minutes={self.delay_minutes}, drop={self.drop_percentage})"
+        return f"Drop(delay_minutes={self.delay_minutes}, drop={self.drop_percentage})"  # pragma: no cover
 
 
 class TrueTriggeredDelegate(TriggeredDelegate):
@@ -49,7 +49,7 @@ class TrueTriggeredDelegate(TriggeredDelegate):
         return True
 
     def __str__(self) -> str:
-        return f"True()"
+        return f"True()"  # pragma: no cover
 
 
 class FearAndGreedIndexTriggeredDelegate(TriggeredDelegate):
@@ -60,3 +60,8 @@ class FearAndGreedIndexTriggeredDelegate(TriggeredDelegate):
     def is_triggered(self, now: datetime.datetime) -> bool:
         value = self.index.get_value(now)
         return value < self.threshold
+
+    def __str__(self) -> str:
+        return (
+            f"FearAndGreedIndexTriggeredDelegate({self.threshold})"  # pragma: no cover
+        )
