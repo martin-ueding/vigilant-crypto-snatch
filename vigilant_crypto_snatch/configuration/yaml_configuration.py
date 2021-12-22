@@ -21,8 +21,7 @@ from ..triggers import TriggerSpec
 class YamlConfiguration(Configuration):
     def __init__(self, path=config_path):
         if not os.path.isfile(path):
-            logger.error(f"Please create the configuration file at {path}.")
-            sys.exit(1)
+            raise RuntimeError(f"Please create the configuration file at {path}.")
 
         with open(path) as f:
             self._config = yaml.safe_load(f)

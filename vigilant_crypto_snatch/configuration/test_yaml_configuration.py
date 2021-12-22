@@ -282,3 +282,8 @@ def test_get_telegram_config_full() -> None:
         f.close()
         config = yaml_configuration.YamlConfiguration(f.name)
         assert config.get_telegram_config() is not None
+
+
+def test_loading_nonexistent_path() -> None:
+    with pytest.raises(RuntimeError):
+        yaml_configuration.YamlConfiguration("")
