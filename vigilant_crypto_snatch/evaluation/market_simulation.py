@@ -69,11 +69,11 @@ def simulate_triggers(
 
 
 def accumulate_value(
-    data,
-    data_datetime,
-    selection,
-    trades,
-    trigger_names,
+    data: pd.DataFrame,
+    data_datetime: pd.Series,
+    selection: pd.Series,
+    trades: pd.DataFrame,
+    trigger_names: List[str],
     progress_callback=lambda n: None,
 ) -> pd.DataFrame:
     result = []
