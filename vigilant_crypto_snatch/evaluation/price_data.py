@@ -54,6 +54,14 @@ def get_hourly_data(coin: str, fiat: str, api_key: str) -> List[dict]:
                 return json.load(f)
 
     logger.info("Requesting historic data from Crypto Compare.")
+    r = download_hourly_data(coin, fiat, api_key)
+    data = r["Data"]
+    with open(cache_file, "w") as f:
+        json.dump(data, f)
+    return data
+
+
+def download_hourly_data(coin: str, fiat: str, api_key: str) -> dict:
     timestamp = int(datetime.datetime.now().timestamp())
     url = (
         f"https://min-api.cryptocompare.com/data/histohour"
@@ -61,11 +69,45 @@ def get_hourly_data(coin: str, fiat: str, api_key: str) -> List[dict]:
         f"&fsym={coin}&tsym={fiat}"
         f"&limit=2000&toTs={timestamp}"
     )
-    r = perform_http_request(url)
-    data = r["Data"]
-    with open(cache_file, "w") as f:
-        json.dump(data, f)
-    return data
+    return perform_http_request(url)
+
+
+def download_hourly_data_stub() -> dict:
+    return {
+        "Response": "Success",
+        "Type": 100,
+        "Aggregated": False,
+        "TimeTo": 1640163600,
+        "TimeFrom": 1640160000,
+        "FirstValueInArray": True,
+        "ConversionType": {"type": "direct", "conversionSymbol": ""},
+        "Data": [
+            {
+                "time": 1640160000,
+                "high": 43946.69,
+                "low": 43612.18,
+                "open": 43718.67,
+                "volumefrom": 240.23,
+                "volumeto": 10520019.65,
+                "close": 43741.97,
+                "conversionType": "direct",
+                "conversionSymbol": "",
+            },
+            {
+                "time": 1640163600,
+                "high": 43781.93,
+                "low": 43373.83,
+                "open": 43741.97,
+                "volumefrom": 216.59,
+                "volumeto": 9445214.81,
+                "close": 43419.35,
+                "conversionType": "direct",
+                "conversionSymbol": "",
+            },
+        ],
+        "RateLimit": {},
+        "HasWarning": False,
+    }
 
 
 def make_dataframe_from_json(data: dict) -> pd.DataFrame:
