@@ -2,6 +2,7 @@ import copy
 import datetime
 import tempfile
 
+import pytest
 import yaml
 
 from . import yaml_configuration
@@ -51,6 +52,11 @@ def test_get_start_with_datetime() -> None:
     assert yaml_configuration.get_start(
         {"start": yaml.safe_load("2021-03-04")}
     ) == datetime.datetime(2021, 3, 4)
+
+
+def test_get_start_with_unknown_type() -> None:
+    with pytest.raises(RuntimeError):
+        yaml_configuration.get_start({"start": 0})
 
 
 def test_parse_trigger_spec_drop_fixed() -> None:
