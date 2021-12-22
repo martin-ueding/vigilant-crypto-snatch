@@ -1,3 +1,5 @@
+from .currency_pairs import get_available_coins
+from .currency_pairs import get_available_fiats
 from .currency_pairs import parse_currency_pairs
 
 
@@ -33,3 +35,14 @@ def test_parse_currency_pairs_success() -> None:
 
     pairs = parse_currency_pairs(response)
     assert pairs == [("NANO", "ETH"), ("NANO", "EUR")]
+
+
+def test_get_available_fiats() -> None:
+    assert get_available_fiats([]) == ["EUR"]
+    assert get_available_fiats([("BTC", "EUR")]) == ["EUR"]
+
+
+def test_get_available_coins() -> None:
+    assert get_available_coins([], "EUR") == ["BTC"]
+    assert get_available_coins([("BTC", "EUR")], "EUR") == ["BTC"]
+    assert get_available_coins([("BTC", "EUR")], "USD") == []

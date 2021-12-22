@@ -33,6 +33,8 @@ def get_available_fiats(available_pairs: List[Tuple[str, str]]) -> List[str]:
 
 
 def get_available_coins(available_pairs: List[Tuple[str, str]], fiat: str) -> List[str]:
+    if ("BTC", "EUR") not in available_pairs:
+        available_pairs.append(("BTC", "EUR"))
     available_coins = list({c for c, f in available_pairs if f == fiat})
     available_coins.sort()
     return available_coins
