@@ -287,3 +287,17 @@ def test_get_telegram_config_full() -> None:
 def test_loading_nonexistent_path() -> None:
     with pytest.raises(RuntimeError):
         yaml_configuration.YamlConfiguration("")
+
+
+crypto_compare_config = """
+cryptocompare:
+  api_key: test-key
+"""
+
+
+def test_get_crypto_compare_config() -> None:
+    with tempfile.NamedTemporaryFile("w+", delete=False) as f:
+        f.write(crypto_compare_config)
+        f.close()
+        config = yaml_configuration.YamlConfiguration(f.name)
+        assert config.get_crypto_compare_config() is not None
