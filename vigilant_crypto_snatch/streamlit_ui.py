@@ -62,16 +62,14 @@ def sub_drop_survey(sidebar_settings):
         "Delay / hours", min_value=1, max_value=14 * 24, value=(1, 48)
     )
     range_percentage = st.slider("Drop / %", min_value=0, max_value=100, value=(1, 30))
-    st.altair_chart(
-        make_survey_chart(
-            sidebar_settings.data.loc[selection].reset_index(),
-            range_delay,
-            range_percentage,
-            sidebar_settings.coin,
-            sidebar_settings.fiat,
-        ),
-        use_container_width=True,
+    chart = make_survey_chart(
+        sidebar_settings.data.loc[selection].reset_index(),
+        range_delay,
+        range_percentage,
+        sidebar_settings.coin,
+        sidebar_settings.fiat,
     )
+    st.altair_chart(chart, use_container_width=True)
 
 
 def make_trigger_ui(datastore, source, market, sidebar_settings, i) -> BuyTrigger:
