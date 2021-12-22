@@ -14,12 +14,12 @@ from vigilant_crypto_snatch.configuration import YamlConfiguration
 from vigilant_crypto_snatch.datastorage import Datastore
 from vigilant_crypto_snatch.datastorage import make_datastore
 from vigilant_crypto_snatch.evaluation import drop_survey
+from vigilant_crypto_snatch.evaluation import get_currency_pairs
 from vigilant_crypto_snatch.evaluation import get_hourly_data
 from vigilant_crypto_snatch.evaluation import InterpolatingSource
+from vigilant_crypto_snatch.evaluation import make_close_chart
 from vigilant_crypto_snatch.evaluation import make_dataframe_from_json
 from vigilant_crypto_snatch.evaluation import SimulationMarketplace
-from vigilant_crypto_snatch.evaluation.close_chart import make_close_chart
-from vigilant_crypto_snatch.evaluation.currency_pairs import get_currency_pairs
 from vigilant_crypto_snatch.historical import HistoricalError
 from vigilant_crypto_snatch.triggers import BuyTrigger
 from vigilant_crypto_snatch.triggers import make_buy_trigger
