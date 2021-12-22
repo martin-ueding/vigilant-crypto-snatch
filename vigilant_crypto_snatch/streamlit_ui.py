@@ -93,11 +93,7 @@ def make_trigger_ui(sidebar_settings, i) -> TriggerSpec:
         key=f"trigger_volume_{i}",
     )
 
-    triggered_delegate_type = st.radio(
-        "Triggered type", ["Drop", "Time"], key=f"triggered_delegate_type{i}"
-    )
-
-    if triggered_delegate_type == "Drop":
+    if st.checkbox("Use drop strategy", key=f"trigger_volume_{i}"):
         trigger_spec["delay_minutes"] = 60 * st.slider(
             "Delay / hours",
             min_value=1,
@@ -128,14 +124,13 @@ def sub_trigger_simulation(sidebar_settings):
     st.markdown("# Parameters")
 
     trigger_specs = []
-    with st.form("triggers"):
-        for i in range(number_of_triggers):
-            if i % 3 == 0:
-                col = st.columns(min(number_of_triggers - i, 3))
-            with col[i % 3]:
-                trigger_specs.append(make_trigger_ui(sidebar_settings, i))
-        if not st.form_submit_button("Go!"):
-            return
+    for i in range(number_of_triggers):
+        if i % 3 == 0:
+            col = st.columns(min(number_of_triggers - i, 3))
+        with col[i % 3]:
+            trigger_specs.append(make_trigger_ui(sidebar_settings, i))
+    if not st.button("Go!"):
+        return
 
     st.markdown("# Run")
 
