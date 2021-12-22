@@ -63,6 +63,7 @@ core <-- evaluation
 historical <-- evaluation
 marketplace <-- evaluation
 myrequests <-- evaluation
+feargreed <-- evaluation
 
 numpy <-- evaluation
 pandas <-- evaluation

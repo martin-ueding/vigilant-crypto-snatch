@@ -58,7 +58,7 @@ class FearAndGreedIndexTriggeredDelegate(TriggeredDelegate):
         self.index = index
 
     def is_triggered(self, now: datetime.datetime) -> bool:
-        value = self.index.get_value(now)
+        value = self.index.get_value(now.date())
         return value < self.threshold
 
     def __str__(self) -> str:
