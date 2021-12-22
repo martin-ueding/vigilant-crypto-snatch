@@ -109,6 +109,15 @@ def make_trigger_ui(sidebar_settings, i) -> TriggerSpec:
             key=f"drop_percentage{i}",
         )
 
+    if st.checkbox("Use Fear & Greed strategy", key=f"fear_greed_{i}"):
+        trigger_spec["fear_and_greed_index_below"] = st.slider(
+            "Fear & Greed index below",
+            min_value=0,
+            max_value=101,
+            value=50,
+            key=f"fear_greed_{i}",
+        )
+
     return parse_trigger_spec(trigger_spec)
 
 
