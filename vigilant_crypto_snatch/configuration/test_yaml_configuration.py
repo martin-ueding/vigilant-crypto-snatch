@@ -107,6 +107,12 @@ def test_parse_trigger_spec_time_ratio() -> None:
     assert target == actual
 
 
+def test_parse_trigger_spec_without_cooldown() -> None:
+    spec_dict = dict(coin="btc", fiat="eur", name=None, percentage_fiat=25)
+    with pytest.raises(RuntimeError):
+        yaml_configuration.parse_trigger_spec(spec_dict)
+
+
 def test_get_polling_interval() -> None:
     with tempfile.NamedTemporaryFile("w+", delete=False) as f:
         f.write("sleep: 10")

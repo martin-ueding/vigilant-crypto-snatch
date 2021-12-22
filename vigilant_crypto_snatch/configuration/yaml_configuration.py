@@ -71,8 +71,7 @@ class YamlConfiguration(Configuration):
 def parse_trigger_spec(trigger_spec_dict: dict) -> TriggerSpec:
     cooldown_minutes = get_minutes(trigger_spec_dict, "cooldown")
     if cooldown_minutes is None:
-        logger.critical(f"Trigger needs to have a cooldown: {trigger_spec_dict}")
-        sys.exit(1)
+        raise RuntimeError(f"Trigger needs to have a cooldown: {trigger_spec_dict}")
 
     trigger_spec = TriggerSpec(
         fiat=trigger_spec_dict["fiat"].upper(),
