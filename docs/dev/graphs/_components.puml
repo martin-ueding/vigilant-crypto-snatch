@@ -84,7 +84,6 @@ altair <-- streamlit_ui
 evaluation <-- streamlit_ui
 configuration <-- streamlit_ui
 datastorage <-- streamlit_ui
-historical <-- streamlit_ui
 triggers <-- streamlit_ui
 streamlit <-- streamlit_ui
 numpy <-- streamlit_ui
