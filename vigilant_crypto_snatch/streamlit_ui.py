@@ -18,6 +18,7 @@ from vigilant_crypto_snatch.evaluation import get_hourly_data
 from vigilant_crypto_snatch.evaluation import InterpolatingSource
 from vigilant_crypto_snatch.evaluation import make_dataframe_from_json
 from vigilant_crypto_snatch.evaluation import SimulationMarketplace
+from vigilant_crypto_snatch.evaluation.close_chart import make_close_chart
 from vigilant_crypto_snatch.evaluation.currency_pairs import get_currency_pairs
 from vigilant_crypto_snatch.historical import HistoricalError
 from vigilant_crypto_snatch.triggers import BuyTrigger
@@ -37,20 +38,8 @@ def sub_home(sidebar_settings):
 def sub_price(sidebar_settings):
     st.title("Close price")
 
-    show_close_chart(sidebar_settings)
-
-
-def show_close_chart(sidebar_settings):
-    close_chart = (
-        alt.Chart(sidebar_settings.data)
-        .mark_line()
-        .encode(
-            x=alt.X("datetime", title="Date"),
-            y=alt.X(
-                "close", title=f"Close {sidebar_settings.fiat}/{sidebar_settings.coin}"
-            ),
-        )
-        .interactive()
+    close_chart = make_close_chart(
+        sidebar_settings.data, sidebar_settings.coin, sidebar_settings.fiat
     )
     st.altair_chart(close_chart, use_container_width=True)
 
