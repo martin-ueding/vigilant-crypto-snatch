@@ -155,3 +155,11 @@ def test_get_trigger_config() -> None:
         f.close()
         config = yaml_configuration.YamlConfiguration(f.name)
         config.get_trigger_config()
+
+
+def test_get_bitstamp_config_empty() -> None:
+    with tempfile.NamedTemporaryFile("w+", delete=False) as f:
+        f.write("sleep: 1")
+        f.close()
+        config = yaml_configuration.YamlConfiguration(f.name)
+        assert config.get_bitstamp_config() is None
