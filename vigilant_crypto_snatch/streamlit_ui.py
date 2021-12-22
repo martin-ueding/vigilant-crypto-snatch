@@ -160,22 +160,16 @@ def sub_trigger_simulation(sidebar_settings):
     st.markdown("Accumulating value …")
     cumsum_progress_bar = st.progress(0.0)
     value = accumulate_value(
-        sidebar_settings.data,
-        data_datetime,
-        selection,
-        trades,
-        trigger_names,
-        cumsum_progress_bar.progress,
+        sidebar_settings.data, trades, trigger_names, cumsum_progress_bar.progress
     )
 
     st.markdown("# Summary")
 
     summary = summarize_simulation(
+        sidebar_settings.data.loc[selection],
         trades,
         value,
         trigger_names,
-        data_datetime,
-        selection,
         sidebar_settings.coin,
         sidebar_settings.fiat,
     )

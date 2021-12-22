@@ -71,14 +71,12 @@ def simulate_triggers(
 
 def accumulate_value(
     data: pd.DataFrame,
-    data_datetime: pd.Series,
-    selection: pd.Series,
     trades: pd.DataFrame,
     trigger_names: List[str],
     progress_callback=lambda n: None,
 ) -> pd.DataFrame:
     result = []
-    for i, elem in enumerate(data_datetime.loc[selection]):
+    for i, elem in enumerate(data["datetime"]):
         for trigger_name in trigger_names:
             sel1 = trades["timestamp"] <= elem
             sel2 = trades["trigger_name"] == trigger_name
@@ -95,17 +93,16 @@ def accumulate_value(
                     value_fiat=value_fiat,
                 )
             )
-        progress_callback((i + 1) / len(data_datetime.loc[selection]))
+        progress_callback((i + 1) / len(data["datetime"]))
     value = pd.DataFrame(result)
     return value
 
 
 def summarize_simulation(
+    data: pd.DataFrame,
     trades: pd.DataFrame,
     value: pd.DataFrame,
     trigger_names: List[str],
-    data_datetime: pd.Series,
-    selection: pd.Series,
     coin: str,
     fiat: str,
 ) -> pd.DataFrame:
@@ -119,9 +116,7 @@ def summarize_simulation(
         value_fiat = sub_values["value_fiat"].iat[-1]
         average_price = cumsum_fiat / cumsum_coin
         gain = value_fiat / cumsum_fiat - 1
-        period = (
-            data_datetime.loc[selection].iat[-1] - data_datetime.loc[selection].iat[0]
-        ).days
+        period = (data["datetime"].iat[-1] - data["datetime"].iat[0]).days
         yearly_gain = np.power(gain + 1, 365 / period) - 1
         row = {
             "Trigger": trigger_name,

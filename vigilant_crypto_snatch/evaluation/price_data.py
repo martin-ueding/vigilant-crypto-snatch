@@ -82,7 +82,7 @@ def download_hourly_data_stub() -> dict:
         "ConversionType": {"type": "direct", "conversionSymbol": ""},
         "Data": [
             {
-                "time": 1640160000,
+                "time": 1630160000,
                 "high": 43946.69,
                 "low": 43612.18,
                 "open": 43718.67,
