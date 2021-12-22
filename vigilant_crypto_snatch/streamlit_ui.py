@@ -40,6 +40,10 @@ def sub_home(sidebar_settings):
 def sub_price(sidebar_settings):
     st.title("Close price")
 
+    show_close_chart(sidebar_settings)
+
+
+def show_close_chart(sidebar_settings):
     close_chart = make_close_chart(
         sidebar_settings.data, sidebar_settings.coin, sidebar_settings.fiat
     )
