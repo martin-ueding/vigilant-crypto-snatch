@@ -110,12 +110,13 @@ def download_hourly_data_stub() -> dict:
     }
 
 
-def make_dataframe_from_json(data: dict) -> pd.DataFrame:
+def make_dataframe_from_json(data: List[dict]) -> pd.DataFrame:
     df = pd.DataFrame(
         {
-            "time": data["time"],
-            "datetime": list(map(datetime.datetime.fromtimestamp, data["time"])),
-            "close": data["close"],
+            "time": elem["time"],
+            "datetime": datetime.datetime.fromtimestamp(elem["time"]),
+            "close": elem["close"],
         }
+        for elem in data
     )
     return df
