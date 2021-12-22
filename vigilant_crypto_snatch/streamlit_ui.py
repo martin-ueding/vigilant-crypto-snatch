@@ -19,7 +19,6 @@ from vigilant_crypto_snatch.evaluation import InterpolatingSource
 from vigilant_crypto_snatch.evaluation import make_dataframe_from_json
 from vigilant_crypto_snatch.evaluation import SimulationMarketplace
 from vigilant_crypto_snatch.historical import HistoricalError
-from vigilant_crypto_snatch.myrequests import perform_http_request
 from vigilant_crypto_snatch.triggers import BuyTrigger
 from vigilant_crypto_snatch.triggers import make_buy_trigger
 
