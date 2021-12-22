@@ -1,5 +1,6 @@
 from typing import Tuple
 
+import altair as alt
 import numpy as np
 import pandas as pd
 
@@ -28,3 +29,36 @@ def compute_gains(
             btc += 1.0 / df["close"][i]
             eur += 1.0
     return btc, eur, btc / eur if eur > 0 else 0.0
+
+
+def make_survey_chart(
+    data: pd.DataFrame,
+    range_delay: Tuple[int, int],
+    range_percentage: Tuple[float, float],
+    coin: str,
+    fiat: str,
+) -> alt.Chart:
+    hours, drops, factors = drop_survey(
+        data, np.arange(*range_delay), np.linspace(*range_percentage, 15) / 100.0
+    )
+    x, y = np.meshgrid(hours, drops)
+    survey_long = pd.DataFrame(
+        {
+            "hours": x.ravel(),
+            "drop": [f"{yy:05.2f}" for yy in y.ravel() * 100],
+            "factor": factors.ravel(),
+        }
+    )
+
+    survey_chart = (
+        alt.Chart(survey_long)
+        .mark_rect()
+        .encode(
+            x=alt.X("hours:O", title="Delay / hours"),
+            y=alt.Y("drop:O", title="Drop / %"),
+            color=alt.Color(
+                "factor:Q", title=f"{coin}/{fiat}", scale=alt.Scale(scheme="turbo")
+            ),
+        )
+    )
+    return survey_chart

@@ -13,7 +13,6 @@ from vigilant_crypto_snatch.configuration import parse_trigger_spec
 from vigilant_crypto_snatch.configuration import YamlConfiguration
 from vigilant_crypto_snatch.datastorage import Datastore
 from vigilant_crypto_snatch.datastorage import make_datastore
-from vigilant_crypto_snatch.evaluation import drop_survey
 from vigilant_crypto_snatch.evaluation import get_available_coins
 from vigilant_crypto_snatch.evaluation import get_available_fiats
 from vigilant_crypto_snatch.evaluation import get_currency_pairs
@@ -21,6 +20,7 @@ from vigilant_crypto_snatch.evaluation import get_hourly_data
 from vigilant_crypto_snatch.evaluation import InterpolatingSource
 from vigilant_crypto_snatch.evaluation import make_close_chart
 from vigilant_crypto_snatch.evaluation import make_dataframe_from_json
+from vigilant_crypto_snatch.evaluation import make_survey_chart
 from vigilant_crypto_snatch.evaluation import SimulationMarketplace
 from vigilant_crypto_snatch.historical import HistoricalError
 from vigilant_crypto_snatch.triggers import BuyTrigger
@@ -342,34 +342,6 @@ def ui():
 
     nav = st.sidebar.radio("Tool", list(tools.keys()))
     tools[nav](sidebar_settings)
-
-
-@st.cache(allow_output_mutation=True)
-def make_survey_chart(data, range_delay, range_percentage, coin, fiat):
-    hours, drops, factors = drop_survey(
-        data, np.arange(*range_delay), np.linspace(*range_percentage, 15) / 100.0
-    )
-    x, y = np.meshgrid(hours, drops)
-    survey_long = pd.DataFrame(
-        {
-            "hours": x.ravel(),
-            "drop": [f"{yy:05.2f}" for yy in y.ravel() * 100],
-            "factor": factors.ravel(),
-        }
-    )
-
-    survey_chart = (
-        alt.Chart(survey_long)
-        .mark_rect()
-        .encode(
-            x=alt.X("hours:O", title="Delay / hours"),
-            y=alt.Y("drop:O", title="Drop / %"),
-            color=alt.Color(
-                "factor:Q", title=f"{coin}/{fiat}", scale=alt.Scale(scheme="turbo")
-            ),
-        )
-    )
-    return survey_chart
 
 
 if __name__ == "__main__" and st._is_running_with_streamlit:
