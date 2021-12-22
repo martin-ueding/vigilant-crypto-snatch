@@ -2,9 +2,6 @@ import datetime
 import os
 import sys
 
-import altair as alt
-import numpy as np
-import pandas as pd
 import streamlit as st
 import streamlit.cli as st_cli
 
@@ -193,8 +190,8 @@ def sub_trigger_simulation(sidebar_settings):
 
 
 def make_time_slider(sidebar_settings):
-    time_begin = np.min(sidebar_settings.data["datetime"]).toordinal()
-    time_end = np.max(sidebar_settings.data["datetime"]).toordinal()
+    time_begin = min(sidebar_settings.data["datetime"]).toordinal()
+    time_end = max(sidebar_settings.data["datetime"]).toordinal()
     time_range = st.slider(
         "Data range",
         min_value=time_begin,

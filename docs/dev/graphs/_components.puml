@@ -89,9 +89,6 @@ configuration <-- streamlit_ui
 evaluation <-- streamlit_ui
 triggers <-- streamlit_ui
 
-altair <-- streamlit_ui
-numpy <-- streamlit_ui
-pandas <-- streamlit_ui
 streamlit <-- streamlit_ui
 
 myrequests <-- telegram
