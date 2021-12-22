@@ -120,3 +120,9 @@ def make_dataframe_from_json(data: List[dict]) -> pd.DataFrame:
         for elem in data
     )
     return df
+
+
+def make_test_dataframe() -> pd.DataFrame:
+    response = download_hourly_data_stub()
+    df = make_dataframe_from_json(response["Data"])
+    return df

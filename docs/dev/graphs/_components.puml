@@ -63,6 +63,7 @@ myrequests <-- evaluation
 numpy <-- evaluation
 pandas <-- evaluation
 scipy <-- evaluation
+altair <-- evaluation
 
 myrequests <-- feargreed
 

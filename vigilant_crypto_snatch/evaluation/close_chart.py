@@ -2,7 +2,7 @@ import altair as alt
 import pandas as pd
 
 
-def make_close_chart(data: pd.DataFrame, coin: str, fiat: str):
+def make_close_chart(data: pd.DataFrame, coin: str, fiat: str) -> alt.Chart:
     chart = (
         alt.Chart(data)
         .mark_line()
