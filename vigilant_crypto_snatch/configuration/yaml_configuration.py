@@ -117,8 +117,3 @@ def get_minutes(config: dict, key: str) -> Optional[int]:
         return config[f"{key}_minutes"]
     else:
         return None
-
-
-def update_config(config: dict) -> None:
-    with open(config_path, "w") as f:
-        yaml.dump(config, f)
