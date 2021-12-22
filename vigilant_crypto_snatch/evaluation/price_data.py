@@ -9,7 +9,6 @@ import scipy.interpolate
 
 from .. import logger
 from ..core import Price
-from ..datastorage import Datastore
 from ..historical import HistoricalError
 from ..historical import HistoricalSource
 from ..myrequests import perform_http_request

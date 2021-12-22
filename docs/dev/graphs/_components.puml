@@ -31,10 +31,11 @@ component telegram
 component triggers
 component watchloop
 
-coloredlogs <-- cli
 commands <-- cli
 streamlit_ui <-- cli
+
 click <-- cli
+coloredlogs <-- cli
 
 configuration <-- commands
 datastorage <-- commands
@@ -45,21 +46,24 @@ telegram <-- commands
 triggers <-- commands
 watchloop <-- commands
 
-dateutil <-- configuration
 historical <-- configuration
 marketplace <-- configuration
 paths <-- configuration
 telegram <-- configuration
 triggers <-- configuration
+
 yaml <-- configuration
+dateutil <-- configuration
 
 core <-- datastorage
+
 sqlalchemy <-- datastorage
 
 core <-- evaluation
 historical <-- evaluation
 marketplace <-- evaluation
 myrequests <-- evaluation
+
 numpy <-- evaluation
 pandas <-- evaluation
 scipy <-- evaluation
@@ -72,22 +76,23 @@ datastorage <-- historical
 marketplace <-- historical
 myrequests <-- historical
 
-bitstamp <-- marketplace
 core <-- marketplace
+
+bitstamp <-- marketplace
 krakenex <-- marketplace
 
 requests <-- myrequests
 
 appdirs <-- paths
 
-altair <-- streamlit_ui
-evaluation <-- streamlit_ui
 configuration <-- streamlit_ui
-datastorage <-- streamlit_ui
+evaluation <-- streamlit_ui
 triggers <-- streamlit_ui
-streamlit <-- streamlit_ui
+
+altair <-- streamlit_ui
 numpy <-- streamlit_ui
 pandas <-- streamlit_ui
+streamlit <-- streamlit_ui
 
 myrequests <-- telegram
 paths <-- telegram

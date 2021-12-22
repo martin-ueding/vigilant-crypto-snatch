@@ -11,19 +11,15 @@ import streamlit.cli as st_cli
 from vigilant_crypto_snatch.configuration import migrations
 from vigilant_crypto_snatch.configuration import parse_trigger_spec
 from vigilant_crypto_snatch.configuration import YamlConfiguration
-from vigilant_crypto_snatch.datastorage import make_datastore
 from vigilant_crypto_snatch.evaluation import get_available_coins
 from vigilant_crypto_snatch.evaluation import get_available_fiats
 from vigilant_crypto_snatch.evaluation import get_currency_pairs
 from vigilant_crypto_snatch.evaluation import get_hourly_data
-from vigilant_crypto_snatch.evaluation import InterpolatingSource
 from vigilant_crypto_snatch.evaluation import make_close_chart
 from vigilant_crypto_snatch.evaluation import make_dataframe_from_json
 from vigilant_crypto_snatch.evaluation import make_survey_chart
 from vigilant_crypto_snatch.evaluation import simulate_triggers
-from vigilant_crypto_snatch.evaluation import SimulationMarketplace
-from vigilant_crypto_snatch.triggers import BuyTrigger
-from vigilant_crypto_snatch.triggers import make_buy_trigger
+from vigilant_crypto_snatch.triggers import TriggerSpec
 
 
 def sub_home(sidebar_settings):
@@ -72,7 +68,7 @@ def sub_drop_survey(sidebar_settings):
     st.altair_chart(chart, use_container_width=True)
 
 
-def make_trigger_ui(datastore, source, market, sidebar_settings, i) -> BuyTrigger:
+def make_trigger_ui(sidebar_settings, i) -> TriggerSpec:
     trigger_spec = {"fiat": sidebar_settings.fiat, "coin": sidebar_settings.coin}
 
     trigger_spec["name"] = st.text_input(
@@ -117,15 +113,11 @@ def make_trigger_ui(datastore, source, market, sidebar_settings, i) -> BuyTrigge
             key=f"drop_percentage{i}",
         )
 
-    return make_buy_trigger(datastore, source, market, parse_trigger_spec(trigger_spec))
+    return parse_trigger_spec(trigger_spec)
 
 
 def sub_trigger_simulation(sidebar_settings):
     st.title("Trigger simulation")
-
-    datastore = make_datastore(None)
-    source = InterpolatingSource(sidebar_settings.data)
-    market = SimulationMarketplace(source)
 
     time_begin, time_end = make_time_slider(sidebar_settings)
 
@@ -135,15 +127,13 @@ def sub_trigger_simulation(sidebar_settings):
 
     st.markdown("# Parameters")
 
+    trigger_specs = []
     with st.form("triggers"):
-        active_triggers = []
         for i in range(number_of_triggers):
             if i % 3 == 0:
                 col = st.columns(min(number_of_triggers - i, 3))
             with col[i % 3]:
-                active_triggers.append(
-                    make_trigger_ui(datastore, source, market, sidebar_settings, i)
-                )
+                trigger_specs.append(make_trigger_ui(sidebar_settings, i))
         if not st.form_submit_button("Go!"):
             return
 
@@ -155,12 +145,11 @@ def sub_trigger_simulation(sidebar_settings):
     data_datetime = sidebar_settings.data["datetime"]
     selection = (time_begin <= data_datetime) & (data_datetime <= time_end)
 
-    trades = simulate_triggers(
+    trades, trigger_names = simulate_triggers(
         sidebar_settings.data.loc[selection].reset_index(),
         sidebar_settings.coin,
         sidebar_settings.fiat,
-        active_triggers,
-        datastore,
+        trigger_specs,
         lambda p: simulation_progress_bar.progress(p),
     )
 
@@ -173,9 +162,9 @@ def sub_trigger_simulation(sidebar_settings):
 
     result = []
     for i, elem in enumerate(data_datetime.loc[selection]):
-        for t in active_triggers:
+        for trigger_name in trigger_names:
             sel1 = trades["timestamp"] <= elem
-            sel2 = trades["trigger_name"] == t.get_name()
+            sel2 = trades["trigger_name"] == trigger_name
             sel12 = sel1 & sel2
             cumsum_coin = np.sum(trades["volume_coin"][sel12])
             cumsum_fiat = np.sum(trades["volume_fiat"][sel12])
@@ -183,7 +172,7 @@ def sub_trigger_simulation(sidebar_settings):
             result.append(
                 dict(
                     datetime=elem,
-                    trigger_name=t.get_name(),
+                    trigger_name=trigger_name,
                     cumsum_coin=cumsum_coin,
                     cumsum_fiat=cumsum_fiat,
                     value_fiat=value_fiat,
@@ -195,9 +184,9 @@ def sub_trigger_simulation(sidebar_settings):
     st.markdown("# Summary")
 
     summary_rows = []
-    for t in active_triggers:
-        sub_trades = trades[trades["trigger_name"] == t.get_name()]
-        sub_values = value[value["trigger_name"] == t.get_name()]
+    for trigger_name in trigger_names:
+        sub_trades = trades[trades["trigger_name"] == trigger_name]
+        sub_values = value[value["trigger_name"] == trigger_name]
         num_trigger_executions = len(sub_trades)
         cumsum_fiat = sub_values["cumsum_fiat"].iat[-1]
         cumsum_coin = sub_values["cumsum_coin"].iat[-1]
@@ -209,7 +198,7 @@ def sub_trigger_simulation(sidebar_settings):
         ).days
         yearly_gain = np.power(gain + 1, 365 / period) - 1
         row = {
-            "Trigger": t.get_name(),
+            "Trigger": trigger_name,
             "Days": period,
             "Trades": num_trigger_executions,
             f"{sidebar_settings.fiat} invested": cumsum_fiat,

@@ -1,12 +1,17 @@
 import datetime
+from typing import List
+from typing import Tuple
 
 import pandas as pd
 
 from ..core import Price
-from ..datastorage import Datastore
+from ..datastorage import make_datastore
 from ..historical import HistoricalError
 from ..historical import HistoricalSource
 from ..marketplace import Marketplace
+from ..triggers import make_buy_trigger
+from ..triggers import TriggerSpec
+from .price_data import InterpolatingSource
 
 
 class SimulationMarketplace(Marketplace):
@@ -28,10 +33,18 @@ def simulate_triggers(
     data: pd.DataFrame,
     coin: str,
     fiat: str,
-    active_triggers,
-    datastore: Datastore,
+    trigger_specs: List[TriggerSpec],
     progress_callback=lambda n: None,
-) -> pd.DataFrame:
+) -> Tuple[pd.DataFrame, List[str]]:
+    datastore = make_datastore(None)
+    source = InterpolatingSource(data)
+    market = SimulationMarketplace(source)
+
+    active_triggers = [
+        make_buy_trigger(datastore, source, market, trigger_spec)
+        for trigger_spec in trigger_specs
+    ]
+
     for i in data.index:
         row = data.loc[i]
         now = row["datetime"]
@@ -50,4 +63,5 @@ def simulate_triggers(
 
     all_trades = datastore.get_all_trades()
     trade_df = pd.DataFrame([trade.to_dict() for trade in all_trades])
-    return trade_df
+    trigger_names = [trigger.get_name() for trigger in active_triggers]
+    return trade_df, trigger_names

@@ -1,4 +1,4 @@
-from vigilant_crypto_snatch.evaluation.currency_pairs import parse_currency_pairs
+from .currency_pairs import parse_currency_pairs
 
 
 def test_parse_currency_pairs_success() -> None:

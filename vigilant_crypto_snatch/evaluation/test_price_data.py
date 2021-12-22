@@ -1,4 +1,4 @@
-from vigilant_crypto_snatch.evaluation.price_data import make_test_dataframe
+from .price_data import make_test_dataframe
 
 
 def test_make_dataframe_from_json() -> None:
