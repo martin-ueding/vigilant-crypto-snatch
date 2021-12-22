@@ -84,6 +84,11 @@ def get_hourly_data(coin: str, fiat: str, api_key: str) -> List[dict]:
 
 
 def make_dataframe_from_json(data: dict) -> pd.DataFrame:
-    df = pd.DataFrame(data)
-    df["datetime"] = list(map(datetime.datetime.fromtimestamp, df["time"]))
+    df = pd.DataFrame(
+        {
+            "time": data["time"],
+            "datetime": list(map(datetime.datetime.fromtimestamp, data["time"])),
+            "close": data["close"],
+        }
+    )
     return df

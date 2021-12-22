@@ -1,59 +1,88 @@
 @startuml
 
-component requests #lightskyblue
-component sqlalchemy #lightskyblue
+component altair #lightskyblue
 component appdirs #lightskyblue
-component krakenex #lightskyblue
 component bitstamp #lightskyblue
-component yaml #lightskyblue
 component click #lightskyblue
 component coloredlogs #lightskyblue
 component dateutil #lightskyblue
+component krakenex #lightskyblue
+component numpy #lightskyblue
+component pandas #lightskyblue
+component requests #lightskyblue
+component scipy #lightskyblue
+component sqlalchemy #lightskyblue
+component streamlit #lightskyblue
+component yaml #lightskyblue
 
+component commands
+component configuration
 component core
 component datastorage
-component marketplace
-component myrequests
+component evaluation
+component feargreed
 component historical
 component marketplace
-component feargreed
-component triggers
+component marketplace
+component myrequests
 component paths
-component configuration
+component streamlit_ui
 component telegram
-component commands
+component triggers
+
+click <-- commands
+coloredlogs <-- commands
+configuration <-- commands
+datastorage <-- commands
+historical <-- commands
+marketplace <-- commands
+
+dateutil <-- configuration
+historical <-- configuration
+marketplace <-- configuration
+paths <-- configuration
+telegram <-- configuration
+triggers <-- configuration
+yaml <-- configuration
 
 core <-- datastorage
 sqlalchemy <-- datastorage
-core <-- marketplace
-requests <-- myrequests
+
+core <-- evaluation
+historical <-- evaluation
+marketplace <-- evaluation
+myrequests <-- evaluation
+numpy <-- evaluation
+pandas <-- evaluation
+scipy <-- evaluation
+
+myrequests <-- feargreed
+
 core <-- historical
 datastorage <-- historical
 marketplace <-- historical
 myrequests <-- historical
-myrequests <-- feargreed
-datastorage <-- triggers
-historical <-- triggers
-marketplace <-- triggers
-feargreed <-- triggers
+
+bitstamp <-- marketplace
+core <-- marketplace
+krakenex <-- marketplace
+
+requests <-- myrequests
+
 appdirs <-- paths
-historical <-- configuration
-marketplace <-- configuration
-telegram <-- configuration
-triggers <-- configuration
-paths <-- configuration
+
+altair <-- streamlit_ui
+evaluation <-- streamlit_ui
+streamlit <-- streamlit_ui
+numpy <-- streamlit_ui
+pandas <-- streamlit_ui
+
 myrequests <-- telegram
 paths <-- telegram
-marketplace <-- commands
-datastorage <-- commands
-configuration <-- commands
-historical <-- commands
-bitstamp <-- marketplace
-krakenex <-- marketplace
-yaml <-- configuration
-click <-- commands
-coloredlogs <-- commands
-dateutil <-- configuration
 
+datastorage <-- triggers
+feargreed <-- triggers
+historical <-- triggers
+marketplace <-- triggers
 
 @enduml
