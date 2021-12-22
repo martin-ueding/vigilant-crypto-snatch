@@ -223,3 +223,42 @@ def test_get_kraken_config_minimal() -> None:
         f.close()
         config = yaml_configuration.YamlConfiguration(f.name)
         assert config.get_kraken_config() is not None
+
+
+def test_get_telegram_config_empty() -> None:
+    with tempfile.NamedTemporaryFile("w+", delete=False) as f:
+        f.write("sleep: 1")
+        f.close()
+        config = yaml_configuration.YamlConfiguration(f.name)
+        assert config.get_telegram_config() is None
+
+
+telegram_config_minimal = """
+telegram:
+  token: test-token
+  level: info
+"""
+
+
+def test_get_telegram_config_minimal() -> None:
+    with tempfile.NamedTemporaryFile("w+", delete=False) as f:
+        f.write(telegram_config_minimal)
+        f.close()
+        config = yaml_configuration.YamlConfiguration(f.name)
+        assert config.get_telegram_config() is not None
+
+
+telegram_config_full = """
+telegram:
+  chat_id: 0
+  level: info
+  token: test-token
+"""
+
+
+def test_get_telegram_config_full() -> None:
+    with tempfile.NamedTemporaryFile("w+", delete=False) as f:
+        f.write(telegram_config_full)
+        f.close()
+        config = yaml_configuration.YamlConfiguration(f.name)
+        assert config.get_telegram_config() is not None
