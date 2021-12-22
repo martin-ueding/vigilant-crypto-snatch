@@ -98,8 +98,6 @@ def get_start(trigger_spec_dict: dict) -> Optional[datetime.datetime]:
         print(trigger_spec_dict)
         if isinstance(start, datetime.date):
             return datetime.datetime.combine(start, datetime.datetime.min.time())
-        elif isinstance(start, datetime.datetime):
-            return start
         elif isinstance(start, str):
             return dateutil.parser.parse(start)
         else:

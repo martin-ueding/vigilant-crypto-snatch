@@ -2,6 +2,8 @@ import copy
 import datetime
 import tempfile
 
+import yaml
+
 from . import yaml_configuration
 from ..triggers import TriggerSpec
 
@@ -43,6 +45,12 @@ def test_get_start_datetime() -> None:
     assert yaml_configuration.get_start(
         {"start": "2021-03-04 14:32"}
     ) == datetime.datetime(2021, 3, 4, 14, 32, 0)
+
+
+def test_get_start_with_datetime() -> None:
+    assert yaml_configuration.get_start(
+        {"start": yaml.safe_load("2021-03-04")}
+    ) == datetime.datetime(2021, 3, 4)
 
 
 def test_parse_trigger_spec_drop_fixed() -> None:
