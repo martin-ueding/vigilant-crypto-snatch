@@ -2,6 +2,8 @@ import datetime
 import os
 import sys
 
+import altair as alt
+import pandas as pd
 import streamlit as st
 import streamlit.cli as st_cli
 
@@ -15,10 +17,12 @@ from vigilant_crypto_snatch.evaluation import get_currency_pairs
 from vigilant_crypto_snatch.evaluation import get_hourly_data
 from vigilant_crypto_snatch.evaluation import make_close_chart
 from vigilant_crypto_snatch.evaluation import make_dataframe_from_json
+from vigilant_crypto_snatch.evaluation import make_feargreed_chart
 from vigilant_crypto_snatch.evaluation import make_gain_chart
 from vigilant_crypto_snatch.evaluation import make_survey_chart
 from vigilant_crypto_snatch.evaluation import simulate_triggers
 from vigilant_crypto_snatch.evaluation import summarize_simulation
+from vigilant_crypto_snatch.feargreed import AlternateMeFearAndGreedIndex
 from vigilant_crypto_snatch.triggers import TriggerSpec
 
 
@@ -35,7 +39,10 @@ def sub_home(sidebar_settings):
 def sub_price(sidebar_settings):
     st.title("Close price")
 
-    show_close_chart(sidebar_settings)
+    close_chart = make_close_chart(
+        sidebar_settings.data, sidebar_settings.coin, sidebar_settings.fiat
+    )
+    st.altair_chart(close_chart, use_container_width=True)
 
 
 def show_close_chart(sidebar_settings):
@@ -125,12 +132,22 @@ def sub_trigger_simulation(sidebar_settings):
     st.title("Trigger simulation")
 
     time_begin, time_end = make_time_slider(sidebar_settings)
+    data_datetime = sidebar_settings.data["datetime"]
+    selection = (time_begin <= data_datetime) & (data_datetime <= time_end)
+
+    close_chart = make_close_chart(
+        sidebar_settings.data[selection], sidebar_settings.coin, sidebar_settings.fiat
+    )
+    st.altair_chart(close_chart, use_container_width=True)
+
+    feargreed_chart = make_feargreed_chart(time_begin, time_end)
+    st.altair_chart(feargreed_chart, use_container_width=True)
+
+    st.markdown("# Parameters")
 
     number_of_triggers = st.number_input(
         "Number of triggers", min_value=1, max_value=None, value=2
     )
-
-    st.markdown("# Parameters")
 
     trigger_specs = []
     for i in range(number_of_triggers):
@@ -145,9 +162,6 @@ def sub_trigger_simulation(sidebar_settings):
 
     st.markdown("Simulating triggers …")
     simulation_progress_bar = st.progress(0.0)
-
-    data_datetime = sidebar_settings.data["datetime"]
-    selection = (time_begin <= data_datetime) & (data_datetime <= time_end)
 
     trades, trigger_names = simulate_triggers(
         sidebar_settings.data.loc[selection].reset_index(),
