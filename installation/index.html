@@ -232,6 +232,13 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
+  <a href="#virtualenv" class="md-nav__link">
+    Virtualenv
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#upgrades" class="md-nav__link">
     Upgrades
   </a>
@@ -516,6 +523,13 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
+  <a href="#virtualenv" class="md-nav__link">
+    Virtualenv
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#upgrades" class="md-nav__link">
     Upgrades
   </a>
@@ -545,6 +559,19 @@
 </code></pre></div>
 <p>If you don't want to install it system-wide, you can instead use <code>python3 -p pip install --user vigilant</code>. In that case you have to make sure that <code>~/.local/bin</code> is part of your <code>PATH</code> environment variable.</p>
 <p>Once you are done with the installation, go over to the <a href="../configuration/">configuration</a>.</p>
+<h2 id="virtualenv">Virtualenv</h2>
+<p>Maybe you want to install the software and all its dependencies into a virtual environment. For this first create a virtual environment:</p>
+<div class="highlight"><pre><span></span><code><span class="gp">$ </span>virtualenv /tmp/vigilant-crypto-snatch-5-2-0
+<span class="go">created virtual environment CPython3.10.1.final.0-64 in 485ms</span>
+</code></pre></div>
+<p>Choose a directory that makes sense for you, like <code>~/.local/share/virtualenvs/vigilant-crypto-snatch</code>.</p>
+<p>Then activate the virtual environment:</p>
+<div class="highlight"><pre><span></span><code><span class="gp">$ </span><span class="nb">source</span> /tmo/vigilant-crypto-snatch-5-2-0/bin/activate
+</code></pre></div>
+<p>And now you can install it via pip, as usual:</p>
+<div class="highlight"><pre><span></span><code><span class="gp">$ </span>pip install --upgrade vigilant_crypto_snatch
+</code></pre></div>
+<p>Whenever you want to use it, you will first need to activate the environment and then you can just call <code>vigilant-crypto-snatch</code>.</p>
 <h2 id="upgrades">Upgrades</h2>
 <p>If you want to upgrade use:</p>
 <div class="highlight"><pre><span></span><code>sudo python3 -m pip install vigilant-crypto-snatch --upgrade
