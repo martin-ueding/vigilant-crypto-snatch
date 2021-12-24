@@ -60,3 +60,10 @@ def test_drive(marketplace: str) -> None:
     from .commands import testdrive
 
     testdrive.main(marketplace)
+
+
+@main.command()
+def report() -> None:
+    from .reporting import trades
+
+    trades.main()
