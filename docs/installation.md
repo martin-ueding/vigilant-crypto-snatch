@@ -18,6 +18,32 @@ If you don't want to install it system-wide, you can instead use `python3 -p pip
 
 Once you are done with the installation, go over to the [configuration](configuration.md).
 
+## Virtualenv
+
+Maybe you want to install the software and all its dependencies into a virtual environment. For this first create a virtual environment:
+
+```console
+$ virtualenv /tmp/vigilant-crypto-snatch-5-2-0
+created virtual environment CPython3.10.1.final.0-64 in 485ms
+```
+
+Choose a directory that makes sense for you, like `~/.local/share/virtualenvs/vigilant-crypto-snatch`.
+
+Then activate the virtual environment:
+
+```console
+$ source /tmo/vigilant-crypto-snatch-5-2-0/bin/activate
+```
+
+And now you can install it via pip, as usual:
+
+```console
+$ pip install --upgrade vigilant_crypto_snatch
+```
+
+Whenever you want to use it, you will first need to activate the environment and then you can just call `vigilant-crypto-snatch`.
+
+
 ## Upgrades
 
 If you want to upgrade use:

@@ -42,3 +42,4 @@ def main() -> None:
     add_gains(trades)
 
     print(trades)
+    trades.to_json("trades.js")

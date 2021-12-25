@@ -21,7 +21,7 @@ def test_dca_trigger() -> None:
     assert trigger.is_triggered(datetime.datetime.now())
 
 
-def test_fear_greed_trigger() -> None:
+def disabled_test_fear_greed_trigger() -> None:
     datastore = ListDatastore()
     source = MockHistorical()
     market = MockMarketplace()
