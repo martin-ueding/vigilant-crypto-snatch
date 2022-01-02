@@ -29,7 +29,7 @@ class CryptoCompareHistoricalSource(HistoricalSource):
         try:
             j = perform_http_request(url)
         except HttpRequestError as e:
-            raise HistoricalError() from e
+            raise HistoricalError("HTTP error from Crypto Compare") from e
         if len(j["Data"]) == 0:
             raise HistoricalError(
                 f"There is no payload from the historical API: {str(j)}"
@@ -72,7 +72,7 @@ class MarketSource(HistoricalSource):
     def get_price(self, then: datetime.datetime, coin: str, fiat: str) -> Price:
         if then < datetime.datetime.now() - datetime.timedelta(seconds=30):
             raise HistoricalError(
-                f"Cannot retrieve price that far in the past ({then})."
+                f"Cannot retrieve price that far in the past ({then}) from {self.market.get_name()}."
             )
         price = self.market.get_spot_price(coin, fiat, then)
         logger.debug(
