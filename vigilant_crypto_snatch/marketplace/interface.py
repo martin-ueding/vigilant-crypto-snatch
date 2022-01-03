@@ -63,6 +63,10 @@ class BuyError(Exception):
     pass
 
 
+class InsufficientFundsError(BuyError):
+    pass
+
+
 class TickerError(Exception):
     pass
 

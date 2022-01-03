@@ -10,6 +10,7 @@ from .. import logger
 from ..core import Price
 from ..myrequests import HttpRequestError
 from .interface import BuyError
+from .interface import InsufficientFundsError
 from .interface import KrakenConfig
 from .interface import Marketplace
 from .interface import TickerError
@@ -142,6 +143,10 @@ class KrakenexMarketplace(Marketplace):
             )
 
 
-def raise_error(answer: dict, exception: Type[Exception]):
-    if len(answer["error"]) > 0:
-        raise exception(answer["error"])
+def raise_error(answer: dict, exception: Type[Exception]) -> None:
+    errors = answer["error"]
+    if errors:
+        if "EOrder:Insufficient funds" in errors:
+            raise InsufficientFundsError()
+        else:
+            raise exception(answer["error"])
