@@ -98,12 +98,7 @@ class BuyTrigger(Trigger, abc.ABC):
         self, volume_coin: float, volume_fiat: float, now: datetime.datetime
     ) -> None:
         self.market.place_order(self.coin, self.fiat, volume_coin)
-        try:
-            check_and_perform_widthdrawal(self.market)
-        except NotImplementedError as e:
-            logger.warning(
-                f"Marketplace {self.market.get_name()} doesn't support withdrawal."
-            )
+
         trade = Trade(
             timestamp=now,
             trigger_name=self.get_name(),
@@ -118,6 +113,12 @@ class BuyTrigger(Trigger, abc.ABC):
         buy_message = f"{volume_coin} {self.coin} for {volume_fiat} {self.fiat} ({rate} {self.fiat}/{self.coin}) on {self.market.get_name()} due to “{self.get_name()}”"
         logger.info(f"Bought {buy_message}.")
         report_balances(self.market, {self.coin, self.fiat})
+        try:
+            check_and_perform_widthdrawal(self.market)
+        except NotImplementedError as e:
+            logger.warning(
+                f"Marketplace {self.market.get_name()} doesn't support withdrawal."
+            )
 
     def get_name(self) -> str:
         if self.name is None:
