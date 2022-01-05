@@ -38,14 +38,15 @@ class AlternateMeFearAndGreedIndex(FearAndGreedIndex):
         else:
             self.api = alternative_me_fear_and_greed
 
-    def get_value(self, now: datetime.date) -> int:
+    def get_value(self, now: datetime.date, today: datetime.date) -> int:
         if now not in cached_values:
-            days_since = (datetime.date.today() - now).days + 1
+            days_since = (today - now).days + 1
             try:
                 response = self.api(days_since)
                 for elem in response["data"]:
                     then = datetime.date.fromtimestamp(int(elem["timestamp"]))
                     cached_values[then] = int(elem["value"])
+                print(cached_values)
             except KeyError as e:
                 raise FearAndGreedException(
                     "Data key was missing in API response"
