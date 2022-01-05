@@ -230,4 +230,4 @@ Symbol | Severity
 🟢 | Info
 🔵 | Debug
 
-The logging level is set to *Info* by default. You must not set it to *Debug* as sending a Telegram message will produce more debug messages. The program will crash with an infinite recursion.
+The logging level is set to *Info* by default.
