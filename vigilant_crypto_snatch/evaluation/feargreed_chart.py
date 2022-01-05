@@ -12,11 +12,12 @@ def make_feargreed_chart(
     fear_greed_access = AlternateMeFearAndGreedIndex()
 
     date_range = pd.date_range(time_begin.date(), time_end.date())
+    today = datetime.date.today()
     fear_greed_df = pd.DataFrame(
         {
             "date": date_range,
             "fear_greed_index": [
-                fear_greed_access.get_value(date.date()) for date in date_range
+                fear_greed_access.get_value(date.date(), today) for date in date_range
             ],
         }
     )
