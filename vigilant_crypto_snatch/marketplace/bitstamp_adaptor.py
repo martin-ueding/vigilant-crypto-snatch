@@ -6,10 +6,10 @@ import requests
 import urllib3
 
 from ..core import Price
+from ..myrequests import HttpRequestError
 from .interface import BitstampConfig
 from .interface import BuyError
 from .interface import Marketplace
-from .interface import TickerError
 
 
 class BitstampMarketplace(Marketplace):
@@ -32,11 +32,11 @@ class BitstampMarketplace(Marketplace):
         try:
             ticker = self.public_client.ticker(base=coin, quote=fiat)
         except requests.exceptions.ChunkedEncodingError as e:
-            raise TickerError() from e
+            raise HttpRequestError() from e
         except requests.exceptions.HTTPError as e:
-            raise TickerError() from e
+            raise HttpRequestError() from e
         except urllib3.exceptions.ProtocolError as e:
-            raise TickerError() from e
+            raise HttpRequestError() from e
         else:
             now = datetime.datetime.fromtimestamp(int(ticker["timestamp"]))
             price = Price(timestamp=now, last=ticker["last"], coin=coin, fiat=fiat)

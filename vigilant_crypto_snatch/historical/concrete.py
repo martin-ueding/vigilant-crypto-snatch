@@ -1,5 +1,6 @@
 import dataclasses
 import datetime
+import traceback
 from typing import List
 
 from .. import logger
@@ -29,7 +30,7 @@ class CryptoCompareHistoricalSource(HistoricalSource):
         try:
             j = perform_http_request(url)
         except HttpRequestError as e:
-            raise HistoricalError("HTTP error from Crypto Compare") from e
+            raise HttpRequestError("HTTP error from Crypto Compare") from e
         if len(j["Data"]) == 0:
             raise HistoricalError(
                 f"There is no payload from the historical API: {str(j)}"
@@ -93,10 +94,12 @@ class CachingHistoricalSource(HistoricalSource):
         self.datastore = datastore
 
     def get_price(self, then: datetime.datetime, coin: str, fiat: str) -> Price:
+        last_exception = None
         try:
             price = self.database_source.get_price(then, coin, fiat)
         except HistoricalError as e:
             logger.debug(e)
+            last_exception = e
         else:
             logger.debug(f"Retrieved a price of {price} at {then} from the DB.")
             return price
@@ -107,8 +110,9 @@ class CachingHistoricalSource(HistoricalSource):
                 price = live_source.get_price(then, coin, fiat)
             except HistoricalError as e:
                 logger.debug(f"Error from live source: {repr(e)}")
+                last_exception = e
             else:
                 self.datastore.add_price(price)
                 return price
 
-        raise HistoricalError("No source could deliver.")
+        raise HistoricalError("No source could deliver") from last_exception
