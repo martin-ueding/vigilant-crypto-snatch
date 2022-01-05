@@ -43,6 +43,7 @@ def notify_and_continue(exception: Exception, severity: int) -> None:
     logger.log(
         severity, f"An exception of type {type(exception)} has occurred: {exception}"
     )
+    logger.debug(traceback.format_exc())
 
 
 def process_trigger(trigger: Trigger):
