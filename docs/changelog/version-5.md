@@ -33,4 +33,5 @@
 # Upcoming
 
 - Allow any log level for Telegram, including `debug`.
-- Attempt withdrawal after the trade has been noted in the database. Previously, a failure during withdrawal would have dropped the trade and eventually performed it again. 
+- Attempt withdrawal after the trade has been noted in the database. Previously, a failure during withdrawal would have dropped the trade and eventually performed it again.
+- Output full exception traceback for every caught exception into the debug logging channel.
