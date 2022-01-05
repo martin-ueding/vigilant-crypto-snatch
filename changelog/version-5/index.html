@@ -422,6 +422,19 @@
     Version 5.2.0
   </a>
   
+    <nav class="md-nav" aria-label="Version 5.2.0">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#version-521" class="md-nav__link">
+    Version 5.2.1
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
 </li>
       
     </ul>
@@ -604,6 +617,19 @@
     Version 5.2.0
   </a>
   
+    <nav class="md-nav" aria-label="Version 5.2.0">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#version-521" class="md-nav__link">
+    Version 5.2.1
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
 </li>
       
     </ul>
@@ -649,6 +675,13 @@
 <li>Fear &amp; Greed is now included in the evaluation interface.</li>
 <li>More refactoring, more test coverage.</li>
 <li>Developer documentation includes a component diagram.</li>
+</ul>
+<h3 id="version-521">Version 5.2.1</h3>
+<ul>
+<li>Allow any log level for Telegram, including <code>debug</code>.</li>
+<li>Attempt withdrawal after the trade has been noted in the database. Previously, a failure during withdrawal would have dropped the trade and eventually performed it again.</li>
+<li>Output full exception traceback for every caught exception into the debug logging channel.</li>
+<li>Pause triggers for 24 hours when they have insufficient funds. This will reduce failure messages from three per 12 hours to one per 24 hours.</li>
 </ul>
                 
               
