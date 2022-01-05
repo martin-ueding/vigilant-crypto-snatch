@@ -63,7 +63,9 @@ class DatabaseHistoricalSource(HistoricalSource):
         self.tolerance = tolerance
 
     def get_price(self, when: datetime.datetime, coin: str, fiat: str) -> Price:
-        price = self.datastore.get_price_around(when, coin, fiat, self.tolerance)
+        price = self.datastore.get_price_around(
+            when, AssetPair(coin, fiat), self.tolerance
+        )
         if price is None:
             raise HistoricalError("Could not find entry in the database.")
         return price

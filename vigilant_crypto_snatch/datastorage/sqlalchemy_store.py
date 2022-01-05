@@ -117,8 +117,7 @@ class SqlAlchemyDatastore(Datastore):
     def get_price_around(
         self,
         then: datetime.datetime,
-        coin: str,
-        fiat: str,
+        asset_pair: AssetPair,
         tolerance: datetime.timedelta,
     ) -> Optional[Price]:
         try:
@@ -126,14 +125,14 @@ class SqlAlchemyDatastore(Datastore):
                 self.session.query(AlchemyPrice)
                 .filter(
                     AlchemyPrice.timestamp <= then,
-                    AlchemyPrice.coin == coin,
-                    AlchemyPrice.fiat == fiat,
+                    AlchemyPrice.coin == asset_pair.coin,
+                    AlchemyPrice.fiat == asset_pair.fiat,
                 )
                 .order_by(AlchemyPrice.timestamp.desc())[0]
             )
             if q.timestamp >= then - tolerance:
                 logger.debug(
-                    f"Found historical price for {then} in database: {q.last} {fiat}/{coin}."
+                    f"Found historical price for {then} in database: {q.last} {asset_pair.fiat}/{asset_pair.coin}."
                 )
                 return q.to_core()
         except sqlalchemy.orm.exc.NoResultFound:

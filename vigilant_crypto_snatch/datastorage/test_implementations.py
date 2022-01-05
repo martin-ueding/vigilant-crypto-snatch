@@ -51,8 +51,7 @@ def test_get_price_around(datastore: Datastore) -> None:
     assert (
         datastore.get_price_around(
             now + datetime.timedelta(seconds=1),
-            price.asset_pair.coin,
-            price.asset_pair.fiat,
+            price.asset_pair,
             datetime.timedelta(seconds=2),
         )
         == price
@@ -60,8 +59,7 @@ def test_get_price_around(datastore: Datastore) -> None:
     assert (
         datastore.get_price_around(
             now + datetime.timedelta(seconds=0),
-            price.asset_pair.coin,
-            price.asset_pair.fiat,
+            price.asset_pair,
             datetime.timedelta(seconds=2),
         )
         == price
@@ -69,8 +67,7 @@ def test_get_price_around(datastore: Datastore) -> None:
     assert (
         datastore.get_price_around(
             now + datetime.timedelta(seconds=10),
-            price.asset_pair.coin,
-            price.asset_pair.fiat,
+            price.asset_pair,
             datetime.timedelta(seconds=2),
         )
         is None
