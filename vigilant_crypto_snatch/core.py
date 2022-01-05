@@ -3,6 +3,12 @@ import datetime
 
 
 @dataclasses.dataclass()
+class AssetPair:
+    coin: str
+    fiat: str
+
+
+@dataclasses.dataclass()
 class Price:
     timestamp: datetime.datetime
     last: float

@@ -36,3 +36,8 @@
 - Attempt withdrawal after the trade has been noted in the database. Previously, a failure during withdrawal would have dropped the trade and eventually performed it again.
 - Output full exception traceback for every caught exception into the debug logging channel.
 - Pause triggers for 24 hours when they have insufficient funds. This will reduce failure messages from three per 12 hours to one per 24 hours.
+
+## Version 5.3.0
+
+- Add a report page about user trades into the evaluation interface.
+- Link to download statistics within documentation.
