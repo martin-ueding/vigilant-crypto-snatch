@@ -6,7 +6,7 @@ import pandas as pd
 from vigilant_crypto_snatch.feargreed import AlternateMeFearAndGreedIndex
 
 
-def make_feargreed_chart(
+def make_fear_greed_chart(
     time_begin: datetime.datetime, time_end: datetime.datetime
 ) -> alt.Chart:
     fear_greed_access = AlternateMeFearAndGreedIndex()
