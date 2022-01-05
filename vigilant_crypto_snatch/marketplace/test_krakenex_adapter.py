@@ -125,8 +125,8 @@ def test_get_spot_price_success() -> None:
     now = datetime.datetime.now()
     price = market.get_spot_price("BTC", "EUR", now)
     assert price.timestamp == now
-    assert price.coin == "BTC"
-    assert price.fiat == "EUR"
+    assert price.asset_pair.coin == "BTC"
+    assert price.asset_pair.fiat == "EUR"
     assert price.last == 50162.2
 
 

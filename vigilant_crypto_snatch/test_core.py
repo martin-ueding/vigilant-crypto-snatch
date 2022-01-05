@@ -1,11 +1,16 @@
 import datetime
 
+from .core import AssetPair
 from .core import Price
 from .core import Trade
 
 
 def test_price() -> None:
-    price = Price(timestamp=datetime.datetime.now(), last=10.0, coin="BTC", fiat="EUR")
+    price = Price(
+        timestamp=datetime.datetime.now(),
+        last=10.0,
+        asset_pair=AssetPair(coin="BTC", fiat="EUR"),
+    )
     str(price)
     repr(price)
 

@@ -1,6 +1,7 @@
 import datetime
 import math
 
+from ..core import AssetPair
 from ..core import Price
 from .interface import HistoricalSource
 
@@ -27,6 +28,5 @@ class MockHistorical(HistoricalSource):
         return Price(
             timestamp=then,
             last=mock_price(then),
-            coin=coin,
-            fiat=fiat,
+            asset_pair=AssetPair(coin=coin, fiat=fiat),
         )

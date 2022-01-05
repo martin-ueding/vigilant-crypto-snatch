@@ -5,6 +5,7 @@ import bitstamp.client
 import requests
 import urllib3
 
+from ..core import AssetPair
 from ..core import Price
 from ..myrequests import HttpRequestError
 from .interface import BitstampConfig
@@ -39,7 +40,11 @@ class BitstampMarketplace(Marketplace):
             raise HttpRequestError() from e
         else:
             now = datetime.datetime.fromtimestamp(int(ticker["timestamp"]))
-            price = Price(timestamp=now, last=ticker["last"], coin=coin, fiat=fiat)
+            price = Price(
+                timestamp=now,
+                last=ticker["last"],
+                asset_pair=AssetPair(coin=coin, fiat=fiat),
+            )
             return price
 
     def get_balance(self) -> dict:

@@ -7,6 +7,7 @@ import krakenex
 import requests
 
 from .. import logger
+from ..core import AssetPair
 from ..core import Price
 from ..myrequests import HttpRequestError
 from .interface import BuyError
@@ -63,7 +64,9 @@ class KrakenexMarketplace(Marketplace):
         raise_error(answer, TickerError)
         close = float(list(answer["result"].values())[0]["c"][0])
         logger.debug(f"Retrieved {close} for {fiat}/{coin} from Krakenex.")
-        price = Price(timestamp=now, last=close, coin=coin, fiat=fiat)
+        price = Price(
+            timestamp=now, last=close, asset_pair=AssetPair(coin=coin, fiat=fiat)
+        )
         return price
 
     def get_balance(self) -> dict:

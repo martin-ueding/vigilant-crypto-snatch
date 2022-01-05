@@ -9,8 +9,8 @@ from .interface import Datastore
 
 class ListDatastore(Datastore):
     def __init__(self):
-        self.trades = []
-        self.prices = []
+        self.trades: List[Trade] = []
+        self.prices: List[Price] = []
 
     def add_price(self, price: Price) -> None:
         self.prices.append(price)
@@ -28,8 +28,8 @@ class ListDatastore(Datastore):
         self.prices.sort(key=lambda price: price.timestamp)
         for price in reversed(self.prices):
             if (
-                price.coin == coin
-                and price.fiat == fiat
+                price.asset_pair.coin == coin
+                and price.asset_pair.fiat == fiat
                 and then - tolerance <= price.timestamp <= then
             ):
                 return price

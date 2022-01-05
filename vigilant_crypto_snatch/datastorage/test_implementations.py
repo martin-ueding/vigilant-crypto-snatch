@@ -2,6 +2,7 @@ import datetime
 
 import pytest
 
+from ..core import AssetPair
 from ..core import Price
 from ..core import Trade
 from .interface import Datastore
@@ -15,7 +16,7 @@ def datastore(request) -> Datastore:
 
 
 def test_store_price(datastore: Datastore) -> None:
-    price = Price(datetime.datetime.now(), 12.3, "BTC", "EUR")
+    price = Price(datetime.datetime.now(), 12.3, AssetPair("BTC", "EUR"))
     assert datastore.get_all_prices() == []
     datastore.add_price(price)
     assert datastore.get_all_prices() == [price]
@@ -45,13 +46,13 @@ def test_was_triggered_since(datastore: Datastore) -> None:
 
 def test_get_price_around(datastore: Datastore) -> None:
     now = datetime.datetime.now()
-    price = Price(now, 12.3, "BTC", "EUR")
+    price = Price(now, 12.3, AssetPair("BTC", "EUR"))
     datastore.add_price(price)
     assert (
         datastore.get_price_around(
             now + datetime.timedelta(seconds=1),
-            price.coin,
-            price.fiat,
+            price.asset_pair.coin,
+            price.asset_pair.fiat,
             datetime.timedelta(seconds=2),
         )
         == price
@@ -59,8 +60,8 @@ def test_get_price_around(datastore: Datastore) -> None:
     assert (
         datastore.get_price_around(
             now + datetime.timedelta(seconds=0),
-            price.coin,
-            price.fiat,
+            price.asset_pair.coin,
+            price.asset_pair.fiat,
             datetime.timedelta(seconds=2),
         )
         == price
@@ -68,8 +69,8 @@ def test_get_price_around(datastore: Datastore) -> None:
     assert (
         datastore.get_price_around(
             now + datetime.timedelta(seconds=10),
-            price.coin,
-            price.fiat,
+            price.asset_pair.coin,
+            price.asset_pair.fiat,
             datetime.timedelta(seconds=2),
         )
         is None
@@ -82,7 +83,7 @@ def test_clean_old(datastore: Datastore) -> None:
     assert len(datastore.get_all_prices()) == 0
     datastore.clean_old(now)
     assert len(datastore.get_all_prices()) == 0
-    price = Price(then, 12.3, "BTC", "EUR")
+    price = Price(then, 12.3, AssetPair("BTC", "EUR"))
     datastore.add_price(price)
     assert len(datastore.get_all_prices()) == 1
     datastore.clean_old(now)
