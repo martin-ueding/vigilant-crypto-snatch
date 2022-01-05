@@ -6,7 +6,7 @@ The basic idea is to use the [Dollar Cost Average](https://en.wikipedia.org/wiki
 
 First you need to [install](installation.md) the software, then [configure](configuration.md) it. Test the program using the instructions for [running](usage.md), then choose a [deployment](deployment.md) strategy that suits your needs.
 
-You can find the [source code on GitHub](https://github.com/martin-ueding/vigilant-crypto-snatch).
+You can find the [source code on GitHub](https://github.com/martin-ueding/vigilant-crypto-snatch). Download statistics via [PyPI Stats](https://pypistats.org/packages/vigilant-crypto-snatch).
 
 In case you wonder about the name: Dips means that the price dives. Submarines dive. The HMS Vigilant is a submarine of the British Navy. But also vigilance means to observe.
 
