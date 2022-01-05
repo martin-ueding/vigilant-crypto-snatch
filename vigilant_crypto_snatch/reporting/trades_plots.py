@@ -50,8 +50,12 @@ def plot_gains_per_month(trades: pd.DataFrame) -> alt.Chart:
         )
         .mark_bar()
         .encode(
-            alt.X("month"),
-            alt.Y("gains"),
+            alt.X("month", title="Month"),
+            alt.Y("gains", title="Gains / Fiat"),
+            [
+                alt.Tooltip("month", title="Month"),
+                alt.Tooltip("gains", title="Gains / Fiat"),
+            ],
         )
         .interactive()
     )
@@ -76,13 +80,18 @@ def plot_gains_per_year(trades: pd.DataFrame) -> alt.Chart:
 def plot_fiat_spent_per_month(trades: pd.DataFrame) -> alt.Chart:
     chart = (
         alt.Chart(
-            trades.groupby(["month", "volume_fiat"]).sum().reset_index(),
+            trades.groupby(["month", "fiat"]).sum().reset_index(),
             title="Spent fiat per month",
         )
         .mark_bar()
         .encode(
-            alt.X("month"),
-            alt.Y("volume_fiat"),
+            alt.X("month", title="Month"),
+            alt.Y("volume_fiat", title="Fiat volume"),
+            alt.Column("fiat"),
+            [
+                alt.Tooltip("month", title="Month"),
+                alt.Tooltip("volume_fiat", title="Fiat volume"),
+            ],
         )
         .interactive()
     )

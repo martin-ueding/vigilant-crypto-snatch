@@ -20,6 +20,11 @@ from vigilant_crypto_snatch.evaluation import make_gain_chart
 from vigilant_crypto_snatch.evaluation import make_survey_chart
 from vigilant_crypto_snatch.evaluation import simulate_triggers
 from vigilant_crypto_snatch.evaluation import summarize_simulation
+from vigilant_crypto_snatch.reporting import get_user_trades_df
+from vigilant_crypto_snatch.reporting import plot_fiat_spent_per_month
+from vigilant_crypto_snatch.reporting import plot_gains_from_individual_trades
+from vigilant_crypto_snatch.reporting import plot_gains_per_month
+from vigilant_crypto_snatch.reporting import plot_value_and_investment
 from vigilant_crypto_snatch.triggers import TriggerSpec
 
 
@@ -213,6 +218,50 @@ def make_time_slider(sidebar_settings):
     return time_begin, time_end
 
 
+def sub_trade_report(sidebar_settings) -> None:
+    st.title("Trades Report")
+
+    trades = get_user_trades_df()
+    if trades is None:
+        st.markdown("No user database could be found, therefore nothing can be shown.")
+        return
+
+    st.markdown(
+        "Here you can find all the trades that have been made with the program."
+    )
+
+    st.markdown("# Table")
+    st.dataframe(
+        trades[
+            [
+                "timestamp",
+                "trigger_name",
+                "coin",
+                "fiat",
+                "volume_coin",
+                "volume_fiat",
+                "buy_price",
+                "current_value",
+                "gains",
+            ]
+        ]
+    )
+
+    st.markdown("# Static plots")
+    st.markdown(
+        "The following plot will not change over time, new data will just be added to the left. It contrast the amount of fiat you have spend to the coin value *at that time*."
+    )
+    st.altair_chart(plot_value_and_investment(trades), use_container_width=True)
+
+    st.markdown("# Dynamic plots")
+    st.markdown(
+        "The following plots change over time because they compare the buy price with the coin price _right now_. Should be coin price go up, your ganes from old purchases will also go up."
+    )
+    st.altair_chart(plot_gains_from_individual_trades(trades), use_container_width=True)
+    st.altair_chart(plot_gains_per_month(trades), use_container_width=True)
+    st.altair_chart(plot_fiat_spent_per_month(trades), use_container_width=True)
+
+
 class Namespace(object):
     pass
 
@@ -254,6 +303,7 @@ def ui():
         "Price": sub_price,
         "Drop survey": sub_drop_survey,
         "Trigger simulation": sub_trigger_simulation,
+        "Trades report": sub_trade_report,
     }
 
     nav = st.sidebar.radio("Tool", list(tools.keys()))

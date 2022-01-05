@@ -1,4 +1,6 @@
 import datetime
+import os
+from typing import Optional
 
 import pandas as pd
 
@@ -50,10 +52,18 @@ def add_gains(trades: pd.DataFrame):
     )
 
 
-def main() -> None:
-    datastore = make_datastore(user_db_path)
-    trades = gather_trades(datastore)
-    add_gains(trades)
+def get_user_trades_df() -> Optional[pd.DataFrame]:
+    if user_db_path.exists():
+        datastore = make_datastore(user_db_path)
+        trades = gather_trades(datastore)
+        add_gains(trades)
+        return trades
+    else:
+        return None
 
+
+def main() -> None:
+    trades = get_user_trades_df()
+    assert trades is not None
     print(trades)
     trades.to_json("trades.js")

@@ -1,4 +1,3 @@
-import os
 import pathlib
 
 import appdirs
@@ -7,8 +6,8 @@ import appdirs
 dirs = appdirs.AppDirs(
     appname="vigilant-crypto-snatch", appauthor="Martin Ueding", roaming=True
 )
-config_path = os.path.join(dirs.user_config_dir, "config.yml")
-user_db_path = os.path.join(dirs.user_data_dir, "db.sqlite")
+config_path = pathlib.Path(dirs.user_config_dir) / "config.yml"
+user_db_path = pathlib.Path(dirs.user_data_dir) / "db.sqlite"
 chat_id_path = pathlib.Path(dirs.user_data_dir) / "telegram_chat_id.json"
 
 
