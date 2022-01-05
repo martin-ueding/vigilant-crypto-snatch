@@ -6,6 +6,7 @@ import sqlalchemy.ext.declarative
 import sqlalchemy.orm.exc
 
 from .. import logger
+from ..core import AssetPair
 from ..core import Price
 from ..core import Trade
 from .interface import Datastore
@@ -27,8 +28,7 @@ class AlchemyPrice(Base):  # type: ignore
         return Price(
             timestamp=self.timestamp,
             last=self.last,
-            coin=self.coin,
-            fiat=self.fiat,
+            asset_pair=AssetPair(coin=self.coin, fiat=self.fiat),
         )
 
 
@@ -36,8 +36,8 @@ def price_to_alchemy_price(price: Price) -> AlchemyPrice:
     return AlchemyPrice(
         timestamp=price.timestamp,
         last=price.last,
-        coin=price.coin,
-        fiat=price.fiat,
+        coin=price.asset_pair.coin,
+        fiat=price.asset_pair.fiat,
     )
 
 

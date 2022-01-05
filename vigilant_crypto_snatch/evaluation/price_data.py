@@ -8,6 +8,7 @@ import pandas as pd
 import scipy.interpolate
 
 from .. import logger
+from ..core import AssetPair
 from ..core import Price
 from ..historical import HistoricalError
 from ..historical import HistoricalSource
@@ -35,8 +36,7 @@ class InterpolatingSource(HistoricalSource):
         return Price(
             timestamp=then,
             last=last,
-            coin=coin,
-            fiat=fiat,
+            asset_pair=AssetPair(coin=coin, fiat=fiat),
         )
 
 

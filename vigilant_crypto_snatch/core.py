@@ -12,11 +12,10 @@ class AssetPair:
 class Price:
     timestamp: datetime.datetime
     last: float
-    coin: str
-    fiat: str
+    asset_pair: AssetPair
 
     def __str__(self):
-        return f"{self.timestamp}: {self.last} {self.fiat}/{self.coin}"
+        return f"{self.timestamp}: {self.last} {self.asset_pair.fiat}/{self.asset_pair.coin}"
 
 
 @dataclasses.dataclass()

@@ -1,5 +1,6 @@
 import datetime
 
+from ..core import AssetPair
 from ..core import Price
 from .interface import Marketplace
 
@@ -24,8 +25,5 @@ class MockMarketplace(Marketplace):
         self.prices += 1
         then = datetime.datetime.now()
         return Price(
-            timestamp=then,
-            last=100,
-            coin=coin,
-            fiat=fiat,
+            timestamp=then, last=100, asset_pair=AssetPair(coin=coin, fiat=fiat)
         )

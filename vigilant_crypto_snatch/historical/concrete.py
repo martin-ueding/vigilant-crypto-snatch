@@ -4,6 +4,7 @@ import traceback
 from typing import List
 
 from .. import logger
+from ..core import AssetPair
 from ..core import Price
 from ..datastorage import Datastore
 from ..marketplace import Marketplace
@@ -37,7 +38,9 @@ class CryptoCompareHistoricalSource(HistoricalSource):
             )
         close = j["Data"][-1]["close"]
         logger.debug(f"Retrieved a price of {close} at {when} from Cryptocompare.")
-        return Price(timestamp=when, coin=coin, fiat=fiat, last=close)
+        return Price(
+            timestamp=when, last=close, asset_pair=AssetPair(coin=coin, fiat=fiat)
+        )
 
     @staticmethod
     def get_kind(when: datetime.datetime) -> str:
