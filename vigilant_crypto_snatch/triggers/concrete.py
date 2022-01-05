@@ -8,6 +8,7 @@ from ..core import Trade
 from ..datastorage import Datastore
 from ..historical import HistoricalSource
 from ..marketplace import check_and_perform_widthdrawal
+from ..marketplace import InsufficientFundsError
 from ..marketplace import Marketplace
 from ..marketplace import report_balances
 from .interface import Trigger
@@ -22,23 +23,23 @@ class FailureTimeout(object):
     def __init__(self):
         self.trials = 0
         self.last_trial = None
+        self.timeout_until = None
 
     def start(self, now: datetime.datetime) -> None:
         self.trials += 1
         self.last_trial = now
+        if self.trials >= self.TRIGGER_FAILURE_COUNT:
+            self.timeout_until = now + datetime.timedelta(
+                hours=self.TRIGGER_FAILURE_TIMEOUT_HOURS
+            )
 
     def finish(self) -> None:
         self.trials = 0
         self.last_trial = None
+        self.timeout_until = None
 
     def has_timeout(self, now: datetime.datetime) -> bool:
-        if self.trials < self.TRIGGER_FAILURE_COUNT:
-            return False
-        else:
-            end_timeout = self.last_trial + datetime.timedelta(
-                hours=self.TRIGGER_FAILURE_TIMEOUT_HOURS
-            )
-            return end_timeout >= now
+        return self.timeout_until and now < self.timeout_until
 
 
 class BuyTrigger(Trigger, abc.ABC):
@@ -91,8 +92,16 @@ class BuyTrigger(Trigger, abc.ABC):
         price = self.source.get_price(now, self.coin, self.fiat)
         volume_fiat = self.volume_fiat_delegate.get_volume_fiat()
         volume_coin = round(volume_fiat / float(price.last), 8)
-        self.perform_buy(volume_coin, volume_fiat, now)
-        self.failure_timeout.finish()
+        try:
+            self.perform_buy(volume_coin, volume_fiat, now)
+        except InsufficientFundsError as e:
+            logger.warning(
+                f"Trigger {self.get_name()} tried to buy for {volume_fiat} {self.fiat}, but there are insufficient funds on the marketplace."
+                "This trigger will be paused for 24 hours."
+            )
+            self.failure_timeout.timeout_until = now + datetime.timedelta(hours=24)
+        else:
+            self.failure_timeout.finish()
 
     def perform_buy(
         self, volume_coin: float, volume_fiat: float, now: datetime.datetime
