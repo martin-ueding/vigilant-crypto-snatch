@@ -29,3 +29,8 @@
 - Fear & Greed is now included in the evaluation interface.
 - More refactoring, more test coverage.
 - Developer documentation includes a component diagram.
+
+# Upcoming
+
+- Allow any log level for Telegram, including `debug`.
+- Attempt withdrawal after the trade has been noted in the database. Previously, a failure during withdrawal would have dropped the trade and eventually performed it again. 
