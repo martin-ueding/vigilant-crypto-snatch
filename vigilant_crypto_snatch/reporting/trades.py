@@ -34,6 +34,20 @@ def add_gains(trades: pd.DataFrame):
         for index, row in trades.iterrows()
     ]
     trades["gains"] = trades["current_value"] - trades["volume_fiat"]
+    trades["day"] = [
+        datetime.datetime.combine(ts.date(), datetime.time.min)
+        for ts in trades["timestamp"]
+    ]
+    trades["month"] = [
+        datetime.datetime(ts.year, ts.month, 1) for ts in trades["timestamp"]
+    ]
+    trades["year"] = [ts.year for ts in trades["timestamp"]]
+    trades["gains_cumsum"] = trades["gains"].cumsum()
+    trades["volume_fiat_cumsum"] = trades.groupby("coin")["volume_fiat"].cumsum()
+    trades["volume_coin_cumsum"] = trades.groupby("coin")["volume_coin"].cumsum()
+    trades["volume_coin_cumsum_then_value"] = (
+        trades["volume_coin_cumsum"] * trades["buy_price"]
+    )
 
 
 def main() -> None:
