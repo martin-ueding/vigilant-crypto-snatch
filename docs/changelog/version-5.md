@@ -30,7 +30,7 @@
 - More refactoring, more test coverage.
 - Developer documentation includes a component diagram.
 
-# Upcoming
+### Version 5.2.1
 
 - Allow any log level for Telegram, including `debug`.
 - Attempt withdrawal after the trade has been noted in the database. Previously, a failure during withdrawal would have dropped the trade and eventually performed it again.
