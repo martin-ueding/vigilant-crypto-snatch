@@ -59,7 +59,7 @@ class KrakenexMarketplace(Marketplace):
                 "Ticker", {"pair": f"{map_normal_to_kraken(coin)}{fiat}"}
             )
         except requests.exceptions.ConnectionError as e:
-            raise TickerError("Connection error in Kraken Ticker") from e
+            raise HttpRequestError("Connection error in Kraken Ticker") from e
         raise_error(answer, TickerError)
         close = float(list(answer["result"].values())[0]["c"][0])
         logger.debug(f"Retrieved {close} for {fiat}/{coin} from Krakenex.")
@@ -70,7 +70,7 @@ class KrakenexMarketplace(Marketplace):
         try:
             answer = self.handle.query_private("Balance")
         except requests.exceptions.ConnectionError as e:
-            raise TickerError("Connection error in Kraken Balance") from e
+            raise HttpRequestError("Connection error in Kraken Balance") from e
         raise_error(answer, TickerError)
         # The key `result` will only be present if the user has any balances.
         if "result" in answer:
@@ -92,7 +92,7 @@ class KrakenexMarketplace(Marketplace):
         try:
             answer = self.handle.query_private("AddOrder", arguments)
         except requests.exceptions.ConnectionError as e:
-            raise WithdrawalError("Connection error in Kraken AddOrder") from e
+            raise HttpRequestError("Connection error in Kraken AddOrder") from e
         raise_error(answer, BuyError)
 
     def get_withdrawal_fee(self, coin: str, volume: float) -> float:
@@ -107,7 +107,7 @@ class KrakenexMarketplace(Marketplace):
                 },
             )
         except requests.exceptions.ConnectionError as e:
-            raise WithdrawalError("Connection error in Kraken WithdrawInfo") from e
+            raise HttpRequestError("Connection error in Kraken WithdrawInfo") from e
         raise_error(answer, WithdrawalError)
         fee = float(answer["result"]["fee"])
         logger.debug(f"Withdrawal fee for {coin} is {fee} {coin}.")
@@ -135,7 +135,7 @@ class KrakenexMarketplace(Marketplace):
                     },
                 )
             except requests.exceptions.ConnectionError as e:
-                raise WithdrawalError("Connection error in Kraken Withdraw") from e
+                raise HttpRequestError("Connection error in Kraken Withdraw") from e
             raise_error(answer, WithdrawalError)
         else:
             logger.debug(
