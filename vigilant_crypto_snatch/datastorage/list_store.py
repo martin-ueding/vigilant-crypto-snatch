@@ -2,6 +2,7 @@ import datetime
 from typing import List
 from typing import Optional
 
+from ..core import AssetPair
 from ..core import Price
 from ..core import Trade
 from .interface import Datastore
@@ -21,15 +22,13 @@ class ListDatastore(Datastore):
     def get_price_around(
         self,
         then: datetime.datetime,
-        coin: str,
-        fiat: str,
+        asset_pair: AssetPair,
         tolerance: datetime.timedelta,
     ) -> Optional[Price]:
         self.prices.sort(key=lambda price: price.timestamp)
         for price in reversed(self.prices):
             if (
-                price.asset_pair.coin == coin
-                and price.asset_pair.fiat == fiat
+                price.asset_pair == asset_pair
                 and then - tolerance <= price.timestamp <= then
             ):
                 return price

@@ -1,6 +1,7 @@
 import datetime
 from typing import *
 
+from ..core import AssetPair
 from ..core import Price
 from ..core import Trade
 
@@ -19,8 +20,7 @@ class Datastore:
     def get_price_around(
         self,
         then: datetime.datetime,
-        coin: str,
-        fiat: str,
+        asset_pair: AssetPair,
         tolerance: datetime.timedelta,
     ) -> Optional[Price]:
         raise NotImplementedError()  # pragma: no cover
