@@ -3,7 +3,7 @@ from .currency_pairs import get_available_coins
 from .currency_pairs import get_available_fiats
 from .currency_pairs import get_currency_pairs
 from .drop_survey import make_survey_chart
-from .feargreed_chart import make_feargreed_chart
+from .feargreed_chart import make_fear_greed_chart
 from .market_simulation import accumulate_value
 from .market_simulation import make_gain_chart
 from .market_simulation import simulate_triggers

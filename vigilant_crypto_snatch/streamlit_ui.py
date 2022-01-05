@@ -15,7 +15,7 @@ from vigilant_crypto_snatch.evaluation import get_currency_pairs
 from vigilant_crypto_snatch.evaluation import get_hourly_data
 from vigilant_crypto_snatch.evaluation import make_close_chart
 from vigilant_crypto_snatch.evaluation import make_dataframe_from_json
-from vigilant_crypto_snatch.evaluation import make_feargreed_chart
+from vigilant_crypto_snatch.evaluation import make_fear_greed_chart
 from vigilant_crypto_snatch.evaluation import make_gain_chart
 from vigilant_crypto_snatch.evaluation import make_survey_chart
 from vigilant_crypto_snatch.evaluation import simulate_triggers
@@ -137,7 +137,7 @@ def sub_trigger_simulation(sidebar_settings):
     )
     st.altair_chart(close_chart, use_container_width=True)
 
-    feargreed_chart = make_feargreed_chart(time_begin, time_end)
+    feargreed_chart = make_fear_greed_chart(time_begin, time_end)
     st.altair_chart(feargreed_chart, use_container_width=True)
 
     st.markdown("# Parameters")
