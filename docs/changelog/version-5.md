@@ -41,7 +41,9 @@
 
 - Add a report page about user trades into the evaluation interface.
 - Link to download statistics within documentation.
-
----
-
+- Add GitHub funding.
+- Connection errors are not reported all the time, instead they are just logged as debug output.
 - Create `AssetPair` data structure so better structure the code internally.
+- Remove usage of `Protocol` such that Python 3.7 is still supported.
+- Update developer documentation a bit.
+- Update Pillow for security.
