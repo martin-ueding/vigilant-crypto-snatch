@@ -1,6 +1,5 @@
 import datetime
 from typing import Dict
-from typing import Protocol
 from typing import Type
 
 import krakenex
@@ -18,7 +17,7 @@ from .interface import TickerError
 from .interface import WithdrawalError
 
 
-class KrakenexInterface(Protocol):
+class KrakenexInterface:
     def query_public(self, command: str, parameters: Dict = None) -> Dict:
         raise NotImplementedError()  # pragma: no cover
 
@@ -43,7 +42,9 @@ def map_kraken_to_normal(coin: str) -> str:
 
 
 class KrakenexMarketplace(Marketplace):
-    def __init__(self, config: KrakenConfig, handle: KrakenexInterface = None):
+    def __init__(
+        self, config: KrakenConfig, handle: KrakenexInterface | krakenex.API = None
+    ):
         if handle:
             self.handle = handle
         else:
