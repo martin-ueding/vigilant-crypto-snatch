@@ -1,8 +1,4 @@
-#!/bin/bash
-
-set -e
-set -u
-set -x
+#!/bin/bash -eux
 
 # Run unit and acceptance tests.
 poetry run pytest
