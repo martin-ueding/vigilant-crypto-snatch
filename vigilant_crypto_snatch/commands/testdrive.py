@@ -7,6 +7,7 @@ from ..configuration import Configuration
 from ..configuration import get_used_currencies
 from ..configuration import run_migrations
 from ..configuration import YamlConfiguration
+from ..core import AssetPair
 from ..datastorage import ListDatastore
 from ..datastorage import make_datastore
 from ..historical import CryptoCompareConfig
@@ -50,7 +51,7 @@ def try_historical(config: CryptoCompareConfig) -> None:
     logger.info("Trying to get data from Crypto Compare …")
     crypto_compare_source = CryptoCompareHistoricalSource(config)
     current_btc_eur = crypto_compare_source.get_price(
-        datetime.datetime.now(), "BTC", "EUR"
+        datetime.datetime.now(), AssetPair("BTC", "EUR")
     )
     logger.info(f"Got current price: {current_btc_eur} EUR/BTC.")
 

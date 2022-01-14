@@ -2,6 +2,7 @@ import datetime
 
 import pytest
 
+from ..core import AssetPair
 from ..datastorage import ListDatastore
 from ..historical import MockHistorical
 from ..marketplace import MockMarketplace
@@ -16,8 +17,7 @@ def drop_trigger_with_percentage() -> BuyTrigger:
     source = MockHistorical()
     market = MockMarketplace()
     trigger_spec = TriggerSpec(
-        coin="BTC",
-        fiat="EUR",
+        asset_pair=AssetPair("BTC", "EUR"),
         drop_percentage=120.0,
         percentage_fiat=25.0,
         cooldown_minutes=10,

@@ -2,6 +2,8 @@ import dataclasses
 import datetime
 from typing import Optional
 
+from ..core import AssetPair
+
 
 class Trigger(object):
     def get_name(self) -> str:
@@ -19,8 +21,7 @@ class Trigger(object):
 
 @dataclasses.dataclass()
 class TriggerSpec:
-    coin: str
-    fiat: str
+    asset_pair: AssetPair
     cooldown_minutes: int
     name: Optional[str] = None
     delay_minutes: Optional[int] = None

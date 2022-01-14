@@ -190,8 +190,7 @@ def sub_trigger_simulation(sidebar_settings):
         trades,
         value,
         trigger_names,
-        sidebar_settings.coin,
-        sidebar_settings.fiat,
+        sidebar_settings.asset_pair,
     )
     st.dataframe(summary)
 

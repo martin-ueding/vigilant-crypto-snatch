@@ -4,6 +4,7 @@ from typing import Dict
 
 import pytest
 
+from ..core import AssetPair
 from .interface import BuyError
 from .interface import KrakenConfig
 from .interface import KrakenWithdrawalConfig
@@ -123,7 +124,7 @@ def test_get_spot_price_success() -> None:
     config = KrakenConfig("mock", "mock", False, {})
     market = KrakenexMarketplace(config, krakenex_interface)
     now = datetime.datetime.now()
-    price = market.get_spot_price("BTC", "EUR", now)
+    price = market.get_spot_price(AssetPair("BTC", "EUR"), now)
     assert price.timestamp == now
     assert price.asset_pair.coin == "BTC"
     assert price.asset_pair.fiat == "EUR"
@@ -136,7 +137,7 @@ def test_get_spot_price_error() -> None:
     market = KrakenexMarketplace(config, krakenex_interface)
     now = datetime.datetime.now()
     with pytest.raises(TickerError):
-        market.get_spot_price("AAA", "AAA", now)
+        market.get_spot_price(AssetPair("AAA", "AAA"), now)
 
 
 def test_balance_full() -> None:
@@ -167,7 +168,7 @@ def test_place_order_success() -> None:
     krakenex_interface = KrakenexMock({"AddOrder": stub_add_order_success})
     config = KrakenConfig("mock", "mock", False, {})
     market = KrakenexMarketplace(config, krakenex_interface)
-    market.place_order("BTC", "EUR", 100.0)
+    market.place_order(AssetPair("BTC", "EUR"), 100.0)
 
 
 def test_place_order_error() -> None:
@@ -175,7 +176,7 @@ def test_place_order_error() -> None:
     config = KrakenConfig("mock", "mock", False, {})
     market = KrakenexMarketplace(config, krakenex_interface)
     with pytest.raises(BuyError):
-        market.place_order("BTC", "EUR", 100.0)
+        market.place_order(AssetPair("BTC", "EUR"), 100.0)
 
 
 def test_withdawal_fee_success() -> None:

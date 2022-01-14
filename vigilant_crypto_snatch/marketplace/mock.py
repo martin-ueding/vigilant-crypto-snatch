@@ -15,15 +15,13 @@ class MockMarketplace(Marketplace):
     def get_balance(self) -> dict:
         return self.balances
 
-    def place_order(self, coin: str, fiat: str, volume: float) -> None:
+    def place_order(self, asset_pair: AssetPair, volume: float) -> None:
         self.orders += 1
 
     def get_name(self) -> str:
         return "Mock"
 
-    def get_spot_price(self, coin: str, fiat: str, now: datetime.datetime) -> Price:
+    def get_spot_price(self, asset_pair: AssetPair, now: datetime.datetime) -> Price:
         self.prices += 1
         then = datetime.datetime.now()
-        return Price(
-            timestamp=then, last=100, asset_pair=AssetPair(coin=coin, fiat=fiat)
-        )
+        return Price(timestamp=then, last=100, asset_pair=asset_pair)

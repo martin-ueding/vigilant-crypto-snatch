@@ -23,7 +23,7 @@ def test_store_price(datastore: Datastore) -> None:
 
 
 def test_store_trade(datastore: Datastore) -> None:
-    trade = Trade(datetime.datetime.now(), "Test", 12.3, 43.2, "BTC", "EUR")
+    trade = Trade(datetime.datetime.now(), "Test", 12.3, 43.2, AssetPair("BTC", "EUR"))
     assert datastore.get_all_trades() == []
     datastore.add_trade(trade)
     assert datastore.get_all_trades() == [trade]
@@ -31,16 +31,14 @@ def test_store_trade(datastore: Datastore) -> None:
 
 def test_was_triggered_since(datastore: Datastore) -> None:
     now = datetime.datetime.now()
-    trade = Trade(now, "Test", 12.3, 43.2, "BTC", "EUR")
+    trade = Trade(now, "Test", 12.3, 43.2, AssetPair("BTC", "EUR"))
     datastore.add_trade(trade)
+    assert not datastore.was_triggered_since(trade.trigger_name, trade.asset_pair, now)
     assert not datastore.was_triggered_since(
-        trade.trigger_name, trade.coin, trade.fiat, now
-    )
-    assert not datastore.was_triggered_since(
-        trade.trigger_name, trade.coin, trade.fiat, now + datetime.timedelta(seconds=1)
+        trade.trigger_name, trade.asset_pair, now + datetime.timedelta(seconds=1)
     )
     assert datastore.was_triggered_since(
-        trade.trigger_name, trade.coin, trade.fiat, now - datetime.timedelta(seconds=1)
+        trade.trigger_name, trade.asset_pair, now - datetime.timedelta(seconds=1)
     )
 
 

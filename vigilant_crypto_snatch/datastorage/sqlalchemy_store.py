@@ -58,8 +58,7 @@ class AlchemyTrade(Base):  # type: ignore
             trigger_name=self.trigger_name,
             volume_coin=self.volume_coin,
             volume_fiat=self.volume_fiat,
-            coin=self.coin,
-            fiat=self.fiat,
+            asset_pair=AssetPair(self.coin, self.fiat),
         )
 
 
@@ -69,8 +68,8 @@ def trade_to_alchemy_trade(trade: Trade) -> AlchemyTrade:
         trigger_name=trade.trigger_name,
         volume_coin=trade.volume_coin,
         volume_fiat=trade.volume_fiat,
-        coin=trade.coin,
-        fiat=trade.fiat,
+        coin=trade.asset_pair.coin,
+        fiat=trade.asset_pair.fiat,
     )
 
 
@@ -147,7 +146,7 @@ class SqlAlchemyDatastore(Datastore):
         return None
 
     def was_triggered_since(
-        self, trigger_name: str, coin: str, fiat: str, then: datetime.datetime
+        self, trigger_name: str, asset_pair: AssetPair, then: datetime.datetime
     ) -> bool:
         try:
             trade_count = (
@@ -155,8 +154,8 @@ class SqlAlchemyDatastore(Datastore):
                 .filter(
                     AlchemyTrade.trigger_name == trigger_name,
                     AlchemyTrade.timestamp > then,
-                    AlchemyTrade.coin == coin,
-                    AlchemyTrade.fiat == fiat,
+                    AlchemyTrade.coin == asset_pair.coin,
+                    AlchemyTrade.fiat == asset_pair.fiat,
                 )
                 .count()
             )

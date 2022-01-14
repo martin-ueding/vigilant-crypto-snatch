@@ -24,8 +24,7 @@ class Trade:
     trigger_name: str
     volume_coin: float
     volume_fiat: float
-    coin: str
-    fiat: str
+    asset_pair: AssetPair
 
     def __repr__(self):
         return (
@@ -34,8 +33,8 @@ class Trade:
             f"trigger_name={repr(self.trigger_name)}, "
             f"volume_coin={repr(self.volume_coin)}, "
             f"volume_fiat={repr(self.volume_fiat)}, "
-            f"coin={repr(self.coin)}, "
-            f"fiat={repr(self.fiat)}"
+            f"coin={repr(self.asset_pair.coin)}, "
+            f"fiat={repr(self.asset_pair.fiat)}"
             f")"
         )
 
@@ -45,6 +44,6 @@ class Trade:
             trigger_name=self.trigger_name,
             volume_coin=self.volume_coin,
             volume_fiat=self.volume_fiat,
-            coin=self.coin,
-            fiat=self.fiat,
+            coin=self.asset_pair.coin,
+            fiat=self.asset_pair.fiat,
         )

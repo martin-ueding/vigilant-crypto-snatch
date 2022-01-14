@@ -1,5 +1,6 @@
 import datetime
 
+from ..core import AssetPair
 from ..datastorage import ListDatastore
 from ..historical import MockHistorical
 from ..marketplace import MockMarketplace
@@ -12,8 +13,7 @@ def test_dca_trigger() -> None:
     source = MockHistorical()
     market = MockMarketplace()
     trigger_spec = TriggerSpec(
-        coin="BTC",
-        fiat="EUR",
+        asset_pair=AssetPair(coin="BTC", fiat="EUR"),
         cooldown_minutes=10,
         volume_fiat=10,
     )
@@ -26,8 +26,7 @@ def disabled_test_fear_greed_trigger() -> None:
     source = MockHistorical()
     market = MockMarketplace()
     trigger_spec = TriggerSpec(
-        coin="BTC",
-        fiat="EUR",
+        asset_pair=AssetPair(coin="BTC", fiat="EUR"),
         cooldown_minutes=10,
         volume_fiat=10,
         fear_and_greed_index_below=101,

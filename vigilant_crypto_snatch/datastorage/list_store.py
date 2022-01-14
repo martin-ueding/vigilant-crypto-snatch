@@ -35,13 +35,13 @@ class ListDatastore(Datastore):
         return None
 
     def was_triggered_since(
-        self, trigger_name: str, coin: str, fiat: str, then: datetime.datetime
+        self, trigger_name: str, asset_pair: AssetPair, then: datetime.datetime
     ) -> bool:
         for trade in self.trades:
             if (
                 trade.trigger_name == trigger_name
-                and trade.coin == coin
-                and trade.fiat == fiat
+                and trade.asset_pair.coin == asset_pair.coin
+                and trade.asset_pair.fiat == asset_pair.fiat
                 and trade.timestamp > then
             ):
                 return True

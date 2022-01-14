@@ -33,7 +33,7 @@ class Configuration:
 def get_used_currencies(config: List[TriggerSpec]) -> Set[str]:
     result = set()
     for trigger_spec in config:
-        result.add(trigger_spec.fiat)
-        result.add(trigger_spec.coin)
+        result.add(trigger_spec.asset_pair.fiat)
+        result.add(trigger_spec.asset_pair.coin)
     logger.debug(f"Currencies used in triggers: {result}")
     return result

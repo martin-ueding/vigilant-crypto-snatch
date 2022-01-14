@@ -6,6 +6,7 @@ import altair as alt
 import numpy as np
 import pandas as pd
 
+from ..core import AssetPair
 from ..core import Price
 from ..datastorage import make_datastore
 from ..historical import HistoricalError
@@ -21,20 +22,19 @@ class SimulationMarketplace(Marketplace):
         super().__init__()
         self.source = source
 
-    def place_order(self, coin: str, fiat: str, volume: float) -> None:
+    def place_order(self, asset_pair: AssetPair, volume: float) -> None:
         pass
 
     def get_name(self) -> str:
         return "Simulation"
 
-    def get_spot_price(self, coin: str, fiat: str, now: datetime.datetime) -> Price:
-        return self.source.get_price(now, coin, fiat)
+    def get_spot_price(self, asset_pair: AssetPair, now: datetime.datetime) -> Price:
+        return self.source.get_price(now, asset_pair)
 
 
 def simulate_triggers(
     data: pd.DataFrame,
-    coin: str,
-    fiat: str,
+    assert_pair: AssetPair,
     trigger_specs: List[TriggerSpec],
     progress_callback=lambda n: None,
 ) -> Tuple[pd.DataFrame, List[str]]:
@@ -51,7 +51,7 @@ def simulate_triggers(
         row = data.loc[i]
         now = row["datetime"]
         for trigger in active_triggers:
-            if not (trigger.coin == coin and trigger.fiat == fiat):
+            if not (trigger.asset_pair == assert_pair):
                 continue
             try:
                 if trigger.is_triggered(now):
@@ -103,8 +103,7 @@ def summarize_simulation(
     trades: pd.DataFrame,
     value: pd.DataFrame,
     trigger_names: List[str],
-    coin: str,
-    fiat: str,
+    asset_pair: AssetPair,
 ) -> pd.DataFrame:
     summary_rows = []
     for trigger_name in trigger_names:
@@ -122,10 +121,10 @@ def summarize_simulation(
             "Trigger": trigger_name,
             "Days": period,
             "Trades": num_trigger_executions,
-            f"{fiat} invested": cumsum_fiat,
-            f"{coin} acquired": cumsum_coin,
-            f"{fiat} value": value_fiat,
-            f"Average {fiat}/{coin}": average_price,
+            f"{asset_pair.fiat} invested": cumsum_fiat,
+            f"{asset_pair.coin} acquired": cumsum_coin,
+            f"{asset_pair.fiat} value": value_fiat,
+            f"Average {asset_pair.fiat}/{asset_pair.coin}": average_price,
             "Gain %": gain,
             "Gain %/a": yearly_gain,
         }

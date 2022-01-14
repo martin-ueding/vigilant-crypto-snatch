@@ -9,6 +9,7 @@ import yaml
 
 from .. import logger
 from ..configuration import Configuration
+from ..core import AssetPair
 from ..historical import CryptoCompareConfig
 from ..marketplace import BitstampConfig
 from ..marketplace import KrakenConfig
@@ -73,8 +74,10 @@ def parse_trigger_spec(trigger_spec_dict: dict) -> TriggerSpec:
         raise RuntimeError(f"Trigger needs to have a cooldown: {trigger_spec_dict}")
 
     trigger_spec = TriggerSpec(
-        fiat=trigger_spec_dict["fiat"].upper(),
-        coin=trigger_spec_dict["coin"].upper(),
+        asset_pair=AssetPair(
+            coin=trigger_spec_dict["coin"].upper(),
+            fiat=trigger_spec_dict["fiat"].upper(),
+        ),
         delay_minutes=get_minutes(trigger_spec_dict, "delay"),
         cooldown_minutes=cooldown_minutes,
         drop_percentage=trigger_spec_dict.get("drop_percentage", None),

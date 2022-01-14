@@ -20,18 +20,20 @@ class BitstampMarketplace(Marketplace):
             username=config.username, key=config.key, secret=config.secret
         )
 
-    def place_order(self, coin: str, fiat: str, volume: float) -> None:
+    def place_order(self, asset_pair: AssetPair, volume: float) -> None:
         try:
             response = self.trading_client.buy_market_order(
-                volume, base=coin, quote=fiat
+                volume, base=asset_pair.coin, quote=asset_pair.fiat
             )
             pprint.pprint(response, compact=True, width=100)
         except bitstamp.client.BitstampError as e:
             raise BuyError() from e
 
-    def get_spot_price(self, coin: str, fiat: str, now: datetime.datetime) -> Price:
+    def get_spot_price(self, asset_pair: AssetPair, now: datetime.datetime) -> Price:
         try:
-            ticker = self.public_client.ticker(base=coin, quote=fiat)
+            ticker = self.public_client.ticker(
+                base=asset_pair.coin, quote=asset_pair.fiat
+            )
         except requests.exceptions.ChunkedEncodingError as e:
             raise HttpRequestError() from e
         except requests.exceptions.HTTPError as e:
@@ -43,7 +45,7 @@ class BitstampMarketplace(Marketplace):
             price = Price(
                 timestamp=now,
                 last=ticker["last"],
-                asset_pair=AssetPair(coin=coin, fiat=fiat),
+                asset_pair=asset_pair,
             )
             return price
 

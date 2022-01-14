@@ -46,8 +46,7 @@ def make_buy_trigger(
     ):
         triggered_delegates.append(
             DropTriggeredDelegate(
-                coin=trigger_spec.coin,
-                fiat=trigger_spec.fiat,
+                asset_pair=trigger_spec.asset_pair,
                 delay_minutes=trigger_spec.delay_minutes,
                 drop_percentage=trigger_spec.drop_percentage,
                 source=source,
@@ -70,7 +69,7 @@ def make_buy_trigger(
         volume_fiat_delegate = FixedVolumeFiatDelegate(trigger_spec.volume_fiat)
     elif trigger_spec.percentage_fiat is not None:
         volume_fiat_delegate = RatioVolumeFiatDelegate(
-            trigger_spec.fiat, trigger_spec.percentage_fiat, market
+            trigger_spec.asset_pair.fiat, trigger_spec.percentage_fiat, market
         )
     else:
         raise RuntimeError("Could not determine fiat volume strategy from config.")
@@ -80,8 +79,7 @@ def make_buy_trigger(
         datastore=datastore,
         source=source,
         market=market,
-        coin=trigger_spec.coin,
-        fiat=trigger_spec.fiat,
+        asset_pair=trigger_spec.asset_pair,
         cooldown_minutes=trigger_spec.cooldown_minutes,
         triggered_delegates=triggered_delegates,
         volume_fiat_delegate=volume_fiat_delegate,

@@ -54,19 +54,20 @@ class KrakenexMarketplace(Marketplace):
     def get_name(self) -> str:
         return "Kraken"
 
-    def get_spot_price(self, coin: str, fiat: str, now: datetime.datetime) -> Price:
+    def get_spot_price(self, asset_pair: AssetPair, now: datetime.datetime) -> Price:
         try:
             answer = self.handle.query_public(
-                "Ticker", {"pair": f"{map_normal_to_kraken(coin)}{fiat}"}
+                "Ticker",
+                {"pair": f"{map_normal_to_kraken(asset_pair.coin)}{asset_pair.fiat}"},
             )
         except requests.exceptions.ConnectionError as e:
             raise HttpRequestError("Connection error in Kraken Ticker") from e
         raise_error(answer, TickerError)
         close = float(list(answer["result"].values())[0]["c"][0])
-        logger.debug(f"Retrieved {close} for {fiat}/{coin} from Krakenex.")
-        price = Price(
-            timestamp=now, last=close, asset_pair=AssetPair(coin=coin, fiat=fiat)
+        logger.debug(
+            f"Retrieved {close} for {asset_pair.fiat}/{asset_pair.coin} from Krakenex."
         )
+        price = Price(timestamp=now, last=close, asset_pair=asset_pair)
         return price
 
     def get_balance(self) -> dict:
@@ -84,9 +85,9 @@ class KrakenexMarketplace(Marketplace):
         else:
             return {}
 
-    def place_order(self, coin: str, fiat: str, volume: float) -> None:
+    def place_order(self, asset_pair: AssetPair, volume: float) -> None:
         arguments = {
-            "pair": f"{map_normal_to_kraken(coin)}{fiat}",
+            "pair": f"{map_normal_to_kraken(asset_pair.coin)}{asset_pair.fiat}",
             "ordertype": "market",
             "type": f"buy",
             "volume": str(volume),

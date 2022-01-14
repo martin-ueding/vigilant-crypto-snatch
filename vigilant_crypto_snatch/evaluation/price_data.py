@@ -27,17 +27,13 @@ class InterpolatingSource(HistoricalSource):
         self.start = np.min(data["datetime"])
         self.end = np.max(data["datetime"])
 
-    def get_price(self, then: datetime.datetime, coin: str, fiat: str) -> Price:
+    def get_price(self, then: datetime.datetime, asset_pair: AssetPair) -> Price:
         try:
             last = self.interpolator(then.timestamp())
         except ValueError as e:
             raise HistoricalError(e)
 
-        return Price(
-            timestamp=then,
-            last=last,
-            asset_pair=AssetPair(coin=coin, fiat=fiat),
-        )
+        return Price(timestamp=then, last=last, asset_pair=asset_pair)
 
 
 def get_hourly_data(coin: str, fiat: str, api_key: str) -> List[dict]:

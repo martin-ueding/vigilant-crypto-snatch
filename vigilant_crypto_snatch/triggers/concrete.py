@@ -4,6 +4,7 @@ from typing import List
 from typing import Optional
 
 from .. import logger
+from ..core import AssetPair
 from ..core import Trade
 from ..datastorage import Datastore
 from ..historical import HistoricalSource
@@ -48,8 +49,7 @@ class BuyTrigger(Trigger, abc.ABC):
         datastore: Datastore,
         source: HistoricalSource,
         market: Marketplace,
-        coin: str,
-        fiat: str,
+        asset_pair: AssetPair,
         cooldown_minutes: int,
         triggered_delegates: List[TriggeredDelegate],
         volume_fiat_delegate: VolumeFiatDelegate,
@@ -60,8 +60,7 @@ class BuyTrigger(Trigger, abc.ABC):
         self.datastore = datastore
         self.source = source
         self.market = market
-        self.coin = coin
-        self.fiat = fiat
+        self.asset_pair = asset_pair
         self.cooldown_minutes = cooldown_minutes
         self.triggered_delegates = triggered_delegates
         self.volume_fiat_delegate = volume_fiat_delegate
@@ -83,20 +82,20 @@ class BuyTrigger(Trigger, abc.ABC):
 
         then = now - datetime.timedelta(minutes=self.cooldown_minutes)
         return not self.datastore.was_triggered_since(
-            self.get_name(), self.coin, self.fiat, then
+            self.get_name(), self.asset_pair, then
         )
 
     def fire(self, now: datetime.datetime) -> None:
         logger.info(f"Trigger “{self.get_name()}” fired, try buying …")
         self.failure_timeout.start(now)
-        price = self.source.get_price(now, self.coin, self.fiat)
+        price = self.source.get_price(now, self.asset_pair)
         volume_fiat = self.volume_fiat_delegate.get_volume_fiat()
         volume_coin = round(volume_fiat / float(price.last), 8)
         try:
             self.perform_buy(volume_coin, volume_fiat, now)
         except InsufficientFundsError as e:
             logger.warning(
-                f"Trigger {self.get_name()} tried to buy for {volume_fiat} {self.fiat}, but there are insufficient funds on the marketplace."
+                f"Trigger {self.get_name()} tried to buy for {volume_fiat} {self.asset_pair.fiat}, but there are insufficient funds on the marketplace."
                 "This trigger will be paused for 24 hours."
             )
             self.failure_timeout.timeout_until = now + datetime.timedelta(hours=24)
@@ -106,22 +105,21 @@ class BuyTrigger(Trigger, abc.ABC):
     def perform_buy(
         self, volume_coin: float, volume_fiat: float, now: datetime.datetime
     ) -> None:
-        self.market.place_order(self.coin, self.fiat, volume_coin)
+        self.market.place_order(self.asset_pair, volume_coin)
 
         trade = Trade(
             timestamp=now,
             trigger_name=self.get_name(),
             volume_coin=volume_coin,
             volume_fiat=volume_fiat,
-            coin=self.coin,
-            fiat=self.fiat,
+            asset_pair=self.asset_pair,
         )
         self.datastore.add_trade(trade)
 
         rate = volume_fiat / volume_coin
-        buy_message = f"{volume_coin} {self.coin} for {volume_fiat} {self.fiat} ({rate} {self.fiat}/{self.coin}) on {self.market.get_name()} due to “{self.get_name()}”"
+        buy_message = f"{volume_coin} {self.asset_pair.coin} for {volume_fiat} {self.asset_pair.fiat} ({rate} {self.asset_pair.fiat}/{self.asset_pair.coin}) on {self.market.get_name()} due to “{self.get_name()}”"
         logger.info(f"Bought {buy_message}.")
-        report_balances(self.market, {self.coin, self.fiat})
+        report_balances(self.market, {self.asset_pair.coin, self.asset_pair.fiat})
         try:
             check_and_perform_widthdrawal(self.market)
         except NotImplementedError as e:

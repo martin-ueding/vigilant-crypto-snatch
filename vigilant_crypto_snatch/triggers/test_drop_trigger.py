@@ -1,6 +1,7 @@
 import datetime
 from typing import Tuple
 
+from ..core import AssetPair
 from ..core import Trade
 from ..datastorage import ListDatastore
 from ..historical import MockHistorical
@@ -15,8 +16,7 @@ def make_drop_trigger() -> Tuple[BuyTrigger, MockHistorical]:
     source = MockHistorical()
     market = MockMarketplace()
     trigger_spec = TriggerSpec(
-        coin="BTC",
-        fiat="EUR",
+        asset_pair=AssetPair("BTC", "EUR"),
         drop_percentage=120.0,
         volume_fiat=25.0,
         cooldown_minutes=10,
@@ -49,8 +49,7 @@ def test_waiting() -> None:
         trigger_name=drop_trigger.get_name(),
         volume_coin=1.0,
         volume_fiat=1.0,
-        coin="BTC",
-        fiat="EUR",
+        asset_pair=AssetPair("BTC", "EUR"),
     )
     datastore.add_trade(trade)
     assert not drop_trigger.has_cooled_off(now)

@@ -23,10 +23,10 @@ class MockHistorical(HistoricalSource):
         super().__init__()
         self.calls = 0
 
-    def get_price(self, then: datetime.datetime, coin: str, fiat: str) -> Price:
+    def get_price(self, then: datetime.datetime, asset_pair: AssetPair) -> Price:
         self.calls += 1
         return Price(
             timestamp=then,
             last=mock_price(then),
-            asset_pair=AssetPair(coin=coin, fiat=fiat),
+            asset_pair=asset_pair,
         )

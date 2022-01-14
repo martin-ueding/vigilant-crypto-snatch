@@ -4,6 +4,7 @@ import datetime
 import typing
 
 from .. import logger
+from ..core import AssetPair
 from ..core import Price
 
 
@@ -30,10 +31,10 @@ class KrakenConfig:
 
 
 class Marketplace(abc.ABC):
-    def place_order(self, coin: str, fiat: str, volume: float) -> None:
+    def place_order(self, asset_pair: AssetPair, volume: float) -> None:
         raise NotImplementedError()  # pragma: no cover
 
-    def get_spot_price(self, coin: str, fiat: str, now: datetime.datetime) -> Price:
+    def get_spot_price(self, asset_pair: AssetPair, now: datetime.datetime) -> Price:
         raise NotImplementedError()  # pragma: no cover
 
     def get_name(self) -> str:

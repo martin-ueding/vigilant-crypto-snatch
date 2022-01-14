@@ -26,7 +26,7 @@ class Datastore:
         raise NotImplementedError()  # pragma: no cover
 
     def was_triggered_since(
-        self, trigger_name: str, coin: str, fiat: str, then: datetime.datetime
+        self, trigger_name: str, asset_pair: AssetPair, then: datetime.datetime
     ) -> bool:
         raise NotImplementedError()  # pragma: no cover
 

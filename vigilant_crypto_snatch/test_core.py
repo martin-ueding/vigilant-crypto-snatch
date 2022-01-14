@@ -16,7 +16,7 @@ def test_price() -> None:
 
 
 def test_trade() -> None:
-    trade = Trade(datetime.datetime.now(), "Test", 10.0, 10.0, "BTC", "EUR")
+    trade = Trade(datetime.datetime.now(), "Test", 10.0, 10.0, AssetPair("BTC", "EUR"))
     str(trade)
     repr(trade)
     d = trade.to_dict()

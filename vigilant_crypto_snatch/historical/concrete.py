@@ -23,11 +23,13 @@ class CryptoCompareHistoricalSource(HistoricalSource):
     def __init__(self, config: CryptoCompareConfig):
         self.api_key = config.api_key
 
-    def get_price(self, when: datetime.datetime, coin: str, fiat: str) -> Price:
-        logger.debug(f"Retrieving historical price at {when} for {fiat}/{coin} …")
+    def get_price(self, when: datetime.datetime, asset_pair: AssetPair) -> Price:
+        logger.debug(
+            f"Retrieving historical price at {when} for {asset_pair.fiat}/{asset_pair.coin} …"
+        )
         timestamp = int(when.timestamp())
         kind = self.get_kind(when)
-        url = self.base_url(kind, coin, fiat) + f"&limit=1&toTs={timestamp}"
+        url = self.base_url(kind, asset_pair) + f"&limit=1&toTs={timestamp}"
         try:
             j = perform_http_request(url)
         except HttpRequestError as e:
@@ -38,9 +40,7 @@ class CryptoCompareHistoricalSource(HistoricalSource):
             )
         close = j["Data"][-1]["close"]
         logger.debug(f"Retrieved a price of {close} at {when} from Cryptocompare.")
-        return Price(
-            timestamp=when, last=close, asset_pair=AssetPair(coin=coin, fiat=fiat)
-        )
+        return Price(timestamp=when, last=close, asset_pair=asset_pair)
 
     @staticmethod
     def get_kind(when: datetime.datetime) -> str:
@@ -53,8 +53,8 @@ class CryptoCompareHistoricalSource(HistoricalSource):
         else:
             return "day"
 
-    def base_url(self, kind: str, coin: str, fiat: str):
-        return f"https://min-api.cryptocompare.com/data/histo{kind}?api_key={self.api_key}&fsym={coin.upper()}&tsym={fiat.upper()}"
+    def base_url(self, kind: str, asset_pair: AssetPair):
+        return f"https://min-api.cryptocompare.com/data/histo{kind}?api_key={self.api_key}&fsym={asset_pair.coin.upper()}&tsym={asset_pair.fiat.upper()}"
 
 
 class DatabaseHistoricalSource(HistoricalSource):
@@ -62,10 +62,8 @@ class DatabaseHistoricalSource(HistoricalSource):
         self.datastore = datastore
         self.tolerance = tolerance
 
-    def get_price(self, when: datetime.datetime, coin: str, fiat: str) -> Price:
-        price = self.datastore.get_price_around(
-            when, AssetPair(coin, fiat), self.tolerance
-        )
+    def get_price(self, when: datetime.datetime, asset_pair: AssetPair) -> Price:
+        price = self.datastore.get_price_around(when, asset_pair, self.tolerance)
         if price is None:
             raise HistoricalError("Could not find entry in the database.")
         return price
@@ -75,12 +73,12 @@ class MarketSource(HistoricalSource):
     def __init__(self, market: Marketplace):
         self.market = market
 
-    def get_price(self, then: datetime.datetime, coin: str, fiat: str) -> Price:
+    def get_price(self, then: datetime.datetime, asset_pair: AssetPair) -> Price:
         if then < datetime.datetime.now() - datetime.timedelta(seconds=30):
             raise HistoricalError(
                 f"Cannot retrieve price that far in the past ({then}) from {self.market.get_name()}."
             )
-        price = self.market.get_spot_price(coin, fiat, then)
+        price = self.market.get_spot_price(asset_pair, then)
         logger.debug(
             f"Retrieved a price of {price.last} at {then} from {self.market.get_name()}."
         )
@@ -98,10 +96,10 @@ class CachingHistoricalSource(HistoricalSource):
         self.live_sources = live_sources
         self.datastore = datastore
 
-    def get_price(self, then: datetime.datetime, coin: str, fiat: str) -> Price:
+    def get_price(self, then: datetime.datetime, asset_pair: AssetPair) -> Price:
         last_exception = None
         try:
-            price = self.database_source.get_price(then, coin, fiat)
+            price = self.database_source.get_price(then, asset_pair)
         except HistoricalError as e:
             logger.debug(e)
             last_exception = e
@@ -112,7 +110,7 @@ class CachingHistoricalSource(HistoricalSource):
         for live_source in self.live_sources:
             logger.debug(live_source)
             try:
-                price = live_source.get_price(then, coin, fiat)
+                price = live_source.get_price(then, asset_pair)
             except HistoricalError as e:
                 logger.debug(f"Error from live source: {repr(e)}")
                 last_exception = e

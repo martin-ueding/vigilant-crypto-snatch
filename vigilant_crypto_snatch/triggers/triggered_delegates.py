@@ -1,6 +1,7 @@
 import datetime
 
 from .. import logger
+from ..core import AssetPair
 from ..feargreed import FearAndGreedIndex
 from ..historical import HistoricalError
 from ..historical import HistoricalSource
@@ -14,23 +15,21 @@ class TriggeredDelegate(object):
 class DropTriggeredDelegate(TriggeredDelegate):
     def __init__(
         self,
-        coin: str,
-        fiat: str,
+        asset_pair: AssetPair,
         delay_minutes: int,
         drop_percentage: float,
         source: HistoricalSource,
     ):
-        self.coin = coin
-        self.fiat = fiat
+        self.asset_pair = asset_pair
         self.delay_minutes = delay_minutes
         self.drop_percentage = drop_percentage
         self.source = source
 
     def is_triggered(self, now: datetime.datetime) -> bool:
-        price = self.source.get_price(now, self.coin, self.fiat)
+        price = self.source.get_price(now, self.asset_pair)
         then = now - datetime.timedelta(minutes=self.delay_minutes)
         try:
-            then_price = self.source.get_price(then, self.coin, self.fiat)
+            then_price = self.source.get_price(then, self.asset_pair)
         except HistoricalError as e:
             logger.warning(
                 f"Could not retrieve a historical price, so cannot determine if strategy “{self}” was triggered."

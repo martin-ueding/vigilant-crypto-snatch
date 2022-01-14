@@ -6,6 +6,7 @@ import pytest
 import yaml
 
 from . import yaml_configuration
+from ..core import AssetPair
 from ..triggers import TriggerSpec
 
 
@@ -62,8 +63,7 @@ def test_get_start_with_unknown_type() -> None:
 def test_parse_trigger_spec_drop_fixed() -> None:
     target = TriggerSpec(
         name="Large drops",
-        coin="BTC",
-        fiat="EUR",
+        asset_pair=AssetPair("BTC", "EUR"),
         cooldown_minutes=24 * 60,
         delay_minutes=7 * 24 * 60,
         drop_percentage=15,
@@ -89,8 +89,7 @@ def test_parse_trigger_spec_drop_fixed() -> None:
 def test_parse_trigger_spec_time_ratio() -> None:
     target = TriggerSpec(
         name=None,
-        coin="BTC",
-        fiat="EUR",
+        asset_pair=AssetPair("BTC", "EUR"),
         cooldown_minutes=24 * 60,
         delay_minutes=None,
         drop_percentage=None,

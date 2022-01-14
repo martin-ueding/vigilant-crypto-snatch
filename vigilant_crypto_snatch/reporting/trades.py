@@ -4,6 +4,7 @@ from typing import Optional
 import pandas as pd
 
 from vigilant_crypto_snatch.configuration import YamlConfiguration
+from vigilant_crypto_snatch.core import AssetPair
 from vigilant_crypto_snatch.datastorage import Datastore
 from vigilant_crypto_snatch.datastorage import make_datastore
 from vigilant_crypto_snatch.historical import CryptoCompareHistoricalSource
@@ -21,12 +22,16 @@ def add_gains(trades: pd.DataFrame):
     historical_source = CryptoCompareHistoricalSource(
         config.get_crypto_compare_config()
     )
-    unique_currency_pairs = set(zip(trades["coin"], trades["fiat"]))
+    unique_currency_pairs = set(
+        AssetPair(coin, fiat) for coin, fiat in zip(trades["coin"], trades["fiat"])
+    )
 
     now = datetime.datetime.now()
     current_prices = {
-        (coin, fiat): historical_source.get_price(now, coin, fiat).last
-        for coin, fiat in unique_currency_pairs
+        (asset_pair.coin, asset_pair.fiat): historical_source.get_price(
+            now, asset_pair
+        ).last
+        for asset_pair in unique_currency_pairs
     }
 
     trades["buy_price"] = trades["volume_fiat"] / trades["volume_coin"]
