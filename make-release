@@ -4,13 +4,20 @@ set -e
 set -u
 set -x
 
+# Run unit and acceptance tests.
 poetry run pytest
 poetry run vigilant-crypto-snatch test-drive
+
+# Publish source code.
 git push
 git push --tags
+
+# Update documentation.
 pushd docs/dev/graphs
 make -j $(nproc)
 popd
 poetry run mkdocs gh-deploy
+
+# Publish to PyPI.
 poetry build
 poetry publish
