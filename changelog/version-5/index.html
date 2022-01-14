@@ -437,6 +437,13 @@
   
 </li>
       
+        <li class="md-nav__item">
+  <a href="#version-530" class="md-nav__link">
+    Version 5.3.0
+  </a>
+  
+</li>
+      
     </ul>
   
 </nav>
@@ -632,6 +639,13 @@
   
 </li>
       
+        <li class="md-nav__item">
+  <a href="#version-530" class="md-nav__link">
+    Version 5.3.0
+  </a>
+  
+</li>
+      
     </ul>
   
 </nav>
@@ -682,6 +696,17 @@
 <li>Attempt withdrawal after the trade has been noted in the database. Previously, a failure during withdrawal would have dropped the trade and eventually performed it again.</li>
 <li>Output full exception traceback for every caught exception into the debug logging channel.</li>
 <li>Pause triggers for 24 hours when they have insufficient funds. This will reduce failure messages from three per 12 hours to one per 24 hours.</li>
+</ul>
+<h2 id="version-530">Version 5.3.0</h2>
+<ul>
+<li>Add a report page about user trades into the evaluation interface.</li>
+<li>Link to download statistics within documentation.</li>
+<li>Add GitHub funding.</li>
+<li>Connection errors are not reported all the time, instead they are just logged as debug output.</li>
+<li>Create <code>AssetPair</code> data structure so better structure the code internally.</li>
+<li>Remove usage of <code>Protocol</code> such that Python 3.7 is still supported.</li>
+<li>Update developer documentation a bit.</li>
+<li>Update Pillow for security.</li>
 </ul>
                 
               

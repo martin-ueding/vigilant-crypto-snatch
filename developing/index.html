@@ -439,8 +439,8 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#code-style" class="md-nav__link">
-    Code style
+  <a href="#new-release" class="md-nav__link">
+    New release
   </a>
   
 </li>
@@ -546,8 +546,8 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#code-style" class="md-nav__link">
-    Code style
+  <a href="#new-release" class="md-nav__link">
+    New release
   </a>
   
 </li>
@@ -567,6 +567,7 @@
                 
                 <h1 id="developing">Developing</h1>
 <p>If you want to contribute, that's awesome! It is best if you get in touch first, then we can discuss the best way to add your idea.</p>
+<p>We try to develop this in a <em>Clean Code</em> way, with the least amount of coupling. We also follow the <a href="https://medium.com/@cjolowicz/hypermodern-python-d44485d9d769">Hypermodern Python</a> series for project layout and choice of tooling.</p>
 <h2 id="development-setup">Development setup</h2>
 <p>This project is written in Python. It uses <a href="https://python-poetry.org/">Poetry</a> to manage the project and its dependencies.</p>
 <p>Once you have obtained the source code via <code>git clone</code>, you can install the project into a virtual environment using <code>poetry install</code>. This will install all the dependencies and the package.</p>
@@ -581,19 +582,14 @@
 <div class="highlight"><pre><span></span><code>poetry run coverage run --source<span class="o">=</span>src -m pytest
 poetry run coverage html
 </code></pre></div>
+<p>We use the <a href="https://pre-commit.com/">pre-commit tool</a>. So also run <code>pre-commit install</code> to set it up. This will take care of code formatting with <a href="https://github.com/psf/black">Black</a>, static type checking, unit test and test coverage on every commit.</p>
 <h2 id="updating-the-documentation">Updating the documentation</h2>
 <p>The documentation is created with <a href="https://squidfunk.github.io/mkdocs-material/">Material for MkDocs</a>. Just edit the Markdown files in <code>docs</code>.</p>
 <p>To locally view the documentation, use this:</p>
 <div class="highlight"><pre><span></span><code>poetry run mkdocs serve
 </code></pre></div>
-<p>To publish a new version to GitHub Pages, use this:</p>
-<div class="highlight"><pre><span></span><code>poetry run mkdocs gh-publish
-</code></pre></div>
-<h2 id="code-style">Code style</h2>
-<p>We try to develop this in a <em>Clean Code</em> way, with the least amount of coupling. We also follow the <a href="https://medium.com/@cjolowicz/hypermodern-python-d44485d9d769">Hypermodern Python</a> series for project layout and choice of tooling.</p>
-<p>Code formatting is done with <a href="https://github.com/psf/black">Black</a>:</p>
-<div class="highlight"><pre><span></span><code>poetry run black src/**.py test/**.py
-</code></pre></div>
+<h2 id="new-release">New release</h2>
+<p>In order to create a new release, we use the <code>make-release</code> script. It requires the access credentials to GitHub and PyPI and Codecov, so only Martin can do that at this point.</p>
                 
               
               

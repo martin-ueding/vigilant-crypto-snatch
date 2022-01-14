@@ -2,11 +2,15 @@
 
 namespace core {
 
+class AssetPair {
+    coin: str
+    fiat: str
+}
+
 class Price {
     timestamp: datetime.datetime
     last: float
-    coin: str
-    fiat: str
+    asset_pair: AssetPair
 }
 
 class Trade {
@@ -14,9 +18,11 @@ class Trade {
     trigger_name: str
     volume_coin: float
     volume_fiat: float
-    coin: str
-    fiat: str
+    asset_pair: AssetPair
 }
+
+AssetPair <-- Price
+AssetPair <-- Trade
 
 }
 
