@@ -53,7 +53,7 @@ def process_trigger(trigger: Trigger):
         if trigger.has_cooled_off(now) and trigger.is_triggered(now):
             trigger.fire(now)
     except HttpRequestError as e:
-        notify_and_continue(e, logging.WARNING)
+        notify_and_continue(e, logging.DEBUG)
     except TickerError as e:
         notify_and_continue(e, logging.ERROR)
     except BuyError as e:

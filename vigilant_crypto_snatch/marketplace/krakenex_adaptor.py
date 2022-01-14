@@ -1,6 +1,8 @@
 import datetime
+from typing import Callable
 from typing import Dict
 from typing import Type
+from typing import Union
 
 import krakenex
 import requests
@@ -25,6 +27,17 @@ class KrakenexInterface:
         raise NotImplementedError()  # pragma: no cover
 
 
+class KrakenexMock:
+    def __init__(self, methods: Dict[str, Callable]):
+        self.methods = methods
+
+    def query_public(self, command: str, parameters: Dict = None) -> Dict:
+        return self.methods[command](parameters)
+
+    def query_private(self, command: str, parameters: Dict = None) -> Dict:
+        return self.methods[command](parameters)
+
+
 mapping_normal_to_kraken = {"BTC": "XBT"}
 mapping_kraken_to_normal = {
     kraken: normal for normal, kraken in mapping_normal_to_kraken.items()
@@ -43,7 +56,9 @@ def map_kraken_to_normal(coin: str) -> str:
 
 class KrakenexMarketplace(Marketplace):
     def __init__(
-        self, config: KrakenConfig, handle: KrakenexInterface | krakenex.API = None
+        self,
+        config: KrakenConfig,
+        handle: Union[KrakenexInterface, krakenex.API, KrakenexMock] = None,
     ):
         if handle:
             self.handle = handle

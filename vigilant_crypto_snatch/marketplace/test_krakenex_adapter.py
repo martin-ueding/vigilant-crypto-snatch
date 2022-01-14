@@ -1,5 +1,4 @@
 import datetime
-from typing import Callable
 from typing import Dict
 
 import pytest
@@ -11,17 +10,7 @@ from .interface import KrakenWithdrawalConfig
 from .interface import TickerError
 from .interface import WithdrawalError
 from .krakenex_adaptor import KrakenexMarketplace
-
-
-class KrakenexMock:
-    def __init__(self, methods: Dict[str, Callable]):
-        self.methods = methods
-
-    def query_public(self, command: str, parameters: Dict = None) -> Dict:
-        return self.methods[command](parameters)
-
-    def query_private(self, command: str, parameters: Dict = None) -> Dict:
-        return self.methods[command](parameters)
+from .krakenex_adaptor import KrakenexMock
 
 
 def stub_ticker_success(parameters: Dict) -> Dict:
