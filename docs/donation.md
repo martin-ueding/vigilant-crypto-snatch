@@ -8,6 +8,12 @@ You can send money via to Chris via [PayPal](https://www.paypal.me/paychristoph)
 
 ## Bitcoin
 
-There is also the possibility to send Bitcoin. Chris has set up a [donation page](https://5nickers.de/donate/vigilant_donation.html), which currently is only available via the TOR browser as there is no DNS for the Lightning node which processes the payments. You can make an on-chain or Lightning donation.
+There is also the possibility to send Bitcoin. Chris has set up a donation page
+
+```bash
+https://5nickers.de/donate/vigilant_donation.html
+```
+
+, which currently is only available via the TOR browser. You need to open a TOR browser and then visit the address using that, it does not work otherwise. You can make an on-chain or Lightning donation.
 
 You will be rewarded with a nice GIF at the end!
