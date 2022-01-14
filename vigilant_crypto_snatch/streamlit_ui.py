@@ -1,13 +1,18 @@
+import dataclasses
 import datetime
 import os
 import sys
+from typing import Any
+from typing import Dict
 
+import pandas as pd
 import streamlit as st
 import streamlit.cli as st_cli
 
 from vigilant_crypto_snatch.configuration import migrations
 from vigilant_crypto_snatch.configuration import parse_trigger_spec
 from vigilant_crypto_snatch.configuration import YamlConfiguration
+from vigilant_crypto_snatch.core import AssetPair
 from vigilant_crypto_snatch.evaluation import accumulate_value
 from vigilant_crypto_snatch.evaluation import get_available_coins
 from vigilant_crypto_snatch.evaluation import get_available_fiats
@@ -28,7 +33,13 @@ from vigilant_crypto_snatch.reporting import plot_value_and_investment
 from vigilant_crypto_snatch.triggers import TriggerSpec
 
 
-def sub_home(sidebar_settings):
+@dataclasses.dataclass()
+class SidebarSettings:
+    asset_pair: AssetPair
+    data: pd.DataFrame
+
+
+def sub_home(sidebar_settings: SidebarSettings):
     st.title("Home")
 
     st.markdown(
@@ -38,18 +49,18 @@ def sub_home(sidebar_settings):
     )
 
 
-def sub_price(sidebar_settings):
+def sub_price(sidebar_settings: SidebarSettings):
     st.title("Close price")
 
     show_close_chart(sidebar_settings)
 
 
-def show_close_chart(sidebar_settings):
+def show_close_chart(sidebar_settings: SidebarSettings):
     close_chart = make_close_chart(sidebar_settings.data, sidebar_settings.asset_pair)
     st.altair_chart(close_chart, use_container_width=True)
 
 
-def sub_drop_survey(sidebar_settings):
+def sub_drop_survey(sidebar_settings: SidebarSettings):
     st.markdown("# Drop survey")
 
     show_close_chart(sidebar_settings)
@@ -66,14 +77,16 @@ def sub_drop_survey(sidebar_settings):
         sidebar_settings.data.loc[selection].reset_index(),
         range_delay,
         range_percentage,
-        sidebar_settings.coin,
-        sidebar_settings.fiat,
+        sidebar_settings.asset_pair,
     )
     st.altair_chart(chart, use_container_width=True)
 
 
-def make_trigger_ui(sidebar_settings, i) -> TriggerSpec:
-    trigger_spec = {"fiat": sidebar_settings.fiat, "coin": sidebar_settings.coin}
+def make_trigger_ui(sidebar_settings: SidebarSettings, i) -> TriggerSpec:
+    trigger_spec: Dict[str, Any] = {
+        "fiat": sidebar_settings.asset_pair.fiat,
+        "coin": sidebar_settings.asset_pair.coin,
+    }
 
     trigger_spec["name"] = st.text_input(
         "Name",
@@ -90,7 +103,7 @@ def make_trigger_ui(sidebar_settings, i) -> TriggerSpec:
     )
 
     trigger_spec["volume_fiat"] = st.number_input(
-        f"Volume / {sidebar_settings.fiat}",
+        f"Volume / {sidebar_settings.asset_pair.fiat}",
         min_value=25,
         max_value=None,
         value=25,
@@ -125,7 +138,7 @@ def make_trigger_ui(sidebar_settings, i) -> TriggerSpec:
     return parse_trigger_spec(trigger_spec)
 
 
-def sub_trigger_simulation(sidebar_settings):
+def sub_trigger_simulation(sidebar_settings: SidebarSettings):
     st.title("Trigger simulation")
 
     time_begin, time_end = make_time_slider(sidebar_settings)
@@ -142,8 +155,8 @@ def sub_trigger_simulation(sidebar_settings):
 
     st.markdown("# Parameters")
 
-    number_of_triggers = st.number_input(
-        "Number of triggers", min_value=1, max_value=None, value=2
+    number_of_triggers = int(
+        st.number_input("Number of triggers", min_value=1, max_value=None, value=2)
     )
 
     trigger_specs = []
@@ -162,8 +175,7 @@ def sub_trigger_simulation(sidebar_settings):
 
     trades, trigger_names = simulate_triggers(
         sidebar_settings.data.loc[selection].reset_index(),
-        sidebar_settings.coin,
-        sidebar_settings.fiat,
+        sidebar_settings.asset_pair,
         trigger_specs,
         simulation_progress_bar.progress,
     )
@@ -189,7 +201,7 @@ def sub_trigger_simulation(sidebar_settings):
     )
     st.dataframe(summary)
 
-    gain_chart = make_gain_chart(value, sidebar_settings.fiat)
+    gain_chart = make_gain_chart(value, sidebar_settings.asset_pair.fiat)
     st.markdown("# Diagram with gains")
     st.altair_chart(gain_chart, use_container_width=True)
 
@@ -197,7 +209,7 @@ def sub_trigger_simulation(sidebar_settings):
     st.dataframe(trades)
 
 
-def make_time_slider(sidebar_settings):
+def make_time_slider(sidebar_settings: SidebarSettings):
     time_begin = min(sidebar_settings.data["datetime"]).toordinal()
     time_end = max(sidebar_settings.data["datetime"]).toordinal()
     time_range = st.slider(
@@ -212,7 +224,7 @@ def make_time_slider(sidebar_settings):
     return time_begin, time_end
 
 
-def sub_trade_report(sidebar_settings) -> None:
+def sub_trade_report(sidebar_settings: SidebarSettings) -> None:
     st.title("Trades Report")
 
     trades = get_user_trades_df()
@@ -284,13 +296,12 @@ def ui():
         "Coin", available_coins, index=available_coins.index("BTC")
     )
 
-    data = get_hourly_data(coin, fiat, api_key)
+    asset_pair = AssetPair(coin, fiat)
+
+    data = get_hourly_data(asset_pair, api_key)
     data = make_dataframe_from_json(data)
 
-    sidebar_settings = Namespace()
-    sidebar_settings.coin = coin
-    sidebar_settings.fiat = fiat
-    sidebar_settings.data = data
+    sidebar_settings = SidebarSettings(asset_pair=asset_pair, data=data)
 
     tools = {
         "Home": sub_home,

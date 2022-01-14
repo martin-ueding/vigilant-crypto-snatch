@@ -4,6 +4,8 @@ import altair as alt
 import numpy as np
 import pandas as pd
 
+from vigilant_crypto_snatch.core import AssetPair
+
 
 def drop_survey(
     data: pd.DataFrame, hours, drops
@@ -35,8 +37,7 @@ def make_survey_chart(
     data: pd.DataFrame,
     range_delay: Tuple[int, int],
     range_percentage: Tuple[float, float],
-    coin: str,
-    fiat: str,
+    asset_pair: AssetPair,
 ) -> alt.Chart:
     hours, drops, factors = drop_survey(
         data, np.arange(*range_delay), np.linspace(*range_percentage, 15) / 100.0
@@ -57,7 +58,9 @@ def make_survey_chart(
             x=alt.X("hours:O", title="Delay / hours"),
             y=alt.Y("drop:O", title="Drop / %"),
             color=alt.Color(
-                "factor:Q", title=f"{coin}/{fiat}", scale=alt.Scale(scheme="turbo")
+                "factor:Q",
+                title=f"{asset_pair.coin}/{asset_pair.fiat}",
+                scale=alt.Scale(scheme="turbo"),
             ),
         )
     )
