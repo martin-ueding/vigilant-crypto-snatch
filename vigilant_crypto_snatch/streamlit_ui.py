@@ -41,16 +41,11 @@ def sub_home(sidebar_settings):
 def sub_price(sidebar_settings):
     st.title("Close price")
 
-    close_chart = make_close_chart(
-        sidebar_settings.data, sidebar_settings.coin, sidebar_settings.fiat
-    )
-    st.altair_chart(close_chart, use_container_width=True)
+    show_close_chart(sidebar_settings)
 
 
 def show_close_chart(sidebar_settings):
-    close_chart = make_close_chart(
-        sidebar_settings.data, sidebar_settings.coin, sidebar_settings.fiat
-    )
+    close_chart = make_close_chart(sidebar_settings.data, sidebar_settings.asset_pair)
     st.altair_chart(close_chart, use_container_width=True)
 
 
@@ -138,7 +133,7 @@ def sub_trigger_simulation(sidebar_settings):
     selection = (time_begin <= data_datetime) & (data_datetime <= time_end)
 
     close_chart = make_close_chart(
-        sidebar_settings.data[selection], sidebar_settings.coin, sidebar_settings.fiat
+        sidebar_settings.data[selection], sidebar_settings.asset_pair
     )
     st.altair_chart(close_chart, use_container_width=True)
 

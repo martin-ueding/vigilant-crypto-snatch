@@ -36,8 +36,10 @@ class InterpolatingSource(HistoricalSource):
         return Price(timestamp=then, last=last, asset_pair=asset_pair)
 
 
-def get_hourly_data(coin: str, fiat: str, api_key: str) -> List[dict]:
-    cache_file = f"~/.cache/vigilant-crypto-snatch/hourly_{coin}_{fiat}.js"
+def get_hourly_data(asset_pair: AssetPair, api_key: str) -> List[dict]:
+    cache_file = (
+        f"~/.cache/vigilant-crypto-snatch/hourly_{asset_pair.coin}_{asset_pair.fiat}.js"
+    )
     cache_file = os.path.expanduser(cache_file)
     os.makedirs(os.path.dirname(cache_file), exist_ok=True)
     if os.path.exists(cache_file):
@@ -49,19 +51,19 @@ def get_hourly_data(coin: str, fiat: str, api_key: str) -> List[dict]:
                 return json.load(f)
 
     logger.info("Requesting historic data from Crypto Compare.")
-    r = download_hourly_data(coin, fiat, api_key)
+    r = download_hourly_data(asset_pair, api_key)
     data = r["Data"]
     with open(cache_file, "w") as f:
         json.dump(data, f)
     return data
 
 
-def download_hourly_data(coin: str, fiat: str, api_key: str) -> dict:
+def download_hourly_data(asset_pair: AssetPair, api_key: str) -> dict:
     timestamp = int(datetime.datetime.now().timestamp())
     url = (
         f"https://min-api.cryptocompare.com/data/histohour"
         f"?api_key={api_key}"
-        f"&fsym={coin}&tsym={fiat}"
+        f"&fsym={asset_pair.coin}&tsym={asset_pair.fiat}"
         f"&limit=2000&toTs={timestamp}"
     )
     return perform_http_request(url)
