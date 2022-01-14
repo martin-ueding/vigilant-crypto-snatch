@@ -2,6 +2,8 @@
 
 If you want to contribute, that's awesome! It is best if you get in touch first, then we can discuss the best way to add your idea.
 
+We try to develop this in a *Clean Code* way, with the least amount of coupling. We also follow the [Hypermodern Python](https://medium.com/@cjolowicz/hypermodern-python-d44485d9d769) series for project layout and choice of tooling.
+
 ## Development setup
 
 This project is written in Python. It uses [Poetry](https://python-poetry.org/) to manage the project and its dependencies.
@@ -29,6 +31,8 @@ poetry run coverage run --source=src -m pytest
 poetry run coverage html
 ```
 
+We use the [pre-commit tool](https://pre-commit.com/). So also run `pre-commit install` to set it up. This will take care of code formatting with [Black](https://github.com/psf/black), static type checking, unit test and test coverage on every commit.
+
 ## Updating the documentation
 
 The documentation is created with [Material for MkDocs](https://squidfunk.github.io/mkdocs-material/). Just edit the Markdown files in `docs`.
@@ -39,18 +43,6 @@ To locally view the documentation, use this:
 poetry run mkdocs serve
 ```
 
-To publish a new version to GitHub Pages, use this:
+## New release
 
-```bash
-poetry run mkdocs gh-publish
-```
-
-## Code style
-
-We try to develop this in a *Clean Code* way, with the least amount of coupling. We also follow the [Hypermodern Python](https://medium.com/@cjolowicz/hypermodern-python-d44485d9d769) series for project layout and choice of tooling.
-
-Code formatting is done with [Black](https://github.com/psf/black):
-
-```bash
-poetry run black src/**.py test/**.py
-```
+In order to create a new release, we use the `make-release` script. It requires the access credentials to GitHub and PyPI and Codecov, so only Martin can do that at this point.
