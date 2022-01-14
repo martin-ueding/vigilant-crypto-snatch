@@ -41,3 +41,7 @@
 
 - Add a report page about user trades into the evaluation interface.
 - Link to download statistics within documentation.
+
+---
+
+- Create `AssetPair` data structure so better structure the code internally.

@@ -12,8 +12,7 @@ namespace triggers {
 
 class TriggerSpec {
     name: Optional[str]
-    coin: str
-    fiat: str
+    asset_pair: AssetPair
     cooldown_minutes: int
     delay_minutes: Optional[int]
     drop_percentage: Optional[float]
@@ -22,6 +21,8 @@ class TriggerSpec {
     start: Optional[datetime.datetime]
     fear_and_greed_index_below: Optional[int]
 }
+
+core.AssetPair <-- TriggerSpec
 
 interface Trigger {
     get_name()

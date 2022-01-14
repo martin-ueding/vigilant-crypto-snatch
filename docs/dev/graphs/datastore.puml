@@ -27,6 +27,7 @@ SqlAlchemyStore --> AlchemyTrade
 SqlAlchemyStore --> AlchemyPrice
 
 AlchemyTrade --> sqlalchemy
+AlchemyPriced4 --> sqlalchemy
 
 
 }

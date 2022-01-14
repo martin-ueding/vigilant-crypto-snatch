@@ -25,6 +25,7 @@ Marketplace -> WithdrawalError
 
 core.Price <-- Marketplace
 core.Trade <-- Marketplace
+core.AssetPair <-- Marketplace
 
 class KrakenexMarketplace implements Marketplace
 

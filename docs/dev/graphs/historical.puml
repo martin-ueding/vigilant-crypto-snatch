@@ -16,6 +16,7 @@ interface HistoricalSource {
 }
 
 core.Price <-- HistoricalSource
+core.AssetPair <-- HistoricalSource
 
 class HistoricalError
 
