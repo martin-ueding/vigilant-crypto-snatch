@@ -26,6 +26,7 @@ nav:
     - configuration/general.md
     - configuration/marketplace.md
     - configuration/triggers.md
+    - configuration/telemetry.md
   - usage.md
   - deployment.md
   - support.md
