@@ -14,6 +14,7 @@ class SentryTelemetryCollector(TelemetryCollector):
             traces_sample_rate=1.0,
             release=__version__,
             server_name="none",
+            max_breadcrumbs=0,
         )
         sentry_sdk.set_user(dict(id=get_user_id()))
 

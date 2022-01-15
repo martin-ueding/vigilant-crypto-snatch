@@ -51,3 +51,9 @@
 ### Version 5.3.1
 
 - Fix bug in trade report with `KeyError: 'coin'`.
+
+## Version 5.4.0
+
+- Add optional and voluntary telemetry sending via Sentry. See the configuration for details and how to enable it, if you want to.
+- Add a dark mode to the documentation.
+- Split configuration documentation onto multiple pages.
