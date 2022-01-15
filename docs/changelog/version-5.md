@@ -47,3 +47,7 @@
 - Remove usage of `Protocol` such that Python 3.7 is still supported.
 - Update developer documentation a bit.
 - Update Pillow for security.
+
+### Version 5.3.1
+
+- Fix bug in trade report with `KeyError: 'coin'`.
