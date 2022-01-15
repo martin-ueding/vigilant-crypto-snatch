@@ -13,6 +13,7 @@ class SentryTelemetryCollector(TelemetryCollector):
             "https://2de30dc7030a4a78a41fad327ba0acff@o1107570.ingest.sentry.io/6134822",
             traces_sample_rate=1.0,
             release=__version__,
+            server_name="none",
         )
         sentry_sdk.set_user(dict(id=get_user_id()))
 
