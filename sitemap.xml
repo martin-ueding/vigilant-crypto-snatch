@@ -6,11 +6,6 @@
          <changefreq>daily</changefreq>
     </url>
     <url>
-         <loc>https://martin-ueding.github.io/vigilant-crypto-snatch/configuration/</loc>
-         <lastmod>2022-01-15</lastmod>
-         <changefreq>daily</changefreq>
-    </url>
-    <url>
          <loc>https://martin-ueding.github.io/vigilant-crypto-snatch/deployment/</loc>
          <lastmod>2022-01-15</lastmod>
          <changefreq>daily</changefreq>
@@ -62,6 +57,26 @@
     </url>
     <url>
          <loc>https://martin-ueding.github.io/vigilant-crypto-snatch/changelog/version-5/</loc>
+         <lastmod>2022-01-15</lastmod>
+         <changefreq>daily</changefreq>
+    </url>
+    <url>
+         <loc>https://martin-ueding.github.io/vigilant-crypto-snatch/configuration/general/</loc>
+         <lastmod>2022-01-15</lastmod>
+         <changefreq>daily</changefreq>
+    </url>
+    <url>
+         <loc>https://martin-ueding.github.io/vigilant-crypto-snatch/configuration/marketplace/</loc>
+         <lastmod>2022-01-15</lastmod>
+         <changefreq>daily</changefreq>
+    </url>
+    <url>
+         <loc>https://martin-ueding.github.io/vigilant-crypto-snatch/configuration/telemetry/</loc>
+         <lastmod>2022-01-15</lastmod>
+         <changefreq>daily</changefreq>
+    </url>
+    <url>
+         <loc>https://martin-ueding.github.io/vigilant-crypto-snatch/configuration/triggers/</loc>
          <lastmod>2022-01-15</lastmod>
          <changefreq>daily</changefreq>
     </url>
