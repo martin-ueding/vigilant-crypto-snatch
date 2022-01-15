@@ -7,6 +7,9 @@ class AssetPair:
     coin: str
     fiat: str
 
+    def __hash__(self) -> int:
+        return hash((self.coin, self.fiat))
+
 
 @dataclasses.dataclass()
 class Price:

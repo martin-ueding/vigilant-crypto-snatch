@@ -14,7 +14,7 @@ from vigilant_crypto_snatch.paths import user_db_path
 def gather_trades(datastore: Datastore) -> pd.DataFrame:
     trades = datastore.get_all_trades()
     df = pd.DataFrame(trades)
-    return df
+    return df.drop(columns="asset_pair").assign(**df["asset_pair"].apply(pd.Series))
 
 
 def add_gains(trades: pd.DataFrame):
