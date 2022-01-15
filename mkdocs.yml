@@ -22,7 +22,10 @@ theme:
 nav:
   - index.md
   - installation.md
-  - configuration.md
+  - Configuration:
+    - configuration.md
+    - configuration/marketplace.md
+    - configuration/triggers.md
   - usage.md
   - deployment.md
   - support.md
