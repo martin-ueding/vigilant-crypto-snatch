@@ -16,7 +16,7 @@ sudo python3 -m pip install 'vigilant-crypto-snatch[evaluation]'
 
 If you don't want to install it system-wide, you can instead use `python3 -p pip install --user vigilant`. In that case you have to make sure that `~/.local/bin` is part of your `PATH` environment variable.
 
-Once you are done with the installation, go over to the [configuration](configuration.md).
+Once you are done with the installation, go over to the [configuration](configuration/general.md).
 
 ## Virtualenv
 

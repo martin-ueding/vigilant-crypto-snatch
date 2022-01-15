@@ -23,7 +23,7 @@ nav:
   - index.md
   - installation.md
   - Configuration:
-    - configuration.md
+    - configuration/general.md
     - configuration/marketplace.md
     - configuration/triggers.md
   - usage.md

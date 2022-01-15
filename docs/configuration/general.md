@@ -58,7 +58,7 @@ telegram:
 
 You will need to write a message to the bot in order to open a direct conversation with it. This is necessary such that the bot can reply to you.
 
-The `level` specified the messages that you want to receive. `info` gives sensible information, if you only want to receive information when something goes wrong, use `warning`. See the section in [running](usage.md) for more details.
+The `level` specified the messages that you want to receive. `info` gives sensible information, if you only want to receive information when something goes wrong, use `warning`. See the section in [running](../usage.md) for more details.
 
 If the Telegram bot token is set up correctly, you will receive messages like this:
 

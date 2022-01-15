@@ -1,6 +1,6 @@
 # Deployment
 
-Using the other pages, you should have already [configured](configuration.md) the program and [tried to use](usage.md) it. It should log into the marketplace, report your balance and load the triggers. Then you can start it and have it run, but you likely want a proper deployment.
+Using the other pages, you should have already [configured](configuration/general.md) the program and [tried to use](usage.md) it. It should log into the marketplace, report your balance and load the triggers. Then you can start it and have it run, but you likely want a proper deployment.
 
 Most users seem to have a Raspberry Pi, which is an affordable miniature server. It is perfectly suited to run this little Python program. You can also run it on a larger server, if you want.
 
