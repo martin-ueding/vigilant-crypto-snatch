@@ -1,6 +1,6 @@
 # Donation
 
-If this project has been useful for you and you would like to give a gift as a contribution, we would be very grateful to receive it. We have a couple of options for you.
+If this project has been useful for you, and you would like to give a gift as a contribution, we would be very grateful to receive it. We have a couple of options for you.
 
 ## PayPal
 
