@@ -16,6 +16,7 @@ from ..marketplace import KrakenConfig
 from ..marketplace import KrakenWithdrawalConfig
 from ..paths import config_path
 from ..telegram import TelegramConfig
+from ..telemetry import TelemetryConfig
 from ..triggers import TriggerSpec
 
 
@@ -66,6 +67,12 @@ class YamlConfiguration(Configuration):
         if "telegram" not in self._config:
             return None
         return TelegramConfig(**self._config["telegram"])
+
+    def get_telemetry_config(self) -> TelemetryConfig:
+        if "telemetry" not in self._config:
+            return TelemetryConfig()
+        else:
+            return TelemetryConfig(**self._config["telemetry"])
 
 
 def parse_trigger_spec(trigger_spec_dict: dict) -> TriggerSpec:

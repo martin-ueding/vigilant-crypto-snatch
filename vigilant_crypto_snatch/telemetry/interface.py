@@ -3,7 +3,7 @@ import dataclasses
 
 @dataclasses.dataclass()
 class TelemetryConfig:
-    collect: bool
+    collect: bool = False
 
 
 class TelemetryCollector:

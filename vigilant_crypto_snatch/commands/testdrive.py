@@ -19,7 +19,7 @@ from ..marketplace import report_balances
 from ..paths import user_db_path
 from ..telegram import TelegramConfig
 from ..telegram import TelegramSender
-from ..telemetry import SentryTelemetryCollector
+from ..telemetry import make_telemetry_collector
 from ..triggers import make_triggers
 from ..triggers import TriggerSpec
 
@@ -28,8 +28,8 @@ def main(marketplace_name) -> None:
     run_migrations()
     config = YamlConfiguration()
 
-    telemetry_collector = SentryTelemetryCollector()
-    telemetry_collector.send_event("Start test-drive")
+    telemetry_collector = make_telemetry_collector(config.get_telemetry_config())
+    telemetry_collector.send_session("Start test-drive")
     try_database()
     try_balance(config, marketplace_name)
     try_historical(config.get_crypto_compare_config())

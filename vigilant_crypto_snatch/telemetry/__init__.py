@@ -1,2 +1,3 @@
+from .factory import make_telemetry_collector
 from .interface import TelemetryCollector
-from .sentry_adapter import SentryTelemetryCollector
+from .interface import TelemetryConfig

@@ -7,6 +7,7 @@ from ..historical import CryptoCompareConfig
 from ..marketplace import BitstampConfig
 from ..marketplace import KrakenConfig
 from ..telegram import TelegramConfig
+from ..telemetry import TelemetryConfig
 from ..triggers import TriggerSpec
 
 
@@ -27,6 +28,9 @@ class Configuration:
         raise NotImplementedError()  # pragma: no cover
 
     def get_trigger_config(self) -> List[TriggerSpec]:
+        raise NotImplementedError()  # pragma: no cover
+
+    def get_telemetry_config(self) -> TelemetryConfig:
         raise NotImplementedError()  # pragma: no cover
 
 
