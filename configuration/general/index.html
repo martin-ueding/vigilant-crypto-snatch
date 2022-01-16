@@ -358,20 +358,6 @@
 
             
           
-            
-              
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../telemetry/" class="md-nav__link">
-        Telemetry
-      </a>
-    </li>
-  
-
-            
-          
         </ul>
       </nav>
     </li>
@@ -385,10 +371,85 @@
   
   
   
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_4" type="checkbox" id="__nav_4" >
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_4">
+          Usage
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="Usage" data-md-level="1">
+        <label class="md-nav__title" for="__nav_4">
+          <span class="md-nav__icon md-icon"></span>
+          Usage
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
     <li class="md-nav__item">
-      <a href="../../usage/" class="md-nav__link">
-        Usage
+      <a href="../../usage/general/" class="md-nav__link">
+        General Usage
       </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../usage/test-drive/" class="md-nav__link">
+        Subcommand test-drive
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../usage/watch/" class="md-nav__link">
+        Subcommand watch
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../usage/evaluate/" class="md-nav__link">
+        Subcommand evaluate
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
     </li>
   
 
@@ -694,7 +755,7 @@
 <p>This page does not contain all the necessary configuration steps, see the navigation for further pages on <em>marketplaces</em> and <em>triggers</em>.</p>
 <h2 id="polling-interval">Polling interval</h2>
 <p>First you should set the polling interval that the main loop should use. It will wait this many seconds before checking again. For testing we found that 5 seconds is a good value, for production use 60 seconds should be absolutely sufficient.</p>
-<div class="highlight"><pre><span></span><code><span class="nt">sleep</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">60</span>
+<div class="highlight"><pre><span></span><code><span class="nt">sleep</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">60</span><span class="w"></span>
 </code></pre></div>
 <h2 id="historic-price-api">Historic price API</h2>
 <p>In order to find a drop in the price, we need to know the historic price at a given point. We use Crypto Compare for that as they provide a free API. Go to <a href="https://min-api.cryptocompare.com/pricing">their website</a> and create an API key.</p>
@@ -706,8 +767,8 @@
 <p><img alt="" src="../screenshot-cryptocompare-api-key.png" /></p>
 </blockquote>
 <p>In the configuration file then add the following:</p>
-<div class="highlight"><pre><span></span><code><span class="nt">cryptocompare</span><span class="p">:</span>
-  <span class="nt">api_key</span><span class="p">:</span> <span class="s">&quot;your</span><span class="nv"> </span><span class="s">API</span><span class="nv"> </span><span class="s">key</span><span class="nv"> </span><span class="s">here&quot;</span>
+<div class="highlight"><pre><span></span><code><span class="nt">cryptocompare</span><span class="p">:</span><span class="w"></span>
+<span class="w">  </span><span class="nt">api_key</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;your</span><span class="nv"> </span><span class="s">API</span><span class="nv"> </span><span class="s">key</span><span class="nv"> </span><span class="s">here&quot;</span><span class="w"></span>
 </code></pre></div>
 <h2 id="telegram-notifications">Telegram notifications</h2>
 <p>Optionally you can set up notifications via Telegram. This is not required, but a nice extra to allow monitoring from anywhere.</p>
@@ -719,12 +780,12 @@
 <li>Next it will ask for a username of the bot. This is a technical thing, so it doesn't need to be pretty. It needs to be unique and end with <code>bot</code>. So perhaps use something like <code>vigilant_0f8704a83991_bot</code>, where you just make up your own random letters.</li>
 </ol>
 <p>It will give you an access token that you can use for the API. Enter that token into the configuration file:</p>
-<div class="highlight"><pre><span></span><code><span class="nt">telegram</span><span class="p">:</span>
-  <span class="nt">token</span><span class="p">:</span> <span class="s">&quot;Your</span><span class="nv"> </span><span class="s">bot</span><span class="nv"> </span><span class="s">token</span><span class="nv"> </span><span class="s">here&quot;</span>
-  <span class="nt">level</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">info</span>
+<div class="highlight"><pre><span></span><code><span class="nt">telegram</span><span class="p">:</span><span class="w"></span>
+<span class="w">  </span><span class="nt">token</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Your</span><span class="nv"> </span><span class="s">bot</span><span class="nv"> </span><span class="s">token</span><span class="nv"> </span><span class="s">here&quot;</span><span class="w"></span>
+<span class="w">  </span><span class="nt">level</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">info</span><span class="w"></span>
 </code></pre></div>
 <p>You will need to write a message to the bot in order to open a direct conversation with it. This is necessary such that the bot can reply to you.</p>
-<p>The <code>level</code> specified the messages that you want to receive. <code>info</code> gives sensible information, if you only want to receive information when something goes wrong, use <code>warning</code>. See the section in <a href="../../usage/">running</a> for more details.</p>
+<p>The <code>level</code> specified the messages that you want to receive. <code>info</code> gives sensible information, if you only want to receive information when something goes wrong, use <code>warning</code>. See the section in <a href="../../usage/general/">running</a> for more details.</p>
 <p>If the Telegram bot token is set up correctly, you will receive messages like this:</p>
 <blockquote>
 <p><img alt="" src="../telegram-output.png" /></p>

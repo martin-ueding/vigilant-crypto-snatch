@@ -371,20 +371,6 @@
 
             
           
-            
-              
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../telemetry/" class="md-nav__link">
-        Telemetry
-      </a>
-    </li>
-  
-
-            
-          
         </ul>
       </nav>
     </li>
@@ -398,10 +384,85 @@
   
   
   
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_4" type="checkbox" id="__nav_4" >
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_4">
+          Usage
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="Usage" data-md-level="1">
+        <label class="md-nav__title" for="__nav_4">
+          <span class="md-nav__icon md-icon"></span>
+          Usage
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
     <li class="md-nav__item">
-      <a href="../../usage/" class="md-nav__link">
-        Usage
+      <a href="../../usage/general/" class="md-nav__link">
+        General Usage
       </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../usage/test-drive/" class="md-nav__link">
+        Subcommand test-drive
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../usage/watch/" class="md-nav__link">
+        Subcommand watch
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../usage/evaluate/" class="md-nav__link">
+        Subcommand evaluate
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
     </li>
   
 
@@ -701,9 +762,9 @@
 <p>Be sure to select the <em>Create &amp; Modify Orders</em> permission such that the program can actually execute orders. Give the least amount of permissions, you should not select <em>Withdraw Funds</em> if you don't want to enable the automatic withdrawal feature described below.</p>
 <p><img alt="" src="../kraken-api-settings.png" /></p>
 <p>You will get an API key and an associated secret. In the configuration file you add a paragraph like the following. The first will be API key and the second will be the secret, like this:</p>
-<div class="highlight"><pre><span></span><code><span class="nt">kraken</span><span class="p">:</span>
-  <span class="nt">key</span><span class="p">:</span> <span class="s">&quot;YOUR</span><span class="nv"> </span><span class="s">KEY&quot;</span>
-  <span class="nt">secret</span><span class="p">:</span> <span class="s">&quot;YOUR</span><span class="nv"> </span><span class="s">SECRET&quot;</span>
+<div class="highlight"><pre><span></span><code><span class="nt">kraken</span><span class="p">:</span><span class="w"></span>
+<span class="w">  </span><span class="nt">key</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;YOUR</span><span class="nv"> </span><span class="s">KEY&quot;</span><span class="w"></span>
+<span class="w">  </span><span class="nt">secret</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;YOUR</span><span class="nv"> </span><span class="s">SECRET&quot;</span><span class="w"></span>
 </code></pre></div>
 <h3 id="fee-policy">Fee policy</h3>
 <p>When you trade, you will have to pay a certain fee that depends on your Kraken account tier. Whatever these are exactly, you can choose whether you would like to have them taken away from your fiat or coin amount. If you let it take away from your coin amount, buying coin for 50 EUR will only cost exactly that, but you get a bit less coin. Should you rather choose to have it taken in fiat, you will get as much coin as you want, but it will cost you more fiat.</p>
@@ -716,19 +777,19 @@
 </blockquote>
 <p>As explained <a href="https://support.kraken.com/hc/en-us/articles/115000364388-Trading-glossary">in their glossary</a>, the quote currency is fiat, whereas the base currency is the coin.</p>
 <p>We support this choice via the option <code>prefer_fee_in_base_currency</code>, which is false by default, so the fee is preferred in quote currency. If you set this to true, you can instead have it in the base currency and only spend exactly as much as you want. For this add this line:</p>
-<div class="highlight"><pre><span></span><code><span class="nt">kraken</span><span class="p">:</span>
-  <span class="l l-Scalar l-Scalar-Plain">…</span>
-  <span class="l l-Scalar l-Scalar-Plain">prefer_fee_in_base_currency</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">true</span>
+<div class="highlight"><pre><span></span><code><span class="nt">kraken</span><span class="p">:</span><span class="w"></span>
+<span class="w">  </span><span class="l l-Scalar l-Scalar-Plain">…</span><span class="w"></span>
+<span class="w">  </span><span class="l l-Scalar l-Scalar-Plain">prefer_fee_in_base_currency</span><span class="p p-Indicator">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span><span class="w"></span>
 </code></pre></div>
 <h3 id="automatic-transfer-to-wallet">Automatic transfer to wallet</h3>
 <p>For this marketplace we support automatic transfers to an external wallet when the crypto volume is large enough. We query the current fees and only do the transfer when the fees are below a certain percentage of the value to transfer.</p>
 <p>In order to set this up, you first need to have a withdrawal target. Go to the <a href="https://www.kraken.com/u/funding">funding page</a>, click on <a href="https://www.kraken.com/u/funding/withdraw?asset=BTC">withdraw BTC</a> for example. Then use “Add Address” to create a new address and give it some name. I call mine simply “Wallet”. Then for each currency that you want to set up withdrawal for, add a matching group in the <code>kraken</code> section like this:</p>
-<div class="highlight"><pre><span></span><code><span class="nt">kraken</span><span class="p">:</span>
-  <span class="l l-Scalar l-Scalar-Plain">…</span>
-  <span class="l l-Scalar l-Scalar-Plain">withdrawal</span><span class="p p-Indicator">:</span>
-    <span class="nt">BTC</span><span class="p">:</span>
-      <span class="nt">target</span><span class="p">:</span> <span class="s">&quot;Wallet&quot;</span>
-      <span class="nt">fee_limit_percent</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">1.0</span>
+<div class="highlight"><pre><span></span><code><span class="nt">kraken</span><span class="p">:</span><span class="w"></span>
+<span class="w">  </span><span class="l l-Scalar l-Scalar-Plain">…</span><span class="w"></span>
+<span class="w">  </span><span class="l l-Scalar l-Scalar-Plain">withdrawal</span><span class="p p-Indicator">:</span><span class="w"></span>
+<span class="w">    </span><span class="nt">BTC</span><span class="p">:</span><span class="w"></span>
+<span class="w">      </span><span class="nt">target</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Wallet&quot;</span><span class="w"></span>
+<span class="w">      </span><span class="nt">fee_limit_percent</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1.0</span><span class="w"></span>
 </code></pre></div>
 <p>The API key that you use must have the <em>Withdraw Funds</em> permission.</p>
 <p>After each trade the program will check whether you are above the fee limit and start the transfer. This way you can have your marketplace account as empty as you like.</p>
@@ -738,10 +799,10 @@
 <p><img alt="" src="../screenshot-bitstamp-api-key.png" /></p>
 </blockquote>
 <p>Put this API key into the configuration file.</p>
-<div class="highlight"><pre><span></span><code><span class="nt">bitstamp</span><span class="p">:</span>
-  <span class="nt">username</span><span class="p">:</span> <span class="s">&quot;username</span><span class="nv"> </span><span class="s">here&quot;</span>
-  <span class="nt">key</span><span class="p">:</span> <span class="s">&quot;key</span><span class="nv"> </span><span class="s">here&quot;</span>
-  <span class="nt">secret</span><span class="p">:</span> <span class="s">&quot;secret</span><span class="nv"> </span><span class="s">here&quot;</span>
+<div class="highlight"><pre><span></span><code><span class="nt">bitstamp</span><span class="p">:</span><span class="w"></span>
+<span class="w">  </span><span class="nt">username</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;username</span><span class="nv"> </span><span class="s">here&quot;</span><span class="w"></span>
+<span class="w">  </span><span class="nt">key</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;key</span><span class="nv"> </span><span class="s">here&quot;</span><span class="w"></span>
+<span class="w">  </span><span class="nt">secret</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;secret</span><span class="nv"> </span><span class="s">here&quot;</span><span class="w"></span>
 </code></pre></div>
                 
               

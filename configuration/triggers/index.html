@@ -378,20 +378,6 @@
 
             
           
-            
-              
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../telemetry/" class="md-nav__link">
-        Telemetry
-      </a>
-    </li>
-  
-
-            
-          
         </ul>
       </nav>
     </li>
@@ -405,10 +391,85 @@
   
   
   
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_4" type="checkbox" id="__nav_4" >
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_4">
+          Usage
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="Usage" data-md-level="1">
+        <label class="md-nav__title" for="__nav_4">
+          <span class="md-nav__icon md-icon"></span>
+          Usage
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
     <li class="md-nav__item">
-      <a href="../../usage/" class="md-nav__link">
-        Usage
+      <a href="../../usage/general/" class="md-nav__link">
+        General Usage
       </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../usage/test-drive/" class="md-nav__link">
+        Subcommand test-drive
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../usage/watch/" class="md-nav__link">
+        Subcommand watch
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../usage/evaluate/" class="md-nav__link">
+        Subcommand evaluate
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
     </li>
   
 
@@ -708,24 +769,24 @@
                 
                 <h1 id="triggers">Triggers</h1>
 <p>You can define as many triggers as you would like. This is done in a section <code>triggers</code>. Let us show an example first and explain all the keys below.</p>
-<div class="highlight"><pre><span></span><code><span class="nt">triggers</span><span class="p">:</span>
-<span class="p p-Indicator">-</span> <span class="nt">coin</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">btc</span>
-  <span class="nt">fiat</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">eur</span>
-  <span class="nt">cooldown_minutes</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">1440</span>
-  <span class="nt">volume_fiat</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">26.0</span>
-  <span class="nt">delay_minutes</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">1440</span>
-  <span class="nt">drop_percentage</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">10</span>
-<span class="p p-Indicator">-</span> <span class="nt">name</span><span class="p">:</span> <span class="s">&quot;Medium</span><span class="nv"> </span><span class="s">drops&quot;</span>
-  <span class="nt">coin</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">btc</span>
-  <span class="nt">fiat</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">eur</span>
-  <span class="nt">cooldown_minutes</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">1440</span>
-  <span class="nt">volume_fiat</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">26.0</span>
-  <span class="nt">delay_minutes</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">1440</span>
-  <span class="nt">drop_percentage</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">5</span>
-<span class="p p-Indicator">-</span> <span class="nt">coin</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">btc</span>
-  <span class="nt">fiat</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">eur</span>
-  <span class="nt">cooldown_minutes</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">5000</span>
-  <span class="nt">volume_fiat</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">26.0</span>
+<div class="highlight"><pre><span></span><code><span class="nt">triggers</span><span class="p">:</span><span class="w"></span>
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">coin</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">btc</span><span class="w"></span>
+<span class="w">  </span><span class="nt">fiat</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">eur</span><span class="w"></span>
+<span class="w">  </span><span class="nt">cooldown_minutes</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1440</span><span class="w"></span>
+<span class="w">  </span><span class="nt">volume_fiat</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">26.0</span><span class="w"></span>
+<span class="w">  </span><span class="nt">delay_minutes</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1440</span><span class="w"></span>
+<span class="w">  </span><span class="nt">drop_percentage</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">10</span><span class="w"></span>
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Medium</span><span class="nv"> </span><span class="s">drops&quot;</span><span class="w"></span>
+<span class="w">  </span><span class="nt">coin</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">btc</span><span class="w"></span>
+<span class="w">  </span><span class="nt">fiat</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">eur</span><span class="w"></span>
+<span class="w">  </span><span class="nt">cooldown_minutes</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1440</span><span class="w"></span>
+<span class="w">  </span><span class="nt">volume_fiat</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">26.0</span><span class="w"></span>
+<span class="w">  </span><span class="nt">delay_minutes</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1440</span><span class="w"></span>
+<span class="w">  </span><span class="nt">drop_percentage</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">5</span><span class="w"></span>
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">coin</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">btc</span><span class="w"></span>
+<span class="w">  </span><span class="nt">fiat</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">eur</span><span class="w"></span>
+<span class="w">  </span><span class="nt">cooldown_minutes</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">5000</span><span class="w"></span>
+<span class="w">  </span><span class="nt">volume_fiat</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">26.0</span><span class="w"></span>
 </code></pre></div>
 <p>There are different sub-types, but all of them have the following elements in common:</p>
 <ul>
@@ -769,7 +830,7 @@
 <li><code>percentage_fiat</code>: Percentage of fiat money to spend in each buy.</li>
 </ul>
 <h2 id="choosing-sensible-values">Choosing sensible values</h2>
-<p>But what shall I choose? What will give me the most return of investment? We don't have the truth either, but we recommend that you take a look at the evaluation interface that is linked on the <a href="../../usage/">usage</a> page. The heatmap of drops gives you a good idea of which delays and drop percentages to use. The trigger simulation gives you an idea of how often they fire, and let you choose the amount of fiat to spend.</p>
+<p>But what shall I choose? What will give me the most return of investment? We don't have the truth either, but we recommend that you take a look at the evaluation interface that is linked on the <a href="../../usage/general/">usage</a> page. The heatmap of drops gives you a good idea of which delays and drop percentages to use. The trigger simulation gives you an idea of how often they fire, and let you choose the amount of fiat to spend.</p>
 <p>You can also come to the Telegram group, see <a href="../../support/">support</a>, and ask other users for their experience.</p>
                 
               
@@ -806,13 +867,13 @@
       
       
         
-        <a href="../telemetry/" class="md-footer__link md-footer__link--next" aria-label="Next: Telemetry" rel="next">
+        <a href="../../usage/general/" class="md-footer__link md-footer__link--next" aria-label="Next: General Usage" rel="next">
           <div class="md-footer__title">
             <div class="md-ellipsis">
               <span class="md-footer__direction">
                 Next
               </span>
-              Telemetry
+              General Usage
             </div>
           </div>
           <div class="md-footer__button md-icon">
