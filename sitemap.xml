@@ -21,11 +21,6 @@
          <changefreq>daily</changefreq>
     </url>
     <url>
-         <loc>https://martin-ueding.github.io/vigilant-crypto-snatch/installation/</loc>
-         <lastmod>2022-01-16</lastmod>
-         <changefreq>daily</changefreq>
-    </url>
-    <url>
          <loc>https://martin-ueding.github.io/vigilant-crypto-snatch/license/</loc>
          <lastmod>2022-01-16</lastmod>
          <changefreq>daily</changefreq>
@@ -72,6 +67,16 @@
     </url>
     <url>
          <loc>https://martin-ueding.github.io/vigilant-crypto-snatch/dev/components/</loc>
+         <lastmod>2022-01-16</lastmod>
+         <changefreq>daily</changefreq>
+    </url>
+    <url>
+         <loc>https://martin-ueding.github.io/vigilant-crypto-snatch/installation/general/</loc>
+         <lastmod>2022-01-16</lastmod>
+         <changefreq>daily</changefreq>
+    </url>
+    <url>
+         <loc>https://martin-ueding.github.io/vigilant-crypto-snatch/installation/windows/</loc>
          <lastmod>2022-01-16</lastmod>
          <changefreq>daily</changefreq>
     </url>
