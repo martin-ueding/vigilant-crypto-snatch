@@ -21,7 +21,9 @@ theme:
 
 nav:
   - index.md
-  - installation.md
+  - Installation:
+    - installation/general.md
+    - installation/windows.md
   - Configuration:
     - configuration/general.md
     - configuration/marketplace.md

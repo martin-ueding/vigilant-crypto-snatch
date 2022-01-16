@@ -4,7 +4,7 @@
 
 The basic idea is to use the [Dollar Cost Average](https://en.wikipedia.org/wiki/Dollar_cost_averaging) effect in a bit more clever way. By buying in fixed time intervals for a certain amount of fiat currency, one can profit from a sideways moving market with fluctuations. We can try to improve on this by also actively looking for reductions in the price to buy more cryptocurrency for the same fiat amount.
 
-First you need to [install](installation.md) the software, then [configure](configuration/general.md) it. Test the program using the instructions for [running](usage/general.md), then choose a [deployment](deployment.md) strategy that suits your needs.
+First you need to [install](installation/general.md) the software, then [configure](configuration/general.md) it. Test the program using the instructions for [running](usage/general.md), then choose a [deployment](deployment.md) strategy that suits your needs.
 
 You can find the [source code on GitHub](https://github.com/martin-ueding/vigilant-crypto-snatch). Download statistics via [PyPI Stats](https://pypistats.org/packages/vigilant-crypto-snatch).
 
