@@ -1,5 +1,6 @@
 import datetime
 import os
+import pathlib
 from typing import *
 
 import sqlalchemy.ext.declarative
@@ -74,13 +75,15 @@ def trade_to_alchemy_trade(trade: Trade) -> AlchemyTrade:
 
 
 class SqlAlchemyDatastore(Datastore):
-    def __init__(self, db_path: str = ""):
-        if db_path != "":
-            if not os.path.isdir(os.path.dirname(db_path)):
-                os.makedirs(os.path.dirname(db_path))
-            assert os.path.isdir(os.path.dirname(db_path))
+    def __init__(self, db_path: pathlib.Path = None):
+        if db_path is not None:
+            if not db_path.parent.is_dir():
+                db_path.parent.mkdir(parents=True, exist_ok=True)
+            assert db_path.parent.is_dir()
+        db_full_path = "/" + str(db_path) if db_path else ""
 
-        db_url = f"sqlite://{db_path}"
+        db_url = f"sqlite://{db_full_path}"
+        logger.debug(f"Using database url {db_url}")
         try:
             engine = sqlalchemy.create_engine(db_url)
             Base.metadata.create_all(engine)
