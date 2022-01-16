@@ -15,18 +15,13 @@ from ..marketplace import make_marketplace
 from ..marketplace import report_balances
 from ..paths import user_db_path
 from ..telegram import add_telegram_logger
-from ..telemetry import make_telemetry_collector
 from ..triggers import make_triggers
-from ..triggers import TelemetryTrigger
 from ..watchloop import TriggerLoop
 
 
 def main(marketplace_name):
     run_migrations()
     config = YamlConfiguration()
-
-    telemetry_collector = make_telemetry_collector(config.get_telemetry_config())
-    telemetry_collector.send_session("Start watch")
 
     add_telegram_logger(config.get_telegram_config())
     logger.info(f"Starting up with version {__version__} …")
@@ -48,7 +43,6 @@ def main(marketplace_name):
     active_triggers = make_triggers(
         config.get_trigger_config(), datastore, caching_source, market
     )
-    active_triggers.append(TelemetryTrigger(telemetry_collector))
 
     trigger_loop = TriggerLoop(active_triggers, config.get_polling_interval())
     trigger_loop.loop()

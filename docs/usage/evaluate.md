@@ -1,58 +1,4 @@
-# Usage
-
-This page is about invoking the program in an interactive or manual way. This is the right thing if you are just configuring it and want to test it. For production use, see the page about [deployment](deployment.md).
-
-The program has a hierarchical command line interface with multiple subcommands. If you have installed it system-wide, you can just directly call it. Otherwise you might have to add `~/.local/bin` to your `PATH` variable. With the `--help` option you will see an up-to-date list of options.
-
-The general structure of a call is this:
-
-```
-vigilant-crypto-snatch [general options] subcommand [subcommand options]
-```
-
-The general options are the following:
-
-- `--loglevel`: The program can emit a lot of status output while running. You can specify a *log level* with `--loglevel LEVEL`, where `LEVEL` can be `critical`, `error`, `warning`, `info` or `debug`. The `info` level is the default and does not fill the terminal with tons of output. You can set it to `debug` if you want to have more output and want to diagnose your triggers.
-
-## Subcommand test-drive
-
-In order to check your configuration, use the `test-drive` subcommand. It will accept this option:
-
-- `--marketplace MARKETPLACE`: We support two marketplaces, you can select either `bitstamp` or `kraken`.
-
-It will test the following things:
-
-- Can the database be loaded?
-- Can we receive the balance from your marketplace? This verifies whether you have set up your private keys.
-- Can we retrieve a historical price?
-- Can your triggers be constructed?
-- Can a message be sent via Telegram, if you have set it up?
-
-If that runs through, you have a working configuration.
-
-## Subcommand watch
-
-The main command is `watch`.  It will monitor the market and place buy orders.
-
-There are a couple of command line options:
-
-- `--marketplace MARKETPLACE`: We support two marketplaces, you can select either `bitstamp` or `kraken`.
-
-When you want to quit, just press <kbd>Ctrl</kbd>+<kbd>C</kbd>.
-
-All historical price data and performed transactions will be stored in a SQLite database at `~/.local/share/vigilant-crypto-snatch/db.sqlite` (elsewhere on Windows). We sometimes change the database format between major releases. In that case it is easiest to delete the database and let the script create the new one. As there are only so few users, we don't offer proper database migrations.
-
-An example for running the script with log level info on Kraken:
-
-```
-vigilant-crypto-snatch --loglevel info watch --marketplace kraken --keepalive
-```
-
-### Nonce rejections with Kraken
-
-If you happen to get nonce errors with the Kraken marketplace, consider using less triggers for it, or modifying your API key according to [their guide](https://support.kraken.com/hc/en-us/articles/360001148063-Why-am-I-getting-Invalid-Nonce-Errors-).
-
-## Subcommand evaluate
+# Subcommand evaluate
 
 It is not inherently clear how triggers should be set. There are multiple variables that have to be tuned for *each* trigger:
 
@@ -75,7 +21,7 @@ vigilant-crypto-snatch evaluate
 
 You can then select a crypto and a fiat currency to use for the analysis. Then you can just switch between the various tools that are offered. These are described below.
 
-### Possible errors
+## Possible errors
 
 It might be possible that you cannot start the Streamlit interface. The most basic error could be an `ImportError` saying that the package `altair` or `streamlit` could not be imported. In that case you haven't installed the evaluation extra. See the installation instructions on the front page.
 
@@ -86,7 +32,7 @@ While starting it, you might get an error about too many files connected via ino
 fileWatcherType = "none"
 ```
 
-### Price tool
+## Price tool
 
 Here you can just see the prices that we got from the historical API. This is nothing special, just a plot.
 
@@ -94,7 +40,7 @@ Here you can just see the prices that we got from the historical API. This is no
 
 These plots are slightly interactive, so you can make them fullscreen and they will render with higher quality.
 
-### Trigger simulation tool
+## Trigger simulation tool
 
 You simulate triggers on historical data. You can limit the evaluation data to a given range. Unfortunately Streamlit doesn't support a range slider yet, so the numbers don't make so much sense. The actual date is shown right below and will be updated as you move the slider.
 
@@ -122,7 +68,7 @@ You also have a table with the trades that were performed.
 
 In case the trigger has not been executed once, you will of course get a message.
 
-### Drop survey tool
+## Drop survey tool
 
 Fiddling with individual triggers can be informative, but a more meta view could be very helpful. For this all sorts of drop triggers are performed, with a grid of various delays and various drop percentages.
 

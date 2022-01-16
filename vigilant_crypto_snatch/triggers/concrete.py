@@ -12,7 +12,6 @@ from ..marketplace import check_and_perform_widthdrawal
 from ..marketplace import InsufficientFundsError
 from ..marketplace import Marketplace
 from ..marketplace import report_balances
-from ..telemetry import TelemetryCollector
 from .interface import Trigger
 from .triggered_delegates import TriggeredDelegate
 from .volume_fiat_delegates import VolumeFiatDelegate
@@ -152,26 +151,6 @@ class CheckinTrigger(Trigger):
     def fire(self, now: datetime.datetime) -> None:
         logger.info("I am still here!")
         self.last_checkin = now
-
-
-class TelemetryTrigger(Trigger):
-    def __init__(self, telemetry_collector: TelemetryCollector):
-        super().__init__()
-        self.last_checkin: Optional[datetime.date] = None
-        self.telemetry_collector = telemetry_collector
-
-    def is_triggered(self, now: datetime.datetime) -> bool:
-        return True
-
-    def has_cooled_off(self, now: datetime.datetime) -> bool:
-        return self.last_checkin is None or now.date() != self.last_checkin
-
-    def get_name(self) -> str:
-        return "Telemetry Checkin"
-
-    def fire(self, now: datetime.datetime) -> None:
-        self.telemetry_collector.send_session("Watching")
-        self.last_checkin = now.date()
 
 
 class DatabaseCleaningTrigger(Trigger):

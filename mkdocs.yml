@@ -26,8 +26,11 @@ nav:
     - configuration/general.md
     - configuration/marketplace.md
     - configuration/triggers.md
-    - configuration/telemetry.md
-  - usage.md
+  - Usage:
+    - usage/general.md
+    - usage/test-drive.md
+    - usage/watch.md
+    - usage/evaluate.md
   - deployment.md
   - support.md
   - Changelog:

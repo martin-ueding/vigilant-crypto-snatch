@@ -76,6 +76,6 @@ Alternatively you can specify a percentage of the amount of fiat currency that y
 
 ## Choosing sensible values
 
-But what shall I choose? What will give me the most return of investment? We don't have the truth either, but we recommend that you take a look at the evaluation interface that is linked on the [usage](../usage.md) page. The heatmap of drops gives you a good idea of which delays and drop percentages to use. The trigger simulation gives you an idea of how often they fire, and let you choose the amount of fiat to spend.
+But what shall I choose? What will give me the most return of investment? We don't have the truth either, but we recommend that you take a look at the evaluation interface that is linked on the [usage](../usage/general.md) page. The heatmap of drops gives you a good idea of which delays and drop percentages to use. The trigger simulation gives you an idea of how often they fire, and let you choose the amount of fiat to spend.
 
 You can also come to the Telegram group, see [support](../support.md), and ask other users for their experience.
