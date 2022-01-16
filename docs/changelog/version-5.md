@@ -57,3 +57,9 @@
 - Add optional and voluntary telemetry sending via Sentry. See the configuration for details and how to enable it, if you want to.
 - Add a dark mode to the documentation.
 - Split configuration documentation onto multiple pages.
+
+### Version 5.4.1
+
+- Remove the telemetry stuff again.
+- Split usage documentation onto multiple pages.
+- Restore Windows support by only adding syslog on Linux.
