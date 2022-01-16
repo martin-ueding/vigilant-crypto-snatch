@@ -63,3 +63,7 @@
 - Remove the telemetry stuff again.
 - Split usage documentation onto multiple pages.
 - Restore Windows support by only adding syslog on Linux.
+
+### Version 5.4.2
+
+- Fix path handling to database on Windows.
