@@ -14,7 +14,7 @@ If you are not running on a Raspberry Pi with 32 bit Linux, you can also install
 sudo python3 -m pip install 'vigilant-crypto-snatch[evaluation]'
 ```
 
-If you don't want to install it system-wide, you can instead use `python3 -p pip install --user vigilant`. In that case you have to make sure that `~/.local/bin` is part of your `PATH` environment variable.
+If you don't want to install it system-wide, you can instead use `python3 -p pip install --user vigilant-crypto-snatch`. In that case you have to make sure that `~/.local/bin` is part of your `PATH` environment variable.
 
 Once you are done with the installation, go over to the [configuration](configuration/general.md).
 
@@ -38,7 +38,7 @@ $ source /tmo/vigilant-crypto-snatch-5-2-0/bin/activate
 And now you can install it via pip, as usual:
 
 ```console
-$ pip install --upgrade vigilant_crypto_snatch
+$ pip install --upgrade vigilant-crypto-snatch
 ```
 
 Whenever you want to use it, you will first need to activate the environment and then you can just call `vigilant-crypto-snatch`.
