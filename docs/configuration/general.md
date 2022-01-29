@@ -14,7 +14,7 @@ This page does not contain all the necessary configuration steps, see the naviga
 
 ## Polling interval
 
-First you should set the polling interval that the main loop should use. It will wait this many seconds before checking again. For testing we found that 5 seconds is a good value, for production use 60 seconds should be absolutely sufficient.
+First you should set the polling interval that the main loop should use. It will wait this many seconds before checking again. For testing we found that 5 seconds is a good value, for production use it doesn't need to be that fine grained. Many people use 60 seconds, but one can also use a whole hour.
 
 ```yaml
 sleep: 60
