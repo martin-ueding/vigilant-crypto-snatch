@@ -96,7 +96,7 @@ class BuyTrigger(Trigger, abc.ABC):
         except InsufficientFundsError as e:
             logger.warning(
                 f"Trigger {self.get_name()} tried to buy for {volume_fiat} {self.asset_pair.fiat}, but there are insufficient funds on the marketplace."
-                "This trigger will be paused for 24 hours."
+                " This trigger will be paused for 24 hours."
             )
             self.failure_timeout.timeout_until = now + datetime.timedelta(hours=24)
         else:
