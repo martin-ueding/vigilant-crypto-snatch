@@ -46,7 +46,6 @@ class AlternateMeFearAndGreedIndex(FearAndGreedIndex):
                 for elem in response["data"]:
                     then = datetime.date.fromtimestamp(int(elem["timestamp"]))
                     cached_values[then] = int(elem["value"])
-                print(cached_values)
             except KeyError as e:
                 raise FearAndGreedException(
                     "Data key was missing in API response"
