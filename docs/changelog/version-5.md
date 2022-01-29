@@ -67,3 +67,7 @@
 ### Version 5.4.2
 
 - Fix path handling to database on Windows.
+
+### Version 5.4.3
+
+- The database cleaning trigger would always clean all historic prices which were two hours in the past. Therefore all old prices would vanish and a lot of calls to CryptoCompare were done. This depleted the API volume needlessly.

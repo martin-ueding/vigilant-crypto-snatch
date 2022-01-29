@@ -13,7 +13,7 @@ All historical price data and performed transactions will be stored in a SQLite 
 An example for running the script with log level info on Kraken:
 
 ```
-vigilant-crypto-snatch --loglevel info watch --marketplace kraken --keepalive
+vigilant-crypto-snatch --loglevel info watch --marketplace kraken
 ```
 
 ## Nonce rejections with Kraken
