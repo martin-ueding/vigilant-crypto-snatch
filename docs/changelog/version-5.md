@@ -71,3 +71,4 @@
 ### Version 5.4.3
 
 - The database cleaning trigger would always clean all historic prices which were two hours in the past. Therefore all old prices would vanish and a lot of calls to CryptoCompare were done. This depleted the API volume needlessly.
+- The Fear and Greed index sometimes doesn't deliver a value for the current day. In this case we will try the value from yesterday. If that doesn't exist as well, the failure will just be logged, without crashing the program.
