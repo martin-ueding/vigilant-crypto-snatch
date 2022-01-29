@@ -159,6 +159,7 @@ class DatabaseCleaningTrigger(Trigger):
         self.datastore = datastore
         self.interval = interval
         self.last_cleaning = None
+        logger.debug(f"Constructed a DatabaseCleaningTrigger with interval {interval}.")
 
     def is_triggered(self, now: datetime.datetime) -> bool:
         return True

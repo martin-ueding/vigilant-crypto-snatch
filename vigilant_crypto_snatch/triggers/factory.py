@@ -99,17 +99,21 @@ def make_triggers(
     buy_triggers = make_buy_triggers(config, datastore, source, market)
     longest_cooldown = max(
         (
-            trigger.triggered_delegates.delay_minutes
-            for trigger in buy_triggers
-            if isinstance(trigger.triggered_delegates, DropTriggeredDelegate)
+            trigger_spec.delay_minutes
+            for trigger_spec in config
+            if trigger_spec.delay_minutes
         ),
-        default=120,
+        default=0,
     )
     active_triggers: List[Trigger] = list(buy_triggers)
     active_triggers.append(CheckinTrigger())
     active_triggers.append(
         DatabaseCleaningTrigger(
-            datastore, 2 * datetime.timedelta(minutes=longest_cooldown)
+            datastore,
+            max(
+                2 * datetime.timedelta(minutes=longest_cooldown),
+                datetime.timedelta(days=90),
+            ),
         )
     )
 
