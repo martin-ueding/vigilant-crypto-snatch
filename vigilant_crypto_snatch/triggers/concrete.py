@@ -23,8 +23,8 @@ class FailureTimeout(object):
 
     def __init__(self):
         self.trials = 0
-        self.last_trial = None
-        self.timeout_until = None
+        self.last_trial: Optional[datetime.datetime] = None
+        self.timeout_until: Optional[datetime.datetime] = None
 
     def start(self, now: datetime.datetime) -> None:
         self.trials += 1
@@ -40,7 +40,7 @@ class FailureTimeout(object):
         self.timeout_until = None
 
     def has_timeout(self, now: datetime.datetime) -> bool:
-        return self.timeout_until and now < self.timeout_until
+        return self.timeout_until is not None and now < self.timeout_until
 
 
 class BuyTrigger(Trigger, abc.ABC):
