@@ -755,7 +755,7 @@
 <p>When you want to quit, just press <kbd>Ctrl</kbd>+<kbd>C</kbd>.</p>
 <p>All historical price data and performed transactions will be stored in a SQLite database at <code>~/.local/share/vigilant-crypto-snatch/db.sqlite</code> (elsewhere on Windows). We sometimes change the database format between major releases. In that case it is easiest to delete the database and let the script create the new one. As there are only so few users, we don't offer proper database migrations.</p>
 <p>An example for running the script with log level info on Kraken:</p>
-<div class="highlight"><pre><span></span><code>vigilant-crypto-snatch --loglevel info watch --marketplace kraken --keepalive
+<div class="highlight"><pre><span></span><code>vigilant-crypto-snatch --loglevel info watch --marketplace kraken
 </code></pre></div>
 <h2 id="nonce-rejections-with-kraken">Nonce rejections with Kraken</h2>
 <p>If you happen to get nonce errors with the Kraken marketplace, consider using less triggers for it, or modifying your API key according to <a href="https://support.kraken.com/hc/en-us/articles/360001148063-Why-am-I-getting-Invalid-Nonce-Errors-">their guide</a>.</p>
