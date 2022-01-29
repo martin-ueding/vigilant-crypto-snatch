@@ -55,4 +55,15 @@ class AlternateMeFearAndGreedIndex(FearAndGreedIndex):
                     "Connection error to the Fear & Greed API"
                 ) from e
 
-        return cached_values[now]
+        # It seems that sometimes there is no data for the current day.
+        # This might happen in edge cases. So we just go back one day.
+        if now in cached_values:
+            return cached_values[now]
+        else:
+            yesterday = now - datetime.timedelta(days=1)
+            if yesterday in cached_values:
+                return cached_values[yesterday]
+            else:
+                raise FearAndGreedException(
+                    f"Could not find Fear and Greed index for {now} nor {yesterday}."
+                )

@@ -6,6 +6,7 @@ import typing
 
 from . import logger
 from .datastorage import DatastoreException
+from .feargreed import FearAndGreedException
 from .marketplace import BuyError
 from .marketplace import TickerError
 from .marketplace import WithdrawalError
@@ -61,6 +62,8 @@ def process_trigger(trigger: Trigger):
     except WithdrawalError as e:
         notify_and_continue(e, logging.CRITICAL)
     except DatastoreException as e:
+        notify_and_continue(e, logging.ERROR)
+    except FearAndGreedException as e:
         notify_and_continue(e, logging.ERROR)
     except KeyboardInterrupt:
         raise
