@@ -801,7 +801,7 @@
 </table>
 <p>This page does not contain all the necessary configuration steps, see the navigation for further pages on <em>marketplaces</em> and <em>triggers</em>.</p>
 <h2 id="polling-interval">Polling interval</h2>
-<p>First you should set the polling interval that the main loop should use. It will wait this many seconds before checking again. For testing we found that 5 seconds is a good value, for production use 60 seconds should be absolutely sufficient.</p>
+<p>First you should set the polling interval that the main loop should use. It will wait this many seconds before checking again. For testing we found that 5 seconds is a good value, for production use it doesn't need to be that fine grained. Many people use 60 seconds, but one can also use a whole hour.</p>
 <div class="highlight"><pre><span></span><code><span class="nt">sleep</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">60</span><span class="w"></span>
 </code></pre></div>
 <h2 id="historic-price-api">Historic price API</h2>
