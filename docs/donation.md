@@ -14,8 +14,8 @@ You can go to [our GitHub page](https://github.com/martin-ueding/vigilant-crypto
 
 There is also the possibility to send Bitcoin. Chris has set up a donation page here:
 
-```
-https://tallyco.in/s/7j4afm/
-```
+
+[Donation via Tallycoin](https://tallyco.in/s/7j4afm/)
+
 
 You can make an on-chain or Lightning donation.
