@@ -12,12 +12,10 @@ You can go to [our GitHub page](https://github.com/martin-ueding/vigilant-crypto
 
 ## Bitcoin
 
-There is also the possibility to send Bitcoin. Chris has set up a donation page, which currently is only available via the TOR browser. You need to open a TOR browser and then visit the following address using that, it does not work otherwise.
+There is also the possibility to send Bitcoin. Chris has set up a donation page here:
 
 ```
-https://5nickers.de/donate/vigilant_donation.html
+https://tallyco.in/s/7j4afm/
 ```
 
 You can make an on-chain or Lightning donation.
-
-You will be rewarded with a nice GIF at the end!
