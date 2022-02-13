@@ -38,7 +38,7 @@ $ source /tmo/vigilant-crypto-snatch-5-2-0/bin/activate
 And now you can install it via pip, as usual:
 
 ```console
-$ pip install --upgrade vigilant_crypto_snatch
+$ pip install --upgrade vigilant-crypto-snatch
 ```
 
 Whenever you want to use it, you will first need to activate the environment and then you can just call `vigilant-crypto-snatch`.
