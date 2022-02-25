@@ -19,6 +19,7 @@ class CCXTMarketplace(Marketplace):
         self.exchange = exchange_type(config.parameters)
         logger.info("Loading available markets from CCXT exchange …")
         self.markets = self.exchange.load_markets()
+        self.withdrawal_address = None
 
     def place_order(self, asset_pair: AssetPair, volume_coin: float) -> None:
         try:
@@ -48,7 +49,8 @@ class CCXTMarketplace(Marketplace):
         pass
 
     def withdrawal(self, coin: str, volume: float) -> None:
-        pass
+        if self.withdrawal_address:
+            self.exchange.withdraw(coin, volume, self.withdrawal_address)
 
 
 def get_symbol(markets: Dict[str, Dict], asset_pair: AssetPair) -> str:
