@@ -10,6 +10,7 @@ from ..configuration import Configuration
 from ..core import AssetPair
 from ..historical import CryptoCompareConfig
 from ..marketplace import BitstampConfig
+from ..marketplace import CCXTConfig
 from ..marketplace import KrakenConfig
 from ..marketplace import KrakenWithdrawalConfig
 from ..paths import config_path
@@ -64,6 +65,9 @@ class YamlConfiguration(Configuration):
         if "telegram" not in self._config:
             return None
         return TelegramConfig(**self._config["telegram"])
+
+    def get_ccxt_config(self) -> CCXTConfig:
+        return CCXTConfig(**self._config["ccxt"])
 
 
 def parse_trigger_spec(trigger_spec_dict: dict) -> TriggerSpec:

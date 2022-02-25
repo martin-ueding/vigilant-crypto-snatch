@@ -1,6 +1,7 @@
 from .factory import make_marketplace
 from .interface import BitstampConfig
 from .interface import BuyError
+from .interface import CCXTConfig
 from .interface import check_and_perform_widthdrawal
 from .interface import InsufficientFundsError
 from .interface import KrakenConfig

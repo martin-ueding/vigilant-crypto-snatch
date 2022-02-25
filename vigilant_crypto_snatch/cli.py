@@ -27,7 +27,7 @@ def main(loglevel) -> None:
 @main.command()
 @click.option(
     "--marketplace",
-    type=click.Choice(["bitstamp", "kraken"]),
+    type=click.Choice(["bitstamp", "kraken", "ccxt"]),
     default="kraken",
     show_default=True,
     help="Marketplace to place orders on.",
@@ -51,7 +51,7 @@ def evaluate() -> None:
 @main.command()
 @click.option(
     "--marketplace",
-    type=click.Choice(["bitstamp", "kraken"]),
+    type=click.Choice(["bitstamp", "kraken", "ccxt"]),
     default="kraken",
     show_default=True,
     help="Marketplace to place orders on.",

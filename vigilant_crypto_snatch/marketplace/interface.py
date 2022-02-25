@@ -30,6 +30,12 @@ class KrakenConfig:
     withdrawal: typing.Dict[str, KrakenWithdrawalConfig]
 
 
+@dataclasses.dataclass()
+class CCXTConfig:
+    exchange: str
+    parameters: dict
+
+
 class Marketplace(abc.ABC):
     def place_order(self, asset_pair: AssetPair, volume: float) -> None:
         raise NotImplementedError()  # pragma: no cover

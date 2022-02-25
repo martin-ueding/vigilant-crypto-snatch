@@ -75,6 +75,19 @@ KrakenexMarketplace --> KrakenexInterface
 
 KrakenexInterface <|.. krakenex
 
+
+component ccxt #lightskyblue
+
+class CCXTConfig {
+exchange: str
+parameters: dict
+}
+
+class CCXTMarketplace implements Marketplace
+CCXTConfig <-- CCXTMarketplace
+CCXTMarketplace --> ccxt
+CCXTMarketplace <-- marketplace::make_marketplace
+
 }
 
 @enduml

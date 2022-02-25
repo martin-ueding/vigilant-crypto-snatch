@@ -5,6 +5,7 @@ from typing import Set
 from .. import logger
 from ..historical import CryptoCompareConfig
 from ..marketplace import BitstampConfig
+from ..marketplace import CCXTConfig
 from ..marketplace import KrakenConfig
 from ..telegram import TelegramConfig
 from ..triggers import TriggerSpec
@@ -27,6 +28,9 @@ class Configuration:
         raise NotImplementedError()  # pragma: no cover
 
     def get_trigger_config(self) -> List[TriggerSpec]:
+        raise NotImplementedError()  # pragma: no cover
+
+    def get_ccxt_config(self) -> CCXTConfig:
         raise NotImplementedError()  # pragma: no cover
 
 
