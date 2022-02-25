@@ -69,6 +69,9 @@ class YamlConfiguration(Configuration):
     def get_ccxt_config(self) -> CCXTConfig:
         return CCXTConfig(**self._config["ccxt"])
 
+    def get_marketplace(self) -> str:
+        return self._config.get("marketplace", "kraken")
+
 
 def parse_trigger_spec(trigger_spec_dict: dict) -> TriggerSpec:
     cooldown_minutes = get_minutes(trigger_spec_dict, "cooldown")

@@ -1,7 +1,15 @@
  
 # Marketplaces
 
-We currently support two marketplaces, [Bitstamp](https://bitstamp.net/) and [Kraken](https://kraken.com). You only have to configure one of them, but you can also configure both. When you start the program, you can just choose which marketplace you want to use today.
+We currently support two marketplaces directly, [Bitstamp](https://bitstamp.net/) and [Kraken](https://kraken.com/). We support many more via the CCXT library. You only have to configure one of them, but you can also configure multiple.
+
+You just have to specify which marketplace you want to use via another entry in the YAML file:
+
+```yaml
+marketplace: "kraken"
+```
+
+You can specify either `kraken`, `bitstamp` or `ccxt`. The default currently is `kraken`.
 
 ## Kraken
 

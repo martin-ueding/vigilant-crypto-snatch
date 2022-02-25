@@ -23,12 +23,12 @@ from ..triggers import make_triggers
 from ..triggers import TriggerSpec
 
 
-def main(marketplace_name) -> None:
+def main() -> None:
     run_migrations()
     config = YamlConfiguration()
 
     try_database()
-    try_balance(config, marketplace_name)
+    try_balance(config, config.get_marketplace())
     try_historical(config.get_crypto_compare_config())
     try_triggers(config.get_trigger_config())
     try_telegram(config.get_telegram_config())

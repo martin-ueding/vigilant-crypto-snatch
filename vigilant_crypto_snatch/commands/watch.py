@@ -19,7 +19,7 @@ from ..triggers import make_triggers
 from ..watchloop import TriggerLoop
 
 
-def main(marketplace_name):
+def main():
     run_migrations()
     config = YamlConfiguration()
 
@@ -27,7 +27,7 @@ def main(marketplace_name):
     logger.info(f"Starting up with version {__version__} …")
 
     datastore = make_datastore(user_db_path)
-    market = make_marketplace(config, marketplace_name)
+    market = make_marketplace(config, config.get_marketplace())
     check_and_perform_widthdrawal(market)
 
     report_balances(market, get_used_currencies(config.get_trigger_config()))

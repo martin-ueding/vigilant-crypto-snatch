@@ -25,20 +25,13 @@ def main(loglevel) -> None:
 
 
 @main.command()
-@click.option(
-    "--marketplace",
-    type=click.Choice(["bitstamp", "kraken", "ccxt"]),
-    default="kraken",
-    show_default=True,
-    help="Marketplace to place orders on.",
-)
-def watch(marketplace):
+def watch():
     """
     Watch the market and execute defined triggers.
     """
     from .commands import watch
 
-    watch.main(marketplace)
+    watch.main()
 
 
 @main.command()
@@ -49,17 +42,10 @@ def evaluate() -> None:
 
 
 @main.command()
-@click.option(
-    "--marketplace",
-    type=click.Choice(["bitstamp", "kraken", "ccxt"]),
-    default="kraken",
-    show_default=True,
-    help="Marketplace to place orders on.",
-)
-def test_drive(marketplace: str) -> None:
+def test_drive() -> None:
     from .commands import testdrive
 
-    testdrive.main(marketplace)
+    testdrive.main()
 
 
 @main.command()

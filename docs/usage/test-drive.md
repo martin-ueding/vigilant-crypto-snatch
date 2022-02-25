@@ -1,8 +1,6 @@
 # Subcommand test-drive
 
-In order to check your configuration, use the `test-drive` subcommand. It will accept this option:
-
-- `--marketplace MARKETPLACE`: We support two marketplaces, you can select either `bitstamp` or `kraken`.
+In order to check your configuration, use the `test-drive` subcommand.
 
 It will test the following things:
 

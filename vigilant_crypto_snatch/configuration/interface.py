@@ -33,6 +33,9 @@ class Configuration:
     def get_ccxt_config(self) -> CCXTConfig:
         raise NotImplementedError()  # pragma: no cover
 
+    def get_marketplace(self) -> str:
+        raise NotImplementedError()  # pragma: no cover
+
 
 def get_used_currencies(config: List[TriggerSpec]) -> Set[str]:
     result = set()
