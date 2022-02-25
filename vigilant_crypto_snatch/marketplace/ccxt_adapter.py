@@ -5,8 +5,10 @@ from typing import Type
 
 import ccxt
 
+from .. import logger
 from ..core import AssetPair
 from ..core import Price
+from .interface import BuyError
 from .interface import CCXTConfig
 from .interface import Marketplace
 
@@ -15,19 +17,25 @@ class CCXTMarketplace(Marketplace):
     def __init__(self, config: CCXTConfig):
         exchange_type: Type[ccxt.Exchange] = getattr(ccxt, config.exchange)
         self.exchange = exchange_type(config.parameters)
+        logger.info("Loading available markets from CCXT exchange …")
         self.markets = self.exchange.load_markets()
 
-    def place_order(self, asset_pair: AssetPair, volume: float) -> None:
-        volume_coin = (
-            volume / self.get_spot_price(asset_pair, datetime.datetime.now()).last
-        )
-        self.exchange.create_market_order(
-            symbol=get_symbol(self.markets, asset_pair), side="buy", amount=volume_coin
-        )
+    def place_order(self, asset_pair: AssetPair, volume_coin: float) -> None:
+        try:
+            self.exchange.create_market_order(
+                symbol=get_symbol(self.markets, asset_pair),
+                side="buy",
+                amount=volume_coin,
+            )
+        except ccxt.base.errors.InvalidOrder as e:
+            raise BuyError("Order was invalid") from e
 
     def get_spot_price(self, asset_pair: AssetPair, now: datetime.datetime) -> Price:
-        response = self.exchange.fetch_ticker(get_symbol(self.markets, asset_pair))
-        return response["last"]
+        response: dict = self.exchange.fetch_ticker(
+            get_symbol(self.markets, asset_pair)
+        )
+        result = Price(timestamp=now, last=response["last"], asset_pair=asset_pair)
+        return result
 
     def get_name(self) -> str:
         return f"{self.exchange.name} via CCXT"
