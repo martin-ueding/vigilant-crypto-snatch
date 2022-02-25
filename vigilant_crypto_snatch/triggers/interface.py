@@ -30,3 +30,22 @@ class TriggerSpec:
     percentage_fiat: Optional[float] = None
     start: Optional[datetime.datetime] = None
     fear_and_greed_index_below: Optional[int] = None
+
+    def __post_init__(self):
+        if self.cooldown_minutes <= 0:
+            raise InvalidTriggerSpec("The cooldown must be a positive number.")
+        if self.delay_minutes is not None and self.delay_minutes <= 0:
+            raise InvalidTriggerSpec("The delay must be a positive number.")
+
+        if self.drop_percentage and not self.delay_minutes:
+            raise InvalidTriggerSpec(
+                "You have specified a drop percentage, but not a delay."
+            )
+        if not self.drop_percentage and self.delay_minutes:
+            raise InvalidTriggerSpec(
+                "You have specified a delay, but not a drop percentage."
+            )
+
+
+class InvalidTriggerSpec(Exception):
+    pass

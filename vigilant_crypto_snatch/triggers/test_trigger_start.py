@@ -20,7 +20,6 @@ def drop_trigger_with_start() -> BuyTrigger:
         asset_pair=AssetPair("BTC", "EUR"),
         volume_fiat=10.0,
         cooldown_minutes=10,
-        delay_minutes=10,
         start=datetime.datetime(2021, 7, 16),
     )
     result = make_buy_trigger(datastore, source, market, trigger_spec)
