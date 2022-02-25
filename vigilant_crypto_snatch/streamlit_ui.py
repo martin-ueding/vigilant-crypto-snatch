@@ -227,14 +227,25 @@ def make_time_slider(sidebar_settings: SidebarSettings):
 def sub_trade_report(sidebar_settings: SidebarSettings) -> None:
     st.title("Trades Report")
 
-    trades = get_user_trades_df()
-    if trades is None:
+    all_trades = get_user_trades_df()
+    if all_trades is None:
         st.markdown("No user database could be found, therefore nothing can be shown.")
         return
 
     st.markdown(
         "Here you can find all the trades that have been made with the program."
     )
+
+    unique_currency_pairs = all_trades[["coin", "fiat"]].drop_duplicates()
+    currency_pairs = [
+        row["coin"] + "/" + row["fiat"]
+        for index, row in unique_currency_pairs.iterrows()
+    ]
+    selected = st.selectbox("Asset pair", currency_pairs)
+    i = currency_pairs.index(selected)
+    coin = unique_currency_pairs.iloc[i]["coin"]
+    fiat = unique_currency_pairs.iloc[i]["fiat"]
+    trades = all_trades.loc[(all_trades["coin"] == coin) & (all_trades["fiat"] == fiat)]
 
     st.markdown("# Table")
     st.dataframe(
