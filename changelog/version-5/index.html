@@ -707,6 +707,13 @@
   
 </li>
       
+        <li class="md-nav__item">
+  <a href="#version-550" class="md-nav__link">
+    Version 5.5.0
+  </a>
+  
+</li>
+      
     </ul>
   
 </nav>
@@ -963,6 +970,13 @@
   
 </li>
       
+        <li class="md-nav__item">
+  <a href="#version-550" class="md-nav__link">
+    Version 5.5.0
+  </a>
+  
+</li>
+      
     </ul>
   
 </nav>
@@ -1053,6 +1067,12 @@
 <h3 id="version-544">Version 5.4.4</h3>
 <ul>
 <li>The <code>krakenex</code> library would sometimes also raise a <code>requests.exceptions.ReadTimeout</code>, which was not caught. The program would crash. This exception type is now caught as well.</li>
+</ul>
+<h2 id="version-550">Version 5.5.0</h2>
+<ul>
+<li>The CCXT library is now supported and gives access to more over a 100 more exchanges.</li>
+<li>Add an asset pair selector in the trade overview panel in the evaluation interface. Also add documentation for the trade overview.</li>
+<li>It is now an error when either drop percentage or delay is given, but not both at the same time. Previously this would have lead to a simple delay trigger, although the user likely wanted to have a drop trigger. The error message will make it clear that users have to update their configuration.</li>
 </ul>
                 
               

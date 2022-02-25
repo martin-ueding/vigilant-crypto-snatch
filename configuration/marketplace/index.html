@@ -395,6 +395,13 @@
   
 </li>
       
+        <li class="md-nav__item">
+  <a href="#other-exchanges-via-ccxt" class="md-nav__link">
+    Other exchanges via CCXT
+  </a>
+  
+</li>
+      
     </ul>
   
 </nav>
@@ -787,6 +794,13 @@
   
 </li>
       
+        <li class="md-nav__item">
+  <a href="#other-exchanges-via-ccxt" class="md-nav__link">
+    Other exchanges via CCXT
+  </a>
+  
+</li>
+      
     </ul>
   
 </nav>
@@ -801,7 +815,11 @@
                 
                 
                 <h1 id="marketplaces">Marketplaces</h1>
-<p>We currently support two marketplaces, <a href="https://bitstamp.net/">Bitstamp</a> and <a href="https://kraken.com">Kraken</a>. You only have to configure one of them, but you can also configure both. When you start the program, you can just choose which marketplace you want to use today.</p>
+<p>We currently support two marketplaces directly, <a href="https://bitstamp.net/">Bitstamp</a> and <a href="https://kraken.com/">Kraken</a>. We support many more via the CCXT library. You only have to configure one of them, but you can also configure multiple.</p>
+<p>You just have to specify which marketplace you want to use via another entry in the YAML file:</p>
+<div class="highlight"><pre><span></span><code><span class="nt">marketplace</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;kraken&quot;</span><span class="w"></span>
+</code></pre></div>
+<p>You can specify either <code>kraken</code>, <code>bitstamp</code> or <code>ccxt</code>. The default currently is <code>kraken</code>.</p>
 <h2 id="kraken">Kraken</h2>
 <p>Go to the <a href="https://www.kraken.com/u/security/api">Kraken API key page</a> and create an API key which has the permission to trade.</p>
 <p>There you need to create a new API key:</p>
@@ -850,6 +868,15 @@
 <span class="w">  </span><span class="nt">username</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;username</span><span class="nv"> </span><span class="s">here&quot;</span><span class="w"></span>
 <span class="w">  </span><span class="nt">key</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;key</span><span class="nv"> </span><span class="s">here&quot;</span><span class="w"></span>
 <span class="w">  </span><span class="nt">secret</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;secret</span><span class="nv"> </span><span class="s">here&quot;</span><span class="w"></span>
+</code></pre></div>
+<h2 id="other-exchanges-via-ccxt">Other exchanges via CCXT</h2>
+<p>Via the <a href="https://github.com/ccxt/ccxt">CCXT library</a> we also support a <a href="https://docs.ccxt.com/en/latest/exchange-markets.html">long list of exchanges</a>. We don't fully wrap the CCXT library but rather expose it to the user. This way you can use all the exchanges directly without us having to change this software at all. The caveat is that it is not directly clear what the configuration parameters should be. Likely most exchanges expect <code>apiKey</code> and <code>secret</code>.</p>
+<p>In our configuration file you specify a block for <code>ccxt</code> and then name the exchange you want to use, taken from their list of exchanges. In the <code>parameters</code> section you specify the necessary parameters. We will pass those directly to CCXT.</p>
+<div class="highlight"><pre><span></span><code><span class="nt">ccxt</span><span class="p">:</span><span class="w"></span>
+<span class="w">  </span><span class="nt">exchange</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">kraken</span><span class="w"></span>
+<span class="w">  </span><span class="nt">parameters</span><span class="p">:</span><span class="w"></span>
+<span class="w">    </span><span class="nt">apiKey</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;…&quot;</span><span class="w"></span>
+<span class="w">    </span><span class="nt">secret</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;…&quot;</span><span class="w"></span>
 </code></pre></div>
                 
               
