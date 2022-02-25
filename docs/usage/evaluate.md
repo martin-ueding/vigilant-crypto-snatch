@@ -87,3 +87,31 @@ Likely there will be one really dark area. This is an artefact from a single lar
 Use this plot to get a general sense of fluctuations in the market and which triggers would fire often and form a good base strategy. In the above image, having a trigger at around 10 % and 24 hours delay seems to be a reasonable choice.
 
 You might still want to include some really ambitious triggers such that you can realize large gains. For instance having one for 25 % within 48 hours could be a good idea.
+
+## Trade overview
+
+When you use the evaluation interface locally with your database, you can also see an overview over all the recorded trades from the software.
+
+There is one plot similar to the one shown by investment portfolio services. You can see the value of your bought coins and the spent fiat over time. The spent money is with the solid line, the value of your coins in the solid area. The plot is only updated when there is another trade, it doesn't try to look up historical prices in between.
+
+![](evaluation-value-investment.svg)
+
+Then there is an overview over the amount of fiat that was spent over the months:
+
+![](evaluations-fiat-month.svg)
+
+This can help you to keep your budget in check and potentially reduce the triggers a bit.
+
+### Value with current price
+
+Then we have plots which are potentially confusing because they compare historic investments with the current price. This means that the plots will change whenever you look at them again. It makes it a bit hard to evaluate the strategy, but perhaps they can be useful still.
+
+One is with the gains from each trigger execution, compared to the current price:
+
+![](evaluation-gains-individual.svg)
+
+And also grouped by month:
+
+![](evaluation-gains-month.svg)
+
+Depending on the current price, everything will be shift up or down. It will change historic benefits as well. Likely the first plot is the easiest to understand.
