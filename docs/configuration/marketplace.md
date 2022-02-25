@@ -75,3 +75,17 @@ bitstamp:
   key: "key here"
   secret: "secret here"
 ```
+
+## Other exchanges via CCXT
+
+Via the [CCXT library](https://github.com/ccxt/ccxt) we also support a [long list of exchanges](https://docs.ccxt.com/en/latest/exchange-markets.html). We don't fully wrap the CCXT library but rather expose it to the user. This way you can use all the exchanges directly without us having to change this software at all. The caveat is that it is not directly clear what the configuration parameters should be. Likely most exchanges expect `apiKey` and `secret`.
+
+In our configuration file you specify a block for `ccxt` and then name the exchange you want to use, taken from their list of exchanges. In the `parameters` section you specify the necessary parameters. We will pass those directly to CCXT.
+
+```yaml
+ccxt:
+  exchange: kraken
+  parameters:
+    apiKey: "…"
+    secret: "…"
+```
