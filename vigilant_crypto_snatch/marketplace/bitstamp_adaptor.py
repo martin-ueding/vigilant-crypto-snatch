@@ -20,10 +20,10 @@ class BitstampMarketplace(Marketplace):
             username=config.username, key=config.key, secret=config.secret
         )
 
-    def place_order(self, asset_pair: AssetPair, volume: float) -> None:
+    def place_order(self, asset_pair: AssetPair, volume_coin: float) -> None:
         try:
             response = self.trading_client.buy_market_order(
-                volume, base=asset_pair.coin, quote=asset_pair.fiat
+                volume_coin, base=asset_pair.coin, quote=asset_pair.fiat
             )
             pprint.pprint(response, compact=True, width=100)
         except bitstamp.client.BitstampError as e:

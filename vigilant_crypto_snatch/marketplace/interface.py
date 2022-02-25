@@ -37,7 +37,7 @@ class CCXTConfig:
 
 
 class Marketplace(abc.ABC):
-    def place_order(self, asset_pair: AssetPair, volume: float) -> None:
+    def place_order(self, asset_pair: AssetPair, volume_coin: float) -> None:
         raise NotImplementedError()  # pragma: no cover
 
     def get_spot_price(self, asset_pair: AssetPair, now: datetime.datetime) -> Price:

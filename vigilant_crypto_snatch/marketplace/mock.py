@@ -15,7 +15,7 @@ class MockMarketplace(Marketplace):
     def get_balance(self) -> dict:
         return self.balances
 
-    def place_order(self, asset_pair: AssetPair, volume: float) -> None:
+    def place_order(self, asset_pair: AssetPair, volume_coin: float) -> None:
         self.orders += 1
 
     def get_name(self) -> str:

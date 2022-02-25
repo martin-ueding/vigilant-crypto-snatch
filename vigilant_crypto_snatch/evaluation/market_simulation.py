@@ -22,7 +22,7 @@ class SimulationMarketplace(Marketplace):
         super().__init__()
         self.source = source
 
-    def place_order(self, asset_pair: AssetPair, volume: float) -> None:
+    def place_order(self, asset_pair: AssetPair, volume_coin: float) -> None:
         pass
 
     def get_name(self) -> str:

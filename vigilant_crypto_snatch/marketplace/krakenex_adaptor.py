@@ -105,12 +105,12 @@ class KrakenexMarketplace(Marketplace):
         else:
             return {}
 
-    def place_order(self, asset_pair: AssetPair, volume: float) -> None:
+    def place_order(self, asset_pair: AssetPair, volume_coin: float) -> None:
         arguments = {
             "pair": f"{map_normal_to_kraken(asset_pair.coin)}{asset_pair.fiat}",
             "ordertype": "market",
             "type": f"buy",
-            "volume": str(volume),
+            "volume": str(volume_coin),
             "oflags": "fcib" if self.prefer_fee_in_base_currency else "fciq",
         }
         try:
