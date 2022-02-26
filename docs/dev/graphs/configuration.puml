@@ -7,10 +7,13 @@ component yaml #lightskyblue
 component dateutil #lightskyblue
 
 interface Configuration {
-    get_polling_interval()
+    get_bitstamp_config()
+    get_ccxt_config()
     get_crypto_compare_config()
     get_kraken_config()
-    get_bitstamp_config()
+    get_marketplace()
+    get_notify_run_config()
+    get_polling_interval()
     get_telegram_config()
     get_trigger_config()
 }
@@ -20,8 +23,9 @@ class YamlConfiguration implements Configuration
 historical.CryptoCompareConfig <-- Configuration
 marketplace.KrakenConfig <-- Configuration
 marketplace.BitstampConfig <-- Configuration
-telegram.TelegramConfig <-- Configuration
+notifications.TelegramConfig <-- Configuration
 triggers.TriggerSpec <-- Configuration
+notifications.NotifyRunConfig <-- Configuration
 
 YamlConfiguration --> dateutil
 YamlConfiguration --> yaml

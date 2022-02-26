@@ -1,0 +1,26 @@
+@startmindmap
+<style>
+mindmapDiagram {
+    node
+    :depth(2) {
+      BackGroundColor lightskyblue
+    }
+}
+</style>
+
+*[#white] Vigilant Crypto Snatch
+** Marketplace
+*** Kraken
+*** Bitstamp
+*** (Via CCXT)
+** Historical
+*** Crypto Compare
+** Fear and Greed
+*** Fear and Greed
+
+left side
+
+** Notifications
+*** Telegram
+*** notify.run
+@endmindmap

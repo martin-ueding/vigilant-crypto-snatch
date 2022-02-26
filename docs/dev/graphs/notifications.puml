@@ -44,5 +44,15 @@ paths.Paths <-- TelegramSender
 
 class MockSender implements Sender
 
+class NotifyRunSender implements Sender
+
+class NotifyRunConfig {
+channel: str
+level: str
+}
+
+NotifyRunConfig <-- NotifyRunSender
+myrequests.MyRequests <-- NotifyRunSender
+
 }
 @enduml

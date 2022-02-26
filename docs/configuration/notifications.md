@@ -44,7 +44,9 @@ If the Telegram bot token is set up correctly, you will receive messages like th
 
 ## notify.run
 
-The service [notify.run](https://notify.run/) offers free notifications which are very simple to set up. Go to their website, click on “create a channel”. It will give you a channel ID, which you need to add to the configuration file like so:
+The service [notify.run](https://notify.run/) offers free notifications which are very simple to set up. One does not need to register, one can just create a new channel. They recommend to not send private data the service. As I understand it, if somebody was to guess the channel ID (unlikely), they would be able to see all notifications. Also, it is not clear where the data is stored and for how long. 
+
+Go to their website, click on “create a channel”. It will give you a channel ID, which you need to add to the configuration file like so:
 
 ```yml
 notify_run:
