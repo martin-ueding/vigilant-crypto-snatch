@@ -14,7 +14,7 @@ class MessageQueue(object):
         self.running = True
         self.queue: List[str] = []
         self.cv = threading.Condition()
-        self.thread = threading.Thread(target=self.watch_queue)
+        self.thread = threading.Thread(target=self._watch_queue)
         self.thread.start()
 
     def queue_message(self, message: str) -> None:
@@ -23,11 +23,8 @@ class MessageQueue(object):
                 self.queue.append(message)
             self.cv.notify()
 
-    def has_messages(self) -> bool:
+    def _has_messages(self) -> bool:
         return len(self.queue) > 0
-
-    def wait_predicate(self) -> bool:
-        return self.running or self.has_messages()
 
     def shutdown(self) -> None:
         logger.debug("Telegram Sender has received shutdown.")
@@ -35,15 +32,15 @@ class MessageQueue(object):
         with self.cv:
             self.cv.notify()
 
-    def watch_queue(self) -> None:
+    def _watch_queue(self) -> None:
         while self.running:
             with self.cv:
-                while not self.has_messages():
+                while not self._has_messages():
                     self.cv.wait()
                     if not self.running:
                         break
 
-                while self.has_messages():
+                while self._has_messages():
                     try:
                         message = self.queue[0]
                         self.sender.send_message(message)
