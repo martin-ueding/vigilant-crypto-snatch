@@ -1,5 +1,5 @@
-from .sender import chunk_message
-from .sender import split_long_line
+from .message_utils import chunk_message
+from .message_utils import split_long_line
 
 
 def test_chunk_message() -> None:

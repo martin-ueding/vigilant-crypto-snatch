@@ -82,3 +82,4 @@
 - The CCXT library is now supported and gives access to more over a 100 more exchanges.
 - Add an asset pair selector in the trade overview panel in the evaluation interface. Also add documentation for the trade overview.
 - It is now an error when either drop percentage or delay is given, but not both at the same time. Previously this would have lead to a simple delay trigger, although the user likely wanted to have a drop trigger. The error message will make it clear that users have to update their configuration.
+- The `--marketplace` command line option has been removed, the marketplace is now chosen via an entry in the configuration file.

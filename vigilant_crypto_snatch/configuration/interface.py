@@ -7,7 +7,7 @@ from ..historical import CryptoCompareConfig
 from ..marketplace import BitstampConfig
 from ..marketplace import CCXTConfig
 from ..marketplace import KrakenConfig
-from ..telegram import TelegramConfig
+from ..notifications import TelegramConfig
 from ..triggers import TriggerSpec
 
 

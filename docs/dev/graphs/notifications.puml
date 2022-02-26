@@ -2,7 +2,7 @@
 
 allowmixing
 
-namespace telegram {
+namespace notifications {
 
 class TelegramConfig {
     token: str
@@ -10,28 +10,36 @@ class TelegramConfig {
     chat_id: Optional[int]
 }
 
-class TelegramLogger extends python.logging.Handler {
+class RemoteLogger extends python.logging.Handler {
 format()
 emit()
 }
 
-class TelegramBotException
+class RemoteLoggerException
 
-class TelegramSender {
+class MessageQueue {
     queue_message()
     has_messages()
     wait_predicate()
     shutdown()
     watch_queue()
-    get_chat_id()
+}
+
+interface Sender {
     send_message()
+}
+
+MessageQueue -> Sender
+
+class TelegramSender implements Sender {
+    get_chat_id()
 }
 
 TelegramConfig <-- TelegramSender
 
-TelegramLogger -> TelegramSender
+RemoteLogger -> MessageQueue
 myrequests.MyRequests <-- TelegramSender
-TelegramSender -> TelegramBotException
+TelegramSender -> RemoteLoggerException
 paths.Paths <-- TelegramSender
 
 }

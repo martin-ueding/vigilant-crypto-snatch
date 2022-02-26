@@ -13,8 +13,8 @@ from ..marketplace import BitstampConfig
 from ..marketplace import CCXTConfig
 from ..marketplace import KrakenConfig
 from ..marketplace import KrakenWithdrawalConfig
+from ..notifications import TelegramConfig
 from ..paths import config_path
-from ..telegram import TelegramConfig
 from ..triggers import TriggerSpec
 
 

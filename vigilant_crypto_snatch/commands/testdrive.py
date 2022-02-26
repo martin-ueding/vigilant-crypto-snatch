@@ -16,9 +16,10 @@ from ..historical import MockHistorical
 from ..marketplace import make_marketplace
 from ..marketplace import MockMarketplace
 from ..marketplace import report_balances
+from ..notifications import MessageQueue
+from ..notifications import TelegramConfig
+from ..notifications import TelegramSender
 from ..paths import user_db_path
-from ..telegram import TelegramConfig
-from ..telegram import TelegramSender
 from ..triggers import make_triggers
 from ..triggers import TriggerSpec
 
@@ -64,10 +65,10 @@ def try_triggers(config: List[TriggerSpec]) -> None:
     make_triggers(config, datastore, caching_source, market)
 
 
-def try_telegram(config: Optional[TelegramConfig]) -> None:
+def try_telegram(telegram_config: Optional[TelegramConfig]) -> None:
     logger.info("Trying to send a message to Telegram …")
-    if config:
-        telegram_sender = TelegramSender(config)
+    if telegram_config:
+        telegram_sender = MessageQueue(TelegramSender(telegram_config))
         telegram_sender.queue_message("Telegram is set up correctly!")
         telegram_sender.shutdown()
     else:
