@@ -10,7 +10,7 @@ The configuration file needs to be created with a (programmer's) text editor. We
 | Windows | `C:\Users\<User>\Application Data\Martin Ueding\vigilant-crypto-snatch\config.yml` |
 | macOS | `~/Library/Application Support/vigilant-crypto-snatch/config.yml`
 
-This page does not contain all the necessary configuration steps, see the navigation for further pages on _marketplaces_ and _triggers_.
+This page does not contain all the necessary configuration steps, see the navigation for further pages on _marketplaces_, _triggers_ and _notifications_.
 
 ## Polling interval
 
@@ -36,42 +36,3 @@ In the configuration file then add the following:
 cryptocompare:
   api_key: "your API key here"
 ```
-
-## Telegram notifications
-
-Optionally you can set up notifications via Telegram. This is not required, but a nice extra to allow monitoring from anywhere.
-
-First you have to create a bot by talking to [@botfather](https://t.me/botfather). It will lead you through a couple of steps:
-
-1. Type `/start` to initiate the bot creation.
-2. Then type `/newbot` to create your bot.
-3. It will ask you for the name of the bot. You can just use “vigilant-crypto-snatch” or something else.
-4. Next it will ask for a username of the bot. This is a technical thing, so it doesn't need to be pretty. It needs to be unique and end with `bot`. So perhaps use something like `vigilant_0f8704a83991_bot`, where you just make up your own random letters.
-
-It will give you an access token that you can use for the API. Enter that token into the configuration file:
-
-```yaml
-telegram:
-  token: "Your bot token here"
-  level: info
-```
-
-You will need to write a message to the bot in order to open a direct conversation with it. This is necessary such that the bot can reply to you.
-
-The `level` specified the messages that you want to receive. `info` gives sensible information, if you only want to receive information when something goes wrong, use `warning`. See the section in [running](../usage/general.md) for more details.
-
-If the Telegram bot token is set up correctly, you will receive messages like this:
-
-> ![](telegram-output.png)
-
-The severity of messages is color-coded with an emoji according to this mapping:
-
-Symbol | Severity
-:---: | :---
-🔴 | Critical
-🟠 | Error
-🟡 | Warning
-🟢 | Info
-🔵 | Debug
-
-The logging level is set to *Info* by default.

@@ -13,6 +13,7 @@ from ..marketplace import BitstampConfig
 from ..marketplace import CCXTConfig
 from ..marketplace import KrakenConfig
 from ..marketplace import KrakenWithdrawalConfig
+from ..notifications import NotifyRunConfig
 from ..notifications import TelegramConfig
 from ..paths import config_path
 from ..triggers import TriggerSpec
@@ -71,6 +72,11 @@ class YamlConfiguration(Configuration):
 
     def get_marketplace(self) -> str:
         return self._config.get("marketplace", "kraken")
+
+    def get_notify_run_config(self) -> Optional[NotifyRunConfig]:
+        if "notify_run" not in self._config:
+            return None
+        return NotifyRunConfig(**self._config["notify_run"])
 
 
 def parse_trigger_spec(trigger_spec_dict: dict) -> TriggerSpec:

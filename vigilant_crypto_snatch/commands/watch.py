@@ -13,6 +13,7 @@ from ..historical import MarketSource
 from ..marketplace import check_and_perform_widthdrawal
 from ..marketplace import make_marketplace
 from ..marketplace import report_balances
+from ..notifications import add_notify_run_logger
 from ..notifications import add_telegram_logger
 from ..paths import user_db_path
 from ..triggers import make_triggers
@@ -24,6 +25,7 @@ def main():
     config = YamlConfiguration()
 
     add_telegram_logger(config.get_telegram_config())
+    add_notify_run_logger(config.get_notify_run_config())
     logger.info(f"Starting up with version {__version__} …")
 
     datastore = make_datastore(user_db_path)

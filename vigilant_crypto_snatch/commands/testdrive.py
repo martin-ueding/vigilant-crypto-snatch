@@ -16,9 +16,10 @@ from ..historical import MockHistorical
 from ..marketplace import make_marketplace
 from ..marketplace import MockMarketplace
 from ..marketplace import report_balances
-from ..notifications import MessageQueue
+from ..notifications import NotifyRunConfig
 from ..notifications import TelegramConfig
 from ..notifications import TelegramSender
+from ..notifications.notify_run import NotifyRunSender
 from ..paths import user_db_path
 from ..triggers import make_triggers
 from ..triggers import TriggerSpec
@@ -33,6 +34,7 @@ def main() -> None:
     try_historical(config.get_crypto_compare_config())
     try_triggers(config.get_trigger_config())
     try_telegram(config.get_telegram_config())
+    try_notify_run(config.get_notify_run_config())
 
     print("Success! Everything seems to be configured correctly.")
 
@@ -68,8 +70,16 @@ def try_triggers(config: List[TriggerSpec]) -> None:
 def try_telegram(telegram_config: Optional[TelegramConfig]) -> None:
     logger.info("Trying to send a message to Telegram …")
     if telegram_config:
-        telegram_sender = MessageQueue(TelegramSender(telegram_config))
-        telegram_sender.queue_message("Telegram is set up correctly!")
-        telegram_sender.shutdown()
+        telegram_sender = TelegramSender(telegram_config)
+        telegram_sender.send_message("Telegram is set up correctly! 🎉")
     else:
         logger.warning("You have not set up Telegram, so I cannot test it.")
+
+
+def try_notify_run(config: Optional[NotifyRunConfig]) -> None:
+    logger.info("Trying to send a message to notify.run …")
+    if config:
+        sender = NotifyRunSender(config)
+        sender.send_message("notify.run is set up correctly! 🎉")
+    else:
+        logger.warning("You have not set up notify.run, so I cannot test it.")

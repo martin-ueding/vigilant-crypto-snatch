@@ -28,6 +28,7 @@ nav:
     - configuration/general.md
     - configuration/marketplace.md
     - configuration/triggers.md
+    - configuration/notifications.md
   - Usage:
     - usage/general.md
     - usage/test-drive.md

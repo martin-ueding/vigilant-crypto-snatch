@@ -42,5 +42,7 @@ myrequests.MyRequests <-- TelegramSender
 TelegramSender -> RemoteLoggerException
 paths.Paths <-- TelegramSender
 
+class MockSender implements Sender
+
 }
 @enduml

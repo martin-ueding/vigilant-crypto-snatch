@@ -7,6 +7,7 @@ from ..historical import CryptoCompareConfig
 from ..marketplace import BitstampConfig
 from ..marketplace import CCXTConfig
 from ..marketplace import KrakenConfig
+from ..notifications import NotifyRunConfig
 from ..notifications import TelegramConfig
 from ..triggers import TriggerSpec
 
@@ -34,6 +35,9 @@ class Configuration:
         raise NotImplementedError()  # pragma: no cover
 
     def get_marketplace(self) -> str:
+        raise NotImplementedError()  # pragma: no cover
+
+    def get_notify_run_config(self) -> Optional[NotifyRunConfig]:
         raise NotImplementedError()  # pragma: no cover
 
 

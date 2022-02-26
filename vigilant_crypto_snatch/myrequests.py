@@ -7,6 +7,14 @@ class HttpRequestError(Exception):
     pass
 
 
+def perform_post_request(url, data) -> None:
+    r = requests.post(url, data=data)
+    if r.status_code != 200:
+        raise HttpRequestError(
+            f"The HTTP API has not returned a success: {r.status_code}"
+        )
+
+
 def perform_http_request(url, json=None) -> Dict:
     try:
         if json:
