@@ -87,3 +87,4 @@
 ## Version 5.6.0
 
 - Add support for notifications via notify.run to provide an alternative to Telegram.
+- Also catch `HTTPError` in the krakenex wrapper.
