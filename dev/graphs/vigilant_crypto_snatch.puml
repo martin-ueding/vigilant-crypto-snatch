@@ -10,8 +10,8 @@
 !include feargreed.puml
 !include historical.puml
 !include marketplace.puml
+!include notifications.puml
 !include paths.puml
-!include telegram.puml
 !include triggers.puml
 
 @enduml

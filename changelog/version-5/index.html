@@ -347,6 +347,20 @@
 
             
           
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../configuration/notifications/" class="md-nav__link">
+        Notifications
+      </a>
+    </li>
+  
+
+            
+          
         </ul>
       </nav>
     </li>
@@ -714,6 +728,13 @@
   
 </li>
       
+        <li class="md-nav__item">
+  <a href="#version-560" class="md-nav__link">
+    Version 5.6.0
+  </a>
+  
+</li>
+      
     </ul>
   
 </nav>
@@ -977,6 +998,13 @@
   
 </li>
       
+        <li class="md-nav__item">
+  <a href="#version-560" class="md-nav__link">
+    Version 5.6.0
+  </a>
+  
+</li>
+      
     </ul>
   
 </nav>
@@ -1073,6 +1101,12 @@
 <li>The CCXT library is now supported and gives access to more over a 100 more exchanges.</li>
 <li>Add an asset pair selector in the trade overview panel in the evaluation interface. Also add documentation for the trade overview.</li>
 <li>It is now an error when either drop percentage or delay is given, but not both at the same time. Previously this would have lead to a simple delay trigger, although the user likely wanted to have a drop trigger. The error message will make it clear that users have to update their configuration.</li>
+<li>The <code>--marketplace</code> command line option has been removed, the marketplace is now chosen via an entry in the configuration file.</li>
+</ul>
+<h2 id="version-560">Version 5.6.0</h2>
+<ul>
+<li>Add support for notifications via notify.run to provide an alternative to Telegram.</li>
+<li>Also catch <code>HTTPError</code> in the krakenex wrapper.</li>
 </ul>
                 
               

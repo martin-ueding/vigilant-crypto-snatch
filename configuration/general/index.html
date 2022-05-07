@@ -361,13 +361,6 @@
   
 </li>
       
-        <li class="md-nav__item">
-  <a href="#telegram-notifications" class="md-nav__link">
-    Telegram notifications
-  </a>
-  
-</li>
-      
     </ul>
   
 </nav>
@@ -399,6 +392,20 @@
     <li class="md-nav__item">
       <a href="../triggers/" class="md-nav__link">
         Triggers
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../notifications/" class="md-nav__link">
+        Notifications
       </a>
     </li>
   
@@ -754,13 +761,6 @@
   
 </li>
       
-        <li class="md-nav__item">
-  <a href="#telegram-notifications" class="md-nav__link">
-    Telegram notifications
-  </a>
-  
-</li>
-      
     </ul>
   
 </nav>
@@ -799,7 +799,7 @@
 </tr>
 </tbody>
 </table>
-<p>This page does not contain all the necessary configuration steps, see the navigation for further pages on <em>marketplaces</em> and <em>triggers</em>.</p>
+<p>This page does not contain all the necessary configuration steps, see the navigation for further pages on <em>marketplaces</em>, <em>triggers</em> and <em>notifications</em>.</p>
 <h2 id="polling-interval">Polling interval</h2>
 <p>First you should set the polling interval that the main loop should use. It will wait this many seconds before checking again. For testing we found that 5 seconds is a good value, for production use it doesn't need to be that fine grained. Many people use 60 seconds, but one can also use a whole hour.</p>
 <div class="highlight"><pre><span></span><code><span class="nt">sleep</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">60</span><span class="w"></span>
@@ -817,58 +817,6 @@
 <div class="highlight"><pre><span></span><code><span class="nt">cryptocompare</span><span class="p">:</span><span class="w"></span>
 <span class="w">  </span><span class="nt">api_key</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;your</span><span class="nv"> </span><span class="s">API</span><span class="nv"> </span><span class="s">key</span><span class="nv"> </span><span class="s">here&quot;</span><span class="w"></span>
 </code></pre></div>
-<h2 id="telegram-notifications">Telegram notifications</h2>
-<p>Optionally you can set up notifications via Telegram. This is not required, but a nice extra to allow monitoring from anywhere.</p>
-<p>First you have to create a bot by talking to <a href="https://t.me/botfather">@botfather</a>. It will lead you through a couple of steps:</p>
-<ol>
-<li>Type <code>/start</code> to initiate the bot creation.</li>
-<li>Then type <code>/newbot</code> to create your bot.</li>
-<li>It will ask you for the name of the bot. You can just use “vigilant-crypto-snatch” or something else.</li>
-<li>Next it will ask for a username of the bot. This is a technical thing, so it doesn't need to be pretty. It needs to be unique and end with <code>bot</code>. So perhaps use something like <code>vigilant_0f8704a83991_bot</code>, where you just make up your own random letters.</li>
-</ol>
-<p>It will give you an access token that you can use for the API. Enter that token into the configuration file:</p>
-<div class="highlight"><pre><span></span><code><span class="nt">telegram</span><span class="p">:</span><span class="w"></span>
-<span class="w">  </span><span class="nt">token</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Your</span><span class="nv"> </span><span class="s">bot</span><span class="nv"> </span><span class="s">token</span><span class="nv"> </span><span class="s">here&quot;</span><span class="w"></span>
-<span class="w">  </span><span class="nt">level</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">info</span><span class="w"></span>
-</code></pre></div>
-<p>You will need to write a message to the bot in order to open a direct conversation with it. This is necessary such that the bot can reply to you.</p>
-<p>The <code>level</code> specified the messages that you want to receive. <code>info</code> gives sensible information, if you only want to receive information when something goes wrong, use <code>warning</code>. See the section in <a href="../../usage/general/">running</a> for more details.</p>
-<p>If the Telegram bot token is set up correctly, you will receive messages like this:</p>
-<blockquote>
-<p><img alt="" src="../telegram-output.png" /></p>
-</blockquote>
-<p>The severity of messages is color-coded with an emoji according to this mapping:</p>
-<table>
-<thead>
-<tr>
-<th align="center">Symbol</th>
-<th align="left">Severity</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td align="center">🔴</td>
-<td align="left">Critical</td>
-</tr>
-<tr>
-<td align="center">🟠</td>
-<td align="left">Error</td>
-</tr>
-<tr>
-<td align="center">🟡</td>
-<td align="left">Warning</td>
-</tr>
-<tr>
-<td align="center">🟢</td>
-<td align="left">Info</td>
-</tr>
-<tr>
-<td align="center">🔵</td>
-<td align="left">Debug</td>
-</tr>
-</tbody>
-</table>
-<p>The logging level is set to <em>Info</em> by default.</p>
                 
               
               

@@ -1,0 +1,58 @@
+@startuml
+
+allowmixing
+
+namespace notifications {
+
+class TelegramConfig {
+    token: str
+    level: str
+    chat_id: Optional[int]
+}
+
+class RemoteLogger extends python.logging.Handler {
+format()
+emit()
+}
+
+class RemoteLoggerException
+
+class MessageQueue {
+    queue_message()
+    has_messages()
+    wait_predicate()
+    shutdown()
+    watch_queue()
+}
+
+interface Sender {
+    send_message()
+}
+
+MessageQueue -> Sender
+
+class TelegramSender implements Sender {
+    get_chat_id()
+}
+
+TelegramConfig <-- TelegramSender
+
+RemoteLogger -> MessageQueue
+myrequests.MyRequests <-- TelegramSender
+TelegramSender -> RemoteLoggerException
+paths.Paths <-- TelegramSender
+
+class MockSender implements Sender
+
+class NotifyRunSender implements Sender
+
+class NotifyRunConfig {
+channel: str
+level: str
+}
+
+NotifyRunConfig <-- NotifyRunSender
+myrequests.MyRequests <-- NotifyRunSender
+
+}
+@enduml
