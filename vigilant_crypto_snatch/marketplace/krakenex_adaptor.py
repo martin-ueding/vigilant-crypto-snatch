@@ -80,6 +80,8 @@ class KrakenexMarketplace(Marketplace):
             raise HttpRequestError("Connection error in Kraken Ticker") from e
         except requests.exceptions.ReadTimeout as e:
             raise HttpRequestError("Read timeout in Kraken Ticker") from e
+        except requests.exceptions.HTTPError as e:
+            raise HttpRequestError("HTTP error in Kraken Ticker") from e
         raise_error(answer, TickerError)
         close = float(list(answer["result"].values())[0]["c"][0])
         logger.debug(
@@ -95,6 +97,8 @@ class KrakenexMarketplace(Marketplace):
             raise HttpRequestError("Connection error in Kraken Balance") from e
         except requests.exceptions.ReadTimeout as e:
             raise HttpRequestError("Read timeout in Kraken Balance") from e
+        except requests.exceptions.HTTPError as e:
+            raise HttpRequestError("HTTP error in Kraken Ticker") from e
         raise_error(answer, TickerError)
         # The key `result` will only be present if the user has any balances.
         if "result" in answer:
@@ -119,6 +123,8 @@ class KrakenexMarketplace(Marketplace):
             raise HttpRequestError("Connection error in Kraken AddOrder") from e
         except requests.exceptions.ReadTimeout as e:
             raise HttpRequestError("Read timeout in Kraken AddOrder") from e
+        except requests.exceptions.HTTPError as e:
+            raise HttpRequestError("HTTP error in Kraken Ticker") from e
         raise_error(answer, BuyError)
 
     def get_withdrawal_fee(self, coin: str, volume: float) -> float:
@@ -136,6 +142,8 @@ class KrakenexMarketplace(Marketplace):
             raise HttpRequestError("Connection error in Kraken WithdrawInfo") from e
         except requests.exceptions.ReadTimeout as e:
             raise HttpRequestError("Read timeout in Kraken WithdrawInfo") from e
+        except requests.exceptions.HTTPError as e:
+            raise HttpRequestError("HTTP error in Kraken Ticker") from e
         raise_error(answer, WithdrawalError)
         fee = float(answer["result"]["fee"])
         logger.debug(f"Withdrawal fee for {coin} is {fee} {coin}.")
@@ -166,6 +174,8 @@ class KrakenexMarketplace(Marketplace):
                 raise HttpRequestError("Connection error in Kraken Withdraw") from e
             except requests.exceptions.ReadTimeout as e:
                 raise HttpRequestError("Read timeout in Kraken Withdraw") from e
+            except requests.exceptions.HTTPError as e:
+                raise HttpRequestError("HTTP error in Kraken Ticker") from e
             raise_error(answer, WithdrawalError)
         else:
             logger.debug(
