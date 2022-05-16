@@ -57,7 +57,6 @@ class ConfigurationTab(QWidget):
         self.setLayout(layout)
 
         self.general_panel = GeneralPanel()
-
         layout.addWidget(self.general_panel)
         layout.addWidget(CryptoComparePanel())
         layout.addWidget(MarketplacePane())
@@ -81,7 +80,11 @@ class ConfigurationTabController:
 
     def save(self) -> None:
         config_dict = {}
-        config_dict.update(self.general_panel_controller.get_config())
+        try:
+            config_dict.update(self.general_panel_controller.get_config())
+        except RuntimeError as e:
+            print(e)
+            return
         print(config_dict)
 
 
@@ -100,7 +103,14 @@ class GeneralPanelController:
         self.general_panel = general_panel
 
     def get_config(self) -> Dict:
-        return {"sleep": self.general_panel.poll_interval_edit.text()}
+        text = self.general_panel.poll_interval_edit.text()
+        try:
+            sleep = int(text)
+        except ValueError as e:
+            raise RuntimeError(
+                f"Cannot parse input {text}. Make sure that it is an integer."
+            ) from e
+        return {"sleep": sleep}
 
 
 class CryptoComparePanel(QGroupBox):
