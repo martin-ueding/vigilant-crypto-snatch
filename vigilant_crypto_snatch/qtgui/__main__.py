@@ -11,7 +11,7 @@ from PyQt6.QtWidgets import QPushButton
 from PyQt6.QtWidgets import QSlider
 from PyQt6.QtWidgets import QTabWidget
 from PyQt6.QtWidgets import QVBoxLayout
-from PyQt6.QtWidgets import QWidget, QScrollArea, QComboBox, QFormLayout
+from PyQt6.QtWidgets import QWidget, QScrollArea, QComboBox, QFormLayout, QGroupBox
 
 
 class MainWindow(QWidget):
@@ -42,55 +42,51 @@ class ConfigurationTab(QWidget):
         layout = QVBoxLayout()
         self.setLayout(layout)
 
-        label_general = QLabel("General")
-        label_general.setStyleSheet('font-weight: bold;')
-        layout.addWidget(label_general)
-
-        general_pane = QWidget()
-        general_layout = QVBoxLayout()
-        general_pane.setLayout(general_layout)
-
-        general_layout_poll = QHBoxLayout()
-        general_layout_poll.addWidget(QLabel("Poll interval (seconds):"))
-        general_layout_poll.addWidget(QLineEdit())
-        general_layout.addLayout(general_layout_poll)
-        layout.addWidget(general_pane)
-
-
-        heading = QLabel("Marketplace")
-        layout.addWidget(heading)
-        heading.setStyleSheet('font-weight: bold;')
-
+        layout.addWidget(GeneralPanel())
         layout.addWidget(MarketplacePane())
-
-
-
-        heading = QLabel("Telegram")
-        layout.addWidget(heading)
-        heading.setStyleSheet('font-weight: bold;')
-        layout.addLayout(TelegramPane())
-
-
-        heading = QLabel("Crypto Compare")
-        layout.addWidget(heading)
-        heading.setStyleSheet('font-weight: bold;')
-
-        crypto_compare_layout = QFormLayout()
-        crypto_compare_layout.addRow(QLabel("API key:"), QLineEdit())
-        layout.addLayout(crypto_compare_layout)
+        layout.addWidget(TelegramPane())
+        layout.addWidget(CryptoComparePanel())
 
         layout.addWidget(QPushButton("Save"))
         layout.addWidget(QPushButton("Test drive"))
 
-
-class MarketplacePane(QWidget):
+class GeneralPanel(QGroupBox):
     def __init__(self):
         super().__init__()
+        self.setTitle("General")
+        layout = QFormLayout()
+        self.setLayout(layout)
+        layout.addRow(QLabel("Poll interval (seconds):"), QLineEdit())
+
+class CryptoComparePanel(QGroupBox):
+    def __init__(self):
+        super().__init__()
+        self.setTitle("Crypto Compare")
+        layout = QFormLayout()
+        self.setLayout(layout)
+        layout.addRow(QLabel("API key:"), QLineEdit())
+
+
+class KrakenPane(QWidget):
+    def __init__(self):
+        super().__init__()
+        layout = QFormLayout()
+        self.setLayout(layout)
+
+        layout.addRow(QLabel("API Key:"), QLineEdit())
+        layout.addRow(QLabel("API Secret:"), QLineEdit())
+        layout.addRow(QLabel("Prefer fee in base currency:"), QCheckBox())
+
+
+class MarketplacePane(QGroupBox):
+    def __init__(self):
+        super().__init__()
+        self.setTitle("Marketplace")
         layout = QVBoxLayout()
         self.setLayout(layout)
 
         tabs = QTabWidget()
-        tab1 = QWidget()
+        tab1 = KrakenPane()
         tab2 = QWidget()
         tab3 = QWidget()
 
@@ -104,37 +100,27 @@ class MarketplacePane(QWidget):
         tab1_layout = QVBoxLayout()
         tab1.setLayout(tab1_layout)
 
-        layout_api_key = QHBoxLayout()
-        layout_api_key.addWidget(QLabel("API Key:"))
-        layout_api_key.addWidget(QLineEdit())
-        tab1_layout.addLayout(layout_api_key)
-
-        layout_api_secret = QHBoxLayout()
-        layout_api_secret.addWidget(QLabel("API Secret:"))
-        layout_api_secret.addWidget(QLineEdit())
-        tab1_layout.addLayout(layout_api_secret)
-
-        layout_fee = QHBoxLayout()
-        layout_fee.addWidget(QLabel("Prefer fee in base currency:"))
-        layout_fee.addWidget(QCheckBox())
-        tab1_layout.addLayout(layout_fee)
-
         #layout.addWidget(QLabel("Withdrawal"))
 
 
-class TelegramPane(QFormLayout):
+class TelegramPane(QGroupBox):
     def __init__(self):
         super().__init__()
 
-        self.addRow(QLabel("Token:"), QLineEdit())
-        self.addRow(QLabel("Chat ID:"), QLineEdit())
+        self.setTitle("Telegram")
+
+        layout = QFormLayout()
+        self.setLayout(layout)
+
+        layout.addRow(QLabel("Token:"), QLineEdit())
+        layout.addRow(QLabel("Chat ID:"), QLineEdit())
 
         log_level_combo_box = QComboBox()
         log_level_combo_box.addItem("info")
         log_level_combo_box.addItem("warning")
         log_level_combo_box.addItem("error")
         log_level_combo_box.addItem("critical")
-        self.addRow(QLabel("Log level:"), log_level_combo_box)
+        layout.addRow(QLabel("Log level:"), log_level_combo_box)
 
 def main():
     app = QApplication(sys.argv)
