@@ -22,7 +22,8 @@ class ConfigurationTab(QWidget):
         layout.addWidget(self.general_panel)
         self.crypto_compare_panel = CryptoComparePanel()
         layout.addWidget(self.crypto_compare_panel)
-        layout.addWidget(MarketplacePane())
+        self.marketplace_pane = MarketplacePane()
+        layout.addWidget(self.marketplace_pane)
         layout.addWidget(TriggerPane())
         self.telegram_panel = TelegramPane()
         layout.addWidget(self.telegram_panel)
@@ -59,9 +60,13 @@ class KrakenPane(QWidget):
         layout = QFormLayout()
         self.setLayout(layout)
 
-        layout.addRow(QLabel("API Key:"), QLineEdit())
-        layout.addRow(QLabel("API Secret:"), QLineEdit())
-        layout.addRow(QLabel("Prefer fee in base currency:"), QCheckBox())
+        self.api_key = QLineEdit()
+        self.api_secret = QLineEdit()
+        self.prefer_fee = QCheckBox()
+
+        layout.addRow(QLabel("API Key:"), self.api_key)
+        layout.addRow(QLabel("API Secret:"), self.api_secret)
+        layout.addRow(QLabel("Prefer fee in base currency:"), self.prefer_fee)
 
 
 class MarketplacePane(QGroupBox):
@@ -71,20 +76,18 @@ class MarketplacePane(QGroupBox):
         layout = QVBoxLayout()
         self.setLayout(layout)
 
+        self.kraken_pane = KrakenPane()
+
         tabs = QTabWidget()
-        tab1 = KrakenPane()
         tab2 = QWidget()
         tab3 = QWidget()
 
         # Add tabs
-        tabs.addTab(tab1, "Kraken")
+        tabs.addTab(self.kraken_pane, "Kraken")
         tabs.addTab(tab2, "Bitstamp")
         tabs.addTab(tab3, "CCXT")
 
         layout.addWidget(tabs)
-
-        tab1_layout = QVBoxLayout()
-        tab1.setLayout(tab1_layout)
 
         # layout.addWidget(QLabel("Withdrawal"))
 

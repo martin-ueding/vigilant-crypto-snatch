@@ -1,28 +1,32 @@
 from typing import Dict
 
+from ...configuration import Configuration
 from ...configuration import YamlConfiguration
 from ...historical import CryptoCompareConfig
+from ...marketplace import KrakenConfig
 from ...notifications import TelegramConfig
 from ..ui.configuration import ConfigurationTab
 from ..ui.configuration import CryptoComparePanel
 from ..ui.configuration import GeneralPanel
+from ..ui.configuration import KrakenPane
+from ..ui.configuration import MarketplacePane
 from ..ui.configuration import TelegramPane
 
 
 class ConfigurationTabController:
-    def __init__(self, widget: ConfigurationTab):
-        self.widget = widget
-        self.general_panel_controller = GeneralPanelController(
-            self.widget.general_panel
-        )
+    def __init__(self, ui: ConfigurationTab):
+        self.ui = ui
+
+        self.general_panel_controller = GeneralPanelController(ui.general_panel)
         self.crypto_compare_panel_controller = CryptoComparePanelController(
-            self.widget.crypto_compare_panel
+            ui.crypto_compare_panel
         )
-        self.telegram_pane_controller = TelegramPaneController(
-            self.widget.telegram_panel
+        self.telegram_pane_controller = TelegramPaneController(ui.telegram_panel)
+        self.marketplace_pane_controller = MarketplacePaneController(
+            ui.marketplace_pane
         )
 
-        self.widget.save_button.clicked.connect(self.save)
+        ui.save_button.clicked.connect(self.save)
 
         self.populate_ui()
 
@@ -46,6 +50,7 @@ class ConfigurationTabController:
             config.get_crypto_compare_config()
         )
         self.telegram_pane_controller.populate_ui(config.get_telegram_config())
+        self.marketplace_pane_controller.populate_ui(config)
 
 
 class GeneralPanelController:
@@ -102,3 +107,23 @@ class TelegramPaneController:
             self.ui.chat_id_line_edit.setText(str(config.chat_id))
         self.ui.token_line_edit.setText(config.token)
         self.ui.log_level_combo_box.setCurrentText(config.level)
+
+
+class MarketplacePaneController:
+    def __init__(self, ui: MarketplacePane):
+        self.ui = ui
+
+        self.kraken_pane_controller = KrakenPaneController(self.ui.kraken_pane)
+
+    def populate_ui(self, config: Configuration):
+        self.kraken_pane_controller.populate_ui(config.get_kraken_config())
+
+
+class KrakenPaneController:
+    def __init__(self, ui: KrakenPane):
+        self.ui = ui
+
+    def populate_ui(self, config: KrakenConfig):
+        self.ui.api_key.setText(config.key)
+        self.ui.api_secret.setText(config.secret)
+        self.ui.prefer_fee.setChecked(config.prefer_fee_in_base_currency)
