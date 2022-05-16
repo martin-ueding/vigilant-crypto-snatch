@@ -68,7 +68,7 @@ class ConfigurationTab(QWidget):
         heading = QLabel("Telegram")
         layout.addWidget(heading)
         heading.setStyleSheet('font-weight: bold;')
-        layout.addWidget(TelegramPane())
+        layout.addLayout(TelegramPane())
 
 
         heading = QLabel("Crypto Compare")
@@ -88,7 +88,6 @@ class MarketplacePane(QWidget):
         super().__init__()
         layout = QVBoxLayout()
         self.setLayout(layout)
-
 
         tabs = QTabWidget()
         tab1 = QWidget()
@@ -123,24 +122,19 @@ class MarketplacePane(QWidget):
         #layout.addWidget(QLabel("Withdrawal"))
 
 
-class TelegramPane(QWidget):
+class TelegramPane(QFormLayout):
     def __init__(self):
         super().__init__()
-        layout = QVBoxLayout()
-        self.setLayout(layout)
 
-        form_layout = QFormLayout()
-        layout.addLayout(form_layout)
-
-        form_layout.addRow(QLabel("Token:"), QLineEdit())
-        form_layout.addRow(QLabel("Chat ID:"), QLineEdit())
+        self.addRow(QLabel("Token:"), QLineEdit())
+        self.addRow(QLabel("Chat ID:"), QLineEdit())
 
         log_level_combo_box = QComboBox()
         log_level_combo_box.addItem("info")
         log_level_combo_box.addItem("warning")
         log_level_combo_box.addItem("error")
         log_level_combo_box.addItem("critical")
-        form_layout.addRow(QLabel("Log level:"), log_level_combo_box)
+        self.addRow(QLabel("Log level:"), log_level_combo_box)
 
 def main():
     app = QApplication(sys.argv)
