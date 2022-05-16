@@ -1,4 +1,5 @@
 import sys
+from typing import Dict
 
 from PyQt6.QtCore import Qt
 from PyQt6.QtGui import QIcon
@@ -55,7 +56,9 @@ class ConfigurationTab(QWidget):
         layout = QVBoxLayout()
         self.setLayout(layout)
 
-        layout.addWidget(GeneralPanel())
+        self.general_panel = GeneralPanel()
+
+        layout.addWidget(self.general_panel)
         layout.addWidget(CryptoComparePanel())
         layout.addWidget(MarketplacePane())
         layout.addWidget(TriggerPane())
@@ -70,11 +73,16 @@ class ConfigurationTab(QWidget):
 class ConfigurationTabController:
     def __init__(self, widget: ConfigurationTab):
         self.widget = widget
+        self.general_panel_controller = GeneralPanelController(
+            self.widget.general_panel
+        )
 
         self.widget.save_button.clicked.connect(self.save)
 
     def save(self) -> None:
-        print("Save!")
+        config_dict = {}
+        config_dict.update(self.general_panel_controller.get_config())
+        print(config_dict)
 
 
 class GeneralPanel(QGroupBox):
@@ -91,8 +99,8 @@ class GeneralPanelController:
     def __init__(self, general_panel: GeneralPanel):
         self.general_panel = general_panel
 
-    def poll_interval_changed(self):
-        self.general_panel.poll_interval_edit.text()
+    def get_config(self) -> Dict:
+        return {"sleep": self.general_panel.poll_interval_edit.text()}
 
 
 class CryptoComparePanel(QGroupBox):
