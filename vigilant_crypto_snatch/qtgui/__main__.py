@@ -11,7 +11,7 @@ from PyQt6.QtWidgets import QPushButton
 from PyQt6.QtWidgets import QSlider
 from PyQt6.QtWidgets import QTabWidget
 from PyQt6.QtWidgets import QVBoxLayout
-from PyQt6.QtWidgets import QWidget, QScrollArea, QComboBox, QFormLayout, QGroupBox
+from PyQt6.QtWidgets import QWidget, QScrollArea, QComboBox, QFormLayout, QGroupBox, QListWidget
 
 
 class MainWindow(QWidget):
@@ -108,9 +108,22 @@ class MarketplacePane(QGroupBox):
 class TriggerPane(QGroupBox):
     def __init__(self):
         super().__init__()
-        self.setTitle("Trigger")
-        layout = QFormLayout()
+        self.setTitle("Triggers")
+        layout = QVBoxLayout()
         self.setLayout(layout)
+
+        list = QListWidget()
+        layout.addWidget(list)
+
+        list.addItem("Large Drops")
+        list.addItem("Small Drops")
+        list.addItem("Regular Buys")
+
+        button_layout = QHBoxLayout()
+        button_layout.addWidget(QPushButton("Add"))
+        button_layout.addWidget(QPushButton("Edit"))
+        button_layout.addWidget(QPushButton("Delete"))
+        layout.addLayout(button_layout)
 
 class TelegramPane(QGroupBox):
     def __init__(self):
