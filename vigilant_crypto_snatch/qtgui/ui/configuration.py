@@ -20,10 +20,12 @@ class ConfigurationTab(QWidget):
 
         self.general_panel = GeneralPanel()
         layout.addWidget(self.general_panel)
-        layout.addWidget(CryptoComparePanel())
+        self.crypto_compare_panel = CryptoComparePanel()
+        layout.addWidget(self.crypto_compare_panel)
         layout.addWidget(MarketplacePane())
         layout.addWidget(TriggerPane())
-        layout.addWidget(TelegramPane())
+        self.telegram_panel = TelegramPane()
+        layout.addWidget(self.telegram_panel)
 
         self.save_button = QPushButton("Save")
 
@@ -37,7 +39,7 @@ class GeneralPanel(QGroupBox):
         self.setTitle("General")
         layout = QFormLayout()
         self.setLayout(layout)
-        self.poll_interval_edit = QLineEdit()
+        self.poll_interval_edit = QLineEdit("60")
         layout.addRow(QLabel("Poll interval (seconds):"), self.poll_interval_edit)
 
 
@@ -47,7 +49,8 @@ class CryptoComparePanel(QGroupBox):
         self.setTitle("Crypto Compare")
         layout = QFormLayout()
         self.setLayout(layout)
-        layout.addRow(QLabel("API key:"), QLineEdit())
+        self.api_key_line_edit = QLineEdit()
+        layout.addRow(QLabel("API key:"), self.api_key_line_edit)
 
 
 class KrakenPane(QWidget):
@@ -114,12 +117,15 @@ class TelegramPane(QGroupBox):
         layout = QFormLayout()
         self.setLayout(layout)
 
-        layout.addRow(QLabel("Token:"), QLineEdit())
-        layout.addRow(QLabel("Chat ID:"), QLineEdit())
+        self.token_line_edit = QLineEdit()
+        self.chat_id_line_edit = QLineEdit()
+        self.log_level_combo_box = QComboBox()
 
-        log_level_combo_box = QComboBox()
-        log_level_combo_box.addItem("info")
-        log_level_combo_box.addItem("warning")
-        log_level_combo_box.addItem("error")
-        log_level_combo_box.addItem("critical")
-        layout.addRow(QLabel("Log level:"), log_level_combo_box)
+        layout.addRow(QLabel("Token:"), self.token_line_edit)
+        layout.addRow(QLabel("Chat ID:"), self.chat_id_line_edit)
+
+        self.log_level_combo_box.addItem("info")
+        self.log_level_combo_box.addItem("warning")
+        self.log_level_combo_box.addItem("error")
+        self.log_level_combo_box.addItem("critical")
+        layout.addRow(QLabel("Log level:"), self.log_level_combo_box)
