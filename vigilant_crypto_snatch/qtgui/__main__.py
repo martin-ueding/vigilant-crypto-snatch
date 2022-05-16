@@ -43,9 +43,10 @@ class ConfigurationTab(QWidget):
         self.setLayout(layout)
 
         layout.addWidget(GeneralPanel())
-        layout.addWidget(MarketplacePane())
-        layout.addWidget(TelegramPane())
         layout.addWidget(CryptoComparePanel())
+        layout.addWidget(MarketplacePane())
+        layout.addWidget(TriggerPane())
+        layout.addWidget(TelegramPane())
 
         layout.addWidget(QPushButton("Save"))
         layout.addWidget(QPushButton("Test drive"))
@@ -57,6 +58,7 @@ class GeneralPanel(QGroupBox):
         layout = QFormLayout()
         self.setLayout(layout)
         layout.addRow(QLabel("Poll interval (seconds):"), QLineEdit())
+
 
 class CryptoComparePanel(QGroupBox):
     def __init__(self):
@@ -103,12 +105,17 @@ class MarketplacePane(QGroupBox):
         #layout.addWidget(QLabel("Withdrawal"))
 
 
+class TriggerPane(QGroupBox):
+    def __init__(self):
+        super().__init__()
+        self.setTitle("Trigger")
+        layout = QFormLayout()
+        self.setLayout(layout)
+
 class TelegramPane(QGroupBox):
     def __init__(self):
         super().__init__()
-
         self.setTitle("Telegram")
-
         layout = QFormLayout()
         self.setLayout(layout)
 
