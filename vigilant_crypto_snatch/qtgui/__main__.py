@@ -4,14 +4,19 @@ from PyQt6.QtCore import Qt
 from PyQt6.QtGui import QIcon
 from PyQt6.QtWidgets import QApplication
 from PyQt6.QtWidgets import QCheckBox
+from PyQt6.QtWidgets import QComboBox
+from PyQt6.QtWidgets import QFormLayout
+from PyQt6.QtWidgets import QGroupBox
 from PyQt6.QtWidgets import QHBoxLayout
 from PyQt6.QtWidgets import QLabel
 from PyQt6.QtWidgets import QLineEdit
+from PyQt6.QtWidgets import QListWidget
 from PyQt6.QtWidgets import QPushButton
+from PyQt6.QtWidgets import QScrollArea
 from PyQt6.QtWidgets import QSlider
 from PyQt6.QtWidgets import QTabWidget
 from PyQt6.QtWidgets import QVBoxLayout
-from PyQt6.QtWidgets import QWidget, QScrollArea, QComboBox, QFormLayout, QGroupBox, QListWidget
+from PyQt6.QtWidgets import QWidget
 
 
 class MainWindow(QWidget):
@@ -24,16 +29,24 @@ class MainWindow(QWidget):
         # Initialize tab screen
         self.tabs = QTabWidget()
         self.tab1 = QWidget()
-        self.tab2 = ConfigurationTab()
+        self.configuration_tab = ConfigurationTab()
         self.tab3 = QWidget()
         self.tabs.resize(400, 400)
 
         # Add tabs
-        self.tabs.addTab(self.tab2, "Configuration")
+        self.tabs.addTab(self.configuration_tab, "Configuration")
         self.tabs.addTab(self.tab1, "Status")
         self.tabs.addTab(self.tab3, "About")
 
         layout.addWidget(self.tabs)
+
+
+class MainWindowController:
+    def __init__(self, main_window: MainWindow):
+        self.main_window = main_window
+        self.configuration_tab_controller = ConfigurationTabController(
+            self.main_window.configuration_tab
+        )
 
 
 class ConfigurationTab(QWidget):
@@ -48,8 +61,21 @@ class ConfigurationTab(QWidget):
         layout.addWidget(TriggerPane())
         layout.addWidget(TelegramPane())
 
-        layout.addWidget(QPushButton("Save"))
+        self.save_button = QPushButton("Save")
+
+        layout.addWidget(self.save_button)
         layout.addWidget(QPushButton("Test drive"))
+
+
+class ConfigurationTabController:
+    def __init__(self, widget: ConfigurationTab):
+        self.widget = widget
+
+        self.widget.save_button.clicked.connect(self.save)
+
+    def save(self) -> None:
+        print("Save!")
+
 
 class GeneralPanel(QGroupBox):
     def __init__(self):
@@ -57,7 +83,16 @@ class GeneralPanel(QGroupBox):
         self.setTitle("General")
         layout = QFormLayout()
         self.setLayout(layout)
-        layout.addRow(QLabel("Poll interval (seconds):"), QLineEdit())
+        self.poll_interval_edit = QLineEdit()
+        layout.addRow(QLabel("Poll interval (seconds):"), self.poll_interval_edit)
+
+
+class GeneralPanelController:
+    def __init__(self, general_panel: GeneralPanel):
+        self.general_panel = general_panel
+
+    def poll_interval_changed(self):
+        self.general_panel.poll_interval_edit.text()
 
 
 class CryptoComparePanel(QGroupBox):
@@ -102,7 +137,7 @@ class MarketplacePane(QGroupBox):
         tab1_layout = QVBoxLayout()
         tab1.setLayout(tab1_layout)
 
-        #layout.addWidget(QLabel("Withdrawal"))
+        # layout.addWidget(QLabel("Withdrawal"))
 
 
 class TriggerPane(QGroupBox):
@@ -125,6 +160,7 @@ class TriggerPane(QGroupBox):
         button_layout.addWidget(QPushButton("Delete"))
         layout.addLayout(button_layout)
 
+
 class TelegramPane(QGroupBox):
     def __init__(self):
         super().__init__()
@@ -142,9 +178,11 @@ class TelegramPane(QGroupBox):
         log_level_combo_box.addItem("critical")
         layout.addRow(QLabel("Log level:"), log_level_combo_box)
 
+
 def main():
     app = QApplication(sys.argv)
     window = MainWindow()
+    controller = MainWindowController(window)
     window.show()
     sys.exit(app.exec())
 
