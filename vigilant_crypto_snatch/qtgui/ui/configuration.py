@@ -39,7 +39,7 @@ class GeneralPanel(QGroupBox):
         self.setTitle("General")
         layout = QFormLayout()
         self.setLayout(layout)
-        self.poll_interval_edit = QLineEdit("60")
+        self.poll_interval_edit = QLineEdit("30")
         layout.addRow(QLabel("Poll interval (seconds):"), self.poll_interval_edit)
 
 

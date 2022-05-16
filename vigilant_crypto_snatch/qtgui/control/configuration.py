@@ -1,5 +1,6 @@
 from typing import Dict
 
+from ...configuration import YamlConfiguration
 from ...historical import CryptoCompareConfig
 from ...notifications import TelegramConfig
 from ..ui.configuration import ConfigurationTab
@@ -23,6 +24,8 @@ class ConfigurationTabController:
 
         self.widget.save_button.clicked.connect(self.save)
 
+        self.populate_ui()
+
     def save(self) -> None:
         config_dict = {}
         try:
@@ -36,13 +39,17 @@ class ConfigurationTabController:
             return
         print(config_dict)
 
+    def populate_ui(self) -> None:
+        config = YamlConfiguration()
+        self.general_panel_controller.populate_ui(config.get_polling_interval())
+
 
 class GeneralPanelController:
     def __init__(self, general_panel: GeneralPanel):
-        self.general_panel = general_panel
+        self.ui = general_panel
 
     def get_config(self) -> Dict:
-        text = self.general_panel.poll_interval_edit.text()
+        text = self.ui.poll_interval_edit.text()
         try:
             sleep = int(text)
         except ValueError as e:
@@ -50,6 +57,9 @@ class GeneralPanelController:
                 f"Cannot parse input {text}. Make sure that it is an integer."
             ) from e
         return {"sleep": sleep}
+
+    def populate_ui(self, polling_inverval: int) -> None:
+        self.ui.poll_interval_edit.setText(str(polling_inverval))
 
 
 class CryptoComparePanelController:
