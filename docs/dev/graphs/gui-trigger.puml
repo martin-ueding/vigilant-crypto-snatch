@@ -1,0 +1,19 @@
+@startsalt
+{
+    = Edit Trigger
+    {
+        Name: | "Large Drops"
+        Coin: | "BTC"
+        Fiat: | "EUR"
+        Cooldown: | {"3" | ^days^}
+        Volume fiat: | {"26" | ^absolute^}
+    }
+    == Trigger conditions
+    {
+        [X] Drop: | {"15" | % w.r.t. | "14" | ^days^ | earlier}
+        [X] Fear & Greed: | "50"
+    }
+    ..
+    [Save]
+}
+@endsalt
