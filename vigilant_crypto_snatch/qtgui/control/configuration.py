@@ -42,6 +42,10 @@ class ConfigurationTabController:
     def populate_ui(self) -> None:
         config = YamlConfiguration()
         self.general_panel_controller.populate_ui(config.get_polling_interval())
+        self.crypto_compare_panel_controller.populate_ui(
+            config.get_crypto_compare_config()
+        )
+        self.telegram_pane_controller.populate_ui(config.get_telegram_config())
 
 
 class GeneralPanelController:
@@ -70,13 +74,31 @@ class CryptoComparePanelController:
         api_key = self.ui.api_key_line_edit.text()
         return CryptoCompareConfig(api_key)
 
+    def populate_ui(self, config: CryptoCompareConfig) -> None:
+        self.ui.api_key_line_edit.setText(config.api_key)
+
 
 class TelegramPaneController:
     def __init__(self, ui: TelegramPane):
         self.ui = ui
 
     def get_config(self) -> TelegramConfig:
-        chat_id = self.ui.chat_id_line_edit.text()
+        chat_id_text = self.ui.chat_id_line_edit.text()
+        if chat_id_text:
+            try:
+                chat_id = int(chat_id_text)
+            except ValueError as e:
+                raise RuntimeError(
+                    f"Cannot parse Telegram chat ID {chat_id_text}. Make sure that it is an integer."
+                ) from e
+        else:
+            chat_id = None
         token = self.ui.token_line_edit.text()
         log_level = self.ui.log_level_combo_box.currentText()
         return TelegramConfig(token, log_level, chat_id)
+
+    def populate_ui(self, config: TelegramConfig) -> None:
+        if config.chat_id:
+            self.ui.chat_id_line_edit.setText(str(config.chat_id))
+        self.ui.token_line_edit.setText(config.token)
+        self.ui.log_level_combo_box.setCurrentText(config.level)

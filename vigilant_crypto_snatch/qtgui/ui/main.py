@@ -8,7 +8,7 @@ from .configuration import ConfigurationTab
 class MainWindow(QWidget):
     def __init__(self):
         super().__init__()
-        self.resize(300, 200)
+        self.resize(500, 200)
         self.setWindowTitle("Vigilant Crypto Snatch")
         layout = QVBoxLayout()
         self.setLayout(layout)
