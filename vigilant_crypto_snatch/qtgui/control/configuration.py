@@ -3,6 +3,7 @@ from typing import List
 
 from ...configuration import Configuration
 from ...configuration import YamlConfiguration
+from ...core import AssetPair
 from ...historical import CryptoCompareConfig
 from ...marketplace import KrakenConfig
 from ...notifications import TelegramConfig
@@ -13,6 +14,7 @@ from ..ui.configuration import GeneralPanel
 from ..ui.configuration import KrakenPane
 from ..ui.configuration import MarketplacePane
 from ..ui.configuration import TelegramPane
+from ..ui.configuration import TriggerEditWindow
 from ..ui.configuration import TriggerPane
 
 
@@ -137,24 +139,110 @@ class KrakenPaneController:
 class TriggerPaneController:
     def __init__(self, ui: TriggerPane):
         self.ui = ui
+        self.specs: List[TriggerSpec] = {}
 
         ui.add.clicked.connect(self.add)
         ui.edit.clicked.connect(self.edit)
         ui.delete.clicked.connect(self.delete)
 
     def add(self) -> None:
-        pass
+        new_spec = TriggerSpec(
+            name="New Trigger", asset_pair=AssetPair("", ""), cooldown_minutes=1
+        )
+        self.specs.append(new_spec)
+        self.ui.list.addItem(new_spec.name)
 
     def edit(self) -> None:
-        pass
+        print("Edit")
+        row = self.ui.list.currentRow()
+        if row < 0:
+            return
+        self.edit_window = TriggerEditWindow()
+        self.edit_window_controller = TriggerEditWindowController(
+            self, self.edit_window, self.specs[row], row
+        )
+        self.edit_window_controller.populate_ui()
+        self.edit_window.show()
+        print("Done")
 
     def delete(self) -> None:
         print("Delete")
         row = self.ui.list.currentRow()
         print(row)
         self.ui.list.takeItem(row)
+        del self.specs[row]
 
     def populate_ui(self, specs: List[TriggerSpec]):
         self.specs = specs
         for spec in specs:
             self.ui.list.addItem(spec.name)
+
+    def update_row(self, row: int) -> None:
+        self.ui.list.item(row).setText(self.specs[row].name)
+
+
+class TriggerEditWindowController:
+    def __init__(
+        self,
+        parent: TriggerPaneController,
+        ui: TriggerEditWindow,
+        spec: TriggerSpec,
+        row: int,
+    ):
+        self.parent = parent
+        self.ui = ui
+        self.spec = spec
+        self.row = row
+
+        self.ui.save.clicked.connect(self.save)
+        self.ui.cancel.clicked.connect(self.cancel)
+
+    def populate_ui(self) -> None:
+        self.ui.name.setText(self.spec.name)
+        self.ui.coin.setText(self.spec.asset_pair.coin)
+        self.ui.fiat.setText(self.spec.asset_pair.fiat)
+        self.ui.cooldown_minutes.setText(str(self.spec.cooldown_minutes))
+        if self.spec.volume_fiat:
+            self.ui.volume_fiat.setText(str(self.spec.volume_fiat))
+            self.ui.volume_fiat_type.setCurrentText("absolute")
+        elif self.spec.percentage_fiat:
+            self.ui.volume_fiat.setText(str(self.spec.percentage_fiat))
+            self.ui.volume_fiat_type.setCurrentText("percent")
+        if self.spec.delay_minutes:
+            self.ui.delay_minutes.setText(str(self.spec.delay_minutes))
+        if self.spec.fear_and_greed_index_below:
+            self.ui.fear_and_greed_index_below.setText(
+                str(self.spec.fear_and_greed_index_below)
+            )
+
+    def save(self) -> None:
+        self.spec.name = self.ui.name.text()
+        self.spec.asset_pair.coin = self.ui.coin.text()
+        self.spec.asset_pair.fiat = self.ui.fiat.text()
+        self.spec.cooldown_minutes = int(self.ui.cooldown_minutes.text())
+
+        if self.ui.volume_fiat_type.currentText() == "absolute":
+            self.spec.volume_fiat = float(self.ui.volume_fiat.text())
+            self.spec.percentage_fiat = None
+        else:
+            self.spec.volume_fiat = None
+            self.spec.percentage_fiat = float(self.ui.volume_fiat.text())
+
+        if self.ui.delay_minutes.text():
+            self.spec.delay_minutes = int(self.ui.delay_minutes.text())
+        else:
+            self.spec.delay_minutes = None
+
+        if self.ui.fear_and_greed_index_below.text():
+            self.spec.fear_and_greed_index_below = int(
+                self.ui.fear_and_greed_index_below.text()
+            )
+        else:
+            self.spec.fear_and_greed_index_below = None
+
+        print(self.spec)
+        self.parent.update_row(self.row)
+        self.ui.close()
+
+    def cancel(self) -> None:
+        self.ui.close()

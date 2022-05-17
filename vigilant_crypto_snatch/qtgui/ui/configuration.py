@@ -133,3 +133,42 @@ class TelegramPane(QGroupBox):
         self.log_level_combo_box.addItem("error")
         self.log_level_combo_box.addItem("critical")
         layout.addRow(QLabel("Log level:"), self.log_level_combo_box)
+
+
+class TriggerEditWindow(QWidget):
+    def __init__(self):
+        super().__init__()
+        # self.resize(500, 200)
+        self.setWindowTitle("Edit Trigger")
+
+        layout = QFormLayout()
+        self.setLayout(layout)
+
+        self.name = QLineEdit()
+        layout.addRow(QLabel("Name:"), self.name)
+        self.coin = QLineEdit()
+        layout.addRow(QLabel("Coin:"), self.coin)
+        self.fiat = QLineEdit()
+        layout.addRow(QLabel("Fiat:"), self.fiat)
+        self.cooldown_minutes = QLineEdit()
+        layout.addRow(QLabel("Cooldown (minutes):"), self.cooldown_minutes)
+        self.volume_fiat = QLineEdit()
+        self.volume_fiat_type = QComboBox()
+        self.volume_fiat_type.addItem("absolute")
+        self.volume_fiat_type.addItem("percent")
+        volume_fiat_layout = QHBoxLayout()
+        volume_fiat_layout.addWidget(self.volume_fiat)
+        volume_fiat_layout.addWidget(self.volume_fiat_type)
+        layout.addRow(QLabel("Volume fiat:"), volume_fiat_layout)
+
+        self.delay_minutes = QLineEdit()
+        layout.addRow(QLabel("Delay (minutes):"), self.delay_minutes)
+        self.fear_and_greed_index_below = QLineEdit()
+        layout.addRow(QLabel("Fear & Greed below:"), self.fear_and_greed_index_below)
+
+        button_layout = QHBoxLayout()
+        self.save = QPushButton("Save")
+        self.cancel = QPushButton("Cancel")
+        button_layout.addWidget(self.save)
+        button_layout.addWidget(self.cancel)
+        layout.addRow(button_layout)
