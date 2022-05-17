@@ -24,7 +24,8 @@ class ConfigurationTab(QWidget):
         layout.addWidget(self.crypto_compare_panel)
         self.marketplace_pane = MarketplacePane()
         layout.addWidget(self.marketplace_pane)
-        layout.addWidget(TriggerPane())
+        self.trigger_pane = TriggerPane()
+        layout.addWidget(self.trigger_pane)
         self.telegram_panel = TelegramPane()
         layout.addWidget(self.telegram_panel)
 
@@ -99,17 +100,17 @@ class TriggerPane(QGroupBox):
         layout = QVBoxLayout()
         self.setLayout(layout)
 
-        list = QListWidget()
-        layout.addWidget(list)
+        self.list = QListWidget()
+        self.add = QPushButton("Add")
+        self.edit = QPushButton("Edit")
+        self.delete = QPushButton("Delete")
 
-        list.addItem("Large Drops")
-        list.addItem("Small Drops")
-        list.addItem("Regular Buys")
+        layout.addWidget(self.list)
 
         button_layout = QHBoxLayout()
-        button_layout.addWidget(QPushButton("Add"))
-        button_layout.addWidget(QPushButton("Edit"))
-        button_layout.addWidget(QPushButton("Delete"))
+        button_layout.addWidget(self.add)
+        button_layout.addWidget(self.edit)
+        button_layout.addWidget(self.delete)
         layout.addLayout(button_layout)
 
 

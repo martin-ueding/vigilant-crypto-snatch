@@ -1,16 +1,19 @@
 from typing import Dict
+from typing import List
 
 from ...configuration import Configuration
 from ...configuration import YamlConfiguration
 from ...historical import CryptoCompareConfig
 from ...marketplace import KrakenConfig
 from ...notifications import TelegramConfig
+from ...triggers import TriggerSpec
 from ..ui.configuration import ConfigurationTab
 from ..ui.configuration import CryptoComparePanel
 from ..ui.configuration import GeneralPanel
 from ..ui.configuration import KrakenPane
 from ..ui.configuration import MarketplacePane
 from ..ui.configuration import TelegramPane
+from ..ui.configuration import TriggerPane
 
 
 class ConfigurationTabController:
@@ -25,6 +28,7 @@ class ConfigurationTabController:
         self.marketplace_pane_controller = MarketplacePaneController(
             ui.marketplace_pane
         )
+        self.trigger_pane_controller = TriggerPaneController(ui.trigger_pane)
 
         ui.save_button.clicked.connect(self.save)
 
@@ -51,6 +55,7 @@ class ConfigurationTabController:
         )
         self.telegram_pane_controller.populate_ui(config.get_telegram_config())
         self.marketplace_pane_controller.populate_ui(config)
+        self.trigger_pane_controller.populate_ui(config.get_trigger_config())
 
 
 class GeneralPanelController:
@@ -127,3 +132,29 @@ class KrakenPaneController:
         self.ui.api_key.setText(config.key)
         self.ui.api_secret.setText(config.secret)
         self.ui.prefer_fee.setChecked(config.prefer_fee_in_base_currency)
+
+
+class TriggerPaneController:
+    def __init__(self, ui: TriggerPane):
+        self.ui = ui
+
+        ui.add.clicked.connect(self.add)
+        ui.edit.clicked.connect(self.edit)
+        ui.delete.clicked.connect(self.delete)
+
+    def add(self) -> None:
+        pass
+
+    def edit(self) -> None:
+        pass
+
+    def delete(self) -> None:
+        print("Delete")
+        row = self.ui.list.currentRow()
+        print(row)
+        self.ui.list.takeItem(row)
+
+    def populate_ui(self, specs: List[TriggerSpec]):
+        self.specs = specs
+        for spec in specs:
+            self.ui.list.addItem(spec.name)
