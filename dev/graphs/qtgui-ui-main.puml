@@ -1,0 +1,74 @@
+@startuml
+allowmixing
+
+namespace qtgui {
+    namespace ui {
+        component PyQt6 #lightskyblue
+        namespace configuration {
+            class ConfigurationTab
+            qtgui.ui.PyQt6 <-- ConfigurationTab
+            class GeneralPanel
+            qtgui.ui.PyQt6 <-- GeneralPanel
+            class CryptoComparePanel
+            qtgui.ui.PyQt6 <-- CryptoComparePanel
+            class TelegramPane
+            qtgui.ui.PyQt6 <-- TelegramPane
+            class MarketplacePane
+            qtgui.ui.PyQt6 <-- MarketplacePane
+            class KrakenPane
+            qtgui.ui.PyQt6 <-- KrakenPane
+            class TriggerPane
+            qtgui.ui.PyQt6 <-- TriggerPane
+            KrakenPane <-- MarketplacePane
+            class TriggerPane {
+                +list: QListWidget
+                +add: QPushButton
+                +edit: QPushButton
+                +delete: QPushButton
+            }
+        }
+        namespace main {
+            class MainWindow
+            qtgui.ui.PyQt6 <-- MainWindow
+            qtgui.ui.configuration.GeneralPanel <-- MainWindow
+            qtgui.ui.configuration.ConfigurationTab <-- MainWindow
+            qtgui.ui.configuration.CryptoComparePanel <-- MainWindow
+            qtgui.ui.configuration.TelegramPane <-- MainWindow
+            qtgui.ui.configuration.MarketplacePane <-- MainWindow
+            qtgui.ui.configuration.TriggerPane <-- MainWindow
+        }
+    }
+    namespace control {
+        namespace configuration {
+            class ConfigurationTabController
+            qtgui.ui.configuration.ConfigurationTab <-- ConfigurationTabController
+            class GeneralPanelController
+            qtgui.ui.configuration.GeneralPanel <-- GeneralPanelController
+            class CryptoComparePanelController
+            qtgui.ui.configuration.CryptoComparePanel <-- CryptoComparePanelController
+            class TelegramPaneController
+            qtgui.ui.configuration.TelegramPane <-- TelegramPaneController
+            class MarketplacePaneController
+            qtgui.ui.configuration.MarketplacePane <-- MarketplacePaneController
+            class KrakenPaneController
+            qtgui.ui.configuration.KrakenPane <-- KrakenPaneController
+            KrakenPaneController <-- MarketplacePaneController
+            class TriggerPaneController {
+                +populate_ui()
+                -add()
+                -edit()
+                -delete()
+            }
+        }
+        namespace main {
+            class MainWindowController
+            qtgui.ui.main.MainWindow <-- MainWindowController
+            qtgui.control.configuration.ConfigurationTabController <-- MainWindowController
+            qtgui.control.configuration.GeneralPanelController <-- MainWindowController
+            qtgui.control.configuration.TelegramPaneController <-- MainWindowController
+            qtgui.control.configuration.MarketplacePaneController <-- MainWindowController
+            qtgui.control.configuration.CryptoComparePanelController <-- MainWindowController
+        }
+    }
+}
+@enduml

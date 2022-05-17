@@ -1,0 +1,52 @@
+@startsalt
+{
+    {/ Status | <b>Configuration | About}
+    {+
+        == General
+        Poll interval (seconds): | "60"
+        ..
+        == Marketplace
+        {
+            {/ Bitstamp | <b>Kraken | CCXT }
+            {+
+                API-Key: | "test-key"
+                API-Secret: | "test-secret"
+                [] Prefer fee in base currency
+                === Withdrawal
+                {
+                    {SI
+                        BTC → Wallet
+                    }
+                    {[Add] | [Edit] | [Delete]}
+                }
+            }
+        }
+        ..
+        == Crypto Compare
+        {
+            API-Key: | "test-key"
+        }
+        ..
+        == Telegram
+        {
+            Chat-ID: | "12345"
+            Log-Level: | ^info^
+            Token: | "test-token"
+        }
+
+        ..
+        == Triggers
+
+        {
+            {SI
+                Regular
+                Large Drops
+                Medium Drops
+            }
+            {[Add] | [Edit] | [Delete]}
+        }
+        ..
+        [Save]
+    }
+}
+@endsalt
