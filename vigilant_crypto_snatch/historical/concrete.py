@@ -1,6 +1,7 @@
 import dataclasses
 import datetime
-import traceback
+from typing import Any
+from typing import Dict
 from typing import List
 
 from .. import logger
@@ -17,6 +18,9 @@ from .interface import HistoricalSource
 @dataclasses.dataclass()
 class CryptoCompareConfig:
     api_key: str
+
+    def to_primitives(self) -> Dict[str, Any]:
+        return dict(api_key=self.api_key)
 
 
 class CryptoCompareHistoricalSource(HistoricalSource):

@@ -1,3 +1,4 @@
+import pprint
 from typing import Dict
 from typing import List
 
@@ -40,14 +41,19 @@ class ConfigurationTabController:
         config_dict = {}
         try:
             config_dict.update(self.general_panel_controller.get_config())
-            crypto_compare_config = self.crypto_compare_panel_controller.get_config()
-            print(crypto_compare_config)
-            telegram_config = self.telegram_pane_controller.get_config()
-            print(telegram_config)
+            config_dict[
+                "crypto_compare"
+            ] = self.crypto_compare_panel_controller.get_config().to_primitives()
+            config_dict[
+                "telegram"
+            ] = self.telegram_pane_controller.get_config().to_primitives()
+            config_dict["triggers"] = [
+                x.to_primitives() for x in self.trigger_pane_controller.get_config()
+            ]
         except RuntimeError as e:
             print(e)
             return
-        print(config_dict)
+        pprint.pprint(config_dict)
 
     def populate_ui(self) -> None:
         config = YamlConfiguration()
@@ -179,6 +185,9 @@ class TriggerPaneController:
 
     def update_row(self, row: int) -> None:
         self.ui.list.item(row).setText(self.specs[row].name)
+
+    def get_config(self) -> List[TriggerSpec]:
+        return self.specs
 
 
 class TriggerEditWindowController:

@@ -1,6 +1,7 @@
 import dataclasses
 import json
 import sys
+from typing import Dict
 from typing import Optional
 
 from .. import logger
@@ -16,6 +17,9 @@ class TelegramConfig:
     token: str
     level: str
     chat_id: Optional[int] = None
+
+    def to_primitives(self) -> Dict:
+        return dict(token=self.token, level=self.level, chat_id=self.chat_id)
 
 
 class TelegramSender(Sender):

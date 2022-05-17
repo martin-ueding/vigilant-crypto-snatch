@@ -1,5 +1,7 @@
 import dataclasses
 import datetime
+from typing import Any
+from typing import Dict
 from typing import Optional
 
 from ..core import AssetPair
@@ -45,6 +47,20 @@ class TriggerSpec:
             raise InvalidTriggerSpec(
                 "You have specified a delay, but not a drop percentage."
             )
+
+    def to_primitives(self) -> Dict[str, Any]:
+        return dict(
+            coin=self.asset_pair.coin,
+            fiat=self.asset_pair.fiat,
+            cooldown_minutes=self.cooldown_minutes,
+            name=self.name,
+            delay_minutes=self.delay_minutes,
+            drop_percentage=self.drop_percentage,
+            volume_fiat=self.volume_fiat,
+            percentage_fiat=self.percentage_fiat,
+            start=self.start,
+            fear_and_greed_index_below=self.fear_and_greed_index_below,
+        )
 
 
 class InvalidTriggerSpec(Exception):
