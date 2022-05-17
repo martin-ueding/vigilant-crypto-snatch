@@ -2,6 +2,8 @@ import pprint
 from typing import Dict
 from typing import List
 
+import yaml
+
 from ...configuration import Configuration
 from ...configuration import YamlConfiguration
 from ...core import AssetPair
@@ -54,9 +56,15 @@ class ConfigurationTabController:
             print(e)
             return
         pprint.pprint(config_dict)
+        with open("gui-generated-config.yml", "w") as f:
+            yaml.dump(config_dict, f)
 
     def populate_ui(self) -> None:
-        config = YamlConfiguration()
+        try:
+            config = YamlConfiguration()
+        except RuntimeError as e:
+            print(e)
+            return
         self.general_panel_controller.populate_ui(config.get_polling_interval())
         self.crypto_compare_panel_controller.populate_ui(
             config.get_crypto_compare_config()
@@ -145,7 +153,7 @@ class KrakenPaneController:
 class TriggerPaneController:
     def __init__(self, ui: TriggerPane):
         self.ui = ui
-        self.specs: List[TriggerSpec] = {}
+        self.specs: List[TriggerSpec] = []
 
         ui.add.clicked.connect(self.add)
         ui.edit.clicked.connect(self.edit)
