@@ -116,6 +116,21 @@ class KrakenWithdrawalEditWindow(QWidget):
         layout.addRow(button_layout)
 
 
+class BitstampPane(QWidget):
+    def __init__(self):
+        super().__init__()
+        layout = QFormLayout()
+        self.setLayout(layout)
+
+        self.key = QLineEdit()
+        self.secret = QLineEdit()
+        self.username = QLineEdit()
+
+        layout.addRow(QLabel("API Key:"), self.key)
+        layout.addRow(QLabel("API Secret:"), self.secret)
+        layout.addRow(QLabel("Prefer fee in base currency:"), self.username)
+
+
 class MarketplacePane(QGroupBox):
     def __init__(self):
         super().__init__()
@@ -124,15 +139,14 @@ class MarketplacePane(QGroupBox):
         self.setLayout(layout)
 
         self.kraken_pane = KrakenPane()
+        self.bitstamp_pane = BitstampPane()
 
         tabs = QTabWidget()
         tab2 = QWidget()
-        tab3 = QWidget()
 
         # Add tabs
         tabs.addTab(self.kraken_pane, "Kraken")
-        tabs.addTab(tab2, "Bitstamp")
-        tabs.addTab(tab3, "CCXT")
+        tabs.addTab(self.bitstamp_pane, "Bitstamp")
 
         layout.addWidget(tabs)
 

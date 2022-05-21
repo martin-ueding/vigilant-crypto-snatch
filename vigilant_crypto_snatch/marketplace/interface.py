@@ -16,6 +16,9 @@ class BitstampConfig:
     key: str
     secret: str
 
+    def to_primitives(self) -> Dict[str, Any]:
+        return {"username": self.username, "key": self.key, "secret": self.secret}
+
 
 @dataclasses.dataclass()
 class KrakenWithdrawalConfig:

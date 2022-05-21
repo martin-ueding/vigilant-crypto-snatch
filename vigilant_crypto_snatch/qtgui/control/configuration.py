@@ -11,10 +11,12 @@ from ...configuration import Configuration
 from ...configuration import YamlConfigurationFactory
 from ...core import AssetPair
 from ...historical import CryptoCompareConfig
+from ...marketplace import BitstampConfig
 from ...marketplace import KrakenConfig
 from ...marketplace import KrakenWithdrawalConfig
 from ...notifications import TelegramConfig
 from ...triggers import TriggerSpec
+from ..ui.configuration import BitstampPane
 from ..ui.configuration import ConfigurationTab
 from ..ui.configuration import CryptoComparePanel
 from ..ui.configuration import GeneralPanel
@@ -150,12 +152,17 @@ class MarketplacePaneController:
         self.ui = ui
 
         self.kraken_pane_controller = KrakenPaneController(self.ui.kraken_pane)
+        self.bitstamp_pane_controller = BitstampPaneController(self.ui.bitstamp_pane)
 
     def populate_ui(self, config: Configuration):
         self.kraken_pane_controller.populate_ui(config.kraken)
+        self.bitstamp_pane_controller.populate_ui(config.bitstamp)
 
     def get_config(self) -> Dict:
-        result = {"kraken": self.kraken_pane_controller.get_config().to_primitives()}
+        result = {
+            "kraken": self.kraken_pane_controller.get_config().to_primitives(),
+            "bitstamp": self.bitstamp_pane_controller.get_config().to_primitives(),
+        }
         return result
 
 
@@ -178,6 +185,24 @@ class KrakenPaneController:
             secret=self.ui.api_secret.text(),
             prefer_fee_in_base_currency=self.ui.prefer_fee.isChecked(),
             withdrawal=self.withdrawal_pane_controller.get_config(),
+        )
+        return config
+
+
+class BitstampPaneController:
+    def __init__(self, ui: BitstampPane):
+        self.ui = ui
+
+    def populate_ui(self, config: BitstampConfig):
+        self.ui.key.setText(config.key)
+        self.ui.secret.setText(config.secret)
+        self.ui.username.setText(config.username)
+
+    def get_config(self) -> KrakenConfig:
+        config = BitstampConfig(
+            key=self.ui.key.text(),
+            secret=self.ui.secret.text(),
+            username=self.ui.username.text(),
         )
         return config
 
