@@ -23,6 +23,16 @@ from ..ui.configuration import TriggerEditWindow
 from ..ui.configuration import TriggerPane
 
 
+def handle_exception_with_dialog(e: Exception) -> None:
+    msg = QMessageBox()
+    msg.setIcon(QMessageBox.Icon.Critical)
+    msg.setText(str(e))
+    msg.setWindowTitle("Configuration Error")
+    msg.setDetailedText(traceback.format_exc())
+    msg.setStandardButtons(QMessageBox.StandardButton.Ok)
+    msg.exec()
+
+
 class ConfigurationTabController:
     def __init__(self, ui: ConfigurationTab):
         self.ui = ui
@@ -55,13 +65,7 @@ class ConfigurationTabController:
                 x.to_primitives() for x in self.trigger_pane_controller.get_config()
             ]
         except RuntimeError as e:
-            msg = QMessageBox()
-            msg.setIcon(QMessageBox.Icon.Critical)
-            msg.setText(str(e))
-            msg.setWindowTitle("Configuration Error")
-            msg.setDetailedText(traceback.format_exc())
-            msg.setStandardButtons(QMessageBox.StandardButton.Ok)
-            msg.exec()
+            handle_exception_with_dialog(e)
             return
         pprint.pprint(config_dict)
         with open("gui-generated-config.yml", "w") as f:
@@ -240,7 +244,7 @@ class TriggerEditWindowController:
                 str(self.spec.fear_and_greed_index_below)
             )
 
-    def save(self) -> None:
+    def _parse_values(self) -> None:
         self.spec.name = self.ui.name.text()
         self.spec.asset_pair.coin = self.ui.coin.text()
         self.spec.asset_pair.fiat = self.ui.fiat.text()
@@ -286,7 +290,13 @@ class TriggerEditWindowController:
         else:
             self.spec.fear_and_greed_index_below = None
 
-        print(self.spec)
+    def save(self) -> None:
+        try:
+            self._parse_values()
+        except RuntimeError as e:
+            handle_exception_with_dialog(e)
+            return
+
         self.parent.update_row(self.row)
         self.ui.close()
 
