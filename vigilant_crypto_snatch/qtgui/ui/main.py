@@ -4,6 +4,7 @@ from PyQt6.QtWidgets import QWidget
 
 from .about import AboutTab
 from .configuration import ConfigurationTab
+from .status import StatusTab
 
 
 class MainWindow(QWidget):
@@ -19,5 +20,7 @@ class MainWindow(QWidget):
 
         self.configuration_tab = ConfigurationTab()
         self.about_tab = AboutTab()
+        self.status_tab = StatusTab()
+        self.tabs.addTab(self.status_tab, "Status")
         self.tabs.addTab(self.configuration_tab, "Configuration")
         self.tabs.addTab(self.about_tab, "About")

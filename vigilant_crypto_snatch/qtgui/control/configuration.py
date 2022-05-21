@@ -42,7 +42,7 @@ def handle_exception_with_dialog(e: Exception) -> None:
 
 
 class ConfigurationTabController:
-    def __init__(self, ui: ConfigurationTab):
+    def __init__(self, ui: ConfigurationTab, update_config):
         self.ui = ui
 
         self.general_panel_controller = GeneralPanelController(ui.general_panel)
@@ -54,6 +54,8 @@ class ConfigurationTabController:
         self.kraken_pane_controller = KrakenPaneController(self.ui.kraken_pane)
         self.bitstamp_pane_controller = BitstampPaneController(self.ui.bitstamp_pane)
 
+        self.update_config = update_config
+
         ui.save_button.clicked.connect(self.save)
         ui.test_drive_button.clicked.connect(self.test_drive)
 
@@ -62,6 +64,7 @@ class ConfigurationTabController:
     def save(self) -> None:
         new_config = self._gather_config()
         if new_config is not None:
+            self.update_config(new_config)
             update_yaml_config(new_config)
 
     def _gather_config(self) -> Optional[Configuration]:
