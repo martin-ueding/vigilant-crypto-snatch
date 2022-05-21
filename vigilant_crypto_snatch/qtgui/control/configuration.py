@@ -7,7 +7,6 @@ from typing import List
 import yaml
 from PyQt6.QtWidgets import QMessageBox
 
-from ...configuration import Configuration
 from ...configuration import YamlConfigurationFactory
 from ...core import AssetPair
 from ...historical import CryptoCompareConfig
@@ -23,7 +22,6 @@ from ..ui.configuration import GeneralPanel
 from ..ui.configuration import KrakenPane
 from ..ui.configuration import KrakenWithdrawalEditWindow
 from ..ui.configuration import KrakenWithdrawalPane
-from ..ui.configuration import MarketplacePane
 from ..ui.configuration import TelegramPane
 from ..ui.configuration import TriggerEditWindow
 from ..ui.configuration import TriggerPane
@@ -48,10 +46,9 @@ class ConfigurationTabController:
             ui.crypto_compare_panel
         )
         self.telegram_pane_controller = TelegramPaneController(ui.telegram_panel)
-        self.marketplace_pane_controller = MarketplacePaneController(
-            ui.marketplace_pane
-        )
         self.trigger_pane_controller = TriggerPaneController(ui.trigger_pane)
+        self.kraken_pane_controller = KrakenPaneController(self.ui.kraken_pane)
+        self.bitstamp_pane_controller = BitstampPaneController(self.ui.bitstamp_pane)
 
         ui.save_button.clicked.connect(self.save)
 
@@ -70,7 +67,12 @@ class ConfigurationTabController:
             config_dict["triggers"] = [
                 x.to_primitives() for x in self.trigger_pane_controller.get_config()
             ]
-            config_dict.update(self.marketplace_pane_controller.get_config())
+            config_dict[
+                "kraken"
+            ] = self.kraken_pane_controller.get_config().to_primitives()
+            config_dict[
+                "bitstamp"
+            ] = self.bitstamp_pane_controller.get_config().to_primitives()
         except RuntimeError as e:
             handle_exception_with_dialog(e)
             return
@@ -87,8 +89,9 @@ class ConfigurationTabController:
         self.general_panel_controller.populate_ui(config.polling_interval)
         self.crypto_compare_panel_controller.populate_ui(config.crypto_compare)
         self.telegram_pane_controller.populate_ui(config.telegram)
-        self.marketplace_pane_controller.populate_ui(config)
         self.trigger_pane_controller.populate_ui(config.triggers)
+        self.kraken_pane_controller.populate_ui(config.kraken)
+        self.bitstamp_pane_controller.populate_ui(config.bitstamp)
 
 
 class GeneralPanelController:
@@ -145,25 +148,6 @@ class TelegramPaneController:
             self.ui.chat_id_line_edit.setText(str(config.chat_id))
         self.ui.token_line_edit.setText(config.token)
         self.ui.log_level_combo_box.setCurrentText(config.level)
-
-
-class MarketplacePaneController:
-    def __init__(self, ui: MarketplacePane):
-        self.ui = ui
-
-        self.kraken_pane_controller = KrakenPaneController(self.ui.kraken_pane)
-        self.bitstamp_pane_controller = BitstampPaneController(self.ui.bitstamp_pane)
-
-    def populate_ui(self, config: Configuration):
-        self.kraken_pane_controller.populate_ui(config.kraken)
-        self.bitstamp_pane_controller.populate_ui(config.bitstamp)
-
-    def get_config(self) -> Dict:
-        result = {
-            "kraken": self.kraken_pane_controller.get_config().to_primitives(),
-            "bitstamp": self.bitstamp_pane_controller.get_config().to_primitives(),
-        }
-        return result
 
 
 class KrakenPaneController:

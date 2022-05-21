@@ -8,6 +8,7 @@ from PyQt6.QtWidgets import QLineEdit
 from PyQt6.QtWidgets import QListWidget
 from PyQt6.QtWidgets import QPushButton
 from PyQt6.QtWidgets import QTabWidget
+from PyQt6.QtWidgets import QToolBox
 from PyQt6.QtWidgets import QVBoxLayout
 from PyQt6.QtWidgets import QWidget
 
@@ -15,40 +16,43 @@ from PyQt6.QtWidgets import QWidget
 class ConfigurationTab(QWidget):
     def __init__(self):
         super().__init__()
-        layout = QVBoxLayout()
-        self.setLayout(layout)
 
         self.general_panel = GeneralPanel()
-        layout.addWidget(self.general_panel)
         self.crypto_compare_panel = CryptoComparePanel()
-        layout.addWidget(self.crypto_compare_panel)
-        self.marketplace_pane = MarketplacePane()
-        layout.addWidget(self.marketplace_pane)
         self.trigger_pane = TriggerPane()
-        layout.addWidget(self.trigger_pane)
         self.telegram_panel = TelegramPane()
-        layout.addWidget(self.telegram_panel)
+        self.kraken_pane = KrakenPane()
+        self.bitstamp_pane = BitstampPane()
 
         self.save_button = QPushButton("Save")
 
-        layout.addWidget(self.save_button)
+        toolbox = QToolBox()
+        toolbox.addItem(self.general_panel, "General")
+        toolbox.addItem(self.crypto_compare_panel, "Crypto Compare")
+        toolbox.addItem(self.kraken_pane, "Kraken Marketplace")
+        toolbox.addItem(self.bitstamp_pane, "Bitstamp Marketplace")
+        toolbox.addItem(self.trigger_pane, "Triggers")
+        toolbox.addItem(self.telegram_panel, "Telegram")
+
+        layout = QVBoxLayout()
+        layout.addWidget(toolbox)
         layout.addWidget(QPushButton("Test drive"))
+        layout.addWidget(self.save_button)
+        self.setLayout(layout)
 
 
-class GeneralPanel(QGroupBox):
+class GeneralPanel(QWidget):
     def __init__(self):
         super().__init__()
-        self.setTitle("General")
         layout = QFormLayout()
         self.setLayout(layout)
         self.poll_interval_edit = QLineEdit("30")
         layout.addRow(QLabel("Poll interval (seconds):"), self.poll_interval_edit)
 
 
-class CryptoComparePanel(QGroupBox):
+class CryptoComparePanel(QWidget):
     def __init__(self):
         super().__init__()
-        self.setTitle("Crypto Compare")
         layout = QFormLayout()
         self.setLayout(layout)
         self.api_key_line_edit = QLineEdit()
@@ -131,32 +135,9 @@ class BitstampPane(QWidget):
         layout.addRow(QLabel("Prefer fee in base currency:"), self.username)
 
 
-class MarketplacePane(QGroupBox):
+class TriggerPane(QWidget):
     def __init__(self):
         super().__init__()
-        self.setTitle("Marketplace")
-        layout = QVBoxLayout()
-        self.setLayout(layout)
-
-        self.kraken_pane = KrakenPane()
-        self.bitstamp_pane = BitstampPane()
-
-        tabs = QTabWidget()
-        tab2 = QWidget()
-
-        # Add tabs
-        tabs.addTab(self.kraken_pane, "Kraken")
-        tabs.addTab(self.bitstamp_pane, "Bitstamp")
-
-        layout.addWidget(tabs)
-
-        # layout.addWidget(QLabel("Withdrawal"))
-
-
-class TriggerPane(QGroupBox):
-    def __init__(self):
-        super().__init__()
-        self.setTitle("Triggers")
         layout = QVBoxLayout()
         self.setLayout(layout)
 
@@ -174,10 +155,9 @@ class TriggerPane(QGroupBox):
         layout.addLayout(button_layout)
 
 
-class TelegramPane(QGroupBox):
+class TelegramPane(QWidget):
     def __init__(self):
         super().__init__()
-        self.setTitle("Telegram")
         layout = QFormLayout()
         self.setLayout(layout)
 
