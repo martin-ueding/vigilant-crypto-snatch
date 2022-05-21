@@ -13,6 +13,19 @@ from ..notifications import TelegramConfig
 from ..triggers import TriggerSpec
 
 
+@dataclasses.dataclass()
+class Configuration:
+    polling_interval: int
+    crypto_compare: CryptoCompareConfig
+    triggers: List[TriggerSpec]
+    marketplace: str
+    kraken: Optional[KrakenConfig] = None
+    bitstamp: Optional[BitstampConfig] = None
+    telegram: Optional[TelegramConfig] = None
+    ccxt: Optional[CCXTConfig] = None
+    notify_run: Optional[NotifyRunConfig] = None
+
+
 class ConfigurationFactory:
     def get_polling_interval(self) -> int:
         raise NotImplementedError()  # pragma: no cover
