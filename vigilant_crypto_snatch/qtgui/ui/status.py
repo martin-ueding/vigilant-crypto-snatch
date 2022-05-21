@@ -1,5 +1,6 @@
 from typing import Dict
 
+from PyQt6.QtWidgets import QCheckBox
 from PyQt6.QtWidgets import QFormLayout
 from PyQt6.QtWidgets import QGroupBox
 from PyQt6.QtWidgets import QLabel
@@ -16,6 +17,8 @@ class StatusTab(QWidget):
         self.balance = QLabel()
         self.last_refresh = QLabel()
         self.prices = QLabel()
+        self.active_triggers = QLabel()
+        self.watch_triggers = QCheckBox()
         self.refresh = QPushButton("Refresh")
 
         marketplace_group = QGroupBox()
@@ -28,6 +31,14 @@ class StatusTab(QWidget):
         layout.addRow("Last refresh:", self.last_refresh)
         layout.addRow(self.refresh)
 
+        trigger_group = QGroupBox()
+        trigger_group.setTitle("Triggers")
+        layout = QFormLayout()
+        trigger_group.setLayout(layout)
+        layout.addRow("Active triggers:", self.active_triggers)
+        layout.addRow("Watch triggers:", self.watch_triggers)
+
         layout = QVBoxLayout()
         layout.addWidget(marketplace_group)
+        layout.addWidget(trigger_group)
         self.setLayout(layout)

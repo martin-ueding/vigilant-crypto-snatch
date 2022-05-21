@@ -138,7 +138,7 @@ class BitstampPane(QWidget):
 
         layout.addRow(QLabel("API Key:"), self.key)
         layout.addRow(QLabel("API Secret:"), self.secret)
-        layout.addRow(QLabel("Prefer fee in base currency:"), self.username)
+        layout.addRow(QLabel("Username:"), self.username)
 
 
 class TriggerPane(QWidget):

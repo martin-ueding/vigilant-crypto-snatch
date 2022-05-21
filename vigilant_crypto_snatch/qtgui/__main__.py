@@ -11,7 +11,9 @@ def main():
     window = MainWindow()
     controller = MainWindowController(window)
     window.show()
-    sys.exit(app.exec())
+    retval = app.exec()
+    controller.shutdown()
+    sys.exit(retval)
 
 
 if __name__ == "__main__":

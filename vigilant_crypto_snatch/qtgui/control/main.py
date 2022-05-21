@@ -1,11 +1,13 @@
 import datetime
 import logging
+import time
 
 import coloredlogs
 
 from ... import logger
 from ...configuration import Configuration
 from ...configuration import YamlConfigurationFactory
+from ...watchloop import process_trigger
 from ..ui.main import MainWindow
 from .configuration import ConfigurationTabController
 from .status import StatusTabController
@@ -32,6 +34,9 @@ class MainWindowController:
 
     def update_log_message(self, message: str) -> None:
         self.ui.log_message.setText(message)
+
+    def shutdown(self) -> None:
+        self.status_tab_controller.shutdown()
 
 
 class GuiLogger(logging.Handler):
