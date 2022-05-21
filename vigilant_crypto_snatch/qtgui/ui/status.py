@@ -1,3 +1,5 @@
+from typing import Dict
+
 from PyQt6.QtWidgets import QFormLayout
 from PyQt6.QtWidgets import QGroupBox
 from PyQt6.QtWidgets import QLabel
@@ -12,13 +14,18 @@ class StatusTab(QWidget):
 
         self.marketplace_name = QLabel()
         self.balance = QLabel()
+        self.last_refresh = QLabel()
+        self.prices = QLabel()
         self.refresh = QPushButton("Refresh")
+
         marketplace_group = QGroupBox()
         marketplace_group.setTitle("Marketplace")
         layout = QFormLayout()
         marketplace_group.setLayout(layout)
-        layout.addRow("Marketplace:", self.marketplace_name)
+        layout.addRow("Provider:", self.marketplace_name)
         layout.addRow("Balance:", self.balance)
+        layout.addRow("Spot prices:", self.prices)
+        layout.addRow("Last refresh:", self.last_refresh)
         layout.addRow(self.refresh)
 
         layout = QVBoxLayout()
