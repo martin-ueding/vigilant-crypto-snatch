@@ -6,7 +6,7 @@ from typing import Optional
 import dateutil.parser
 import yaml
 
-from ..configuration import Configuration
+from ..configuration import ConfigurationFactory
 from ..core import AssetPair
 from ..historical import CryptoCompareConfig
 from ..marketplace import BitstampConfig
@@ -19,7 +19,7 @@ from ..paths import config_path
 from ..triggers import TriggerSpec
 
 
-class YamlConfiguration(Configuration):
+class YamlConfigurationFactory(ConfigurationFactory):
     def __init__(self, path=config_path):
         if not os.path.isfile(path):
             raise RuntimeError(f"Please create the configuration file at {path}.")

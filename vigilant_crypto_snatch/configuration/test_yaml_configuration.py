@@ -116,7 +116,7 @@ def test_get_polling_interval() -> None:
     with tempfile.NamedTemporaryFile("w+", delete=False) as f:
         f.write("sleep: 10")
         f.close()
-        config = yaml_configuration.YamlConfiguration(f.name)
+        config = yaml_configuration.YamlConfigurationFactory(f.name)
         assert config.get_polling_interval() == 10
 
 
@@ -173,7 +173,7 @@ def test_get_trigger_config() -> None:
     with tempfile.NamedTemporaryFile("w+", delete=False) as f:
         f.write(trigger_config)
         f.close()
-        config = yaml_configuration.YamlConfiguration(f.name)
+        config = yaml_configuration.YamlConfigurationFactory(f.name)
         config.get_trigger_config()
 
 
@@ -181,7 +181,7 @@ def test_get_bitstamp_config_empty() -> None:
     with tempfile.NamedTemporaryFile("w+", delete=False) as f:
         f.write("sleep: 1")
         f.close()
-        config = yaml_configuration.YamlConfiguration(f.name)
+        config = yaml_configuration.YamlConfigurationFactory(f.name)
         assert config.get_bitstamp_config() is None
 
 
@@ -197,7 +197,7 @@ def test_get_bitstamp_config() -> None:
     with tempfile.NamedTemporaryFile("w+", delete=False) as f:
         f.write(bitstamp_config)
         f.close()
-        config = yaml_configuration.YamlConfiguration(f.name)
+        config = yaml_configuration.YamlConfigurationFactory(f.name)
         assert config.get_bitstamp_config() is not None
 
 
@@ -205,7 +205,7 @@ def test_get_kraken_config_empty() -> None:
     with tempfile.NamedTemporaryFile("w+", delete=False) as f:
         f.write("sleep: 1")
         f.close()
-        config = yaml_configuration.YamlConfiguration(f.name)
+        config = yaml_configuration.YamlConfigurationFactory(f.name)
         assert config.get_kraken_config() is None
 
 
@@ -225,7 +225,7 @@ def test_get_kraken_config_full() -> None:
     with tempfile.NamedTemporaryFile("w+", delete=False) as f:
         f.write(kraken_config_full)
         f.close()
-        config = yaml_configuration.YamlConfiguration(f.name)
+        config = yaml_configuration.YamlConfigurationFactory(f.name)
         assert config.get_kraken_config() is not None
 
 
@@ -240,7 +240,7 @@ def test_get_kraken_config_minimal() -> None:
     with tempfile.NamedTemporaryFile("w+", delete=False) as f:
         f.write(kraken_config_minimal)
         f.close()
-        config = yaml_configuration.YamlConfiguration(f.name)
+        config = yaml_configuration.YamlConfigurationFactory(f.name)
         assert config.get_kraken_config() is not None
 
 
@@ -248,7 +248,7 @@ def test_get_telegram_config_empty() -> None:
     with tempfile.NamedTemporaryFile("w+", delete=False) as f:
         f.write("sleep: 1")
         f.close()
-        config = yaml_configuration.YamlConfiguration(f.name)
+        config = yaml_configuration.YamlConfigurationFactory(f.name)
         assert config.get_telegram_config() is None
 
 
@@ -263,7 +263,7 @@ def test_get_telegram_config_minimal() -> None:
     with tempfile.NamedTemporaryFile("w+", delete=False) as f:
         f.write(telegram_config_minimal)
         f.close()
-        config = yaml_configuration.YamlConfiguration(f.name)
+        config = yaml_configuration.YamlConfigurationFactory(f.name)
         assert config.get_telegram_config() is not None
 
 
@@ -279,13 +279,13 @@ def test_get_telegram_config_full() -> None:
     with tempfile.NamedTemporaryFile("w+", delete=False) as f:
         f.write(telegram_config_full)
         f.close()
-        config = yaml_configuration.YamlConfiguration(f.name)
+        config = yaml_configuration.YamlConfigurationFactory(f.name)
         assert config.get_telegram_config() is not None
 
 
 def test_loading_nonexistent_path() -> None:
     with pytest.raises(RuntimeError):
-        yaml_configuration.YamlConfiguration("")
+        yaml_configuration.YamlConfigurationFactory("")
 
 
 crypto_compare_config = """
@@ -298,5 +298,5 @@ def test_get_crypto_compare_config() -> None:
     with tempfile.NamedTemporaryFile("w+", delete=False) as f:
         f.write(crypto_compare_config)
         f.close()
-        config = yaml_configuration.YamlConfiguration(f.name)
+        config = yaml_configuration.YamlConfigurationFactory(f.name)
         assert config.get_crypto_compare_config() is not None

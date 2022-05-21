@@ -1,3 +1,4 @@
+import dataclasses
 from typing import List
 from typing import Optional
 from typing import Set
@@ -12,7 +13,7 @@ from ..notifications import TelegramConfig
 from ..triggers import TriggerSpec
 
 
-class Configuration:
+class ConfigurationFactory:
     def get_polling_interval(self) -> int:
         raise NotImplementedError()  # pragma: no cover
 

@@ -11,7 +11,7 @@ import streamlit.cli as st_cli
 
 from vigilant_crypto_snatch.configuration import migrations
 from vigilant_crypto_snatch.configuration import parse_trigger_spec
-from vigilant_crypto_snatch.configuration import YamlConfiguration
+from vigilant_crypto_snatch.configuration import YamlConfigurationFactory
 from vigilant_crypto_snatch.core import AssetPair
 from vigilant_crypto_snatch.evaluation import accumulate_value
 from vigilant_crypto_snatch.evaluation import get_available_coins
@@ -289,7 +289,7 @@ def get_api_key() -> str:
     if key is not None:
         return key
     else:
-        config = YamlConfiguration()
+        config = YamlConfigurationFactory()
         return config.get_crypto_compare_config().api_key
 
 

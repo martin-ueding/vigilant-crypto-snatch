@@ -3,10 +3,10 @@ from typing import List
 from typing import Optional
 
 from .. import logger
-from ..configuration import Configuration
+from ..configuration import ConfigurationFactory
 from ..configuration import get_used_currencies
 from ..configuration import run_migrations
-from ..configuration import YamlConfiguration
+from ..configuration import YamlConfigurationFactory
 from ..core import AssetPair
 from ..datastorage import ListDatastore
 from ..datastorage import make_datastore
@@ -27,7 +27,7 @@ from ..triggers import TriggerSpec
 
 def main() -> None:
     run_migrations()
-    config = YamlConfiguration()
+    config = YamlConfigurationFactory()
 
     try_database()
     try_balance(config, config.get_marketplace())
@@ -44,7 +44,7 @@ def try_database() -> None:
     make_datastore(user_db_path)
 
 
-def try_balance(config: Configuration, marketplace_name: str) -> None:
+def try_balance(config: ConfigurationFactory, marketplace_name: str) -> None:
     logger.info("Trying get balances from marketplace …")
     real_market = make_marketplace(config, marketplace_name)
     report_balances(real_market, get_used_currencies(config.get_trigger_config()))

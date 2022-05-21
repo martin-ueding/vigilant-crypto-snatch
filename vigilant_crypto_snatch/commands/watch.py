@@ -4,7 +4,7 @@ from .. import __version__
 from .. import logger
 from ..configuration import get_used_currencies
 from ..configuration import run_migrations
-from ..configuration import YamlConfiguration
+from ..configuration import YamlConfigurationFactory
 from ..datastorage import make_datastore
 from ..historical import CachingHistoricalSource
 from ..historical import CryptoCompareHistoricalSource
@@ -22,7 +22,7 @@ from ..watchloop import TriggerLoop
 
 def main():
     run_migrations()
-    config = YamlConfiguration()
+    config = YamlConfigurationFactory()
 
     add_telegram_logger(config.get_telegram_config())
     add_notify_run_logger(config.get_notify_run_config())

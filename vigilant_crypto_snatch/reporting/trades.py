@@ -3,7 +3,7 @@ from typing import Optional
 
 import pandas as pd
 
-from vigilant_crypto_snatch.configuration import YamlConfiguration
+from vigilant_crypto_snatch.configuration import YamlConfigurationFactory
 from vigilant_crypto_snatch.core import AssetPair
 from vigilant_crypto_snatch.datastorage import Datastore
 from vigilant_crypto_snatch.datastorage import make_datastore
@@ -18,7 +18,7 @@ def gather_trades(datastore: Datastore) -> pd.DataFrame:
 
 
 def add_gains(trades: pd.DataFrame):
-    config = YamlConfiguration()
+    config = YamlConfigurationFactory()
     historical_source = CryptoCompareHistoricalSource(
         config.get_crypto_compare_config()
     )

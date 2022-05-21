@@ -7,8 +7,8 @@ from typing import List
 import yaml
 from PyQt6.QtWidgets import QMessageBox
 
-from ...configuration import Configuration
-from ...configuration import YamlConfiguration
+from ...configuration import ConfigurationFactory
+from ...configuration import YamlConfigurationFactory
 from ...core import AssetPair
 from ...historical import CryptoCompareConfig
 from ...marketplace import KrakenConfig
@@ -78,7 +78,7 @@ class ConfigurationTabController:
 
     def populate_ui(self) -> None:
         try:
-            config = YamlConfiguration()
+            config = YamlConfigurationFactory()
         except RuntimeError as e:
             print(e)
             return
@@ -153,7 +153,7 @@ class MarketplacePaneController:
 
         self.kraken_pane_controller = KrakenPaneController(self.ui.kraken_pane)
 
-    def populate_ui(self, config: Configuration):
+    def populate_ui(self, config: ConfigurationFactory):
         self.kraken_pane_controller.populate_ui(config.get_kraken_config())
 
     def get_config(self) -> Dict:
