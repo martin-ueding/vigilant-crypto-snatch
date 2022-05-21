@@ -1,4 +1,6 @@
 import dataclasses
+from typing import Any
+from typing import Dict
 from typing import List
 from typing import Optional
 from typing import Set
@@ -24,6 +26,28 @@ class Configuration:
     telegram: Optional[TelegramConfig] = None
     ccxt: Optional[CCXTConfig] = None
     notify_run: Optional[NotifyRunConfig] = None
+
+    def to_primitives(self) -> Dict[str, Any]:
+        result = {
+            "sleep": self.polling_interval,
+            "marketplace": self.marketplace,
+            "triggers": [trigger.to_primitives() for trigger in self.triggers],
+        }
+
+        if self.crypto_compare is not None:
+            result["cryptocompare"] = self.crypto_compare.to_primitives()
+        if self.kraken is not None:
+            result["kraken"] = self.kraken.to_primitives()
+        if self.bitstamp is not None:
+            result["bitstamp"] = self.bitstamp.to_primitives()
+        if self.telegram is not None:
+            result["telegram"] = self.telegram.to_primitives()
+        # if self.ccxt is not None:
+        #     result["ccxt"] = self.ccxt.to_primitives()
+        # if self.notify_run is not None:
+        #     result["notify_run"] = self.notify_run.to_primitives()
+
+        return result
 
 
 class ConfigurationFactory:

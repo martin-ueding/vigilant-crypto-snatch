@@ -3,10 +3,12 @@ import traceback
 from typing import Dict
 from typing import Iterable
 from typing import List
+from typing import Optional
 
 import yaml
 from PyQt6.QtWidgets import QMessageBox
 
+from ...configuration import Configuration
 from ...configuration import YamlConfigurationFactory
 from ...core import AssetPair
 from ...historical import CryptoCompareConfig
@@ -51,34 +53,33 @@ class ConfigurationTabController:
         self.bitstamp_pane_controller = BitstampPaneController(self.ui.bitstamp_pane)
 
         ui.save_button.clicked.connect(self.save)
+        ui.test_drive_button.clicked.connect(self.test_drive)
 
         self.populate_ui()
 
     def save(self) -> None:
-        config_dict = {}
+        new_config = self._gather_config()
+        if new_config is not None:
+            with open("gui-generated-config.yml", "w") as f:
+                yaml.dump(new_config.to_primitives(), f)
+
+    def _gather_config(self) -> Optional[Configuration]:
         try:
-            config_dict.update(self.general_panel_controller.get_config())
-            config_dict[
-                "crypto_compare"
-            ] = self.crypto_compare_panel_controller.get_config().to_primitives()
-            config_dict[
-                "telegram"
-            ] = self.telegram_pane_controller.get_config().to_primitives()
-            config_dict["triggers"] = [
-                x.to_primitives() for x in self.trigger_pane_controller.get_config()
-            ]
-            config_dict[
-                "kraken"
-            ] = self.kraken_pane_controller.get_config().to_primitives()
-            config_dict[
-                "bitstamp"
-            ] = self.bitstamp_pane_controller.get_config().to_primitives()
+            general = self.general_panel_controller.get_config()
+            result = Configuration(
+                polling_interval=general["sleep"],
+                crypto_compare=self.crypto_compare_panel_controller.get_config(),
+                triggers=self.trigger_pane_controller.get_config(),
+                marketplace=general["marketplace"],
+                kraken=self.kraken_pane_controller.get_config(),
+                bitstamp=self.bitstamp_pane_controller.get_config(),
+                telegram=self.telegram_pane_controller.get_config(),
+            )
+
         except RuntimeError as e:
             handle_exception_with_dialog(e)
-            return
-        pprint.pprint(config_dict)
-        with open("gui-generated-config.yml", "w") as f:
-            yaml.dump(config_dict, f)
+            return None
+        return result
 
     def populate_ui(self) -> None:
         try:
@@ -86,12 +87,17 @@ class ConfigurationTabController:
         except RuntimeError as e:
             print(e)
             return
-        self.general_panel_controller.populate_ui(config.polling_interval)
+        self.general_panel_controller.populate_ui(
+            config.polling_interval, config.marketplace
+        )
         self.crypto_compare_panel_controller.populate_ui(config.crypto_compare)
         self.telegram_pane_controller.populate_ui(config.telegram)
         self.trigger_pane_controller.populate_ui(config.triggers)
         self.kraken_pane_controller.populate_ui(config.kraken)
         self.bitstamp_pane_controller.populate_ui(config.bitstamp)
+
+    def test_drive(self) -> None:
+        pass
 
 
 class GeneralPanelController:
@@ -106,10 +112,11 @@ class GeneralPanelController:
             raise RuntimeError(
                 f"Cannot parse input {text}. Make sure that it is an integer."
             ) from e
-        return {"sleep": sleep}
+        return {"sleep": sleep, "marketplace": self.ui.marketplace_edit.currentText()}
 
-    def populate_ui(self, polling_inverval: int) -> None:
+    def populate_ui(self, polling_inverval: int, marketplace: str) -> None:
         self.ui.poll_interval_edit.setText(str(polling_inverval))
+        self.ui.marketplace_edit.setCurrentText(marketplace)
 
 
 class CryptoComparePanelController:

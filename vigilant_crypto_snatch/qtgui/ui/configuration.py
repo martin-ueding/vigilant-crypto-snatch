@@ -25,6 +25,7 @@ class ConfigurationTab(QWidget):
         self.bitstamp_pane = BitstampPane()
 
         self.save_button = QPushButton("Save")
+        self.test_drive_button = QPushButton("Test drive")
 
         toolbox = QToolBox()
         toolbox.addItem(self.general_panel, "General")
@@ -36,7 +37,7 @@ class ConfigurationTab(QWidget):
 
         layout = QVBoxLayout()
         layout.addWidget(toolbox)
-        layout.addWidget(QPushButton("Test drive"))
+        layout.addWidget(self.test_drive_button)
         layout.addWidget(self.save_button)
         self.setLayout(layout)
 
@@ -44,10 +45,15 @@ class ConfigurationTab(QWidget):
 class GeneralPanel(QWidget):
     def __init__(self):
         super().__init__()
+        self.poll_interval_edit = QLineEdit("30")
+        self.marketplace_edit = QComboBox()
+        self.marketplace_edit.addItem("kraken")
+        self.marketplace_edit.addItem("bitstamp")
+
         layout = QFormLayout()
         self.setLayout(layout)
-        self.poll_interval_edit = QLineEdit("30")
         layout.addRow(QLabel("Poll interval (seconds):"), self.poll_interval_edit)
+        layout.addRow(QLabel("Active marketplace:"), self.marketplace_edit)
 
 
 class CryptoComparePanel(QWidget):
