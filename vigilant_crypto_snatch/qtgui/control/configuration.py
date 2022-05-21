@@ -64,6 +64,7 @@ class ConfigurationTabController:
             config_dict["triggers"] = [
                 x.to_primitives() for x in self.trigger_pane_controller.get_config()
             ]
+            config_dict.update(self.marketplace_pane_controller.get_config())
         except RuntimeError as e:
             handle_exception_with_dialog(e)
             return
@@ -151,6 +152,10 @@ class MarketplacePaneController:
     def populate_ui(self, config: Configuration):
         self.kraken_pane_controller.populate_ui(config.get_kraken_config())
 
+    def get_config(self) -> Dict:
+        result = {"kraken": self.kraken_pane_controller.get_config().to_primitives()}
+        return result
+
 
 class KrakenPaneController:
     def __init__(self, ui: KrakenPane):
@@ -160,6 +165,15 @@ class KrakenPaneController:
         self.ui.api_key.setText(config.key)
         self.ui.api_secret.setText(config.secret)
         self.ui.prefer_fee.setChecked(config.prefer_fee_in_base_currency)
+
+    def get_config(self) -> KrakenConfig:
+        config = KrakenConfig(
+            key=self.ui.api_key.text(),
+            secret=self.ui.api_secret.text(),
+            prefer_fee_in_base_currency=self.ui.prefer_fee.isChecked(),
+            withdrawal={},
+        )
+        return config
 
 
 class TriggerPaneController:

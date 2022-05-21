@@ -1,7 +1,9 @@
 import abc
 import dataclasses
 import datetime
-import typing
+from typing import Any
+from typing import Dict
+from typing import Set
 
 from .. import logger
 from ..core import AssetPair
@@ -27,7 +29,18 @@ class KrakenConfig:
     key: str
     secret: str
     prefer_fee_in_base_currency: bool
-    withdrawal: typing.Dict[str, KrakenWithdrawalConfig]
+    withdrawal: Dict[str, KrakenWithdrawalConfig]
+
+    def to_primitives(self) -> Dict[str, Any]:
+        return {
+            "key": self.key,
+            "secret": self.key,
+            "prefer_fee_in_base_currency": self.prefer_fee_in_base_currency,
+            "withdrawal": {
+                w.coin: {"target": w.target, "fee_limit_percent": w.fee_limit_percent}
+                for w in self.withdrawal.values()
+            },
+        }
 
 
 @dataclasses.dataclass()
@@ -82,7 +95,7 @@ class WithdrawalError(Exception):
     pass
 
 
-def report_balances(market: Marketplace, subset: typing.Set[str] = None) -> None:
+def report_balances(market: Marketplace, subset: Set[str] = None) -> None:
     try:
         balance = market.get_balance()
     except NotImplementedError:
