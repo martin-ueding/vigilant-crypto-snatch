@@ -42,10 +42,10 @@ class Configuration:
             result["bitstamp"] = self.bitstamp.to_primitives()
         if self.telegram is not None:
             result["telegram"] = self.telegram.to_primitives()
-        # if self.ccxt is not None:
-        #     result["ccxt"] = self.ccxt.to_primitives()
-        # if self.notify_run is not None:
-        #     result["notify_run"] = self.notify_run.to_primitives()
+        if self.ccxt is not None:
+            result["ccxt"] = self.ccxt.to_primitives()
+        if self.notify_run is not None:
+            result["notify_run"] = self.notify_run.to_primitives()
 
         return result
 

@@ -51,6 +51,9 @@ class CCXTConfig:
     exchange: str
     parameters: dict
 
+    def to_primitives(self) -> Dict[str, Any]:
+        return {"exchange": self.exchange, "parameters": self.parameters}
+
 
 class Marketplace(abc.ABC):
     def place_order(self, asset_pair: AssetPair, volume_coin: float) -> None:
