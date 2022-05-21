@@ -28,15 +28,18 @@ from ..triggers import TriggerSpec
 def main() -> None:
     run_migrations()
     config = YamlConfigurationFactory().make_config()
+    test_drive(config)
 
+    print("Success! Everything seems to be configured correctly.")
+
+
+def test_drive(config: Configuration) -> None:
     try_database()
     try_balance(config, config.marketplace)
     try_historical(config.crypto_compare)
     try_triggers(config.triggers)
     try_telegram(config.telegram)
     try_notify_run(config.notify_run)
-
-    print("Success! Everything seems to be configured correctly.")
 
 
 def try_database() -> None:

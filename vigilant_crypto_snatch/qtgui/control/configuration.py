@@ -8,6 +8,7 @@ from typing import Optional
 import yaml
 from PyQt6.QtWidgets import QMessageBox
 
+from ...commands.testdrive import test_drive
 from ...configuration import Configuration
 from ...configuration import YamlConfigurationFactory
 from ...core import AssetPair
@@ -97,7 +98,20 @@ class ConfigurationTabController:
         self.bitstamp_pane_controller.populate_ui(config.bitstamp)
 
     def test_drive(self) -> None:
-        pass
+        config = self._gather_config()
+        try:
+            test_drive(config)
+        except Exception as e:
+            handle_exception_with_dialog(e)
+        else:
+            msg = QMessageBox()
+            msg.setIcon(QMessageBox.Icon.Information)
+            msg.setText(
+                "Test drive was successful, everything is configured just fine."
+            )
+            msg.setWindowTitle("Test Drive")
+            msg.setStandardButtons(QMessageBox.StandardButton.Ok)
+            msg.exec()
 
 
 class GeneralPanelController:
