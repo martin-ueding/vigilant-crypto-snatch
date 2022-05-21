@@ -1,3 +1,4 @@
+from PyQt6.QtWidgets import QLabel
 from PyQt6.QtWidgets import QTabWidget
 from PyQt6.QtWidgets import QVBoxLayout
 from PyQt6.QtWidgets import QWidget
@@ -24,3 +25,6 @@ class MainWindow(QWidget):
         self.tabs.addTab(self.status_tab, "Status")
         self.tabs.addTab(self.configuration_tab, "Configuration")
         self.tabs.addTab(self.about_tab, "About")
+
+        self.log_message = QLabel("Log")
+        layout.addWidget(self.log_message)

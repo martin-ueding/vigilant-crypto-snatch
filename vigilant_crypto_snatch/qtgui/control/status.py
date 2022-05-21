@@ -41,7 +41,7 @@ class StatusTabController:
             config.triggers, datastore, caching_source, self.market
         )
 
-        self.active_asset_pairs = [spec.asset_pair for spec in config.triggers]
+        self.active_asset_pairs = {spec.asset_pair for spec in config.triggers}
 
         self.refresh()
 

@@ -1,3 +1,9 @@
+import datetime
+import logging
+
+import coloredlogs
+
+from ... import logger
 from ...configuration import Configuration
 from ...configuration import YamlConfigurationFactory
 from ..ui.main import MainWindow
@@ -15,6 +21,26 @@ class MainWindowController:
         self.status_tab_controller = StatusTabController(self.ui.status_tab)
         self.status_tab_controller.config_updated(self.configuration)
 
+        logger.setLevel("DEBUG")
+        self.logger = GuiLogger("DEBUG", self.update_log_message)
+        logger.addHandler(self.logger)
+        logger.info("Startup complete!")
+
     def update_config(self, new_config: Configuration):
         self.configuration = new_config
         self.status_tab_controller.config_updated(self.configuration)
+
+    def update_log_message(self, message: str) -> None:
+        self.ui.log_message.setText(message)
+
+
+class GuiLogger(logging.Handler):
+    def __init__(self, level: str, update_message):
+        super().__init__(level.upper())
+        self.update_message = update_message
+
+    def format(self, record: logging.LogRecord) -> str:
+        return f"{datetime.datetime.now().isoformat()} — {record.getMessage()}"
+
+    def emit(self, record: logging.LogRecord) -> None:
+        self.update_message(self.format(record))

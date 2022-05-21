@@ -37,7 +37,7 @@ class KrakenConfig:
     def to_primitives(self) -> Dict[str, Any]:
         return {
             "key": self.key,
-            "secret": self.key,
+            "secret": self.secret,
             "prefer_fee_in_base_currency": self.prefer_fee_in_base_currency,
             "withdrawal": {
                 w.coin: {"target": w.target, "fee_limit_percent": w.fee_limit_percent}
