@@ -244,24 +244,45 @@ class TriggerEditWindowController:
         self.spec.name = self.ui.name.text()
         self.spec.asset_pair.coin = self.ui.coin.text()
         self.spec.asset_pair.fiat = self.ui.fiat.text()
-        self.spec.cooldown_minutes = int(self.ui.cooldown_minutes.text())
+        try:
+            self.spec.cooldown_minutes = int(self.ui.cooldown_minutes.text())
+        except ValueError as e:
+            raise RuntimeError(
+                f"Cannot parse cooldown value {self.ui.cooldown_minutes.text()}. Make sure it is a decimal number."
+            ) from e
 
+        try:
+            volume_fiat = float(self.ui.volume_fiat.text())
+        except ValueError as e:
+            raise RuntimeError(
+                f"Cannot parse volume fiat {self.ui.volume_fiat.text()}. Make sure it is a decimal number."
+            ) from e
         if self.ui.volume_fiat_type.currentText() == "absolute":
-            self.spec.volume_fiat = float(self.ui.volume_fiat.text())
+            self.spec.volume_fiat = volume_fiat
             self.spec.percentage_fiat = None
         else:
             self.spec.volume_fiat = None
-            self.spec.percentage_fiat = float(self.ui.volume_fiat.text())
+            self.spec.percentage_fiat = volume_fiat
 
         if self.ui.delay_minutes.text():
-            self.spec.delay_minutes = int(self.ui.delay_minutes.text())
+            try:
+                self.spec.delay_minutes = int(self.ui.delay_minutes.text())
+            except ValueError as e:
+                raise RuntimeError(
+                    f"Cannot parse delay value {self.ui.delay_minutes.text()}. Make sure it is an integer number."
+                ) from e
         else:
             self.spec.delay_minutes = None
 
         if self.ui.fear_and_greed_index_below.text():
-            self.spec.fear_and_greed_index_below = int(
-                self.ui.fear_and_greed_index_below.text()
-            )
+            try:
+                self.spec.fear_and_greed_index_below = int(
+                    self.ui.fear_and_greed_index_below.text()
+                )
+            except ValueError as e:
+                raise RuntimeError(
+                    f"Cannot parse Fear & Greed value {self.ui.fear_and_greed_index_below.text()}. Make sure it is an integer number."
+                ) from e
         else:
             self.spec.fear_and_greed_index_below = None
 
