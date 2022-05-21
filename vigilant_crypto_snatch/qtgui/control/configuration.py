@@ -10,6 +10,7 @@ from PyQt6.QtWidgets import QMessageBox
 
 from ...commands.testdrive import test_drive
 from ...configuration import Configuration
+from ...configuration import update_yaml_config
 from ...configuration import YamlConfigurationFactory
 from ...core import AssetPair
 from ...historical import CryptoCompareConfig
@@ -61,8 +62,7 @@ class ConfigurationTabController:
     def save(self) -> None:
         new_config = self._gather_config()
         if new_config is not None:
-            with open("gui-generated-config.yml", "w") as f:
-                yaml.dump(new_config.to_primitives(), f)
+            update_yaml_config(new_config)
 
     def _gather_config(self) -> Optional[Configuration]:
         try:

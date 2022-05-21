@@ -1,5 +1,6 @@
 import datetime
 import os
+import shutil
 from typing import Optional
 
 import dateutil.parser
@@ -73,8 +74,11 @@ class YamlConfigurationFactory(ConfigurationFactory):
             return None
         return TelegramConfig(**self._config["telegram"])
 
-    def _get_ccxt_config(self) -> CCXTConfig:
-        return CCXTConfig(**self._config["ccxt"])
+    def _get_ccxt_config(self) -> Optional[CCXTConfig]:
+        if "ccxt" in self._config:
+            return CCXTConfig(**self._config["ccxt"])
+        else:
+            return None
 
     def _get_notify_run_config(self) -> Optional[NotifyRunConfig]:
         if "notify_run" not in self._config:
@@ -130,3 +134,11 @@ def get_minutes(config: dict, key: str) -> Optional[int]:
         return config[f"{key}_minutes"]
     else:
         return None
+
+
+def update_yaml_config(new_config: Configuration) -> None:
+    now = datetime.datetime.now()
+    backup_path = config_path.with_suffix(f".bak-{int(now.timestamp())}.yml")
+    shutil.move(str(config_path), backup_path)
+    with open(config_path, "w") as f:
+        yaml.dump(new_config.to_primitives(), f)
