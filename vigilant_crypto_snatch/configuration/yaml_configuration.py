@@ -1,6 +1,5 @@
 import datetime
 import os
-from typing import List
 from typing import Optional
 
 import dateutil.parser
@@ -17,6 +16,7 @@ from ..notifications import NotifyRunConfig
 from ..notifications import TelegramConfig
 from ..paths import config_path
 from ..triggers import TriggerSpec
+from .interface import Configuration
 
 
 class YamlConfigurationFactory(ConfigurationFactory):
@@ -27,16 +27,22 @@ class YamlConfigurationFactory(ConfigurationFactory):
         with open(path) as f:
             self._config = yaml.safe_load(f)
 
-    def get_trigger_config(self) -> List[TriggerSpec]:
-        return [parse_trigger_spec(entry) for entry in self._config["triggers"]]
+    def make_config(self) -> Configuration:
+        return Configuration(
+            polling_interval=self._config["sleep"],
+            crypto_compare=CryptoCompareConfig(**self._config["cryptocompare"]),
+            triggers=[
+                parse_trigger_spec(entry) for entry in self._config.get("triggers", [])
+            ],
+            marketplace=self._config.get("marketplace", "kraken"),
+            kraken=self._get_kraken_config(),
+            bitstamp=self._get_bitstamp_config(),
+            telegram=self._get_telegram_config(),
+            ccxt=self._get_ccxt_config(),
+            notify_run=self._get_notify_run_config(),
+        )
 
-    def get_polling_interval(self) -> int:
-        return self._config["sleep"]
-
-    def get_crypto_compare_config(self) -> CryptoCompareConfig:
-        return CryptoCompareConfig(**self._config["cryptocompare"])
-
-    def get_kraken_config(self) -> Optional[KrakenConfig]:
+    def _get_kraken_config(self) -> Optional[KrakenConfig]:
         if "kraken" not in self._config:
             return None
         return KrakenConfig(
@@ -57,23 +63,20 @@ class YamlConfigurationFactory(ConfigurationFactory):
             },
         )
 
-    def get_bitstamp_config(self) -> Optional[BitstampConfig]:
+    def _get_bitstamp_config(self) -> Optional[BitstampConfig]:
         if "bitstamp" not in self._config:
             return None
         return BitstampConfig(**self._config["bitstamp"])
 
-    def get_telegram_config(self) -> Optional[TelegramConfig]:
+    def _get_telegram_config(self) -> Optional[TelegramConfig]:
         if "telegram" not in self._config:
             return None
         return TelegramConfig(**self._config["telegram"])
 
-    def get_ccxt_config(self) -> CCXTConfig:
+    def _get_ccxt_config(self) -> CCXTConfig:
         return CCXTConfig(**self._config["ccxt"])
 
-    def get_marketplace(self) -> str:
-        return self._config.get("marketplace", "kraken")
-
-    def get_notify_run_config(self) -> Optional[NotifyRunConfig]:
+    def _get_notify_run_config(self) -> Optional[NotifyRunConfig]:
         if "notify_run" not in self._config:
             return None
         return NotifyRunConfig(**self._config["notify_run"])

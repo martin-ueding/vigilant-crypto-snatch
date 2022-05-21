@@ -27,31 +27,7 @@ class Configuration:
 
 
 class ConfigurationFactory:
-    def get_polling_interval(self) -> int:
-        raise NotImplementedError()  # pragma: no cover
-
-    def get_crypto_compare_config(self) -> CryptoCompareConfig:
-        raise NotImplementedError()  # pragma: no cover
-
-    def get_kraken_config(self) -> Optional[KrakenConfig]:
-        raise NotImplementedError()  # pragma: no cover
-
-    def get_bitstamp_config(self) -> Optional[BitstampConfig]:
-        raise NotImplementedError()  # pragma: no cover
-
-    def get_telegram_config(self) -> Optional[TelegramConfig]:
-        raise NotImplementedError()  # pragma: no cover
-
-    def get_trigger_config(self) -> List[TriggerSpec]:
-        raise NotImplementedError()  # pragma: no cover
-
-    def get_ccxt_config(self) -> CCXTConfig:
-        raise NotImplementedError()  # pragma: no cover
-
-    def get_marketplace(self) -> str:
-        raise NotImplementedError()  # pragma: no cover
-
-    def get_notify_run_config(self) -> Optional[NotifyRunConfig]:
+    def make_config(self) -> Configuration:
         raise NotImplementedError()  # pragma: no cover
 
 

@@ -289,8 +289,8 @@ def get_api_key() -> str:
     if key is not None:
         return key
     else:
-        config = YamlConfigurationFactory()
-        return config.get_crypto_compare_config().api_key
+        config = YamlConfigurationFactory().make_config()
+        return config.crypto_compare.api_key
 
 
 def ui():

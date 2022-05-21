@@ -1,3 +1,4 @@
+from .interface import Configuration
 from .interface import ConfigurationFactory
 from .interface import get_used_currencies
 from .migrations import run_migrations

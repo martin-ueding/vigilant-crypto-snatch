@@ -18,10 +18,8 @@ def gather_trades(datastore: Datastore) -> pd.DataFrame:
 
 
 def add_gains(trades: pd.DataFrame):
-    config = YamlConfigurationFactory()
-    historical_source = CryptoCompareHistoricalSource(
-        config.get_crypto_compare_config()
-    )
+    config = YamlConfigurationFactory().make_config()
+    historical_source = CryptoCompareHistoricalSource(config.crypto_compare)
     unique_currency_pairs = set(
         AssetPair(coin, fiat) for coin, fiat in zip(trades["coin"], trades["fiat"])
     )

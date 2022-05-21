@@ -7,7 +7,7 @@ from typing import List
 import yaml
 from PyQt6.QtWidgets import QMessageBox
 
-from ...configuration import ConfigurationFactory
+from ...configuration import Configuration
 from ...configuration import YamlConfigurationFactory
 from ...core import AssetPair
 from ...historical import CryptoCompareConfig
@@ -78,17 +78,15 @@ class ConfigurationTabController:
 
     def populate_ui(self) -> None:
         try:
-            config = YamlConfigurationFactory()
+            config = YamlConfigurationFactory().make_config()
         except RuntimeError as e:
             print(e)
             return
-        self.general_panel_controller.populate_ui(config.get_polling_interval())
-        self.crypto_compare_panel_controller.populate_ui(
-            config.get_crypto_compare_config()
-        )
-        self.telegram_pane_controller.populate_ui(config.get_telegram_config())
+        self.general_panel_controller.populate_ui(config.polling_interval)
+        self.crypto_compare_panel_controller.populate_ui(config.crypto_compare)
+        self.telegram_pane_controller.populate_ui(config.telegram)
         self.marketplace_pane_controller.populate_ui(config)
-        self.trigger_pane_controller.populate_ui(config.get_trigger_config())
+        self.trigger_pane_controller.populate_ui(config.triggers)
 
 
 class GeneralPanelController:
@@ -153,8 +151,8 @@ class MarketplacePaneController:
 
         self.kraken_pane_controller = KrakenPaneController(self.ui.kraken_pane)
 
-    def populate_ui(self, config: ConfigurationFactory):
-        self.kraken_pane_controller.populate_ui(config.get_kraken_config())
+    def populate_ui(self, config: Configuration):
+        self.kraken_pane_controller.populate_ui(config.kraken)
 
     def get_config(self) -> Dict:
         result = {"kraken": self.kraken_pane_controller.get_config().to_primitives()}

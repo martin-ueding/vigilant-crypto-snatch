@@ -3,7 +3,7 @@ from typing import List
 from typing import Optional
 
 from .. import logger
-from ..configuration import ConfigurationFactory
+from ..configuration import Configuration
 from ..configuration import get_used_currencies
 from ..configuration import run_migrations
 from ..configuration import YamlConfigurationFactory
@@ -27,14 +27,14 @@ from ..triggers import TriggerSpec
 
 def main() -> None:
     run_migrations()
-    config = YamlConfigurationFactory()
+    config = YamlConfigurationFactory().make_config()
 
     try_database()
-    try_balance(config, config.get_marketplace())
-    try_historical(config.get_crypto_compare_config())
-    try_triggers(config.get_trigger_config())
-    try_telegram(config.get_telegram_config())
-    try_notify_run(config.get_notify_run_config())
+    try_balance(config, config.marketplace)
+    try_historical(config.crypto_compare)
+    try_triggers(config.triggers)
+    try_telegram(config.telegram)
+    try_notify_run(config.notify_run)
 
     print("Success! Everything seems to be configured correctly.")
 
@@ -44,10 +44,12 @@ def try_database() -> None:
     make_datastore(user_db_path)
 
 
-def try_balance(config: ConfigurationFactory, marketplace_name: str) -> None:
+def try_balance(config: Configuration, marketplace_name: str) -> None:
     logger.info("Trying get balances from marketplace …")
-    real_market = make_marketplace(config, marketplace_name)
-    report_balances(real_market, get_used_currencies(config.get_trigger_config()))
+    real_market = make_marketplace(
+        marketplace_name, config.bitstamp, config.kraken, config.ccxt
+    )
+    report_balances(real_market, get_used_currencies(config.triggers))
 
 
 def try_historical(config: CryptoCompareConfig) -> None:

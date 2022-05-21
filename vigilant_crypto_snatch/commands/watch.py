@@ -22,29 +22,27 @@ from ..watchloop import TriggerLoop
 
 def main():
     run_migrations()
-    config = YamlConfigurationFactory()
+    config = YamlConfigurationFactory().make_config()
 
-    add_telegram_logger(config.get_telegram_config())
-    add_notify_run_logger(config.get_notify_run_config())
+    add_telegram_logger(config.telegram)
+    add_notify_run_logger(config.notify_run)
     logger.info(f"Starting up with version {__version__} …")
 
     datastore = make_datastore(user_db_path)
-    market = make_marketplace(config, config.get_marketplace())
+    market = make_marketplace(
+        config.marketplace, config.bitstamp, config.kraken, config.ccxt
+    )
     check_and_perform_widthdrawal(market)
 
-    report_balances(market, get_used_currencies(config.get_trigger_config()))
+    report_balances(market, get_used_currencies(config.triggers))
 
     database_source = DatabaseHistoricalSource(datastore, datetime.timedelta(minutes=5))
-    crypto_compare_source = CryptoCompareHistoricalSource(
-        config.get_crypto_compare_config()
-    )
+    crypto_compare_source = CryptoCompareHistoricalSource(config.crypto_compare)
     market_source = MarketSource(market)
     caching_source = CachingHistoricalSource(
         database_source, [market_source, crypto_compare_source], datastore
     )
-    active_triggers = make_triggers(
-        config.get_trigger_config(), datastore, caching_source, market
-    )
+    active_triggers = make_triggers(config.triggers, datastore, caching_source, market)
 
-    trigger_loop = TriggerLoop(active_triggers, config.get_polling_interval())
+    trigger_loop = TriggerLoop(active_triggers, config.polling_interval)
     trigger_loop.loop()

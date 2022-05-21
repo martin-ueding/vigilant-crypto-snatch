@@ -1,15 +1,30 @@
+from typing import Optional
+
 from .bitstamp_adaptor import BitstampMarketplace
 from .ccxt_adapter import CCXTMarketplace
+from .interface import BitstampConfig
+from .interface import CCXTConfig
+from .interface import KrakenConfig
+from .interface import Marketplace
 from .krakenex_adaptor import KrakenexMarketplace
 
 
-def make_marketplace(config, marketplace_name):
+def make_marketplace(
+    marketplace_name: str,
+    bitstamp_config: Optional[BitstampConfig] = None,
+    kraken_config: Optional[KrakenConfig] = None,
+    ccxt_config: Optional[CCXTConfig] = None,
+) -> Marketplace:
+    real_market: Marketplace
     if marketplace_name == "bitstamp":
-        real_market = BitstampMarketplace(config.get_bitstamp_config())
+        assert bitstamp_config is not None
+        real_market = BitstampMarketplace(bitstamp_config)
     elif marketplace_name == "kraken":
-        real_market = KrakenexMarketplace(config.get_kraken_config())
+        assert kraken_config is not None
+        real_market = KrakenexMarketplace(kraken_config)
     elif marketplace_name == "ccxt":
-        real_market = CCXTMarketplace(config.get_ccxt_config())
+        assert ccxt_config is not None
+        real_market = CCXTMarketplace(ccxt_config)
     else:
         raise RuntimeError(f"Unsupported marketplace: {marketplace_name}")
     return real_market
