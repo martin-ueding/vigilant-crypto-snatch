@@ -21,7 +21,7 @@ class MainWindow(QWidget):
 
         # Add tabs
         self.tabs.addTab(self.configuration_tab, "Configuration")
-        self.tabs.addTab(self.tab1, "Status")
-        self.tabs.addTab(self.tab3, "About")
+        # self.tabs.addTab(self.tab1, "Status")
+        # self.tabs.addTab(self.tab3, "About")
 
         layout.addWidget(self.tabs)

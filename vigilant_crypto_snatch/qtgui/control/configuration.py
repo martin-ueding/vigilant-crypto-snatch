@@ -1,6 +1,7 @@
 import pprint
 import traceback
 from typing import Dict
+from typing import Iterable
 from typing import List
 
 import yaml
@@ -11,12 +12,15 @@ from ...configuration import YamlConfiguration
 from ...core import AssetPair
 from ...historical import CryptoCompareConfig
 from ...marketplace import KrakenConfig
+from ...marketplace import KrakenWithdrawalConfig
 from ...notifications import TelegramConfig
 from ...triggers import TriggerSpec
 from ..ui.configuration import ConfigurationTab
 from ..ui.configuration import CryptoComparePanel
 from ..ui.configuration import GeneralPanel
 from ..ui.configuration import KrakenPane
+from ..ui.configuration import KrakenWithdrawalEditWindow
+from ..ui.configuration import KrakenWithdrawalPane
 from ..ui.configuration import MarketplacePane
 from ..ui.configuration import TelegramPane
 from ..ui.configuration import TriggerEditWindow
@@ -160,20 +164,112 @@ class MarketplacePaneController:
 class KrakenPaneController:
     def __init__(self, ui: KrakenPane):
         self.ui = ui
+        self.withdrawal_pane_controller = KrakenWithdrawalPaneController(
+            ui.kraken_withdrawal_pane
+        )
 
     def populate_ui(self, config: KrakenConfig):
         self.ui.api_key.setText(config.key)
         self.ui.api_secret.setText(config.secret)
         self.ui.prefer_fee.setChecked(config.prefer_fee_in_base_currency)
+        self.withdrawal_pane_controller.populate_ui(config.withdrawal.values())
 
     def get_config(self) -> KrakenConfig:
         config = KrakenConfig(
             key=self.ui.api_key.text(),
             secret=self.ui.api_secret.text(),
             prefer_fee_in_base_currency=self.ui.prefer_fee.isChecked(),
-            withdrawal={},
+            withdrawal=self.withdrawal_pane_controller.get_config(),
         )
         return config
+
+
+class KrakenWithdrawalPaneController:
+    def __init__(self, ui: KrakenWithdrawalPane):
+        self.ui = ui
+        self.configs: List[KrakenWithdrawalConfig] = []
+
+        ui.add.clicked.connect(self.add)
+        ui.edit.clicked.connect(self.edit)
+        ui.delete.clicked.connect(self.delete)
+
+    def populate_ui(self, configs: Iterable[KrakenWithdrawalConfig]):
+        self.configs = list(configs)
+        for config in self.configs:
+            self.ui.list.addItem(config.coin)
+
+    def get_config(self) -> Dict[str, KrakenWithdrawalConfig]:
+        return {c.coin: c for c in self.configs}
+
+    def update_row(self, row: int) -> None:
+        self.ui.list.item(row).setText(self.configs[row].coin)
+
+    def add(self) -> None:
+        new = KrakenWithdrawalConfig(coin="New", target="New", fee_limit_percent=0.0)
+        self.configs.append(new)
+        self.ui.list.addItem(new.coin)
+
+    def edit(self) -> None:
+        row = self.ui.list.currentRow()
+        if row < 0:
+            return
+        self.edit_window = KrakenWithdrawalEditWindow()
+        self.edit_window_controller = KrakenWithdrawalEditWindowController(
+            self, self.edit_window, self.configs[row], row
+        )
+        self.edit_window_controller.populate_ui()
+        self.edit_window.show()
+
+    def delete(self) -> None:
+        row = self.ui.list.currentRow()
+        self.ui.list.takeItem(row)
+        del self.configs[row]
+
+
+class KrakenWithdrawalEditWindowController:
+    def __init__(
+        self,
+        parent: KrakenWithdrawalPaneController,
+        ui: KrakenWithdrawalEditWindow,
+        spec: KrakenWithdrawalConfig,
+        row: int,
+    ):
+        self.parent = parent
+        self.ui = ui
+        self.spec = spec
+        self.row = row
+
+        self.ui.save.clicked.connect(self.save)
+        self.ui.cancel.clicked.connect(self.cancel)
+
+    def populate_ui(self) -> None:
+        self.ui.coin.setText(self.spec.coin)
+        self.ui.target.setText(self.spec.target)
+        self.ui.fee_limit.setText(str(self.spec.fee_limit_percent))
+
+    def _parse_values(self) -> None:
+        self.spec.coin = self.ui.coin.text()
+        self.spec.target = self.ui.target.text()
+
+        try:
+            self.spec.fee_limit_percent = float(self.ui.fee_limit.text())
+        except ValueError as e:
+            raise RuntimeError(
+                f"Cannot parse fee limit {self.ui.fee_limit.text()}. Make sure it is a decimal number."
+            ) from e
+
+    def save(self) -> None:
+        try:
+            self._parse_values()
+        except RuntimeError as e:
+            handle_exception_with_dialog(e)
+            return
+
+        self.parent.update_row(self.row)
+        self.ui.close()
+
+    def cancel(self) -> None:
+        self.ui.close()
 
 
 class TriggerPaneController:
@@ -193,7 +289,6 @@ class TriggerPaneController:
         self.ui.list.addItem(new_spec.name)
 
     def edit(self) -> None:
-        print("Edit")
         row = self.ui.list.currentRow()
         if row < 0:
             return
@@ -203,12 +298,9 @@ class TriggerPaneController:
         )
         self.edit_window_controller.populate_ui()
         self.edit_window.show()
-        print("Done")
 
     def delete(self) -> None:
-        print("Delete")
         row = self.ui.list.currentRow()
-        print(row)
         self.ui.list.takeItem(row)
         del self.specs[row]
 

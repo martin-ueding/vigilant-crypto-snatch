@@ -69,6 +69,52 @@ class KrakenPane(QWidget):
         layout.addRow(QLabel("API Secret:"), self.api_secret)
         layout.addRow(QLabel("Prefer fee in base currency:"), self.prefer_fee)
 
+        self.kraken_withdrawal_pane = KrakenWithdrawalPane()
+        layout.addRow(self.kraken_withdrawal_pane)
+
+
+class KrakenWithdrawalPane(QGroupBox):
+    def __init__(self):
+        super().__init__()
+        self.setTitle("Withdrawal")
+        layout = QVBoxLayout()
+        self.setLayout(layout)
+        self.list = QListWidget()
+        self.add = QPushButton("Add")
+        self.edit = QPushButton("Edit")
+        self.delete = QPushButton("Delete")
+
+        layout.addWidget(self.list)
+
+        button_layout = QHBoxLayout()
+        button_layout.addWidget(self.add)
+        button_layout.addWidget(self.edit)
+        button_layout.addWidget(self.delete)
+        layout.addLayout(button_layout)
+
+
+class KrakenWithdrawalEditWindow(QWidget):
+    def __init__(self):
+        super().__init__()
+        self.setWindowTitle("Edit Kraken Withdrawal")
+
+        layout = QFormLayout()
+        self.setLayout(layout)
+
+        self.coin = QLineEdit()
+        layout.addRow(QLabel("Coin:"), self.coin)
+        self.target = QLineEdit()
+        layout.addRow(QLabel("Target:"), self.target)
+        self.fee_limit = QLineEdit()
+        layout.addRow(QLabel("Fee limit (percent):"), self.fee_limit)
+
+        button_layout = QHBoxLayout()
+        self.save = QPushButton("Save")
+        self.cancel = QPushButton("Cancel")
+        button_layout.addWidget(self.save)
+        button_layout.addWidget(self.cancel)
+        layout.addRow(button_layout)
+
 
 class MarketplacePane(QGroupBox):
     def __init__(self):
