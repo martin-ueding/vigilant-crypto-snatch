@@ -49,7 +49,7 @@ class TriggerSpec:
             )
 
     def to_primitives(self) -> Dict[str, Any]:
-        return dict(
+        result = dict(
             coin=self.asset_pair.coin,
             fiat=self.asset_pair.fiat,
             cooldown_minutes=self.cooldown_minutes,
@@ -61,6 +61,7 @@ class TriggerSpec:
             start=self.start,
             fear_and_greed_index_below=self.fear_and_greed_index_below,
         )
+        return {key: value for key, value in result.items() if value is not None}
 
 
 class InvalidTriggerSpec(Exception):
