@@ -1,8 +1,10 @@
 import pprint
+import traceback
 from typing import Dict
 from typing import List
 
 import yaml
+from PyQt6.QtWidgets import QMessageBox
 
 from ...configuration import Configuration
 from ...configuration import YamlConfiguration
@@ -53,7 +55,13 @@ class ConfigurationTabController:
                 x.to_primitives() for x in self.trigger_pane_controller.get_config()
             ]
         except RuntimeError as e:
-            print(e)
+            msg = QMessageBox()
+            msg.setIcon(QMessageBox.Icon.Critical)
+            msg.setText(str(e))
+            msg.setWindowTitle("Configuration Error")
+            msg.setDetailedText(traceback.format_exc())
+            msg.setStandardButtons(QMessageBox.StandardButton.Ok)
+            msg.exec()
             return
         pprint.pprint(config_dict)
         with open("gui-generated-config.yml", "w") as f:
