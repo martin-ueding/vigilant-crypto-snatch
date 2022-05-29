@@ -2,107 +2,112 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
     <url>
          <loc>https://martin-ueding.github.io/vigilant-crypto-snatch/</loc>
-         <lastmod>2022-05-21</lastmod>
+         <lastmod>2022-05-29</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://martin-ueding.github.io/vigilant-crypto-snatch/deployment/</loc>
-         <lastmod>2022-05-21</lastmod>
+         <lastmod>2022-05-29</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://martin-ueding.github.io/vigilant-crypto-snatch/developing/</loc>
-         <lastmod>2022-05-21</lastmod>
+         <lastmod>2022-05-29</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://martin-ueding.github.io/vigilant-crypto-snatch/donation/</loc>
-         <lastmod>2022-05-21</lastmod>
+         <lastmod>2022-05-29</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://martin-ueding.github.io/vigilant-crypto-snatch/license/</loc>
-         <lastmod>2022-05-21</lastmod>
+         <lastmod>2022-05-29</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://martin-ueding.github.io/vigilant-crypto-snatch/support/</loc>
-         <lastmod>2022-05-21</lastmod>
+         <lastmod>2022-05-29</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://martin-ueding.github.io/vigilant-crypto-snatch/changelog/version-2/</loc>
-         <lastmod>2022-05-21</lastmod>
+         <lastmod>2022-05-29</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://martin-ueding.github.io/vigilant-crypto-snatch/changelog/version-3/</loc>
-         <lastmod>2022-05-21</lastmod>
+         <lastmod>2022-05-29</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://martin-ueding.github.io/vigilant-crypto-snatch/changelog/version-4/</loc>
-         <lastmod>2022-05-21</lastmod>
+         <lastmod>2022-05-29</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://martin-ueding.github.io/vigilant-crypto-snatch/changelog/version-5/</loc>
-         <lastmod>2022-05-21</lastmod>
+         <lastmod>2022-05-29</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://martin-ueding.github.io/vigilant-crypto-snatch/configuration/general/</loc>
-         <lastmod>2022-05-21</lastmod>
+         <lastmod>2022-05-29</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://martin-ueding.github.io/vigilant-crypto-snatch/configuration/marketplace/</loc>
-         <lastmod>2022-05-21</lastmod>
+         <lastmod>2022-05-29</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://martin-ueding.github.io/vigilant-crypto-snatch/configuration/notifications/</loc>
-         <lastmod>2022-05-21</lastmod>
+         <lastmod>2022-05-29</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://martin-ueding.github.io/vigilant-crypto-snatch/configuration/triggers/</loc>
-         <lastmod>2022-05-21</lastmod>
+         <lastmod>2022-05-29</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://martin-ueding.github.io/vigilant-crypto-snatch/dev/components/</loc>
-         <lastmod>2022-05-21</lastmod>
+         <lastmod>2022-05-29</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://martin-ueding.github.io/vigilant-crypto-snatch/installation/general/</loc>
-         <lastmod>2022-05-21</lastmod>
+         <lastmod>2022-05-29</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://martin-ueding.github.io/vigilant-crypto-snatch/installation/windows/</loc>
-         <lastmod>2022-05-21</lastmod>
+         <lastmod>2022-05-29</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://martin-ueding.github.io/vigilant-crypto-snatch/usage/evaluate/</loc>
-         <lastmod>2022-05-21</lastmod>
+         <lastmod>2022-05-29</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://martin-ueding.github.io/vigilant-crypto-snatch/usage/general/</loc>
-         <lastmod>2022-05-21</lastmod>
+         <lastmod>2022-05-29</lastmod>
+         <changefreq>daily</changefreq>
+    </url>
+    <url>
+         <loc>https://martin-ueding.github.io/vigilant-crypto-snatch/usage/gui/</loc>
+         <lastmod>2022-05-29</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://martin-ueding.github.io/vigilant-crypto-snatch/usage/test-drive/</loc>
-         <lastmod>2022-05-21</lastmod>
+         <lastmod>2022-05-29</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://martin-ueding.github.io/vigilant-crypto-snatch/usage/watch/</loc>
-         <lastmod>2022-05-21</lastmod>
+         <lastmod>2022-05-29</lastmod>
          <changefreq>daily</changefreq>
     </url>
 </urlset>
