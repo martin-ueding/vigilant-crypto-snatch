@@ -8,10 +8,10 @@ To install just the base package system wide, run this:
 sudo python3 -m pip install vigilant-crypto-snatch
 ```
 
-If you are not running on a Raspberry Pi with 32 bit Linux, you can also install the evaluation interface with the following:
+If you are not running on a Raspberry Pi with 32 bit Linux, you can also install the evaluation interface and/or the GUI with the following square bracket syntax, where you can either include `evaluation`, `gui` or `evaluation,gui`.
 
 ```bash
-sudo python3 -m pip install 'vigilant-crypto-snatch[evaluation]'
+sudo python3 -m pip install 'vigilant-crypto-snatch[evaluation,gui]'
 ```
 
 If you don't want to install it system-wide, you can instead use `python3 -p pip install --user vigilant`. In that case you have to make sure that `~/.local/bin` is part of your `PATH` environment variable.
