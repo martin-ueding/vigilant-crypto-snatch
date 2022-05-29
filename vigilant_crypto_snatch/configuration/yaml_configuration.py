@@ -114,8 +114,9 @@ def parse_trigger_spec(trigger_spec_dict: dict) -> TriggerSpec:
 def get_start(trigger_spec_dict: dict) -> Optional[datetime.datetime]:
     if "start" in trigger_spec_dict:
         start = trigger_spec_dict["start"]
-        print(trigger_spec_dict)
-        if isinstance(start, datetime.date):
+        if isinstance(start, datetime.datetime):
+            return start
+        elif isinstance(start, datetime.date):
             return datetime.datetime.combine(start, datetime.datetime.min.time())
         elif isinstance(start, str):
             return dateutil.parser.parse(start)

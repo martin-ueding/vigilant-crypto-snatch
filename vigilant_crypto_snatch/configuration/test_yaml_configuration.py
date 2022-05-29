@@ -53,6 +53,12 @@ def test_get_start_with_datetime() -> None:
     ) == datetime.datetime(2021, 3, 4)
 
 
+def test_get_start_with_datetime_2() -> None:
+    assert yaml_configuration.get_start(
+        {"start": yaml.safe_load("2022-05-28 09:00:00")}
+    ) == datetime.datetime(2022, 5, 28, 9, 0, 0)
+
+
 def test_get_start_with_unknown_type() -> None:
     with pytest.raises(RuntimeError):
         yaml_configuration.get_start({"start": 0})
@@ -67,7 +73,7 @@ def test_parse_trigger_spec_drop_fixed() -> None:
         drop_percentage=15,
         volume_fiat=100.0,
         percentage_fiat=None,
-        start=None,
+        start=datetime.datetime(2022, 5, 28, 9, 0),
     )
 
     spec_dict = dict(
@@ -78,6 +84,7 @@ def test_parse_trigger_spec_drop_fixed() -> None:
         fiat="eur",
         name="Large drops",
         volume_fiat=100.0,
+        start=datetime.datetime(2022, 5, 28, 9, 0),
     )
     actual = yaml_configuration.parse_trigger_spec(spec_dict)
 
