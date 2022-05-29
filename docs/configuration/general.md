@@ -1,6 +1,6 @@
 # General Configuration
 
-Unfortunately we need to configure a few things before you can start automatic trading with this software. Most configuration is done in a [YAML](https://yaml.org/) file. It is a syntax for hierarchical data and relies on indentation to show the hierarchy. Since version 5.7.0 we also [have a graphical user interface](../usage/gui.html) which will help you to configure the program. You can also directly use the graphical user interface along this guide.
+Unfortunately we need to configure a few things before you can start automatic trading with this software. Most configuration is done in a [YAML](https://yaml.org/) file. It is a syntax for hierarchical data and relies on indentation to show the hierarchy. Since version 5.7.0 we also [have a graphical user interface](../usage/gui.md) which will help you to configure the program. You can also directly use the graphical user interface along this guide.
 
 The configuration file needs to be created with a (programmer's) text editor. We will talk you through the necessary steps and show snippets to put into. Depending on your platform, the path should be this:
 
