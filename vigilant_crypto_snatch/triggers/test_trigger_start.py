@@ -20,14 +20,14 @@ def drop_trigger_with_start() -> BuyTrigger:
         asset_pair=AssetPair("BTC", "EUR"),
         volume_fiat=10.0,
         cooldown_minutes=10,
-        start=datetime.datetime(2021, 7, 16),
+        start=datetime.datetime(2021, 7, 16, 9, 10, 34),
     )
     result = make_buy_trigger(datastore, source, market, trigger_spec)
     return result
 
 
 def test_trigger_with_start(drop_trigger_with_start: BuyTrigger) -> None:
-    before = datetime.datetime(2021, 7, 15)
-    after = datetime.datetime(2021, 7, 17)
+    before = datetime.datetime(2021, 7, 16, 9, 9, 10)
+    after = datetime.datetime(2021, 7, 16, 9, 14, 0)
     assert not drop_trigger_with_start.has_cooled_off(before)
     assert drop_trigger_with_start.has_cooled_off(after)
