@@ -88,3 +88,8 @@
 
 - Add support for notifications via notify.run to provide an alternative to Telegram.
 - Also catch `HTTPError` in the krakenex wrapper.
+
+## Version 5.7.0
+
+- A completely new GUI using Qt is now part of the project.
+- The trigger `start` attribute used to discard the time part, if it was given. The start was always taken to start from midnight. This is fixed in this version.

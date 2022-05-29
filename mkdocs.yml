@@ -33,6 +33,7 @@ nav:
     - usage/general.md
     - usage/test-drive.md
     - usage/watch.md
+    - usage/gui.md
     - usage/evaluate.md
   - deployment.md
   - support.md
