@@ -1,11 +1,9 @@
-import pprint
 import traceback
 from typing import Dict
 from typing import Iterable
 from typing import List
 from typing import Optional
 
-import yaml
 from PyQt6.QtWidgets import QMessageBox
 
 from ...commands.testdrive import test_drive

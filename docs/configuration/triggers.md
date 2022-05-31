@@ -5,7 +5,8 @@ You can define as many triggers as you would like. This is done in a section `tr
 
 ```yaml
 triggers:
-- coin: btc
+- name: "Large drops"
+  coin: btc
   fiat: eur
   cooldown_minutes: 1440
   volume_fiat: 26.0
@@ -18,7 +19,8 @@ triggers:
   volume_fiat: 26.0
   delay_minutes: 1440
   drop_percentage: 5
-- coin: btc
+- name: "Regular"
+  coin: btc
   fiat: eur
   cooldown_minutes: 5000
   volume_fiat: 26.0
@@ -29,7 +31,7 @@ There are different sub-types, but all of them have the following elements in co
 - `coin`: The name of the crypto-currency, case insensitive.
 - `fiat`: The name of the fiat currency, case insensitive.
 - `cooldown_minutes`, `cooldown_hours`, `cooldown_days`: Time until a trigger can fire again. If multiple ones are given, only the one with the largest unit will be used.
-- `name`: Optional human-readable name of the trigger.
+- `name`: Human-readable name of the trigger.
 
     The internal name of the trigger can be derived from the options. This will give you technical names in notifications, so you might prefer to give them personal names. Additionally the name is used in the database to compute the cooldown. If you don't have a name specified and change any of the parameters, the internal name will change and cooldown doesn't apply any more.
 

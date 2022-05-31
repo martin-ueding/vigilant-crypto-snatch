@@ -13,6 +13,7 @@ from vigilant_crypto_snatch.historical import MarketSource
 from vigilant_crypto_snatch.marketplace import make_marketplace
 from vigilant_crypto_snatch.paths import user_db_path
 from vigilant_crypto_snatch.qtgui.ui.status import StatusTab
+from vigilant_crypto_snatch.triggers import BuyTrigger
 from vigilant_crypto_snatch.triggers import make_triggers
 from vigilant_crypto_snatch.triggers import Trigger
 from vigilant_crypto_snatch.watchloop import process_trigger
@@ -47,9 +48,13 @@ class StatusTabController:
             config.triggers, datastore, caching_source, self.market
         )
 
-        self.ui.active_triggers.setText(
-            "\n".join(trigger.get_name() for trigger in self.active_triggers)
-        )
+        lines = []
+        for trigger in self.active_triggers:
+            if isinstance(trigger, BuyTrigger):
+                stall_reasons = ", ".join(trigger.get_stall_reasons())
+                lines.append(f"{trigger.get_name()}: {stall_reasons}")
+
+        self.ui.active_triggers.setText("\n".join(lines))
 
         self.active_asset_pairs = {spec.asset_pair for spec in config.triggers}
 

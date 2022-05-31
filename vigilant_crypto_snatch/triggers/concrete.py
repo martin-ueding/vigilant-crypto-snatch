@@ -115,6 +115,14 @@ class BuyTrigger(Trigger, abc.ABC):
     def get_name(self) -> str:
         return self.name
 
+    def get_stall_reasons(self) -> List[str]:
+        now = datetime.datetime.now()
+        reasons = [
+            triggered_delegate.format_stall_reason(now)
+            for triggered_delegate in self.triggered_delegates
+        ]
+        return [reason for reason in reasons if reason]
+
 
 class CheckinTrigger(Trigger):
     def __init__(self, now=datetime.datetime.now()):
