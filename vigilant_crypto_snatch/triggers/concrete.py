@@ -50,39 +50,24 @@ class BuyTrigger(Trigger, abc.ABC):
         source: HistoricalSource,
         market: Marketplace,
         asset_pair: AssetPair,
-        cooldown_minutes: int,
         triggered_delegates: List[TriggeredDelegate],
         volume_fiat_delegate: VolumeFiatDelegate,
-        name: Optional[str] = None,
-        start: Optional[datetime.datetime] = None,
+        name: str,
     ):
         super().__init__()
         self.datastore = datastore
         self.source = source
         self.market = market
         self.asset_pair = asset_pair
-        self.cooldown_minutes = cooldown_minutes
         self.triggered_delegates = triggered_delegates
         self.volume_fiat_delegate = volume_fiat_delegate
         self.name = name
-        self.start = start
         self.failure_timeout = FailureTimeout()
 
     def is_triggered(self, now: datetime.datetime) -> bool:
         return all(
             triggered_delegate.is_triggered(now)
             for triggered_delegate in self.triggered_delegates
-        )
-
-    def has_cooled_off(self, now: datetime.datetime) -> bool:
-        if self.failure_timeout.has_timeout(now):
-            return False
-        if self.start is not None and now < self.start:
-            return False
-
-        then = now - datetime.timedelta(minutes=self.cooldown_minutes)
-        return not self.datastore.was_triggered_since(
-            self.get_name(), self.asset_pair, then
         )
 
     def fire(self, now: datetime.datetime) -> None:
@@ -128,10 +113,7 @@ class BuyTrigger(Trigger, abc.ABC):
             )
 
     def get_name(self) -> str:
-        if self.name is None:
-            return f"Buy(cooldown_minutes={self.cooldown_minutes}, trigger={str(self.triggered_delegates)}, volume_fiat={str(self.volume_fiat_delegate)})"
-        else:
-            return self.name
+        return self.name
 
 
 class CheckinTrigger(Trigger):
@@ -140,10 +122,7 @@ class CheckinTrigger(Trigger):
         self.last_checkin = now
 
     def is_triggered(self, now: datetime.datetime) -> bool:
-        return now.hour == 6
-
-    def has_cooled_off(self, now: datetime.datetime) -> bool:
-        return self.last_checkin < now - datetime.timedelta(hours=2)
+        return now.hour == 6 and self.last_checkin < now - datetime.timedelta(hours=2)
 
     def get_name(self) -> str:
         return "Checkin"
@@ -162,9 +141,6 @@ class DatabaseCleaningTrigger(Trigger):
         logger.debug(f"Constructed a DatabaseCleaningTrigger with interval {interval}.")
 
     def is_triggered(self, now: datetime.datetime) -> bool:
-        return True
-
-    def has_cooled_off(self, now: datetime.datetime) -> bool:
         if self.last_cleaning is None:
             return True
         return self.last_cleaning < now - self.interval

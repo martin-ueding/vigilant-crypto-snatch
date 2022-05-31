@@ -17,6 +17,7 @@ def drop_trigger_with_percentage() -> BuyTrigger:
     source = MockHistorical()
     market = MockMarketplace()
     trigger_spec = TriggerSpec(
+        name="Test",
         asset_pair=AssetPair("BTC", "EUR"),
         drop_percentage=120.0,
         percentage_fiat=25.0,

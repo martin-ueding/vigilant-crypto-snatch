@@ -16,6 +16,7 @@ def make_true_trigger() -> Tuple[BuyTrigger, MockMarketplace]:
     source = MockHistorical()
     market = MockMarketplace()
     trigger_spec = TriggerSpec(
+        name="Test",
         asset_pair=AssetPair("BTC", "EUR"),
         volume_fiat=25.0,
         cooldown_minutes=10,
@@ -30,12 +31,6 @@ def test_triggered() -> None:
     assert true_trigger.is_triggered(datetime.datetime.now())
 
 
-def test_cooled_off() -> None:
-    true_trigger, market = make_true_trigger()
-    # There are no trades in the DB yet.
-    assert true_trigger.has_cooled_off(datetime.datetime.now())
-
-
 def test_waiting() -> None:
     true_trigger, market = make_true_trigger()
     now = datetime.datetime.now()
@@ -48,7 +43,7 @@ def test_waiting() -> None:
         asset_pair=AssetPair("BTC", "EUR"),
     )
     datastore.add_trade(trade)
-    assert not true_trigger.has_cooled_off(now)
+    assert not true_trigger.is_triggered(now)
 
 
 def test_trade() -> None:

@@ -13,6 +13,7 @@ def test_dca_trigger() -> None:
     source = MockHistorical()
     market = MockMarketplace()
     trigger_spec = TriggerSpec(
+        name="Test",
         asset_pair=AssetPair(coin="BTC", fiat="EUR"),
         cooldown_minutes=10,
         volume_fiat=10,
@@ -26,6 +27,7 @@ def disabled_test_fear_greed_trigger() -> None:
     source = MockHistorical()
     market = MockMarketplace()
     trigger_spec = TriggerSpec(
+        name="Test",
         asset_pair=AssetPair(coin="BTC", fiat="EUR"),
         cooldown_minutes=10,
         volume_fiat=10,

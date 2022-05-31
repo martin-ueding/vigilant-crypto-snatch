@@ -9,7 +9,11 @@ def test_used_currencies_empty() -> None:
 
 def test_used_currencies_multiple() -> None:
     trigger_specs = [
-        TriggerSpec(asset_pair=AssetPair("BTC", "EUR"), cooldown_minutes=10),
-        TriggerSpec(asset_pair=AssetPair("ETH", "EUR"), cooldown_minutes=10),
+        TriggerSpec(
+            name="Test", asset_pair=AssetPair("BTC", "EUR"), cooldown_minutes=10
+        ),
+        TriggerSpec(
+            name="Test", asset_pair=AssetPair("ETH", "EUR"), cooldown_minutes=10
+        ),
     ]
     assert get_used_currencies(trigger_specs) == {"BTC", "EUR", "ETH"}

@@ -51,7 +51,7 @@ def process_trigger(trigger: Trigger):
     logger.debug(f"Checking trigger “{trigger.get_name()}” …")
     try:
         now = datetime.datetime.now()
-        if trigger.has_cooled_off(now) and trigger.is_triggered(now):
+        if trigger.is_triggered(now):
             trigger.fire(now)
     except HttpRequestError as e:
         notify_and_continue(e, logging.DEBUG)

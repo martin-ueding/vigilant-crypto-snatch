@@ -11,10 +11,11 @@ from .concrete import CheckinTrigger
 from .concrete import DatabaseCleaningTrigger
 from .interface import Trigger
 from .interface import TriggerSpec
+from .triggered_delegates import CooldownTriggeredDelegate
 from .triggered_delegates import DropTriggeredDelegate
 from .triggered_delegates import FearAndGreedIndexTriggeredDelegate
+from .triggered_delegates import StartTriggeredDelegate
 from .triggered_delegates import TriggeredDelegate
-from .triggered_delegates import TrueTriggeredDelegate
 from .volume_fiat_delegates import FixedVolumeFiatDelegate
 from .volume_fiat_delegates import RatioVolumeFiatDelegate
 from .volume_fiat_delegates import VolumeFiatDelegate
@@ -40,6 +41,7 @@ def make_buy_trigger(
 
     # We first need to construct the `TriggeredDelegate` and find out which type it is.
     triggered_delegates: List[TriggeredDelegate] = []
+
     if (
         trigger_spec.delay_minutes is not None
         and trigger_spec.drop_percentage is not None
@@ -52,8 +54,7 @@ def make_buy_trigger(
                 source=source,
             )
         )
-    else:
-        triggered_delegates.append(TrueTriggeredDelegate())
+
     if trigger_spec.fear_and_greed_index_below:
         triggered_delegates.append(
             FearAndGreedIndexTriggeredDelegate(
@@ -61,6 +62,10 @@ def make_buy_trigger(
                 AlternateMeFearAndGreedIndex(),
             )
         )
+
+    if trigger_spec.start is not None:
+        triggered_delegates.append(StartTriggeredDelegate(trigger_spec.start))
+
     logger.debug(f"Constructed: {triggered_delegates}")
 
     # Then we need the `VolumeFiatDelegate`.
@@ -80,11 +85,17 @@ def make_buy_trigger(
         source=source,
         market=market,
         asset_pair=trigger_spec.asset_pair,
-        cooldown_minutes=trigger_spec.cooldown_minutes,
         triggered_delegates=triggered_delegates,
         volume_fiat_delegate=volume_fiat_delegate,
         name=trigger_spec.name,
-        start=trigger_spec.start,
+    )
+    result.triggered_delegates.append(
+        CooldownTriggeredDelegate(
+            trigger_spec.cooldown_minutes,
+            datastore,
+            trigger_spec.asset_pair,
+            result.get_name(),
+        )
     )
     logger.debug(f"Constructed trigger: {result.get_name()}")
     return result

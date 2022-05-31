@@ -14,9 +14,6 @@ class Trigger(object):
     def fire(self, now: datetime.datetime) -> None:
         raise NotImplementedError()  # pragma: no cover
 
-    def has_cooled_off(self, now: datetime.datetime) -> bool:
-        raise NotImplementedError()  # pragma: no cover
-
     def is_triggered(self, now: datetime.datetime) -> bool:
         raise NotImplementedError()  # pragma: no cover
 
@@ -25,7 +22,7 @@ class Trigger(object):
 class TriggerSpec:
     asset_pair: AssetPair
     cooldown_minutes: int
-    name: Optional[str] = None
+    name: str
     delay_minutes: Optional[int] = None
     drop_percentage: Optional[float] = None
     volume_fiat: Optional[float] = None

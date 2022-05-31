@@ -16,6 +16,7 @@ def make_drop_trigger() -> Tuple[BuyTrigger, MockHistorical]:
     source = MockHistorical()
     market = MockMarketplace()
     trigger_spec = TriggerSpec(
+        name="Drop",
         asset_pair=AssetPair("BTC", "EUR"),
         drop_percentage=120.0,
         volume_fiat=25.0,
@@ -34,12 +35,6 @@ def test_triggered() -> None:
     assert source.calls == 2
 
 
-def test_cooled_off() -> None:
-    drop_trigger, source = make_drop_trigger()
-    # There are no trades in the DB yet.
-    assert drop_trigger.has_cooled_off(datetime.datetime.now())
-
-
 def test_waiting() -> None:
     drop_trigger, source = make_drop_trigger()
     now = datetime.datetime.now()
@@ -52,4 +47,4 @@ def test_waiting() -> None:
         asset_pair=AssetPair("BTC", "EUR"),
     )
     datastore.add_trade(trade)
-    assert not drop_trigger.has_cooled_off(now)
+    assert not drop_trigger.is_triggered(now)

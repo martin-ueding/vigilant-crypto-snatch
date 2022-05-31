@@ -93,7 +93,7 @@ def test_parse_trigger_spec_drop_fixed() -> None:
 
 def test_parse_trigger_spec_time_ratio() -> None:
     target = TriggerSpec(
-        name=None,
+        name="Test",
         asset_pair=AssetPair("BTC", "EUR"),
         cooldown_minutes=24 * 60,
         delay_minutes=None,
@@ -104,7 +104,7 @@ def test_parse_trigger_spec_time_ratio() -> None:
     )
 
     spec_dict = dict(
-        coin="btc", cooldown_days=1, fiat="eur", name=None, percentage_fiat=25
+        coin="btc", cooldown_days=1, fiat="eur", name="Test", percentage_fiat=25
     )
     actual = yaml_configuration.parse_trigger_spec(spec_dict)
 

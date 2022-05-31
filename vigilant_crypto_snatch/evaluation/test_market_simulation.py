@@ -11,8 +11,12 @@ def test_simulate_triggers() -> None:
     asset_pair = AssetPair(coin="BTC", fiat="EUR")
 
     trigger_specs = [
-        TriggerSpec(asset_pair=asset_pair, cooldown_minutes=1, volume_fiat=1),
-        TriggerSpec(asset_pair=asset_pair, cooldown_minutes=10000, volume_fiat=1),
+        TriggerSpec(
+            name="Test", asset_pair=asset_pair, cooldown_minutes=1, volume_fiat=1
+        ),
+        TriggerSpec(
+            name="Test", asset_pair=asset_pair, cooldown_minutes=10000, volume_fiat=1
+        ),
     ]
     data = make_test_dataframe()
 

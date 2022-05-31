@@ -37,6 +37,9 @@ class ListDatastore(Datastore):
     def was_triggered_since(
         self, trigger_name: str, asset_pair: AssetPair, then: datetime.datetime
     ) -> bool:
+        print(trigger_name)
+        print(asset_pair)
+        print(self.trades)
         for trade in self.trades:
             if (
                 trade.trigger_name == trigger_name

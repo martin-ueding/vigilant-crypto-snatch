@@ -101,7 +101,7 @@ def parse_trigger_spec(trigger_spec_dict: dict) -> TriggerSpec:
         drop_percentage=trigger_spec_dict.get("drop_percentage", None),
         volume_fiat=trigger_spec_dict.get("volume_fiat", None),
         percentage_fiat=trigger_spec_dict.get("percentage_fiat", None),
-        name=trigger_spec_dict.get("name", None),
+        name=trigger_spec_dict["name"],
         start=get_start(trigger_spec_dict),
         fear_and_greed_index_below=trigger_spec_dict.get(
             "fear_and_greed_index_below", None

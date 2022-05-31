@@ -55,10 +55,7 @@ def simulate_triggers(
                 continue
             try:
                 if trigger.is_triggered(now):
-                    if trigger.has_cooled_off(now):
-                        trigger.fire(now)
-                    else:
-                        pass
+                    trigger.fire(now)
             except HistoricalError as e:
                 pass
         progress_callback((i + 1) / len(data))
