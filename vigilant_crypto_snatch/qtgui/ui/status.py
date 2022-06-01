@@ -5,6 +5,7 @@ from PyQt6.QtWidgets import QFormLayout
 from PyQt6.QtWidgets import QGroupBox
 from PyQt6.QtWidgets import QLabel
 from PyQt6.QtWidgets import QPushButton
+from PyQt6.QtWidgets import QTableView
 from PyQt6.QtWidgets import QVBoxLayout
 from PyQt6.QtWidgets import QWidget
 
@@ -17,7 +18,7 @@ class StatusTab(QWidget):
         self.balance = QLabel()
         self.last_refresh = QLabel()
         self.prices = QLabel()
-        self.active_triggers = QLabel()
+        self.active_triggers = QTableView()
         self.watch_triggers = QCheckBox()
         self.refresh = QPushButton("Refresh")
 

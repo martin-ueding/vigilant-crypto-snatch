@@ -4,6 +4,10 @@ import time
 from typing import List
 from typing import Optional
 
+from PyQt6.QtCore import QAbstractTableModel
+from PyQt6.QtCore import Qt
+from PyQt6.QtGui import QColor
+
 from vigilant_crypto_snatch.configuration import Configuration
 from vigilant_crypto_snatch.datastorage import make_datastore
 from vigilant_crypto_snatch.historical import CachingHistoricalSource
@@ -48,13 +52,16 @@ class StatusTabController:
             config.triggers, datastore, caching_source, self.market
         )
 
-        lines = []
-        for trigger in self.active_triggers:
-            if isinstance(trigger, BuyTrigger):
-                stall_reasons = ", ".join(trigger.get_stall_reasons())
-                lines.append(f"{trigger.get_name()}: {stall_reasons}")
-
-        self.ui.active_triggers.setText("\n".join(lines))
+        self.trigger_table_model = TriggerTableModel(
+            [
+                trigger
+                for trigger in self.active_triggers
+                if isinstance(trigger, BuyTrigger)
+            ]
+        )
+        self.ui.active_triggers.setModel(self.trigger_table_model)
+        self.ui.active_triggers.verticalHeader().setVisible(True)
+        # self.ui.active_triggers.verticalHeader().setFixedWidth(100)
 
         self.active_asset_pairs = {spec.asset_pair for spec in config.triggers}
 
@@ -123,3 +130,46 @@ class WatchWorker:
                 time.sleep(2)
                 if not self.running:
                     return
+
+
+class TriggerTableModel(QAbstractTableModel):
+    def __init__(self, triggers: List[BuyTrigger]):
+        super().__init__()
+        self.triggers = triggers
+        self.keys = list(sorted(triggers[0].triggered_delegates.keys()))
+
+    def data(self, index, role=None):
+        trigger = self.triggers[index.row()]
+        key = self.keys[index.column()]
+        delegate = trigger.triggered_delegates[key]
+
+        if role == Qt.ItemDataRole.DisplayRole:
+            if delegate is None:
+                return "—"
+            if delegate.is_triggered(datetime.datetime.now()):
+                return "Ready"
+            else:
+                return "Waiting"
+
+        if role == Qt.ItemDataRole.DecorationRole:
+            if delegate is None:
+                return QColor("#afafaf")
+            if delegate.is_triggered(datetime.datetime.now()):
+                return QColor("#4daf4a")
+            else:
+                return QColor("#e41a1c")
+
+    def rowCount(self, parent=None, *args, **kwargs):
+        return len(self.triggers)
+
+    def columnCount(self, parent=None, *args, **kwargs):
+        return len(self.keys)
+
+    def headerData(self, index, orientation, role=None):
+        # section is the index of the column/row.
+        if role == Qt.ItemDataRole.DisplayRole:
+            if orientation == Qt.Orientation.Horizontal:
+                return self.keys[index]
+
+            if orientation == Qt.Orientation.Vertical:
+                return self.triggers[index].get_name()
