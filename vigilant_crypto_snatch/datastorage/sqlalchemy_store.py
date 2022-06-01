@@ -87,8 +87,8 @@ class SqlAlchemyDatastore(Datastore):
         try:
             engine = sqlalchemy.create_engine(db_url)
             Base.metadata.create_all(engine)
-            Session = sqlalchemy.orm.sessionmaker(bind=engine)
-            self.session = Session()  # type: ignore
+            session_factory = sqlalchemy.orm.sessionmaker(bind=engine)
+            self.session = sqlalchemy.orm.scoped_session(session_factory)
         except sqlalchemy.exc.OperationalError as e:
             raise DatastoreException(
                 f"Something went wrong with the database. Perhaps it is easiest to just delete the database file."
