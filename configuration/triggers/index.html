@@ -845,7 +845,8 @@
                 <h1 id="triggers">Triggers</h1>
 <p>You can define as many triggers as you would like. This is done in a section <code>triggers</code>. Let us show an example first and explain all the keys below.</p>
 <div class="highlight"><pre><span></span><code><span class="nt">triggers</span><span class="p">:</span><span class="w"></span>
-<span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">coin</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">btc</span><span class="w"></span>
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Large</span><span class="nv"> </span><span class="s">drops&quot;</span><span class="w"></span>
+<span class="w">  </span><span class="nt">coin</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">btc</span><span class="w"></span>
 <span class="w">  </span><span class="nt">fiat</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">eur</span><span class="w"></span>
 <span class="w">  </span><span class="nt">cooldown_minutes</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1440</span><span class="w"></span>
 <span class="w">  </span><span class="nt">volume_fiat</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">26.0</span><span class="w"></span>
@@ -858,7 +859,8 @@
 <span class="w">  </span><span class="nt">volume_fiat</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">26.0</span><span class="w"></span>
 <span class="w">  </span><span class="nt">delay_minutes</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1440</span><span class="w"></span>
 <span class="w">  </span><span class="nt">drop_percentage</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">5</span><span class="w"></span>
-<span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">coin</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">btc</span><span class="w"></span>
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Regular&quot;</span><span class="w"></span>
+<span class="w">  </span><span class="nt">coin</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">btc</span><span class="w"></span>
 <span class="w">  </span><span class="nt">fiat</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">eur</span><span class="w"></span>
 <span class="w">  </span><span class="nt">cooldown_minutes</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">5000</span><span class="w"></span>
 <span class="w">  </span><span class="nt">volume_fiat</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">26.0</span><span class="w"></span>
@@ -869,7 +871,7 @@
 <li><code>fiat</code>: The name of the fiat currency, case insensitive.</li>
 <li><code>cooldown_minutes</code>, <code>cooldown_hours</code>, <code>cooldown_days</code>: Time until a trigger can fire again. If multiple ones are given, only the one with the largest unit will be used.</li>
 <li>
-<p><code>name</code>: Optional human-readable name of the trigger.</p>
+<p><code>name</code>: Human-readable name of the trigger.</p>
 <p>The internal name of the trigger can be derived from the options. This will give you technical names in notifications, so you might prefer to give them personal names. Additionally the name is used in the database to compute the cooldown. If you don't have a name specified and change any of the parameters, the internal name will change and cooldown doesn't apply any more.</p>
 </li>
 <li>
