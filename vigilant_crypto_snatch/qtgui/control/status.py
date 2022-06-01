@@ -105,7 +105,8 @@ class StatusTabController:
         self.ui.last_refresh.setText(datetime.datetime.now().isoformat())
 
     def shutdown(self):
-        self.watch_worker.running = False
+        if self.watch_worker is not None:
+            self.watch_worker.running = False
 
 
 class WatchWorker:
