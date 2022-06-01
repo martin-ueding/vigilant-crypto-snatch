@@ -30,7 +30,6 @@ class StatusTabController:
         self.watch_worker: Optional[WatchWorker] = None
 
     def wire_ui(self):
-        self.ui.refresh.clicked.connect(self.refresh)
         self.ui.watch_triggers.stateChanged.connect(self.watch_triggers_changed)
 
     def config_updated(self, config: Configuration):
@@ -67,8 +66,6 @@ class StatusTabController:
 
         self.toggle_worker_thread(self.ui.watch_triggers.isChecked())
 
-        self.refresh()
-
     def watch_triggers_changed(self):
         self.toggle_worker_thread(self.ui.watch_triggers.isChecked())
 
@@ -78,16 +75,12 @@ class StatusTabController:
 
         if desired_state:
             self.watch_worker = WatchWorker(
-                self.config.polling_interval, self.active_triggers
+                self, self.config.polling_interval, self.active_triggers
             )
             self.watch_worker_thread = threading.Thread(target=self.watch_worker.run)
             self.watch_worker_thread.start()
         else:
             self.watch_worker = None
-
-    def refresh(self) -> None:
-        thread = threading.Thread(target=self._update_balance_worker)
-        thread.start()
 
     def _update_balance_worker(self):
         self.ui.marketplace_name.setText(self.market.get_name())
@@ -115,10 +108,20 @@ class StatusTabController:
         if self.watch_worker is not None:
             self.watch_worker.running = False
 
+    def ui_changed(self):
+        self._update_balance_worker()
+        self.trigger_table_model.endResetModel()
+
 
 class WatchWorker:
-    def __init__(self, sleep: int, triggers: List[Trigger]):
+    def __init__(
+        self,
+        status_tab_controller: StatusTabController,
+        sleep: int,
+        triggers: List[Trigger],
+    ):
         self.running = True
+        self.status_tab_controller = status_tab_controller
         self.sleep = sleep
         self.triggers = triggers
 
@@ -126,6 +129,7 @@ class WatchWorker:
         while self.running:
             for trigger in self.triggers:
                 process_trigger(trigger)
+            self.status_tab_controller.ui_changed()
             for i in range(self.sleep):
                 time.sleep(2)
                 if not self.running:

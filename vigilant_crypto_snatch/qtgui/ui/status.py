@@ -20,7 +20,6 @@ class StatusTab(QWidget):
         self.prices = QLabel()
         self.active_triggers = QTableView()
         self.watch_triggers = QCheckBox()
-        self.refresh = QPushButton("Refresh")
 
         marketplace_group = QGroupBox()
         marketplace_group.setTitle("Marketplace")
@@ -30,7 +29,6 @@ class StatusTab(QWidget):
         layout.addRow("Balance:", self.balance)
         layout.addRow("Spot prices:", self.prices)
         layout.addRow("Last refresh:", self.last_refresh)
-        layout.addRow(self.refresh)
 
         trigger_group = QGroupBox()
         trigger_group.setTitle("Triggers")
