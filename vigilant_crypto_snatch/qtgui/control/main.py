@@ -28,7 +28,6 @@ class MainWindowController:
         logger.addHandler(self.logger)
         self.systray_logger = SystrayLogger("INFO", self.systray_message)
         logger.addHandler(self.systray_logger)
-        logger.info("Startup complete!")
 
     def update_config(self, new_config: Configuration):
         self.configuration = new_config

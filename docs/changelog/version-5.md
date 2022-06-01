@@ -93,3 +93,10 @@
 
 - A completely new GUI using Qt is now part of the project.
 - The trigger `start` attribute used to discard the time part, if it was given. The start was always taken to start from midnight. This is fixed in this version.
+
+## Version 5.8.0
+
+- All triggers now need to have an explicit name set in the configuration.
+- The GUI has an improved status and about screen.
+- The GUI now shows a system tray icon and can send notifications.
+- Logo added to the GUI window.
