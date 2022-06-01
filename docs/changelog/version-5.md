@@ -100,3 +100,7 @@
 - The GUI has an improved status and about screen.
 - The GUI now shows a system tray icon and can send notifications.
 - Logo added to the GUI window.
+
+### Version 5.8.1
+
+- Allow setting a start date and time in the GUI.

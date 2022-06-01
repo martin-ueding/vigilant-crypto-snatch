@@ -9,4 +9,4 @@ if platform.system() == "Linux":
     h.setLevel(logging.INFO)
     logger.addHandler(h)
 
-__version__ = "5.8.0"
+__version__ = "5.8.1"
