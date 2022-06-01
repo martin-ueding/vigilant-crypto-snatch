@@ -1,6 +1,7 @@
 import datetime
 import threading
 import time
+from typing import Any
 from typing import List
 from typing import Optional
 
@@ -31,6 +32,14 @@ class StatusTabController:
 
     def wire_ui(self):
         self.ui.watch_triggers.stateChanged.connect(self.watch_triggers_changed)
+
+        self.spot_price_model = DumbTableModel()
+        self.spot_price_model.columns_names = ["Coin", "Value", "Fiat"]
+        self.ui.prices.setModel(self.spot_price_model)
+
+        self.balances_model = DumbTableModel()
+        self.balances_model.columns_names = ["Asset", "Value"]
+        self.ui.balance.setModel(self.balances_model)
 
     def config_updated(self, config: Configuration):
         self.config = config
@@ -83,26 +92,23 @@ class StatusTabController:
             self.watch_worker = None
 
     def _update_balance_worker(self):
-        self.ui.marketplace_name.setText(self.market.get_name())
-        self.ui.balance.setText(
-            "\n".join(
-                f"{coin}: {balance}"
+        self.balances_model.set_cells(
+            [
+                [coin, balance]
                 for coin, balance in sorted(self.market.get_balance().items())
-            )
+            ]
         )
 
         prices = {
             asset_pair: self.market.get_spot_price(asset_pair, datetime.datetime.now())
             for asset_pair in self.active_asset_pairs
         }
-        self.ui.prices.setText(
-            "\n".join(
-                f"{asset_pair.coin}: {price.last} {asset_pair.fiat}"
+        self.spot_price_model.set_cells(
+            [
+                [asset_pair.coin, price.last, asset_pair.fiat]
                 for asset_pair, price in sorted(prices.items())
-            )
+            ]
         )
-
-        self.ui.last_refresh.setText(datetime.datetime.now().isoformat())
 
     def shutdown(self):
         if self.watch_worker is not None:
@@ -177,3 +183,45 @@ class TriggerTableModel(QAbstractTableModel):
 
             if orientation == Qt.Orientation.Vertical:
                 return self.triggers[index].get_name()
+
+
+class DumbTableModel(QAbstractTableModel):
+    def __init__(self):
+        super().__init__()
+        self.columns_names: List[str] = []
+        self.row_names: List[str] = []
+        self.cells: List[List[Any]] = []
+        self.colors: List[List[str]] = []
+
+    def set_cells(self, cells: List[List[Any]]):
+        self.beginResetModel()
+        self.cells = cells
+        self.endResetModel()
+
+    def rowCount(self, parent=None, *args, **kwargs):
+        return len(self.cells)
+
+    def columnCount(self, parent=None, *args, **kwargs):
+        return len(self.columns_names)
+
+    def headerData(self, index, orientation, role=None):
+        # section is the index of the column/row.
+        if role == Qt.ItemDataRole.DisplayRole:
+            if orientation == Qt.Orientation.Horizontal:
+                if self.columns_names:
+                    return self.columns_names[index]
+                else:
+                    return ""
+
+            if orientation == Qt.Orientation.Vertical:
+                if self.row_names:
+                    return self.row_names[index]
+                else:
+                    return ""
+
+    def data(self, index, role=None):
+        if role == Qt.ItemDataRole.DisplayRole:
+            return self.cells[index.row()][index.column()]
+
+        if role == Qt.ItemDataRole.DecorationRole and self.colors:
+            return QColor(self.colors[index.row()][index.column()])

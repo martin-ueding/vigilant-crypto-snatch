@@ -3,6 +3,7 @@ from typing import Dict
 from PyQt6.QtWidgets import QCheckBox
 from PyQt6.QtWidgets import QFormLayout
 from PyQt6.QtWidgets import QGroupBox
+from PyQt6.QtWidgets import QHBoxLayout
 from PyQt6.QtWidgets import QLabel
 from PyQt6.QtWidgets import QPushButton
 from PyQt6.QtWidgets import QTableView
@@ -14,21 +15,29 @@ class StatusTab(QWidget):
     def __init__(self):
         super().__init__()
 
-        self.marketplace_name = QLabel()
-        self.balance = QLabel()
-        self.last_refresh = QLabel()
-        self.prices = QLabel()
+        self.balance = QTableView()
+        self.prices = QTableView()
         self.active_triggers = QTableView()
         self.watch_triggers = QCheckBox()
 
         marketplace_group = QGroupBox()
         marketplace_group.setTitle("Marketplace")
-        layout = QFormLayout()
+        layout = QHBoxLayout()
         marketplace_group.setLayout(layout)
-        layout.addRow("Provider:", self.marketplace_name)
-        layout.addRow("Balance:", self.balance)
-        layout.addRow("Spot prices:", self.prices)
-        layout.addRow("Last refresh:", self.last_refresh)
+
+        balance_group = QGroupBox()
+        balance_group.setTitle("Balances")
+        balance_group_layout = QVBoxLayout()
+        balance_group.setLayout(balance_group_layout)
+        balance_group_layout.addWidget(self.balance)
+        layout.addWidget(balance_group)
+
+        prices_group = QGroupBox()
+        prices_group.setTitle("Spot Prices")
+        prices_group_layout = QVBoxLayout()
+        prices_group.setLayout(prices_group_layout)
+        prices_group_layout.addWidget(self.prices)
+        layout.addWidget(prices_group)
 
         trigger_group = QGroupBox()
         trigger_group.setTitle("Triggers")
