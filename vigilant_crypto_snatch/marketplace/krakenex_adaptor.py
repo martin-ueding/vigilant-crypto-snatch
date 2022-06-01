@@ -1,6 +1,7 @@
 import datetime
 from typing import Callable
 from typing import Dict
+from typing import Optional
 from typing import Type
 from typing import Union
 
@@ -66,6 +67,8 @@ class KrakenexMarketplace(Marketplace):
             self.handle = krakenex.API(config.key, config.secret)
         self.withdrawal_config = config.withdrawal
         self.prefer_fee_in_base_currency = config.prefer_fee_in_base_currency
+        self.last_balance_time: Optional[datetime.datetime] = None
+        self.last_balance_result: Dict[str, float] = {}
 
     def get_name(self) -> str:
         return "Kraken"
@@ -90,7 +93,14 @@ class KrakenexMarketplace(Marketplace):
         price = Price(timestamp=now, last=close, asset_pair=asset_pair)
         return price
 
-    def get_balance(self) -> dict:
+    def get_balance(self) -> Dict[str, float]:
+        if (
+            self.last_balance_time is not None
+            and self.last_balance_time
+            > datetime.datetime.now() - datetime.timedelta(seconds=30)
+        ):
+            return self.last_balance_result
+
         try:
             answer = self.handle.query_private("Balance")
         except requests.exceptions.ConnectionError as e:
@@ -102,14 +112,18 @@ class KrakenexMarketplace(Marketplace):
         raise_error(answer, TickerError)
         # The key `result` will only be present if the user has any balances.
         if "result" in answer:
-            return {
+            result = {
                 map_kraken_to_normal(currency): float(value)
                 for currency, value in answer["result"].items()
             }
         else:
-            return {}
+            result = {}
+        self.last_balance_time = datetime.datetime.now()
+        self.last_balance_result = result
+        return result
 
     def place_order(self, asset_pair: AssetPair, volume_coin: float) -> None:
+        self.last_balance_time = None
         arguments = {
             "pair": f"{map_normal_to_kraken(asset_pair.coin)}{asset_pair.fiat}",
             "ordertype": "market",
@@ -150,6 +164,7 @@ class KrakenexMarketplace(Marketplace):
         return fee
 
     def withdrawal(self, coin: str, volume: float) -> None:
+        self.last_balance_time = None
         if coin not in self.withdrawal_config:
             logger.debug(f"No withdrawal config for {coin}.")
             return
