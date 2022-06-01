@@ -20,19 +20,21 @@ from vigilant_crypto_snatch.paths import user_db_path
 from vigilant_crypto_snatch.qtgui.ui.status import StatusTab
 from vigilant_crypto_snatch.triggers import BuyTrigger
 from vigilant_crypto_snatch.triggers import make_triggers
-from vigilant_crypto_snatch.triggers import Trigger
 from vigilant_crypto_snatch.watchloop import process_trigger
 
 
 class StatusTabController:
     def __init__(self, ui: StatusTab):
         self.ui = ui
+        self.config: Optional[Configuration] = None
+        self.last_check: Optional[datetime.datetime] = None
+
         self.wire_ui()
-        self.watch_worker: Optional[WatchWorker] = None
+        self.watch_worker = WatchWorker(self)
+        self.watch_worker_thread = threading.Thread(target=self.watch_worker.run)
+        self.watch_worker_thread.start()
 
     def wire_ui(self):
-        self.ui.watch_triggers.stateChanged.connect(self.watch_triggers_changed)
-
         self.spot_price_model = DumbTableModel()
         self.spot_price_model.columns_names = ["Coin", "Value", "Fiat"]
         self.ui.prices.setModel(self.spot_price_model)
@@ -68,25 +70,11 @@ class StatusTabController:
 
         self.active_asset_pairs = {spec.asset_pair for spec in config.triggers}
 
-        self.toggle_worker_thread(self.ui.watch_triggers.isChecked())
-
-    def watch_triggers_changed(self):
-        self.toggle_worker_thread(self.ui.watch_triggers.isChecked())
-
-    def toggle_worker_thread(self, desired_state: bool) -> None:
-        if self.watch_worker is not None:
-            self.watch_worker.running = False
-
-        if desired_state:
-            self.watch_worker = WatchWorker(
-                self, self.config.polling_interval, self.active_triggers
-            )
-            self.watch_worker_thread = threading.Thread(target=self.watch_worker.run)
-            self.watch_worker_thread.start()
-        else:
-            self.watch_worker = None
-
     def _update_balance_worker(self):
+        if self.ui.watch_triggers.isChecked():
+            for trigger in self.active_triggers:
+                process_trigger(trigger)
+
         self.balances_model.set_cells(
             [
                 [coin, balance]
@@ -143,31 +131,30 @@ class StatusTabController:
             self.watch_worker.running = False
 
     def ui_changed(self):
-        self._update_balance_worker()
-        self.trigger_table_model.endResetModel()
+        if self.config is not None:
+            if (
+                self.last_check is None
+                or self.last_check
+                < datetime.datetime.now() - datetime.timedelta(seconds=30)
+            ):
+                self.last_check = datetime.datetime.now()
+                self._update_balance_worker()
 
 
 class WatchWorker:
     def __init__(
         self,
         status_tab_controller: StatusTabController,
-        sleep: int,
-        triggers: List[Trigger],
     ):
-        self.running = True
         self.status_tab_controller = status_tab_controller
-        self.sleep = sleep
-        self.triggers = triggers
+        self.running = True
 
     def run(self) -> None:
         while self.running:
-            for trigger in self.triggers:
-                process_trigger(trigger)
             self.status_tab_controller.ui_changed()
-            for i in range(self.sleep):
-                time.sleep(2)
-                if not self.running:
-                    return
+            time.sleep(2)
+            if not self.running:
+                return
 
 
 class DumbTableModel(QAbstractTableModel):

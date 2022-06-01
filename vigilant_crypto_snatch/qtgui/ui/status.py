@@ -44,7 +44,7 @@ class StatusTab(QWidget):
         layout = QFormLayout()
         trigger_group.setLayout(layout)
         layout.addRow(self.active_triggers)
-        layout.addRow("Watch triggers:", self.watch_triggers)
+        layout.addRow("Execute triggers:", self.watch_triggers)
 
         layout = QVBoxLayout()
         layout.addWidget(marketplace_group)
