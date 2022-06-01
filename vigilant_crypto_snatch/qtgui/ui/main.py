@@ -1,4 +1,8 @@
+import pathlib
+
+from PyQt6.QtGui import QIcon
 from PyQt6.QtWidgets import QLabel
+from PyQt6.QtWidgets import QSystemTrayIcon
 from PyQt6.QtWidgets import QTabWidget
 from PyQt6.QtWidgets import QVBoxLayout
 from PyQt6.QtWidgets import QWidget
@@ -28,3 +32,9 @@ class MainWindow(QWidget):
 
         self.log_message = QLabel("Log")
         layout.addWidget(self.log_message)
+
+        icon_path = pathlib.Path(__file__).parent.parent / "logo.png"
+        icon = QIcon(str(icon_path))
+        self.systray = QSystemTrayIcon(icon, self)
+        self.systray.show()
+        self.setWindowIcon(icon)
