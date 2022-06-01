@@ -1,5 +1,6 @@
 from PyQt6.QtWidgets import QCheckBox
 from PyQt6.QtWidgets import QComboBox
+from PyQt6.QtWidgets import QDateTimeEdit
 from PyQt6.QtWidgets import QFormLayout
 from PyQt6.QtWidgets import QGroupBox
 from PyQt6.QtWidgets import QHBoxLayout
@@ -211,6 +212,10 @@ class TriggerEditWindow(QWidget):
         layout.addRow(QLabel("Delay (minutes):"), self.delay_minutes)
         self.fear_and_greed_index_below = QLineEdit()
         layout.addRow(QLabel("Fear & Greed below:"), self.fear_and_greed_index_below)
+
+        self.start = QDateTimeEdit()
+        self.start.setCalendarPopup(True)
+        layout.addRow("Start", self.start)
 
         button_layout = QHBoxLayout()
         self.save = QPushButton("Save")

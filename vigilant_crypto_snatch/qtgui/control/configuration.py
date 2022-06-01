@@ -378,6 +378,8 @@ class TriggerEditWindowController:
             self.ui.fear_and_greed_index_below.setText(
                 str(self.spec.fear_and_greed_index_below)
             )
+        if self.spec.start is not None:
+            self.ui.start.setDateTime(self.spec.start)
 
     def _parse_values(self) -> None:
         self.spec.name = self.ui.name.text()
@@ -424,6 +426,8 @@ class TriggerEditWindowController:
                 ) from e
         else:
             self.spec.fear_and_greed_index_below = None
+
+        self.spec.start = self.ui.start.dateTime().toPyDateTime()
 
     def save(self) -> None:
         try:
