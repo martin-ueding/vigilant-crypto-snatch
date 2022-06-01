@@ -41,6 +41,10 @@ class StatusTabController:
         self.balances_model.columns_names = ["Asset", "Value"]
         self.ui.balance.setModel(self.balances_model)
 
+        self.trigger_table_model = DumbTableModel()
+        self.ui.active_triggers.setModel(self.trigger_table_model)
+        self.ui.active_triggers.verticalHeader().setVisible(True)
+
     def config_updated(self, config: Configuration):
         self.config = config
         self.market = make_marketplace(
@@ -60,15 +64,6 @@ class StatusTabController:
             config.triggers, datastore, caching_source, self.market
         )
 
-        self.trigger_table_model = TriggerTableModel(
-            [
-                trigger
-                for trigger in self.active_triggers
-                if isinstance(trigger, BuyTrigger)
-            ]
-        )
-        self.ui.active_triggers.setModel(self.trigger_table_model)
-        self.ui.active_triggers.verticalHeader().setVisible(True)
         # self.ui.active_triggers.verticalHeader().setFixedWidth(100)
 
         self.active_asset_pairs = {spec.asset_pair for spec in config.triggers}
@@ -110,6 +105,39 @@ class StatusTabController:
             ]
         )
 
+        buy_triggers = [
+            trigger
+            for trigger in self.active_triggers
+            if isinstance(trigger, BuyTrigger)
+        ]
+        predicate_names = list(sorted(buy_triggers[0].triggered_delegates.keys()))
+        trigger_cells = []
+        trigger_colors = []
+        trigger_names = []
+
+        for trigger in buy_triggers:
+            cells = []
+            colors = []
+            for predicate_name in predicate_names:
+                predicate = trigger.triggered_delegates[predicate_name]
+                if predicate is None:
+                    cells.append("—")
+                    colors.append("#afafaf")
+                else:
+                    if predicate.is_triggered(datetime.datetime.now()):
+                        cells.append("Ready")
+                        colors.append("#4daf4a")
+                    else:
+                        cells.append("Waiting")
+                        colors.append("#e41a1c")
+            trigger_cells.append(cells)
+            trigger_colors.append(colors)
+            trigger_names.append(trigger.get_name())
+
+        self.trigger_table_model.columns_names = predicate_names
+        self.trigger_table_model.row_names = trigger_names
+        self.trigger_table_model.set_cells(trigger_cells, trigger_colors)
+
     def shutdown(self):
         if self.watch_worker is not None:
             self.watch_worker.running = False
@@ -142,49 +170,6 @@ class WatchWorker:
                     return
 
 
-class TriggerTableModel(QAbstractTableModel):
-    def __init__(self, triggers: List[BuyTrigger]):
-        super().__init__()
-        self.triggers = triggers
-        self.keys = list(sorted(triggers[0].triggered_delegates.keys()))
-
-    def data(self, index, role=None):
-        trigger = self.triggers[index.row()]
-        key = self.keys[index.column()]
-        delegate = trigger.triggered_delegates[key]
-
-        if role == Qt.ItemDataRole.DisplayRole:
-            if delegate is None:
-                return "—"
-            if delegate.is_triggered(datetime.datetime.now()):
-                return "Ready"
-            else:
-                return "Waiting"
-
-        if role == Qt.ItemDataRole.DecorationRole:
-            if delegate is None:
-                return QColor("#afafaf")
-            if delegate.is_triggered(datetime.datetime.now()):
-                return QColor("#4daf4a")
-            else:
-                return QColor("#e41a1c")
-
-    def rowCount(self, parent=None, *args, **kwargs):
-        return len(self.triggers)
-
-    def columnCount(self, parent=None, *args, **kwargs):
-        return len(self.keys)
-
-    def headerData(self, index, orientation, role=None):
-        # section is the index of the column/row.
-        if role == Qt.ItemDataRole.DisplayRole:
-            if orientation == Qt.Orientation.Horizontal:
-                return self.keys[index]
-
-            if orientation == Qt.Orientation.Vertical:
-                return self.triggers[index].get_name()
-
-
 class DumbTableModel(QAbstractTableModel):
     def __init__(self):
         super().__init__()
@@ -193,9 +178,11 @@ class DumbTableModel(QAbstractTableModel):
         self.cells: List[List[Any]] = []
         self.colors: List[List[str]] = []
 
-    def set_cells(self, cells: List[List[Any]]):
+    def set_cells(self, cells: List[List[Any]], colors: List[List[str]] = None):
         self.beginResetModel()
         self.cells = cells
+        if colors is not None:
+            self.colors = colors
         self.endResetModel()
 
     def rowCount(self, parent=None, *args, **kwargs):
