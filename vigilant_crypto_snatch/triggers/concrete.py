@@ -1,5 +1,6 @@
 import abc
 import datetime
+from typing import Dict
 from typing import List
 from typing import Optional
 
@@ -50,7 +51,7 @@ class BuyTrigger(Trigger, abc.ABC):
         source: HistoricalSource,
         market: Marketplace,
         asset_pair: AssetPair,
-        triggered_delegates: List[TriggeredDelegate],
+        triggered_delegates: Dict[str, Optional[TriggeredDelegate]],
         volume_fiat_delegate: VolumeFiatDelegate,
         name: str,
     ):
@@ -67,7 +68,8 @@ class BuyTrigger(Trigger, abc.ABC):
     def is_triggered(self, now: datetime.datetime) -> bool:
         return all(
             triggered_delegate.is_triggered(now)
-            for triggered_delegate in self.triggered_delegates
+            for triggered_delegate in self.triggered_delegates.values()
+            if triggered_delegate is not None
         )
 
     def fire(self, now: datetime.datetime) -> None:
@@ -119,7 +121,8 @@ class BuyTrigger(Trigger, abc.ABC):
         now = datetime.datetime.now()
         reasons = [
             triggered_delegate.format_stall_reason(now)
-            for triggered_delegate in self.triggered_delegates
+            for triggered_delegate in self.triggered_delegates.values()
+            if triggered_delegate is not None
         ]
         return [reason for reason in reasons if reason]
 

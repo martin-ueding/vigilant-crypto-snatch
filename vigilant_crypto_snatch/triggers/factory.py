@@ -1,5 +1,7 @@
 import datetime
+from typing import Dict
 from typing import List
+from typing import Optional
 
 from .. import logger
 from ..datastorage import Datastore
@@ -40,31 +42,40 @@ def make_buy_trigger(
     logger.debug(f"Processing trigger spec: {trigger_spec}")
 
     # We first need to construct the `TriggeredDelegate` and find out which type it is.
-    triggered_delegates: List[TriggeredDelegate] = []
+    triggered_delegates: Dict[str, Optional[TriggeredDelegate]] = {}
 
     if (
         trigger_spec.delay_minutes is not None
         and trigger_spec.drop_percentage is not None
     ):
-        triggered_delegates.append(
-            DropTriggeredDelegate(
-                asset_pair=trigger_spec.asset_pair,
-                delay_minutes=trigger_spec.delay_minutes,
-                drop_percentage=trigger_spec.drop_percentage,
-                source=source,
-            )
+        triggered_delegates["Drop"] = DropTriggeredDelegate(
+            asset_pair=trigger_spec.asset_pair,
+            delay_minutes=trigger_spec.delay_minutes,
+            drop_percentage=trigger_spec.drop_percentage,
+            source=source,
         )
+    else:
+        triggered_delegates["Drop"] = None
 
     if trigger_spec.fear_and_greed_index_below:
-        triggered_delegates.append(
-            FearAndGreedIndexTriggeredDelegate(
-                trigger_spec.fear_and_greed_index_below,
-                AlternateMeFearAndGreedIndex(),
-            )
+        triggered_delegates["Fear & Greed"] = FearAndGreedIndexTriggeredDelegate(
+            trigger_spec.fear_and_greed_index_below,
+            AlternateMeFearAndGreedIndex(),
         )
+    else:
+        triggered_delegates["Fear & Greed"] = None
 
     if trigger_spec.start is not None:
-        triggered_delegates.append(StartTriggeredDelegate(trigger_spec.start))
+        triggered_delegates["Start"] = StartTriggeredDelegate(trigger_spec.start)
+    else:
+        triggered_delegates["Start"] = None
+
+    triggered_delegates["Cooldown"] = CooldownTriggeredDelegate(
+        trigger_spec.cooldown_minutes,
+        datastore,
+        trigger_spec.asset_pair,
+        trigger_spec.name,
+    )
 
     logger.debug(f"Constructed: {triggered_delegates}")
 
@@ -88,14 +99,6 @@ def make_buy_trigger(
         triggered_delegates=triggered_delegates,
         volume_fiat_delegate=volume_fiat_delegate,
         name=trigger_spec.name,
-    )
-    result.triggered_delegates.append(
-        CooldownTriggeredDelegate(
-            trigger_spec.cooldown_minutes,
-            datastore,
-            trigger_spec.asset_pair,
-            result.get_name(),
-        )
     )
     logger.debug(f"Constructed trigger: {result.get_name()}")
     return result
