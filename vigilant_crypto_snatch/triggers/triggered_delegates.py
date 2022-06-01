@@ -7,6 +7,7 @@ from ..datastorage import Datastore
 from ..feargreed import FearAndGreedIndex
 from ..historical import HistoricalError
 from ..historical import HistoricalSource
+from ..marketplace import Marketplace
 
 
 class TriggeredDelegate(object):
@@ -120,3 +121,17 @@ class FearAndGreedIndexTriggeredDelegate(TriggeredDelegate):
             return f"Fear & Greed index ({value}) is higher than threshold ({self.threshold})."
         else:
             return None
+
+
+class SufficientFundsTriggeredDelegate(TriggeredDelegate):
+    def __init__(self, required_fiat: float, fiat: str, marketplace: Marketplace):
+        self.fiat = fiat
+        self.required_fiat = required_fiat
+        self.marketplace = marketplace
+
+    def is_triggered(self, now: datetime.datetime) -> bool:
+        try:
+            balances = self.marketplace.get_balance()
+            return balances[self.fiat] >= self.required_fiat
+        except NotImplementedError:
+            return True

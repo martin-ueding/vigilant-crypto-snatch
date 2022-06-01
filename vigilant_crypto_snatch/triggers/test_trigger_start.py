@@ -39,7 +39,7 @@ def test_error() -> None:
     trigger_spec_dict = {
         "name": "DCA weekly BTC",
         "coin": "btc",
-        "fiat": "busd",
+        "fiat": "usd",
         "cooldown_days": 7,
         "volume_fiat": 15,
         "start": datetime.datetime(2022, 5, 28, 9, 0),

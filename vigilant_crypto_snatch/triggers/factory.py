@@ -17,6 +17,7 @@ from .triggered_delegates import CooldownTriggeredDelegate
 from .triggered_delegates import DropTriggeredDelegate
 from .triggered_delegates import FearAndGreedIndexTriggeredDelegate
 from .triggered_delegates import StartTriggeredDelegate
+from .triggered_delegates import SufficientFundsTriggeredDelegate
 from .triggered_delegates import TriggeredDelegate
 from .volume_fiat_delegates import FixedVolumeFiatDelegate
 from .volume_fiat_delegates import RatioVolumeFiatDelegate
@@ -76,6 +77,13 @@ def make_buy_trigger(
         trigger_spec.asset_pair,
         trigger_spec.name,
     )
+
+    if trigger_spec.volume_fiat is not None:
+        triggered_delegates["Funds"] = SufficientFundsTriggeredDelegate(
+            trigger_spec.volume_fiat, trigger_spec.asset_pair.fiat, market
+        )
+    else:
+        triggered_delegates["Funds"] = None
 
     logger.debug(f"Constructed: {triggered_delegates}")
 

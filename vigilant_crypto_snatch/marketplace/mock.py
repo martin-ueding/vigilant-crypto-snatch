@@ -10,7 +10,7 @@ class MockMarketplace(Marketplace):
         super().__init__()
         self.orders = 0
         self.prices = 0
-        self.balances = {"EUR": 1000.0}
+        self.balances = {"EUR": 1000.0, "USD": 1000.0}
 
     def get_balance(self) -> dict:
         return self.balances
