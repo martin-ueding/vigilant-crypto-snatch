@@ -20,24 +20,21 @@ class StatusTab(QWidget):
         self.active_triggers = QTableView()
         self.watch_triggers = QCheckBox()
 
-        marketplace_group = QGroupBox()
-        marketplace_group.setTitle("Marketplace")
-        layout = QHBoxLayout()
-        marketplace_group.setLayout(layout)
+        marketplace_layout = QHBoxLayout()
 
         balance_group = QGroupBox()
         balance_group.setTitle("Balances")
         balance_group_layout = QVBoxLayout()
         balance_group.setLayout(balance_group_layout)
         balance_group_layout.addWidget(self.balance)
-        layout.addWidget(balance_group)
+        marketplace_layout.addWidget(balance_group)
 
         prices_group = QGroupBox()
         prices_group.setTitle("Spot Prices")
         prices_group_layout = QVBoxLayout()
         prices_group.setLayout(prices_group_layout)
         prices_group_layout.addWidget(self.prices)
-        layout.addWidget(prices_group)
+        marketplace_layout.addWidget(prices_group)
 
         trigger_group = QGroupBox()
         trigger_group.setTitle("Triggers")
@@ -47,6 +44,6 @@ class StatusTab(QWidget):
         layout.addRow("Execute triggers:", self.watch_triggers)
 
         layout = QVBoxLayout()
-        layout.addWidget(marketplace_group)
+        layout.addLayout(marketplace_layout)
         layout.addWidget(trigger_group)
         self.setLayout(layout)
