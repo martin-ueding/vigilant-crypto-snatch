@@ -6,6 +6,7 @@ from ...configuration import Configuration
 from ...configuration import YamlConfigurationFactory
 from ..ui.main import MainWindow
 from .configuration import ConfigurationTabController
+from .report import ReportTabController
 from .status import StatusTabController
 
 
@@ -16,6 +17,7 @@ class MainWindowController:
         self.configuration_tab_controller = ConfigurationTabController(
             self.ui.configuration_tab, self.update_config
         )
+        self.report_tab_controller = ReportTabController(self.ui.report_tab)
 
         try:
             self.configuration = YamlConfigurationFactory().make_config()

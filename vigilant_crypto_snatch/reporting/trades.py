@@ -64,6 +64,62 @@ def get_user_trades_df() -> Optional[pd.DataFrame]:
         return None
 
 
+def aggregates_per_asset_pair(trades: pd.DataFrame) -> pd.DataFrame:
+    volume_per_asset_pair = (
+        trades[["coin", "fiat", "volume_coin", "volume_fiat"]]
+        .groupby(["coin", "fiat"])
+        .agg(
+            count=("volume_fiat", "count"),
+            total_fiat=("volume_fiat", "sum"),
+            total_coin=("volume_coin", "sum"),
+        )
+        .reset_index()
+    )
+    volume_per_asset_pair["average_price"] = (
+        volume_per_asset_pair["total_fiat"] / volume_per_asset_pair["total_coin"]
+    )
+    volume_per_asset_pair = volume_per_asset_pair.rename(
+        columns={
+            "coin": "Coin",
+            "fiat": "Fiat",
+            "total_fiat": "Total Fiat",
+            "total_coin": "Total Coin",
+            "average_price": "Average Price",
+            "count": "Trades",
+        }
+    )
+    return volume_per_asset_pair
+
+
+def aggregates_per_asset_pair_and_trigger(trades: pd.DataFrame) -> pd.DataFrame:
+    volume_per_asset_pair = (
+        trades[["coin", "fiat", "trigger_name", "volume_coin", "volume_fiat"]]
+        .groupby(["coin", "fiat", "trigger_name"])
+        .agg(
+            count=("volume_fiat", "count"),
+            total_fiat=("volume_fiat", "sum"),
+            total_coin=("volume_coin", "sum"),
+        )
+        .reset_index()
+    )
+    volume_per_asset_pair["average_price"] = (
+        volume_per_asset_pair["total_fiat"] / volume_per_asset_pair["total_coin"]
+    )
+    volume_per_asset_pair = volume_per_asset_pair.rename(
+        columns={
+            "coin": "Coin",
+            "fiat": "Fiat",
+            "total_fiat": "Total Fiat",
+            "total_coin": "Total Coin",
+            "average_price": "Average Price",
+            "count": "Trades",
+            "trigger_name": "Trigger Name",
+        }
+    )
+
+    return volume_per_asset_pair
+
+
 def main() -> None:
     trades = get_user_trades_df()
     assert trades is not None
