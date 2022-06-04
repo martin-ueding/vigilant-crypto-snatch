@@ -43,5 +43,10 @@ class SimulationTabController:
         asset_pair = self.spec.asset_pair
         data = get_hourly_data(asset_pair, self.config.crypto_compare.api_key)
         data = make_dataframe_from_json(data)
-        trade_df, _ = simulate_triggers(data, self.spec.asset_pair, [self.spec], print)
+        trade_df, _ = simulate_triggers(
+            data,
+            self.spec.asset_pair,
+            [self.spec],
+            lambda fraction: self.ui.progress_bar.setValue(int(fraction * 100)),
+        )
         self.trade_table_model.set_data_frame(trade_df)

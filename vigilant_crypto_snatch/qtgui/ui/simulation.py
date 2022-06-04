@@ -1,3 +1,4 @@
+from PyQt6.QtWidgets import QProgressBar
 from PyQt6.QtWidgets import QPushButton
 from PyQt6.QtWidgets import QTableView
 from PyQt6.QtWidgets import QVBoxLayout
@@ -5,8 +6,6 @@ from PyQt6.QtWidgets import QWidget
 
 from .altair_widget import WebEngineView
 from .configuration import SingleTriggerEdit
-from .configuration import TriggerEditWindow
-from .configuration import TriggerPane
 
 
 class SimulationTab(QWidget):
@@ -21,6 +20,9 @@ class SimulationTab(QWidget):
 
         self.simulate = QPushButton("Simulate Trigger")
         layout.addWidget(self.simulate)
+
+        self.progress_bar = QProgressBar()
+        layout.addWidget(self.progress_bar)
 
         self.trade_table = QTableView()
         layout.addWidget(self.trade_table)
