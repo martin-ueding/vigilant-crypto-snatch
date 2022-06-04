@@ -7,6 +7,7 @@ from ..ui.main import MainWindow
 from .configuration import ConfigurationTabController
 from .log import LogTabController
 from .report import ReportTabController
+from .simulation import SimulationTabController
 from .status import StatusTabController
 
 
@@ -19,10 +20,14 @@ class MainWindowController:
         )
         self.report_tab_controller = ReportTabController(self.ui.report_tab)
         self.log_tab_controller = LogTabController(self.ui.log_tab)
+        self.simulation_tab_controller = SimulationTabController(self.ui.simulation_tab)
 
         try:
             self.configuration = YamlConfigurationFactory().make_config()
             self.status_tab_controller.config_updated(self.configuration)
+            self.simulation_tab_controller.populate_triggers(
+                self.configuration.triggers
+            )
         except RuntimeError:
             pass
 
