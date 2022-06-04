@@ -182,23 +182,18 @@ class TelegramPane(QWidget):
         layout.addRow(QLabel("Log level:"), self.log_level_combo_box)
 
 
-class TriggerEditWindow(QWidget):
+class SingleTriggerEdit(QFormLayout):
     def __init__(self):
         super().__init__()
-        # self.resize(500, 200)
-        self.setWindowTitle("Edit Trigger")
-
-        layout = QFormLayout()
-        self.setLayout(layout)
 
         self.name = QLineEdit()
-        layout.addRow(QLabel("Name:"), self.name)
+        self.addRow(QLabel("Name:"), self.name)
         self.coin = QLineEdit()
-        layout.addRow(QLabel("Coin:"), self.coin)
+        self.addRow(QLabel("Coin:"), self.coin)
         self.fiat = QLineEdit()
-        layout.addRow(QLabel("Fiat:"), self.fiat)
+        self.addRow(QLabel("Fiat:"), self.fiat)
         self.cooldown_minutes = QLineEdit()
-        layout.addRow(QLabel("Cooldown (minutes):"), self.cooldown_minutes)
+        self.addRow(QLabel("Cooldown (minutes):"), self.cooldown_minutes)
         self.volume_fiat = QLineEdit()
         self.volume_fiat_type = QComboBox()
         self.volume_fiat_type.addItem("absolute")
@@ -206,20 +201,31 @@ class TriggerEditWindow(QWidget):
         volume_fiat_layout = QHBoxLayout()
         volume_fiat_layout.addWidget(self.volume_fiat)
         volume_fiat_layout.addWidget(self.volume_fiat_type)
-        layout.addRow(QLabel("Volume fiat:"), volume_fiat_layout)
+        self.addRow(QLabel("Volume fiat:"), volume_fiat_layout)
 
         self.delay_minutes = QLineEdit()
-        layout.addRow(QLabel("Delay (minutes):"), self.delay_minutes)
+        self.addRow(QLabel("Delay (minutes):"), self.delay_minutes)
         self.fear_and_greed_index_below = QLineEdit()
-        layout.addRow(QLabel("Fear & Greed below:"), self.fear_and_greed_index_below)
+        self.addRow(QLabel("Fear & Greed below:"), self.fear_and_greed_index_below)
 
         self.start = QDateTimeEdit()
         self.start.setCalendarPopup(True)
-        layout.addRow("Start", self.start)
+        self.addRow("Start", self.start)
+
+
+class TriggerEditWindow(QWidget):
+    def __init__(self):
+        super().__init__()
+        # self.resize(500, 200)
+        self.setWindowTitle("Edit Trigger")
+        layout = QVBoxLayout()
+        self.setLayout(layout)
+        self.single_trigger_edit = SingleTriggerEdit()
+        layout.addLayout(self.single_trigger_edit)
 
         button_layout = QHBoxLayout()
         self.save = QPushButton("Save")
         self.cancel = QPushButton("Cancel")
         button_layout.addWidget(self.save)
         button_layout.addWidget(self.cancel)
-        layout.addRow(button_layout)
+        layout.addLayout(button_layout)

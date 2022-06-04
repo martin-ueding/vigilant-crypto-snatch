@@ -24,6 +24,7 @@ from ..ui.configuration import GeneralPanel
 from ..ui.configuration import KrakenPane
 from ..ui.configuration import KrakenWithdrawalEditWindow
 from ..ui.configuration import KrakenWithdrawalPane
+from ..ui.configuration import SingleTriggerEdit
 from ..ui.configuration import TelegramPane
 from ..ui.configuration import TriggerEditWindow
 from ..ui.configuration import TriggerPane
@@ -345,23 +346,14 @@ class TriggerPaneController:
         return self.specs
 
 
-class TriggerEditWindowController:
-    def __init__(
-        self,
-        parent: TriggerPaneController,
-        ui: TriggerEditWindow,
-        spec: TriggerSpec,
-        row: int,
-    ):
-        self.parent = parent
+class SingleTriggerEditController:
+    def __init__(self, ui: SingleTriggerEdit, spec: TriggerSpec):
         self.ui = ui
         self.spec = spec
-        self.row = row
 
-        self.ui.save.clicked.connect(self.save)
-        self.ui.cancel.clicked.connect(self.cancel)
+        self.set_spec()
 
-    def populate_ui(self) -> None:
+    def set_spec(self) -> None:
         self.ui.name.setText(self.spec.name)
         self.ui.coin.setText(self.spec.asset_pair.coin)
         self.ui.fiat.setText(self.spec.asset_pair.fiat)
@@ -381,7 +373,7 @@ class TriggerEditWindowController:
         if self.spec.start is not None:
             self.ui.start.setDateTime(self.spec.start)
 
-    def _parse_values(self) -> None:
+    def get_spec(self) -> None:
         self.spec.name = self.ui.name.text()
         self.spec.asset_pair.coin = self.ui.coin.text()
         self.spec.asset_pair.fiat = self.ui.fiat.text()
@@ -428,6 +420,33 @@ class TriggerEditWindowController:
             self.spec.fear_and_greed_index_below = None
 
         self.spec.start = self.ui.start.dateTime().toPyDateTime()
+
+
+class TriggerEditWindowController:
+    def __init__(
+        self,
+        parent: TriggerPaneController,
+        ui: TriggerEditWindow,
+        spec: TriggerSpec,
+        row: int,
+    ):
+        self.parent = parent
+        self.ui = ui
+        self.spec = spec
+        self.row = row
+
+        self.ui.save.clicked.connect(self.save)
+        self.ui.cancel.clicked.connect(self.cancel)
+
+        self.edit_controller = SingleTriggerEditController(
+            self.ui.single_trigger_edit, self.spec
+        )
+
+    def populate_ui(self) -> None:
+        self.edit_controller.set_spec()
+
+    def _parse_values(self) -> None:
+        self.edit_controller.get_spec()
 
     def save(self) -> None:
         try:

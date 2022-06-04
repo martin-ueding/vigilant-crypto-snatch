@@ -25,9 +25,7 @@ class MainWindowController:
         try:
             self.configuration = YamlConfigurationFactory().make_config()
             self.status_tab_controller.config_updated(self.configuration)
-            self.simulation_tab_controller.populate_triggers(
-                self.configuration.triggers
-            )
+            self.simulation_tab_controller.set_config(self.configuration)
         except RuntimeError:
             pass
 
@@ -37,6 +35,7 @@ class MainWindowController:
     def update_config(self, new_config: Configuration):
         self.configuration = new_config
         self.status_tab_controller.config_updated(self.configuration)
+        self.simulation_tab_controller.set_config(self.configuration)
 
     def update_log_message(self, message: str, level: str) -> None:
         self.ui.log_message.setText(message)
