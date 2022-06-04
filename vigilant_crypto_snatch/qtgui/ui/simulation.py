@@ -1,4 +1,5 @@
 from PyQt6.QtWidgets import QPushButton
+from PyQt6.QtWidgets import QTableView
 from PyQt6.QtWidgets import QVBoxLayout
 from PyQt6.QtWidgets import QWidget
 
@@ -20,6 +21,9 @@ class SimulationTab(QWidget):
 
         self.simulate = QPushButton("Simulate Trigger")
         layout.addWidget(self.simulate)
+
+        self.trade_table = QTableView()
+        layout.addWidget(self.trade_table)
 
         simple_plot_view = WebEngineView()
         layout.addWidget(simple_plot_view)
