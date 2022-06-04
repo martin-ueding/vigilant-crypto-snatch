@@ -22,10 +22,10 @@ class SimulationTab(QWidget):
         layout.addWidget(self.simulate)
 
         self.progress_bar = QProgressBar()
-        layout.addWidget(self.progress_bar)
+        # layout.addWidget(self.progress_bar)
 
         self.trade_table = QTableView()
-        layout.addWidget(self.trade_table)
+        # layout.addWidget(self.trade_table)
 
-        simple_plot_view = WebEngineView()
-        layout.addWidget(simple_plot_view)
+        self.gain_chart = WebEngineView()
+        layout.addWidget(self.gain_chart)
