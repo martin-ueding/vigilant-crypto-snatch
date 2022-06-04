@@ -28,10 +28,11 @@ scipy = { version = "^1.7.2", optional = true }
 streamlit = { version = "^1.2.0", optional = true }
 altair = { version = "^4.1.0", optional = true }
 PyQt6 = { version = "^6.3.0", optional = true }
+PyQt6-WebEngine = { version = "^6.3.0", optional = true }
 
 [tool.poetry.extras]
 evaluation = ["pandas", "scipy", "streamlit", "altair"]
-gui = ["PyQt6"]
+gui = ["PyQt6", "PyQt6-WebEngine"]
 
 [tool.poetry.dev-dependencies]
 black = "^21.6b0"

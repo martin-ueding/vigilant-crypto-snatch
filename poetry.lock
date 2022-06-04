@@ -1320,7 +1320,7 @@ name = "pyqt6"
 version = "6.3.0"
 description = "Python bindings for the Qt cross platform application toolkit"
 category = "main"
-optional = true
+optional = false
 python-versions = ">=3.6.1"
 
 [package.dependencies]
@@ -1332,7 +1332,7 @@ name = "pyqt6-qt6"
 version = "6.3.0"
 description = "The subset of a Qt installation needed by PyQt6."
 category = "main"
-optional = true
+optional = false
 python-versions = "*"
 
 [[package]]
@@ -1340,8 +1340,29 @@ name = "pyqt6-sip"
 version = "13.3.1"
 description = "The sip module support for PyQt6"
 category = "main"
-optional = true
+optional = false
 python-versions = ">=3.7"
+
+[[package]]
+name = "pyqt6-webengine"
+version = "6.3.0"
+description = "Python bindings for the Qt WebEngine framework"
+category = "main"
+optional = false
+python-versions = ">=3.7"
+
+[package.dependencies]
+PyQt6 = ">=6.2.0"
+PyQt6-sip = ">=13.1,<14"
+PyQt6-WebEngine-Qt6 = ">=6.3.0"
+
+[[package]]
+name = "pyqt6-webengine-qt6"
+version = "6.3.0"
+description = "The subset of a Qt installation needed by PyQt6-WebEngine."
+category = "main"
+optional = false
+python-versions = "*"
 
 [[package]]
 name = "pyreadline"
@@ -1886,7 +1907,7 @@ gui = ["PyQt6"]
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.7.1,<3.11"
-content-hash = "c3a122f6b3d18910397ff14413061d103008d49e9165b29ffd767cabcf2803bf"
+content-hash = "b446da2fc6066b9d2c7b8f6ecb56fecc0213241078877ca582aaace18533b626"
 
 [metadata.files]
 aiodns = [
@@ -2974,6 +2995,18 @@ pyqt6-sip = [
     {file = "PyQt6_sip-13.3.1-cp39-cp39-manylinux1_x86_64.whl", hash = "sha256:f17c15665a4007cdf167eaeb133408b8e3409203303199a00068da63ea4c41a3"},
     {file = "PyQt6_sip-13.3.1-cp39-cp39-win_amd64.whl", hash = "sha256:77edc790f8bae29729103b378ccd29beba402bcdde5c584bd4aebbf8c8a75caa"},
     {file = "PyQt6_sip-13.3.1.tar.gz", hash = "sha256:d629c0e39d5ccfdae567b92ba74d92f9180b7c55535f82251f1a12a9076a9e01"},
+]
+pyqt6-webengine = [
+    {file = "PyQt6_WebEngine-6.3.0-cp37-abi3-macosx_10_14_universal2.whl", hash = "sha256:147e6dab0184071f5febf020e29fde6a8dcced6b56f40bbc2a056fac59e76a98"},
+    {file = "PyQt6_WebEngine-6.3.0-cp37-abi3-manylinux1_x86_64.whl", hash = "sha256:1309c518eb159dcb4a9635a5f42e6d11c141ebb3baaee442cc8edf3893f55361"},
+    {file = "PyQt6_WebEngine-6.3.0-cp37-abi3-win_amd64.whl", hash = "sha256:bb37a7b2a9c0b2856a16066869389053901c20163ef9637344f0279f9597c57d"},
+    {file = "PyQt6_WebEngine-6.3.0.tar.gz", hash = "sha256:ab2aedbeec54f1bcff872f7dfc236aa0fce4b55cd30f608ca89b408ee9e8147b"},
+]
+pyqt6-webengine-qt6 = [
+    {file = "PyQt6_WebEngine_Qt6-6.3.0-py3-none-macosx_10_14_x86_64.whl", hash = "sha256:5401e2a6fa6b13f271af946433f95af06e102613c90344aceb8424514a3f8784"},
+    {file = "PyQt6_WebEngine_Qt6-6.3.0-py3-none-macosx_11_0_arm64.whl", hash = "sha256:27bd08f6a0eb5508c444e95aa45b1574239faf03d6d45d5fcd6c2c8d2fd21c69"},
+    {file = "PyQt6_WebEngine_Qt6-6.3.0-py3-none-manylinux_2_28_x86_64.whl", hash = "sha256:c075ed6c73f9d3e14e7ab5a9d1501590104dab7ecb3d57ad41b2d35760237ec5"},
+    {file = "PyQt6_WebEngine_Qt6-6.3.0-py3-none-win_amd64.whl", hash = "sha256:d9d3f1ad908e8f65088db65f27958904104275c6b32c77fec34f319d98eec9b2"},
 ]
 pyreadline = [
     {file = "pyreadline-2.1.win-amd64.exe", hash = "sha256:9ce5fa65b8992dfa373bddc5b6e0864ead8f291c94fbfec05fbd5c836162e67b"},

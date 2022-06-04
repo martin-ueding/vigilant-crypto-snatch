@@ -11,6 +11,7 @@ from .about import AboutTab
 from .configuration import ConfigurationTab
 from .log import LogTab
 from .report import ReportTab
+from .simulation import SimulationTab
 from .status import StatusTab
 
 
@@ -30,9 +31,11 @@ class MainWindow(QWidget):
         self.status_tab = StatusTab()
         self.report_tab = ReportTab()
         self.log_tab = LogTab()
+        self.simulation_tab = SimulationTab()
         self.tabs.addTab(self.status_tab, "Status")
         self.tabs.addTab(self.report_tab, "Report")
         self.tabs.addTab(self.configuration_tab, "Configuration")
+        self.tabs.addTab(self.simulation_tab, "Simulation")
         self.tabs.addTab(self.log_tab, "Log Messages")
         self.tabs.addTab(self.about_tab, "About")
 
