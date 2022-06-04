@@ -10,6 +10,8 @@ class ReportTab(QWidget):
         super().__init__()
 
         layout = QVBoxLayout()
+        self.update_report = QPushButton("Update Report")
+        layout.addWidget(self.update_report)
 
         tabs = QTabWidget()
 
@@ -35,7 +37,5 @@ class ReportTab(QWidget):
         tabs.addTab(pairs_triggers_tab, "Per Currency Pair and Trigger")
 
         layout.addWidget(tabs)
-        self.update_report = QPushButton("Update Report")
-        layout.addWidget(self.update_report)
 
         self.setLayout(layout)

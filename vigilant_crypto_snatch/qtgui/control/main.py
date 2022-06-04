@@ -1,4 +1,3 @@
-import datetime
 import logging
 
 from ... import logger
@@ -6,6 +5,7 @@ from ...configuration import Configuration
 from ...configuration import YamlConfigurationFactory
 from ..ui.main import MainWindow
 from .configuration import ConfigurationTabController
+from .log import LogTabController
 from .report import ReportTabController
 from .status import StatusTabController
 
@@ -18,6 +18,7 @@ class MainWindowController:
             self.ui.configuration_tab, self.update_config
         )
         self.report_tab_controller = ReportTabController(self.ui.report_tab)
+        self.log_tab_controller = LogTabController(self.ui.log_tab)
 
         try:
             self.configuration = YamlConfigurationFactory().make_config()
@@ -25,9 +26,6 @@ class MainWindowController:
         except RuntimeError:
             pass
 
-        logger.setLevel("DEBUG")
-        self.logger = GuiLogger("DEBUG", self.update_log_message)
-        logger.addHandler(self.logger)
         self.systray_logger = SystrayLogger("INFO", self.systray_message)
         logger.addHandler(self.systray_logger)
 
@@ -43,18 +41,6 @@ class MainWindowController:
 
     def shutdown(self) -> None:
         self.status_tab_controller.shutdown()
-
-
-class GuiLogger(logging.Handler):
-    def __init__(self, level: str, update_message):
-        super().__init__(level.upper())
-        self.update_message = update_message
-
-    def format(self, record: logging.LogRecord) -> str:
-        return f"{datetime.datetime.now().isoformat()} — {record.getMessage()}"
-
-    def emit(self, record: logging.LogRecord) -> None:
-        self.update_message(self.format(record), record.levelname)
 
 
 class SystrayLogger(logging.Handler):

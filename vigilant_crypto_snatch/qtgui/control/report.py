@@ -2,12 +2,10 @@ import pandas as pd
 from PyQt6.QtCore import QAbstractTableModel
 from PyQt6.QtCore import Qt
 
-from vigilant_crypto_snatch.qtgui.ui.report import ReportTab
-from vigilant_crypto_snatch.reporting import get_user_trades_df
-from vigilant_crypto_snatch.reporting.trades import aggregates_per_asset_pair
-from vigilant_crypto_snatch.reporting.trades import (
-    aggregates_per_asset_pair_and_trigger,
-)
+from ...reporting import get_user_trades_df
+from ...reporting.trades import aggregates_per_asset_pair
+from ...reporting.trades import aggregates_per_asset_pair_and_trigger
+from ..ui.report import ReportTab
 
 
 class ReportTabController:
