@@ -9,6 +9,7 @@ from PySide6.QtWidgets import QLineEdit
 from PySide6.QtWidgets import QListWidget
 from PySide6.QtWidgets import QPushButton
 from PySide6.QtWidgets import QTabWidget
+from PySide6.QtWidgets import QTextEdit
 from PySide6.QtWidgets import QVBoxLayout
 from PySide6.QtWidgets import QWidget
 
@@ -26,6 +27,7 @@ class ConfigurationTab(QWidget):
         self.telegram_panel = TelegramPane()
         self.kraken_pane = KrakenPane()
         self.bitstamp_pane = BitstampPane()
+        self.ccxt_pane = CCXTPane()
 
         self.save_button = QPushButton("Save")
 
@@ -34,6 +36,7 @@ class ConfigurationTab(QWidget):
         tabs.addTab(self.crypto_compare_panel, "Crypto Compare")
         tabs.addTab(self.kraken_pane, "Kraken Marketplace")
         tabs.addTab(self.bitstamp_pane, "Bitstamp Marketplace")
+        tabs.addTab(self.ccxt_pane, "CCXT Marketplace")
         tabs.addTab(self.trigger_pane, "Triggers")
         tabs.addTab(self.telegram_panel, "Telegram")
 
@@ -50,6 +53,7 @@ class GeneralPanel(QWidget):
         self.marketplace_edit = QComboBox()
         self.marketplace_edit.addItem("kraken")
         self.marketplace_edit.addItem("bitstamp")
+        self.marketplace_edit.addItem("ccxt")
 
         layout = QFormLayout()
         self.setLayout(layout)
@@ -145,6 +149,22 @@ class BitstampPane(QWidget):
         layout.addRow(QLabel("API Key:"), self.key)
         layout.addRow(QLabel("API Secret:"), self.secret)
         layout.addRow(QLabel("Username:"), self.username)
+
+        self.test = QPushButton("Test")
+        layout.addRow(self.test)
+
+
+class CCXTPane(QWidget):
+    def __init__(self):
+        super().__init__()
+        layout = QFormLayout()
+        self.setLayout(layout)
+
+        self.exchange = QLineEdit()
+        self.parameters = QTextEdit()
+
+        layout.addRow(QLabel("Exchange:"), self.exchange)
+        layout.addRow(QLabel("Parameters (YAML):"), self.parameters)
 
         self.test = QPushButton("Test")
         layout.addRow(self.test)

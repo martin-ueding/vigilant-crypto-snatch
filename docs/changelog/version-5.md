@@ -115,3 +115,4 @@ This release features a lot of work on the GUI:
 - Use PySide6 instead of PyQt6 such that the whole project is under the MIT licence again.
 - Add drop percentage to the trigger edit window.
 - Add test buttons for each tab of the configuration, such that one can test each thing independently of the others.
+- Add CCXT configuration to GUI.

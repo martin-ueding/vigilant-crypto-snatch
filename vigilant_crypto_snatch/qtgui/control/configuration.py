@@ -4,9 +4,9 @@ from typing import Iterable
 from typing import List
 from typing import Optional
 
+import yaml
 from PySide6.QtWidgets import QMessageBox
 
-from ...commands.testdrive import test_drive
 from ...commands.testdrive import try_historical
 from ...configuration import Configuration
 from ...configuration import update_yaml_config
@@ -14,14 +14,17 @@ from ...configuration import YamlConfigurationFactory
 from ...core import AssetPair
 from ...historical import CryptoCompareConfig
 from ...marketplace import BitstampConfig
+from ...marketplace import CCXTConfig
 from ...marketplace import KrakenConfig
 from ...marketplace import KrakenWithdrawalConfig
 from ...marketplace.bitstamp_adaptor import BitstampMarketplace
+from ...marketplace.ccxt_adapter import CCXTMarketplace
 from ...marketplace.krakenex_adaptor import KrakenexMarketplace
 from ...notifications import TelegramConfig
 from ...notifications import TelegramSender
 from ...triggers import TriggerSpec
 from ..ui.configuration import BitstampPane
+from ..ui.configuration import CCXTPane
 from ..ui.configuration import ConfigurationTab
 from ..ui.configuration import CryptoComparePanel
 from ..ui.configuration import GeneralPanel
@@ -65,6 +68,7 @@ class ConfigurationTabController:
         self.trigger_pane_controller = TriggerPaneController(ui.trigger_pane)
         self.kraken_pane_controller = KrakenPaneController(self.ui.kraken_pane)
         self.bitstamp_pane_controller = BitstampPaneController(self.ui.bitstamp_pane)
+        self.ccxt_controller = CCXTPaneController(self.ui.ccxt_pane)
 
         self.update_config = update_config
 
@@ -110,6 +114,7 @@ class ConfigurationTabController:
         self.trigger_pane_controller.populate_ui(config.triggers)
         self.kraken_pane_controller.populate_ui(config.kraken)
         self.bitstamp_pane_controller.populate_ui(config.bitstamp)
+        self.ccxt_controller.populate_ui(config.ccxt)
 
 
 class GeneralPanelController:
@@ -248,6 +253,33 @@ class BitstampPaneController:
             handle_exception_with_dialog(e)
         else:
             show_success_dialog("Bitstamp is configured correctly.")
+
+
+class CCXTPaneController:
+    def __init__(self, ui: CCXTPane):
+        self.ui = ui
+        self.ui.test.clicked.connect(self.test)
+
+    def populate_ui(self, config: Optional[CCXTConfig]):
+        if config is not None:
+            self.ui.exchange.setText(config.exchange)
+            self.ui.parameters.setText(yaml.dump(config.parameters))
+
+    def get_config(self) -> CCXTConfig:
+        config = CCXTConfig(
+            exchange=self.ui.exchange.text(),
+            parameters=yaml.safe_load(self.ui.parameters.toPlainText()),
+        )
+        return config
+
+    def test(self) -> None:
+        try:
+            marketplace = CCXTMarketplace(self.get_config())
+            marketplace.get_balance()
+        except Exception as e:
+            handle_exception_with_dialog(e)
+        else:
+            show_success_dialog("CCXT is configured correctly.")
 
 
 class KrakenWithdrawalPaneController:
