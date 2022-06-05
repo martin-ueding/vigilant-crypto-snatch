@@ -17,6 +17,8 @@ from .configuration import SingleTriggerEdit
 class SimulationTab(QWidget):
     def __init__(self):
         super().__init__()
+        self.setWindowTitle("Trigger Simulation")
+        self.resize(1300, 800)
 
         top_layout = QHBoxLayout()
         splitter = QSplitter(Qt.Orientation.Horizontal)
@@ -39,6 +41,9 @@ class SimulationTab(QWidget):
         self.progress_bar_2 = QProgressBar()
         left_layout.addWidget(self.progress_bar_2)
 
+        self.summary_table = QTableView()
+        left_layout.addWidget(self.summary_table)
+
         result_toolbox = QGridLayout()
         result_widget = QWidget()
         result_widget.setLayout(result_toolbox)
@@ -55,3 +60,5 @@ class SimulationTab(QWidget):
 
         self.gain_chart = QChartView()
         result_toolbox.addWidget(self.gain_chart, 1, 1)
+
+        splitter.setSizes([200, 1000])

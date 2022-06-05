@@ -34,6 +34,9 @@ class SimulationTabController:
         self.config: Optional[Configuration] = None
         self.trade_table_model = PandasTableModel()
         self.ui.trade_table.setModel(self.trade_table_model)
+        self.summary_table_model = PandasTableModel()
+        self.ui.summary_table.setModel(self.summary_table_model)
+        self.simulations = pd.DataFrame()
 
     def set_config(self, config: Configuration):
         self.config = config
@@ -103,3 +106,6 @@ class SimulationTabController:
             value_long, self.spec.asset_pair.fiat
         )
         self.ui.gain_chart.setChart(gain_chart)
+
+        self.simulations = pd.concat([self.simulations, summary])
+        self.summary_table_model.set_data_frame(self.simulations)
