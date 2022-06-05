@@ -3,6 +3,8 @@ import logging
 from ... import logger
 from ...configuration import Configuration
 from ...configuration import YamlConfigurationFactory
+from ..ui.about import AboutTab
+from ..ui.log import LogTab
 from ..ui.main import MainWindow
 from .configuration import ConfigurationTabController
 from .log import LogTabController
@@ -19,7 +21,6 @@ class MainWindowController:
             self.ui.configuration_tab, self.update_config
         )
         self.report_tab_controller = ReportTabController(self.ui.report_tab)
-        self.log_tab_controller = LogTabController(self.ui.log_tab)
         self.simulation_tab_controller = SimulationTabController(self.ui.simulation_tab)
 
         try:
@@ -32,19 +33,29 @@ class MainWindowController:
         self.systray_logger = SystrayLogger("INFO", self.systray_message)
         logger.addHandler(self.systray_logger)
 
+        self.about_window = AboutTab()
+        self.log_messages_window = LogTab()
+        self.log_tab_controller = LogTabController(self.log_messages_window)
+
+        self.ui.about_action.triggered.connect(self.menu_about)
+        self.ui.log_messages_action.triggered.connect(self.menu_log_messages)
+
     def update_config(self, new_config: Configuration):
         self.configuration = new_config
         self.status_tab_controller.config_updated(self.configuration)
         self.simulation_tab_controller.set_config(self.configuration)
-
-    def update_log_message(self, message: str, level: str) -> None:
-        self.ui.log_message.setText(message)
 
     def systray_message(self, message: str, level: str) -> None:
         self.ui.systray.showMessage(level, message)
 
     def shutdown(self) -> None:
         self.status_tab_controller.shutdown()
+
+    def menu_about(self):
+        self.about_window.show()
+
+    def menu_log_messages(self) -> None:
+        self.log_messages_window.show()
 
 
 class SystrayLogger(logging.Handler):
