@@ -2,13 +2,18 @@ import threading
 from typing import List
 from typing import Optional
 
+import numpy as np
+import pandas as pd
+
 from ...configuration import Configuration
 from ...core import AssetPair
 from ...datastorage import make_datastore
 from ...evaluation import accumulate_value
 from ...evaluation import get_hourly_data
 from ...evaluation import InterpolatingSource
+from ...evaluation import make_close_chart
 from ...evaluation import make_dataframe_from_json
+from ...evaluation import make_fear_greed_chart
 from ...evaluation import make_gain_chart
 from ...evaluation import simulate_triggers
 from ...evaluation import SimulationMarketplace
@@ -43,23 +48,36 @@ class SimulationTabController:
         self.config = config
 
     def simulate(self):
-        thread = threading.Thread(target=self.simulation_worker)
-        thread.start()
-
-    def simulation_worker(self):
+        self.ui.progress_bar_1.setValue(0)
         self.trigger_edit_controller.get_spec()
         asset_pair = self.spec.asset_pair
         data = get_hourly_data(asset_pair, self.config.crypto_compare.api_key)
         data = make_dataframe_from_json(data)
+
+        close_chart = make_close_chart(data, asset_pair)
+        self.ui.close_chart.updateChart(close_chart)
+
+        feargreed_chart = make_fear_greed_chart(
+            min(data["datetime"]), max(data["datetime"])
+        )
+        self.ui.fear_and_greed_chart.updateChart(feargreed_chart)
+
         trades, trigger_names = simulate_triggers(
             data,
             self.spec.asset_pair,
             [self.spec],
-            # lambda fraction: self.ui.progress_bar.setValue(int(fraction * 100)),
+            lambda fraction: self.ui.progress_bar_2.setValue(int(fraction * 100)),
         )
+        self.ui.progress_bar_1.setValue(50)
         self.trade_table_model.set_data_frame(trades)
 
-        value = accumulate_value(data, trades, trigger_names, print)
+        value = accumulate_value(
+            data,
+            trades,
+            trigger_names,
+            lambda fraction: self.ui.progress_bar_2.setValue(int(fraction * 100)),
+        )
+        self.ui.progress_bar_1.setValue(100)
 
         summary = summarize_simulation(
             data,
@@ -70,4 +88,4 @@ class SimulationTabController:
         )
 
         self.gain_chart = make_gain_chart(value, self.spec.asset_pair.fiat)
-        # self.ui.gain_chart.updateChart(self.gain_chart)
+        self.ui.gain_chart.updateChart(self.gain_chart)

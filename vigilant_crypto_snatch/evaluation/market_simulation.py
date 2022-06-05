@@ -136,17 +136,12 @@ def make_gain_chart(value: pd.DataFrame, fiat: str) -> alt.Chart:
     ).melt(["datetime", "trigger_name"], ["Invested", "Value"])
 
     chart = (
-        alt.Chart(value_long)
+        alt.Chart(value_long, width=600, height=400)
         .mark_line()
         .encode(
-            x=alt.X("datetime", title="Time"),
-            y=alt.Y("value", title=f"{fiat}"),
-            strokeDash=alt.StrokeDash(
-                "variable", title="Variable", legend=alt.Legend(orient="bottom")
-            ),
-            color=alt.Color(
-                "trigger_name", title="Trigger", legend=alt.Legend(orient="bottom")
-            ),
+            alt.X("datetime", title="Time"),
+            alt.Y("value", title=f"{fiat}"),
+            alt.Color("variable", title="Variable"),
         )
         .interactive()
     )
