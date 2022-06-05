@@ -28,7 +28,6 @@ class ConfigurationTab(QWidget):
         self.bitstamp_pane = BitstampPane()
 
         self.save_button = QPushButton("Save")
-        self.test_drive_button = QPushButton("Test drive")
 
         tabs = QTabWidget()
         tabs.addTab(self.general_panel, "General")
@@ -40,7 +39,6 @@ class ConfigurationTab(QWidget):
 
         layout = QVBoxLayout()
         layout.addWidget(tabs)
-        layout.addWidget(self.test_drive_button)
         layout.addWidget(self.save_button)
         self.setLayout(layout)
 
@@ -190,6 +188,9 @@ class TelegramPane(QWidget):
         self.log_level_combo_box.addItem("error")
         self.log_level_combo_box.addItem("critical")
         layout.addRow(QLabel("Log level:"), self.log_level_combo_box)
+
+        self.test = QPushButton("Test")
+        layout.addRow(self.test)
 
 
 class SingleTriggerEdit(QFormLayout):

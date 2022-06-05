@@ -19,6 +19,7 @@ from ...marketplace import KrakenWithdrawalConfig
 from ...marketplace.bitstamp_adaptor import BitstampMarketplace
 from ...marketplace.krakenex_adaptor import KrakenexMarketplace
 from ...notifications import TelegramConfig
+from ...notifications import TelegramSender
 from ...triggers import TriggerSpec
 from ..ui.configuration import BitstampPane
 from ..ui.configuration import ConfigurationTab
@@ -68,7 +69,6 @@ class ConfigurationTabController:
         self.update_config = update_config
 
         ui.save_button.clicked.connect(self.save)
-        ui.test_drive_button.clicked.connect(self.test_drive)
 
         self.populate_ui()
 
@@ -110,22 +110,6 @@ class ConfigurationTabController:
         self.trigger_pane_controller.populate_ui(config.triggers)
         self.kraken_pane_controller.populate_ui(config.kraken)
         self.bitstamp_pane_controller.populate_ui(config.bitstamp)
-
-    def test_drive(self) -> None:
-        config = self._gather_config()
-        try:
-            test_drive(config)
-        except Exception as e:
-            handle_exception_with_dialog(e)
-        else:
-            msg = QMessageBox()
-            msg.setIcon(QMessageBox.Icon.Information)
-            msg.setText(
-                "Test drive was successful, everything is configured just fine."
-            )
-            msg.setWindowTitle("Test Drive")
-            msg.setStandardButtons(QMessageBox.StandardButton.Ok)
-            msg.exec()
 
 
 class GeneralPanelController:
@@ -172,6 +156,7 @@ class CryptoComparePanelController:
 class TelegramPaneController:
     def __init__(self, ui: TelegramPane):
         self.ui = ui
+        self.ui.test.clicked.connect(self.test)
 
     def get_config(self) -> TelegramConfig:
         chat_id_text = self.ui.chat_id_line_edit.text()
@@ -193,6 +178,15 @@ class TelegramPaneController:
             self.ui.chat_id_line_edit.setText(str(config.chat_id))
         self.ui.token_line_edit.setText(config.token)
         self.ui.log_level_combo_box.setCurrentText(config.level)
+
+    def test(self) -> None:
+        try:
+            telegram_sender = TelegramSender(self.get_config())
+            telegram_sender.send_message("Telegram is set up correctly! 🎉")
+        except Exception as e:
+            handle_exception_with_dialog(e)
+        else:
+            show_success_dialog("Telegram is configured correctly.")
 
 
 class KrakenPaneController:
