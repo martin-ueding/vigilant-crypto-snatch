@@ -66,6 +66,8 @@ class CryptoComparePanel(QWidget):
         self.setLayout(layout)
         self.api_key_line_edit = QLineEdit()
         layout.addRow(QLabel("API key:"), self.api_key_line_edit)
+        self.test = QPushButton("Test")
+        layout.addRow(self.test)
 
 
 class KrakenPane(QWidget):

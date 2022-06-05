@@ -7,6 +7,7 @@ from typing import Optional
 from PySide6.QtWidgets import QMessageBox
 
 from ...commands.testdrive import test_drive
+from ...commands.testdrive import try_historical
 from ...configuration import Configuration
 from ...configuration import update_yaml_config
 from ...configuration import YamlConfigurationFactory
@@ -36,6 +37,15 @@ def handle_exception_with_dialog(e: Exception) -> None:
     msg.setText(str(e))
     msg.setWindowTitle("Configuration Error")
     msg.setDetailedText(traceback.format_exc())
+    msg.setStandardButtons(QMessageBox.StandardButton.Ok)
+    msg.exec()
+
+
+def show_success_dialog(message: str) -> None:
+    msg = QMessageBox()
+    msg.setIcon(QMessageBox.Icon.Information)
+    msg.setText(message)
+    msg.setWindowTitle("Success")
     msg.setStandardButtons(QMessageBox.StandardButton.Ok)
     msg.exec()
 
@@ -138,6 +148,7 @@ class GeneralPanelController:
 class CryptoComparePanelController:
     def __init__(self, ui: CryptoComparePanel):
         self.ui = ui
+        self.ui.test.clicked.connect(self.test)
 
     def get_config(self) -> CryptoCompareConfig:
         api_key = self.ui.api_key_line_edit.text()
@@ -145,6 +156,15 @@ class CryptoComparePanelController:
 
     def populate_ui(self, config: CryptoCompareConfig) -> None:
         self.ui.api_key_line_edit.setText(config.api_key)
+
+    def test(self) -> None:
+        print("Test")
+        try:
+            try_historical(self.get_config())
+        except Exception as e:
+            handle_exception_with_dialog(e)
+        else:
+            show_success_dialog("Crypto Compare is configured correctly.")
 
 
 class TelegramPaneController:

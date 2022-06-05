@@ -104,3 +104,13 @@
 ### Version 5.8.1
 
 - Allow setting a start date and time in the GUI.
+
+## Version 5.9.0
+
+This release features a lot of work on the GUI:
+
+- Move some functionality into a main menu.
+- Add a separate window to see log messages.
+- Add the trigger simulation functionality previously only available in the Streamlit interface.
+- Use PySide6 instead of PyQt6 such that the whole project is under the MIT licence again.
+- Add drop percentage to the trigger edit window.

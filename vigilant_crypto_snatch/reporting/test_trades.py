@@ -19,4 +19,3 @@ def test_add_gains() -> None:
         )
     )
     trades = gather_trades(datastore)
-    add_gains(trades)
