@@ -30,9 +30,9 @@ class WebEngineView(QWebEngineView):
                 download.accept()
 
     def createWindow(
-        self, type_: QWebEnginePage.WebWindowType
+        self, web_window_type: QWebEnginePage.WebWindowType
     ) -> Optional[QWebEngineView]:
-        if type_ == QWebEnginePage.WebWindowType.WebBrowserTab:
+        if web_window_type == QWebEnginePage.WebWindowType.WebBrowserTab:
             window = QtWidgets.QMainWindow(self)
             view = QWebEngineView(window)
             window.resize(640, 480)
@@ -40,7 +40,7 @@ class WebEngineView(QWebEngineView):
             window.show()
             return view
 
-    def updateChart(self, chart, **kwargs) -> None:
+    def set_chart(self, chart, **kwargs) -> None:
         output = StringIO()
         chart.save(output, "html", **kwargs)
         self.setHtml(output.getvalue())

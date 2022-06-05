@@ -55,12 +55,12 @@ class SimulationTabController:
         data = make_dataframe_from_json(data)
 
         close_chart = make_close_chart(data, asset_pair)
-        self.ui.close_chart.updateChart(close_chart)
+        self.ui.close_chart.set_chart(close_chart)
 
         feargreed_chart = make_fear_greed_chart(
             min(data["datetime"]), max(data["datetime"])
         )
-        self.ui.fear_and_greed_chart.updateChart(feargreed_chart)
+        self.ui.fear_and_greed_chart.set_chart(feargreed_chart)
 
         trades, trigger_names = simulate_triggers(
             data,
@@ -88,4 +88,4 @@ class SimulationTabController:
         )
 
         self.gain_chart = make_gain_chart(value, self.spec.asset_pair.fiat)
-        self.ui.gain_chart.updateChart(self.gain_chart)
+        self.ui.gain_chart.set_chart(self.gain_chart)
