@@ -16,6 +16,8 @@ from ...historical import CryptoCompareConfig
 from ...marketplace import BitstampConfig
 from ...marketplace import KrakenConfig
 from ...marketplace import KrakenWithdrawalConfig
+from ...marketplace.bitstamp_adaptor import BitstampMarketplace
+from ...marketplace.krakenex_adaptor import KrakenexMarketplace
 from ...notifications import TelegramConfig
 from ...triggers import TriggerSpec
 from ..ui.configuration import BitstampPane
@@ -199,6 +201,7 @@ class KrakenPaneController:
         self.withdrawal_pane_controller = KrakenWithdrawalPaneController(
             ui.kraken_withdrawal_pane
         )
+        self.ui.test.clicked.connect(self.test)
 
     def populate_ui(self, config: KrakenConfig):
         self.ui.api_key.setText(config.key)
@@ -215,23 +218,42 @@ class KrakenPaneController:
         )
         return config
 
+    def test(self) -> None:
+        try:
+            marketplace = KrakenexMarketplace(self.get_config())
+            marketplace.get_balance()
+        except Exception as e:
+            handle_exception_with_dialog(e)
+        else:
+            show_success_dialog("Kraken is configured correctly.")
+
 
 class BitstampPaneController:
     def __init__(self, ui: BitstampPane):
         self.ui = ui
+        self.ui.test.clicked.connect(self.test)
 
     def populate_ui(self, config: BitstampConfig):
         self.ui.key.setText(config.key)
         self.ui.secret.setText(config.secret)
         self.ui.username.setText(config.username)
 
-    def get_config(self) -> KrakenConfig:
+    def get_config(self) -> BitstampConfig:
         config = BitstampConfig(
             key=self.ui.key.text(),
             secret=self.ui.secret.text(),
             username=self.ui.username.text(),
         )
         return config
+
+    def test(self) -> None:
+        try:
+            marketplace = BitstampMarketplace(self.get_config())
+            marketplace.get_balance()
+        except Exception as e:
+            handle_exception_with_dialog(e)
+        else:
+            show_success_dialog("Bitstamp is configured correctly.")
 
 
 class KrakenWithdrawalPaneController:

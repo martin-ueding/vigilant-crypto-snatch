@@ -87,6 +87,9 @@ class KrakenPane(QWidget):
         self.kraken_withdrawal_pane = KrakenWithdrawalPane()
         layout.addRow(self.kraken_withdrawal_pane)
 
+        self.test = QPushButton("Test")
+        layout.addRow(self.test)
+
 
 class KrakenWithdrawalPane(QGroupBox):
     def __init__(self):
@@ -144,6 +147,9 @@ class BitstampPane(QWidget):
         layout.addRow(QLabel("API Key:"), self.key)
         layout.addRow(QLabel("API Secret:"), self.secret)
         layout.addRow(QLabel("Username:"), self.username)
+
+        self.test = QPushButton("Test")
+        layout.addRow(self.test)
 
 
 class TriggerPane(QWidget):
