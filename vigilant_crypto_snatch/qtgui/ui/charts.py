@@ -17,10 +17,17 @@ class TestChartController:
         self.ui = ui
 
         chart = QChart()
-        series = QLineSeries()
-        series.setName("Test Data")
-        series.append([QPointF(x, y) for x, y in zip([1, 2, 3, 4], [4, 9, -3, 0])])
-        chart.addSeries(series)
+
+        series_1 = QLineSeries()
+        series_1.setName("Test Data")
+        series_1.append([QPointF(x, y) for x, y in zip([1, 2, 3, 4], [4, 9, -3, 0])])
+        chart.addSeries(series_1)
+
+        series_2 = QLineSeries()
+        series_2.setName("Test Data")
+        series_2.append([QPointF(x, y) for x, y in zip([1, 2, 3, 4], [5, 3, -1, 8])])
+        chart.addSeries(series_2)
+
         chart.createDefaultAxes()
         self.ui.setChart(chart)
 
