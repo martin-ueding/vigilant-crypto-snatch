@@ -17,6 +17,9 @@ class ConfigurationTab(QWidget):
     def __init__(self):
         super().__init__()
 
+        self.resize(800, 600)
+        self.setWindowTitle("Settings")
+
         self.general_panel = GeneralPanel()
         self.crypto_compare_panel = CryptoComparePanel()
         self.trigger_pane = TriggerPane()
@@ -204,6 +207,8 @@ class SingleTriggerEdit(QFormLayout):
 
         self.delay_minutes = QLineEdit()
         self.addRow(QLabel("Delay (minutes):"), self.delay_minutes)
+        self.drop_percentage = QLineEdit()
+        self.addRow(QLabel("Drop (%):"), self.drop_percentage)
         self.fear_and_greed_index_below = QLineEdit()
         self.addRow(QLabel("Fear & Greed below:"), self.fear_and_greed_index_below)
 

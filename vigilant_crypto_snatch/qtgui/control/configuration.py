@@ -370,6 +370,8 @@ class SingleTriggerEditController:
             self.ui.fear_and_greed_index_below.setText(
                 str(self.spec.fear_and_greed_index_below)
             )
+        if self.spec.drop_percentage:
+            self.ui.drop_percentage.setText(str(self.spec.drop_percentage))
         if self.spec.start is not None:
             self.ui.start.setDateTime(self.spec.start)
 
@@ -418,6 +420,11 @@ class SingleTriggerEditController:
                 ) from e
         else:
             self.spec.fear_and_greed_index_below = None
+
+        if self.ui.drop_percentage.text():
+            self.spec.drop_percentage = float(self.ui.drop_percentage.text())
+        else:
+            self.spec.drop_percentage = None
 
         self.spec.start = self.ui.start.dateTime().toPython()
 
