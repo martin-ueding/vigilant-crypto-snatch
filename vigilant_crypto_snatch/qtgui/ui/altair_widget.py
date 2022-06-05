@@ -3,14 +3,14 @@ from io import StringIO
 from typing import Optional
 
 from PyQt6 import QtCore
-from PyQt6 import QtWebEngineWidgets
 from PyQt6 import QtWidgets
 from PyQt6.QtWebEngineCore import QWebEngineDownloadRequest
 from PyQt6.QtWebEngineCore import QWebEnginePage
+from PyQt6.QtWebEngineWidgets import QWebEngineView
 from PyQt6.QtWidgets import QWidget
 
 
-class WebEngineView(QtWebEngineWidgets.QWebEngineView):
+class WebEngineView(QWebEngineView):
     def __init__(self, parent: Optional[QWidget] = None):
         super().__init__(parent)
         self.page().profile().downloadRequested.connect(self.onDownloadRequested)
@@ -31,10 +31,10 @@ class WebEngineView(QtWebEngineWidgets.QWebEngineView):
 
     def createWindow(
         self, type_: QWebEnginePage.WebWindowType
-    ) -> Optional[QtWebEngineWidgets.QWebEngineView]:
+    ) -> Optional[QWebEngineView]:
         if type_ == QWebEnginePage.WebWindowType.WebBrowserTab:
             window = QtWidgets.QMainWindow(self)
-            view = QtWebEngineWidgets.QWebEngineView(window)
+            view = QWebEngineView(window)
             window.resize(640, 480)
             window.setCentralWidget(view)
             window.show()
