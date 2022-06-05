@@ -15,8 +15,8 @@ about_text = f"""
 
 
 class AboutTab(QWidget):
-    def __init__(self):
-        super().__init__()
+    def __init__(self, parent=None):
+        super().__init__(parent)
 
         layout = QVBoxLayout()
         self.setLayout(layout)
