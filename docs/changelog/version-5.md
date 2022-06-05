@@ -109,7 +109,7 @@
 
 This release features a lot of work on the GUI:
 
-- Move some functionality into a main menu.
+- Move some functionality into a main menu and separate windows.
 - Add a separate window to see log messages.
 - Add the trigger simulation functionality previously only available in the Streamlit interface.
 - Use PySide6 instead of PyQt6 such that the whole project is under the MIT licence again.
