@@ -1,17 +1,19 @@
+import datetime
 from typing import Optional
+
+import pandas as pd
 
 from ...configuration import Configuration
 from ...core import AssetPair
 from ...evaluation import accumulate_value
 from ...evaluation import get_hourly_data
-from ...evaluation import make_close_chart
 from ...evaluation import make_dataframe_from_json
-from ...evaluation import make_fear_greed_chart
-from ...evaluation import make_gain_chart
 from ...evaluation import simulate_triggers
 from ...evaluation import summarize_simulation
+from ...feargreed import AlternateMeFearAndGreedIndex
 from ...triggers import TriggerSpec
 from ..ui.simulation import SimulationTab
+from .charts import make_qt_chart_from_data_frame
 from .configuration import SingleTriggerEditController
 from .report import PandasTableModel
 
@@ -42,14 +44,31 @@ class SimulationTabController:
         asset_pair = self.spec.asset_pair
         data = get_hourly_data(asset_pair, self.config.crypto_compare.api_key)
         data = make_dataframe_from_json(data)
+        data["label"] = "Close price"
 
-        close_chart = make_close_chart(data, asset_pair)
-        self.ui.close_chart.set_chart(close_chart)
-
-        feargreed_chart = make_fear_greed_chart(
-            min(data["datetime"]), max(data["datetime"])
+        close_chart = make_qt_chart_from_data_frame(
+            data.rename(columns={"close": "value"}), self.spec.asset_pair.fiat
         )
-        self.ui.fear_and_greed_chart.set_chart(feargreed_chart)
+        self.ui.close_chart.setChart(close_chart)
+
+        fear_greed_access = AlternateMeFearAndGreedIndex()
+        date_range = pd.date_range(
+            min(data["datetime"]).date(), max(data["datetime"]).date()
+        )
+        today = datetime.date.today()
+        fear_greed_df = pd.DataFrame(
+            {
+                "datetime": date_range,
+                "value": [
+                    fear_greed_access.get_value(date.date(), today)
+                    for date in date_range
+                ],
+            }
+        )
+        fear_greed_df["label"] = "Fear & Greed"
+
+        feargreed_chart = make_qt_chart_from_data_frame(fear_greed_df, "Index")
+        self.ui.fear_and_greed_chart.setChart(feargreed_chart)
 
         trades, trigger_names = simulate_triggers(
             data,
@@ -75,6 +94,12 @@ class SimulationTabController:
             trigger_names,
             self.spec.asset_pair,
         )
-
-        self.gain_chart = make_gain_chart(value, self.spec.asset_pair.fiat)
-        self.ui.gain_chart.set_chart(self.gain_chart)
+        value_long = (
+            value.rename({"cumsum_fiat": "Invested", "value_fiat": "Value"}, axis=1)
+            .melt(["datetime", "trigger_name"], ["Invested", "Value"])
+            .rename(columns={"variable": "label"})
+        )
+        gain_chart = make_qt_chart_from_data_frame(
+            value_long, self.spec.asset_pair.fiat
+        )
+        self.ui.gain_chart.setChart(gain_chart)

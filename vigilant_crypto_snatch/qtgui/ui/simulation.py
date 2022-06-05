@@ -1,4 +1,6 @@
+from PySide6.QtCharts import QChartView
 from PySide6.QtCore import Qt
+from PySide6.QtWidgets import QGridLayout
 from PySide6.QtWidgets import QHBoxLayout
 from PySide6.QtWidgets import QProgressBar
 from PySide6.QtWidgets import QPushButton
@@ -37,17 +39,19 @@ class SimulationTab(QWidget):
         self.progress_bar_2 = QProgressBar()
         left_layout.addWidget(self.progress_bar_2)
 
-        result_toolbox = QToolBox()
-        splitter.addWidget(result_toolbox)
+        result_toolbox = QGridLayout()
+        result_widget = QWidget()
+        result_widget.setLayout(result_toolbox)
+        splitter.addWidget(result_widget)
 
-        self.close_chart = WebEngineView()
-        result_toolbox.addItem(self.close_chart, "Close Chart")
+        self.close_chart = QChartView()
+        result_toolbox.addWidget(self.close_chart, 0, 0)
 
-        self.fear_and_greed_chart = WebEngineView()
-        result_toolbox.addItem(self.fear_and_greed_chart, "Fear &amp; Greed Chart")
+        self.fear_and_greed_chart = QChartView()
+        result_toolbox.addWidget(self.fear_and_greed_chart, 0, 1)
 
         self.trade_table = QTableView()
-        result_toolbox.addItem(self.trade_table, "Trade Table")
+        result_toolbox.addWidget(self.trade_table, 1, 0)
 
-        self.gain_chart = WebEngineView()
-        result_toolbox.addItem(self.gain_chart, "Gain Chart")
+        self.gain_chart = QChartView()
+        result_toolbox.addWidget(self.gain_chart, 1, 1)

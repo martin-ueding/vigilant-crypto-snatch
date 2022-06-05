@@ -419,7 +419,7 @@ class SingleTriggerEditController:
         else:
             self.spec.fear_and_greed_index_below = None
 
-        self.spec.start = self.ui.start.dateTime().toPyDateTime()
+        self.spec.start = self.ui.start.dateTime().toPython()
 
 
 class TriggerEditWindowController:
