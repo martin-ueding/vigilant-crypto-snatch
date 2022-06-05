@@ -1,6 +1,6 @@
 import pandas as pd
-from PyQt6.QtCore import QAbstractTableModel
-from PyQt6.QtCore import Qt
+from PySide6.QtCore import QAbstractTableModel
+from PySide6.QtCore import Qt
 
 from ...reporting import get_user_trades_df
 from ...reporting.trades import aggregates_per_asset_pair

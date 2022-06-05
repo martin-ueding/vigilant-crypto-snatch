@@ -4,7 +4,7 @@ from typing import Iterable
 from typing import List
 from typing import Optional
 
-from PyQt6.QtWidgets import QMessageBox
+from PySide6.QtWidgets import QMessageBox
 
 from ...commands.testdrive import test_drive
 from ...configuration import Configuration

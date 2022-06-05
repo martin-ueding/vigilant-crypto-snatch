@@ -2,12 +2,12 @@
 from io import StringIO
 from typing import Optional
 
-from PyQt6 import QtCore
-from PyQt6 import QtWidgets
-from PyQt6.QtWebEngineCore import QWebEngineDownloadRequest
-from PyQt6.QtWebEngineCore import QWebEnginePage
-from PyQt6.QtWebEngineWidgets import QWebEngineView
-from PyQt6.QtWidgets import QWidget
+from PySide6 import QtCore
+from PySide6 import QtWidgets
+from PySide6.QtWebEngineCore import QWebEngineDownloadRequest
+from PySide6.QtWebEngineCore import QWebEnginePage
+from PySide6.QtWebEngineWidgets import QWebEngineView
+from PySide6.QtWidgets import QWidget
 
 
 class WebEngineView(QWebEngineView):
@@ -16,14 +16,14 @@ class WebEngineView(QWebEngineView):
         self.page().profile().downloadRequested.connect(self.onDownloadRequested)
         self.windows = []
 
-    @QtCore.pyqtSlot(QWebEngineDownloadRequest)
+    @QtCore.Slot(QWebEngineDownloadRequest)
     def onDownloadRequested(self, download: QWebEngineDownloadRequest) -> None:
         if (
             download.state()
             == QWebEngineDownloadRequest.DownloadState.DownloadRequested
         ):
             path, _ = QtWidgets.QFileDialog.getSaveFileName(
-                self, self.tr("Save as"), download.downloadFileName()
+                self, "Save as", download.downloadFileName()
             )
             if path:
                 download.setDownloadFileName(path)

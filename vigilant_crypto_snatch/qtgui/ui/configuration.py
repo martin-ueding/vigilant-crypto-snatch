@@ -1,17 +1,16 @@
-from PyQt6.QtWidgets import QCheckBox
-from PyQt6.QtWidgets import QComboBox
-from PyQt6.QtWidgets import QDateTimeEdit
-from PyQt6.QtWidgets import QFormLayout
-from PyQt6.QtWidgets import QGroupBox
-from PyQt6.QtWidgets import QHBoxLayout
-from PyQt6.QtWidgets import QLabel
-from PyQt6.QtWidgets import QLineEdit
-from PyQt6.QtWidgets import QListWidget
-from PyQt6.QtWidgets import QPushButton
-from PyQt6.QtWidgets import QTabWidget
-from PyQt6.QtWidgets import QToolBox
-from PyQt6.QtWidgets import QVBoxLayout
-from PyQt6.QtWidgets import QWidget
+from PySide6.QtWidgets import QCheckBox
+from PySide6.QtWidgets import QComboBox
+from PySide6.QtWidgets import QDateTimeEdit
+from PySide6.QtWidgets import QFormLayout
+from PySide6.QtWidgets import QGroupBox
+from PySide6.QtWidgets import QHBoxLayout
+from PySide6.QtWidgets import QLabel
+from PySide6.QtWidgets import QLineEdit
+from PySide6.QtWidgets import QListWidget
+from PySide6.QtWidgets import QPushButton
+from PySide6.QtWidgets import QTabWidget
+from PySide6.QtWidgets import QVBoxLayout
+from PySide6.QtWidgets import QWidget
 
 
 class ConfigurationTab(QWidget):

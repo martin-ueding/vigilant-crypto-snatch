@@ -1,8 +1,8 @@
-from PyQt6.QtWidgets import QPushButton
-from PyQt6.QtWidgets import QTableView
-from PyQt6.QtWidgets import QTabWidget
-from PyQt6.QtWidgets import QVBoxLayout
-from PyQt6.QtWidgets import QWidget
+from PySide6.QtWidgets import QPushButton
+from PySide6.QtWidgets import QTableView
+from PySide6.QtWidgets import QTabWidget
+from PySide6.QtWidgets import QVBoxLayout
+from PySide6.QtWidgets import QWidget
 
 
 class ReportTab(QWidget):

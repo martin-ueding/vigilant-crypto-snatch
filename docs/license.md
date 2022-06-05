@@ -1,5 +1,11 @@
 # License
 
-Copyright 2019, 2021 Dr. Martin Ueding, Christoph Hansen
+Copyright 2019–2022 Dr. Martin Ueding, Christoph Hansen
 
-This project contains of two parts. The main library is [MIT](https://opensource.org/licenses/MIT) licensed, and the Qt GUI is [GPL 3](https://opensource.org/licenses/GPL-3.0) licensed. The GUI uses code of the library, but not the other way around.
+Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+
+---
+
+This is an [MIT license](https://opensource.org/licenses/MIT).

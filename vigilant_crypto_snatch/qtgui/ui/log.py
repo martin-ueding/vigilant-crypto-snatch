@@ -1,8 +1,8 @@
-from PyQt6.QtWidgets import QComboBox
-from PyQt6.QtWidgets import QPushButton
-from PyQt6.QtWidgets import QTextEdit
-from PyQt6.QtWidgets import QVBoxLayout
-from PyQt6.QtWidgets import QWidget
+from PySide6.QtWidgets import QComboBox
+from PySide6.QtWidgets import QPushButton
+from PySide6.QtWidgets import QTextEdit
+from PySide6.QtWidgets import QVBoxLayout
+from PySide6.QtWidgets import QWidget
 
 
 class LogTab(QWidget):

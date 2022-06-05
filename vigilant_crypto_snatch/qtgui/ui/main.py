@@ -1,11 +1,10 @@
 import pathlib
 
-from PyQt6.QtGui import QIcon
-from PyQt6.QtWidgets import QLabel
-from PyQt6.QtWidgets import QSystemTrayIcon
-from PyQt6.QtWidgets import QTabWidget
-from PyQt6.QtWidgets import QVBoxLayout
-from PyQt6.QtWidgets import QWidget
+from PySide6.QtGui import QIcon
+from PySide6.QtWidgets import QSystemTrayIcon
+from PySide6.QtWidgets import QTabWidget
+from PySide6.QtWidgets import QVBoxLayout
+from PySide6.QtWidgets import QWidget
 
 from .about import AboutTab
 from .configuration import ConfigurationTab

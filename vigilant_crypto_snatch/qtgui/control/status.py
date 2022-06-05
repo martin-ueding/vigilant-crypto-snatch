@@ -5,9 +5,9 @@ from typing import Any
 from typing import List
 from typing import Optional
 
-from PyQt6.QtCore import QAbstractTableModel
-from PyQt6.QtCore import Qt
-from PyQt6.QtGui import QColor
+from PySide6.QtCore import QAbstractTableModel
+from PySide6.QtCore import Qt
+from PySide6.QtGui import QColor
 
 from vigilant_crypto_snatch.configuration import Configuration
 from vigilant_crypto_snatch.datastorage import make_datastore

@@ -1,14 +1,10 @@
-from typing import Dict
-
-from PyQt6.QtWidgets import QCheckBox
-from PyQt6.QtWidgets import QFormLayout
-from PyQt6.QtWidgets import QGroupBox
-from PyQt6.QtWidgets import QHBoxLayout
-from PyQt6.QtWidgets import QLabel
-from PyQt6.QtWidgets import QPushButton
-from PyQt6.QtWidgets import QTableView
-from PyQt6.QtWidgets import QVBoxLayout
-from PyQt6.QtWidgets import QWidget
+from PySide6.QtWidgets import QCheckBox
+from PySide6.QtWidgets import QFormLayout
+from PySide6.QtWidgets import QGroupBox
+from PySide6.QtWidgets import QHBoxLayout
+from PySide6.QtWidgets import QTableView
+from PySide6.QtWidgets import QVBoxLayout
+from PySide6.QtWidgets import QWidget
 
 
 class StatusTab(QWidget):
