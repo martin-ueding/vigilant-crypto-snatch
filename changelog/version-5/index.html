@@ -1198,6 +1198,7 @@
 <h2 id="version-580">Version 5.8.0</h2>
 <ul>
 <li>All triggers now need to have an explicit name set in the configuration.</li>
+<li>Before a trigger is executed, the balance will be checked. Only if sufficient balance is on the marketplace, an attempt to buy is made. It may still fail because there is insufficient balance depending on the way that fees are computed.</li>
 <li>The GUI has an improved status and about screen.</li>
 <li>The GUI now shows a system tray icon and can send notifications.</li>
 <li>Logo added to the GUI window.</li>
