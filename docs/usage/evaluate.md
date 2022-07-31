@@ -1,4 +1,4 @@
-# Subcommand evaluate
+# Trigger Simulator
 
 It is not inherently clear how triggers should be set. There are multiple variables that have to be tuned for *each* trigger:
 

@@ -1,4 +1,4 @@
-# General Usage
+# General CLI Usage
 
 This page is about invoking the program in an interactive or manual way. This is the right thing if you are just configuring it and want to test it. For production use, see the page about [deployment](../deployment.md).
 

@@ -1,7 +1,15 @@
  
 # Triggers
 
-You can define as many triggers as you would like. This is done in a section `triggers`. Let us show an example first and explain all the keys below.
+You can define as many triggers as you would like. This is done in a section `triggers`.
+
+![](qtgui-06.png)
+
+You can add as many as you would like, and the options look like this:
+
+![](qtgui-07.png)
+
+In the configuration file it would look like this:
 
 ```yaml
 triggers:
@@ -26,7 +34,7 @@ triggers:
   volume_fiat: 26.0
 ```
 
-There are different sub-types, but all of them have the following elements in common:
+There are different sub-types of triggers, but all of them have the following elements in common:
 
 - `coin`: The name of the crypto-currency, case insensitive.
 - `fiat`: The name of the fiat currency, case insensitive.

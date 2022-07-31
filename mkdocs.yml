@@ -21,21 +21,19 @@ theme:
 
 nav:
   - index.md
-  - Installation:
-    - installation/general.md
-    - installation/windows.md
+  - installation/general.md
+  - gui/start.md
   - Configuration:
     - configuration/general.md
     - configuration/marketplace.md
     - configuration/triggers.md
     - configuration/notifications.md
-  - Usage:
+  - Command Line Usage:
     - usage/general.md
     - usage/test-drive.md
     - usage/watch.md
-    - usage/gui.md
-    - usage/evaluate.md
-  - deployment.md
+    - deployment.md
+  - usage/evaluate.md
   - support.md
   - Changelog:
     - changelog/version-2.md

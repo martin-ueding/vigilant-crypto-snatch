@@ -1,57 +1,81 @@
 # Installation
 
-The project is [published on PyPI](https://pypi.org/project/vigilant-crypto-snatch/), so you can just install it with PIP. We have split some functionality into an *extra* such that you can install just the base trading part on a little system that is running the whole time (like a Raspberry Pi). On your main workstation you can install the full software such that you can use the evaluation interface.
+This program is implemented in Python, so you will have to install the Python interpreter first. We will show you the necessary steps for your platform.
 
-To install just the base package system wide, run this:
+The way to install Python on Windows, Mac and Linux are completely different, we are going through the different systems one by one. You can use the navigation to directly jump to your platform, if you want. We also need to install different parts of this project on the platforms, so we have structured it directly by platform.
 
-```bash
-sudo python3 -m pip install vigilant-crypto-snatch
-```
+## On Windows
 
-If you are not running on a Raspberry Pi with 32 bit Linux, you can also install the evaluation interface and/or the GUI with the following square bracket syntax, where you can either include `evaluation`, `gui` or `evaluation,gui`.
+For Windows, you can download Python via the [Python website](https://www.python.org/downloads/windows/):
 
-```bash
-sudo python3 -m pip install 'vigilant-crypto-snatch[evaluation,gui]'
-```
+![](windows-01.png)
 
-If you don't want to install it system-wide, you can instead use `python3 -p pip install --user vigilant`. In that case you have to make sure that `~/.local/bin` is part of your `PATH` environment variable.
+Then download the Windows Installer for 64-Bit:
 
-Once you are done with the installation, go over to the [configuration](../configuration/general.md).
+![](windows-02.png)
 
-## Virtualenv
+Launch the installer, and add Python to the PATH. This will make it easier later on.
 
-Maybe you want to install the software and all its dependencies into a virtual environment. For this first create a virtual environment:
+![](windows-03.png)
 
-```console
-$ virtualenv /tmp/vigilant-crypto-snatch-5-2-0
-created virtual environment CPython3.10.1.final.0-64 in 485ms
-```
+Then just press “Install Now”.
 
-Choose a directory that makes sense for you, like `~/.local/share/virtualenvs/vigilant-crypto-snatch`.
+After the setup has gone through, it will allow you to extend the command line limit. This might be necessary, I would just do that.
 
-Then activate the virtual environment:
+![](windows-04.png)
 
-```console
-$ source /tmo/vigilant-crypto-snatch-5-2-0/bin/activate
-```
+Then you are finished and have Python installed on your system. We can then proceed to install the program.
 
-And now you can install it via pip, as usual:
+Then open a command line by pressing <kbd>Windows</kbd> and type “cmd” to launch the command line. You will see a window like this:
 
-```console
-$ pip install --upgrade vigilant-crypto-snatch
-```
+![](windows-06.png)
 
-Whenever you want to use it, you will first need to activate the environment and then you can just call `vigilant-crypto-snatch`.
+Then type `pip install 'vigilant-crypto-snatch[evaluation,gui]'` and press <kbd>Enter</kbd>. It will start to download the latest version of the program:
 
+![](windows-07.png)
+
+Eventually it will finish and show you the command line again:
+
+![](windows-08.png)
+
+You should be able to start `vigilant-crypto-snatch` without arguments by typing that now:
+
+![](windows-09.png)
+
+If you get this help screen, then everything is installed correctly.
+
+## On Mac
+
+On the Mac, use Spotlight to open the *Terminal* application. Then just type `python3`. A dialog window should open and ask you to install some developer tools. Do that, and you should have Python installed.
+
+Once this is installed, you can install it by typing `pip install 'vigilant-crypto-snatch[evaluation,gui]` at the command prompt. It should download the program.
+
+## On Linux desktop or laptop
+
+Major Linux distributions directly ship with Python, so you don't need to install the Python interpreter yourself, it is already there.
+
+All you need to do is to open a terminal type `pip install 'vigilant-crypto-snatch[evaluation,gui]`. This will install the project for your user only.
+
+You have to make sure that `~/.local/bin` is part of your `PATH` environment variable such that you can start the program.
+
+If you want to install it for all users into the system path, you can also prepend a `sudo` to the command line. This way it will be installed into `/usr/local/bin` and you don't have to worry about the path.
+
+## On Raspberry Pi
+
+Raspbian, the Debian variant for the Raspberry Pi, already has Python installed. Do you just need to install this program here.
+
+To install the program, open a terminal and type `pip install 'vigilant-crypto-snatch`. This will install the project for your user only. Because the ARM architecture is not supported by the PySide6 library, you cannot use the GUI on the Raspberry Pi.
+
+You have to make sure that `~/.local/bin` is part of your `PATH` environment variable such that you can start the program.
+
+If you want to install it for all users into the system path, you can also prepend a `sudo` to the command line. This way it will be installed into `/usr/local/bin` and you don't have to worry about the path.
 
 ## Upgrades
 
-If you want to upgrade use:
+If you want to upgrade to the latest version, use:
 
 ```bash
-sudo python3 -m pip install vigilant-crypto-snatch --upgrade
+pip install 'vigilant-crypto-snatch[evaluation,gui]' --upgrade
 ```
 
 In case you have installed it differently, you will likely also need to upgrade in the same way.
-
-We sometimes update the configuration options a bit and don't offer an automated migration path. You will likely get some errors on startup. Please consult the documentation to see how configuration works with the current version.

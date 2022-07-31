@@ -27,7 +27,13 @@ One popular choice for notifications is Telegram. First you have to create a bot
 3. It will ask you for the name of the bot. You can just use “vigilant-crypto-snatch” or something else.
 4. Next it will ask for a username of the bot. This is a technical thing, so it doesn't need to be pretty. It needs to be unique and end with `bot`. So perhaps use something like `vigilant_0f8704a83991_bot`, where you just make up your own random letters.
 
-It will give you an access token that you can use for the API. Enter that token into the configuration file:
+It will give you an access token that you can use for the API. Enter that token into the GUI here:
+
+![](qtgui-08.png)
+
+You can click on *Test* to have it send a test message.
+
+In the configuration file you add another paragraph:
 
 ```yaml
 telegram:
@@ -36,7 +42,6 @@ telegram:
 ```
 
 You will need to write a message to the bot in order to open a direct conversation with it. This is necessary such that the bot can reply to you.
-
 
 If the Telegram bot token is set up correctly, you will receive messages like this:
 
@@ -53,3 +58,5 @@ notify_run:
   channel: "…"
   level: info
 ```
+
+This is not available in the GUI.
