@@ -7,7 +7,11 @@ from typing import Dict
 
 import pandas as pd
 import streamlit as st
-import streamlit.web.cli as st_cli
+
+try:
+    import streamlit.web.cli as st_cli
+except ImportError:
+    import streamlit.cli as st_cli  # type: ignore
 
 from vigilant_crypto_snatch.configuration import migrations
 from vigilant_crypto_snatch.configuration import parse_trigger_spec
