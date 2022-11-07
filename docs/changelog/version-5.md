@@ -121,3 +121,7 @@ This release features a lot of work on the GUI:
 ### Version 5.9.1
 
 - Try to support both versions of Streamlit, the one with the old `streamlit.cli` and the one with the new `streamlit.web.cli` module.
+
+### Version 5.9.2
+
+- Remove check for `st._is_running_with_streamlit`. This used a private attribute of the module, therefore it was just a question of time until it was removed or renamed.
