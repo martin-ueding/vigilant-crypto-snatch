@@ -1,9 +1,5 @@
 #!/bin/bash -eux
 
-# Run unit and acceptance tests.
-poetry run pytest
-poetry run vigilant-crypto-snatch test-drive
-
 # Publish source code.
 git push
 git push --tags

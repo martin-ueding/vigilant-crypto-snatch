@@ -117,3 +117,7 @@ This release features a lot of work on the GUI:
 - Add drop percentage to the trigger edit window.
 - Add test buttons for each tab of the configuration, such that one can test each thing independently of the others.
 - Add CCXT configuration to GUI.
+
+### Version 5.9.1
+
+- Try to support both versions of Streamlit, the one with the old `streamlit.cli` and the one with the new `streamlit.web.cli` module.
