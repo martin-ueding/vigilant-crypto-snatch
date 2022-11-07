@@ -330,7 +330,7 @@ def ui():
     tools[nav](sidebar_settings)
 
 
-if __name__ == "__main__" and st._is_running_with_streamlit:
+if __name__ == "__main__":
     ui()
 
 
