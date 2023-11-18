@@ -45,9 +45,6 @@ class CCXTMarketplace(Marketplace):
         response = self.exchange.fetch_balance()
         return response["total"]
 
-    def get_withdrawal_fee(self, coin: str, volume: float) -> float:
-        pass
-
     def withdrawal(self, coin: str, volume: float) -> None:
         if self.withdrawal_address:
             self.exchange.withdraw(coin, volume, self.withdrawal_address)

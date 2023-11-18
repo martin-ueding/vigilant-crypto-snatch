@@ -52,7 +52,7 @@ class MessageQueue(object):
 
 
 class MessageQueueHolder:
-    def __init__(self):
+    def __init__(self) -> None:
         self._message_queue: Optional[MessageQueue] = None
 
     def get(self) -> MessageQueue:

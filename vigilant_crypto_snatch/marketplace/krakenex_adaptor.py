@@ -1,6 +1,5 @@
 import datetime
 from typing import Callable
-from typing import Dict
 from typing import Optional
 from typing import Type
 from typing import Union
@@ -21,21 +20,21 @@ from .interface import WithdrawalError
 
 
 class KrakenexInterface:
-    def query_public(self, command: str, parameters: Dict = None) -> Dict:
+    def query_public(self, command: str, parameters: Optional[dict] = None) -> dict:
         raise NotImplementedError()  # pragma: no cover
 
-    def query_private(self, command: str, parameters: Dict = None) -> Dict:
+    def query_private(self, command: str, parameters: Optional[dict] = None) -> dict:
         raise NotImplementedError()  # pragma: no cover
 
 
 class KrakenexMock:
-    def __init__(self, methods: Dict[str, Callable]):
+    def __init__(self, methods: dict[str, Callable]):
         self.methods = methods
 
-    def query_public(self, command: str, parameters: Dict = None) -> Dict:
+    def query_public(self, command: str, parameters: Optional[dict] = None) -> dict:
         return self.methods[command](parameters)
 
-    def query_private(self, command: str, parameters: Dict = None) -> Dict:
+    def query_private(self, command: str, parameters: Optional[dict] = None) -> dict:
         return self.methods[command](parameters)
 
 
@@ -68,7 +67,7 @@ class KrakenexMarketplace(Marketplace):
         self.withdrawal_config = config.withdrawal
         self.prefer_fee_in_base_currency = config.prefer_fee_in_base_currency
         self.last_balance_time: Optional[datetime.datetime] = None
-        self.last_balance_result: Dict[str, float] = {}
+        self.last_balance_result: dict[str, float] = {}
 
     def get_name(self) -> str:
         return "Kraken"
@@ -93,7 +92,7 @@ class KrakenexMarketplace(Marketplace):
         price = Price(timestamp=now, last=close, asset_pair=asset_pair)
         return price
 
-    def get_balance(self) -> Dict[str, float]:
+    def get_balance(self) -> dict[str, float]:
         if (
             self.last_balance_time is not None
             and self.last_balance_time

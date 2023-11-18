@@ -75,7 +75,7 @@ def trade_to_alchemy_trade(trade: Trade) -> AlchemyTrade:
 
 
 class SqlAlchemyDatastore(Datastore):
-    def __init__(self, db_path: pathlib.Path = None):
+    def __init__(self, db_path: Optional[pathlib.Path] = None) -> None:
         if db_path is not None:
             if not db_path.parent.is_dir():
                 db_path.parent.mkdir(parents=True, exist_ok=True)

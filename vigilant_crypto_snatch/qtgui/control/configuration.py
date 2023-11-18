@@ -1,7 +1,5 @@
 import traceback
-from typing import Dict
 from typing import Iterable
-from typing import List
 from typing import Optional
 
 import yaml
@@ -110,10 +108,13 @@ class ConfigurationTabController:
             config.polling_interval, config.marketplace
         )
         self.crypto_compare_panel_controller.populate_ui(config.crypto_compare)
-        self.telegram_pane_controller.populate_ui(config.telegram)
+        if config.telegram is not None:
+            self.telegram_pane_controller.populate_ui(config.telegram)
         self.trigger_pane_controller.populate_ui(config.triggers)
-        self.kraken_pane_controller.populate_ui(config.kraken)
-        self.bitstamp_pane_controller.populate_ui(config.bitstamp)
+        if config.kraken is not None:
+            self.kraken_pane_controller.populate_ui(config.kraken)
+        if config.bitstamp is not None:
+            self.bitstamp_pane_controller.populate_ui(config.bitstamp)
         self.ccxt_controller.populate_ui(config.ccxt)
 
 
@@ -121,7 +122,7 @@ class GeneralPanelController:
     def __init__(self, general_panel: GeneralPanel):
         self.ui = general_panel
 
-    def get_config(self) -> Dict:
+    def get_config(self) -> dict:
         text = self.ui.poll_interval_edit.text()
         try:
             sleep = int(text)
@@ -285,7 +286,7 @@ class CCXTPaneController:
 class KrakenWithdrawalPaneController:
     def __init__(self, ui: KrakenWithdrawalPane):
         self.ui = ui
-        self.configs: List[KrakenWithdrawalConfig] = []
+        self.configs: list[KrakenWithdrawalConfig] = []
 
         ui.add.clicked.connect(self.add)
         ui.edit.clicked.connect(self.edit)
@@ -296,7 +297,7 @@ class KrakenWithdrawalPaneController:
         for config in self.configs:
             self.ui.list.addItem(config.coin)
 
-    def get_config(self) -> Dict[str, KrakenWithdrawalConfig]:
+    def get_config(self) -> dict[str, KrakenWithdrawalConfig]:
         return {c.coin: c for c in self.configs}
 
     def update_row(self, row: int) -> None:
@@ -373,7 +374,7 @@ class KrakenWithdrawalEditWindowController:
 class TriggerPaneController:
     def __init__(self, ui: TriggerPane):
         self.ui = ui
-        self.specs: List[TriggerSpec] = []
+        self.specs: list[TriggerSpec] = []
 
         ui.add.clicked.connect(self.add)
         ui.edit.clicked.connect(self.edit)
@@ -402,7 +403,7 @@ class TriggerPaneController:
         self.ui.list.takeItem(row)
         del self.specs[row]
 
-    def populate_ui(self, specs: List[TriggerSpec]):
+    def populate_ui(self, specs: list[TriggerSpec]):
         self.specs = specs
         for spec in specs:
             self.ui.list.addItem(spec.name)
@@ -410,7 +411,7 @@ class TriggerPaneController:
     def update_row(self, row: int) -> None:
         self.ui.list.item(row).setText(self.specs[row].name)
 
-    def get_config(self) -> List[TriggerSpec]:
+    def get_config(self) -> list[TriggerSpec]:
         return self.specs
 
 

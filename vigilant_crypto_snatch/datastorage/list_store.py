@@ -9,7 +9,7 @@ from .interface import Datastore
 
 
 class ListDatastore(Datastore):
-    def __init__(self):
+    def __init__(self) -> None:
         self.trades: List[Trade] = []
         self.prices: List[Price] = []
 

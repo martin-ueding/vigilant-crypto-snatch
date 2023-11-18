@@ -3,6 +3,7 @@ import dataclasses
 import datetime
 from typing import Any
 from typing import Dict
+from typing import Optional
 from typing import Set
 
 from .. import logger
@@ -101,7 +102,7 @@ class WithdrawalError(Exception):
     pass
 
 
-def report_balances(market: Marketplace, subset: Set[str] = None) -> None:
+def report_balances(market: Marketplace, subset: Optional[set[str]] = None) -> None:
     try:
         balance = market.get_balance()
     except NotImplementedError:

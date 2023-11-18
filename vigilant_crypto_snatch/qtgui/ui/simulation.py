@@ -6,11 +6,9 @@ from PySide6.QtWidgets import QProgressBar
 from PySide6.QtWidgets import QPushButton
 from PySide6.QtWidgets import QSplitter
 from PySide6.QtWidgets import QTableView
-from PySide6.QtWidgets import QToolBox
 from PySide6.QtWidgets import QVBoxLayout
 from PySide6.QtWidgets import QWidget
 
-from .altair_widget import WebEngineView
 from .configuration import SingleTriggerEdit
 
 

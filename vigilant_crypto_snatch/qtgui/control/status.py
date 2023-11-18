@@ -2,7 +2,6 @@ import datetime
 import threading
 import time
 from typing import Any
-from typing import List
 from typing import Optional
 
 from PySide6.QtCore import QAbstractTableModel
@@ -158,14 +157,16 @@ class WatchWorker:
 
 
 class DumbTableModel(QAbstractTableModel):
-    def __init__(self):
+    def __init__(self) -> None:
         super().__init__()
-        self.columns_names: List[str] = []
-        self.row_names: List[str] = []
-        self.cells: List[List[Any]] = []
-        self.colors: List[List[str]] = []
+        self.columns_names: list[str] = []
+        self.row_names: list[str] = []
+        self.cells: list[list[Any]] = []
+        self.colors: list[list[str]] = []
 
-    def set_cells(self, cells: List[List[Any]], colors: List[List[str]] = None):
+    def set_cells(
+        self, cells: list[list[Any]], colors: Optional[list[list[str]]] = None
+    ):
         self.beginResetModel()
         self.cells = cells
         if colors is not None:

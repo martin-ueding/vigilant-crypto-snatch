@@ -22,7 +22,7 @@ class FailureTimeout(object):
     TRIGGER_FAILURE_COUNT = 3
     TRIGGER_FAILURE_TIMEOUT_HOURS = 12
 
-    def __init__(self):
+    def __init__(self) -> None:
         self.trials = 0
         self.last_trial: Optional[datetime.datetime] = None
         self.timeout_until: Optional[datetime.datetime] = None
