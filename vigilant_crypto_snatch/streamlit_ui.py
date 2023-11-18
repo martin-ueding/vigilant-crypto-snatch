@@ -114,7 +114,7 @@ def make_trigger_ui(sidebar_settings: SidebarSettings, i) -> TriggerSpec:
         key=f"trigger_volume_{i}",
     )
 
-    if st.checkbox("Use drop strategy", key=f"trigger_volume_{i}"):
+    if st.checkbox("Use drop strategy", key=f"drop_strategy_{i}"):
         trigger_spec["delay_minutes"] = 60 * st.slider(
             "Delay / hours",
             min_value=1,
