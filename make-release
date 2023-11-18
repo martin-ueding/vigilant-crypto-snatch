@@ -1,4 +1,6 @@
-#!/bin/bash -eux
+#!/bin/bash
+
+set -eux
 
 # Publish source code.
 git push
