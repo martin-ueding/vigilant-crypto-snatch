@@ -2100,6 +2100,11 @@ dependencies = [
     { name = "streamlit" },
 ]
 
+[package.optional-dependencies]
+gui = [
+    { name = "pyside6" },
+]
+
 [package.dev-dependencies]
 dev = [
     { name = "mkdocs-material" },
@@ -2108,9 +2113,6 @@ dev = [
     { name = "types-python-dateutil" },
     { name = "types-pyyaml" },
     { name = "types-requests" },
-]
-gui = [
-    { name = "pyside6" },
 ]
 
 [package.metadata]
@@ -2123,6 +2125,7 @@ requires-dist = [
     { name = "coloredlogs", specifier = ">=15.0.1" },
     { name = "krakenex", specifier = ">=2.2.2" },
     { name = "pandas", specifier = ">=2.3.3" },
+    { name = "pyside6", marker = "extra == 'gui'", specifier = ">=6.10.2" },
     { name = "python-dateutil", specifier = ">=2.9.0.post0" },
     { name = "pyyaml", specifier = ">=6.0.3" },
     { name = "requests", specifier = ">=2.32.5" },
@@ -2130,6 +2133,7 @@ requires-dist = [
     { name = "sqlalchemy", specifier = ">=2.0.46" },
     { name = "streamlit", specifier = ">=1.54.0" },
 ]
+provides-extras = ["gui"]
 
 [package.metadata.requires-dev]
 dev = [
@@ -2140,7 +2144,6 @@ dev = [
     { name = "types-pyyaml", specifier = ">=6.0.12.9" },
     { name = "types-requests", specifier = ">=2.28.11.17" },
 ]
-gui = [{ name = "pyside6", specifier = ">=6.10.2" }]
 
 [[package]]
 name = "watchdog"
