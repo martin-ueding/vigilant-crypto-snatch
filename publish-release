@@ -12,7 +12,7 @@ sed -i "s/## Unreleased/## Version $version — $today/" docs/changelog.md
 
 # Commit and tag.
 git ca -m "chore: bump version to $version"
-git tag "$version"
+git tag "v$version"
 
 # Upload the code.
 git push
@@ -21,8 +21,8 @@ git push --tags
 # Publish the built project.
 uv build
 uv publish \
-    --token "$PYPI_TOKEN_GEO_ACTIVITY_PLAYGROUND" \
-    "dist/geo_activity_playground-$version-py3-none-any.whl"
+    --token "$PYPI_TOKEN_VIGILANT_CRYPTO_SNATCH" \
+    "dist/vigilant_crypto_snatch-$version-py3-none-any.whl"
 
 # Deploy documentation.
 uv run mkdocs gh-deploy
