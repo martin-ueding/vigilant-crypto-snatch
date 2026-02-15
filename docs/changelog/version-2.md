@@ -1,14 +1,21 @@
 # Version 2
 
-## Version 2.0.0
+## [2.1.0] - 2021-03-13
 
-- Use logging library for colorful log messages.
+### Added
+
+- Add regular Telegram messages to let user know that the program is still running.
+
+## [2.0.0] - 2021-03-13
+
+### Added
+
 - Add a nice documentation website.
 - Add log messages via Telegram.
-- Gracefully handle keyboard interrupt.
 - Add `--keepalive` option again.
 - Add automatic database cleaning.
 
-## Version 2.1.0
+### Changed
 
-- Add regular Telegram messages to let user know that the program is still running.
+- Use logging library for colorful log messages.
+- Gracefully handle keyboard interrupt.

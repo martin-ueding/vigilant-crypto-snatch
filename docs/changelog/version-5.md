@@ -1,127 +1,214 @@
 # Version 5
 
-## Version 5.0.0
+## [5.9.3] - 2023-11-18
 
-- Refactor a lot more.
-- Remove `--keepalive` feature, this is on by default now.
-- Remove `--dry-run` feature, use the `test-drive` command instead.
-- Remove `--one-shot` feature, use the loop instead.
+### Changed
 
-### Version 5.0.1
+- Upgrade to support Python versions from 3.9 to 3.12.
+- Update dependencies completely.
 
-- Fix bug with marketplace factory function. Would emit `RuntimeError: Unsupported marketplace: <vigilant_crypto_snatch.configuration.yaml_configuration.YamlConfiguration object at 0x7f2b3a031840>`.
+### Fixed
 
-### Version 5.0.2
+- Fix typing issues.
+- Fix duplicate Streamlit key.
 
-- The Telegram connector would hang during shutdown, I have fixed that again.
+## [5.9.2] - 2022-11-07
 
-### Version 5.0.3
+### Removed
 
-- Catch `requests.exceptions.ConnectionError`, which wasn't caught by the krakenex library. Now it will be converted into an error on the module level.
+- Remove check for `st._is_running_with_streamlit`.
 
-## Version 5.1.0
+## [5.9.1] - 2022-11-07
 
-- Print out version number during startup.
-- Add trigger option `fear_and_greed_index_below`.
+### Changed
 
-## Version 5.2.0
+- Try to support both versions of Streamlit, the one with the old `streamlit.cli` and the one with the new `streamlit.web.cli` module.
 
-- Fear & Greed is now included in the evaluation interface.
-- More refactoring, more test coverage.
-- Developer documentation includes a component diagram.
+## [5.9.0] - 2022-06-05
 
-### Version 5.2.1
+### Added
 
-- Allow any log level for Telegram, including `debug`.
-- Attempt withdrawal after the trade has been noted in the database. Previously, a failure during withdrawal would have dropped the trade and eventually performed it again.
-- Output full exception traceback for every caught exception into the debug logging channel.
-- Pause triggers for 24 hours when they have insufficient funds. This will reduce failure messages from three per 12 hours to one per 24 hours.
+- Add a separate window to see log messages in the GUI.
+- Add the trigger simulation functionality to the GUI.
+- Add drop percentage to the trigger edit window in the GUI.
+- Add test buttons for each tab of the configuration in the GUI.
+- Add CCXT configuration to GUI.
 
-## Version 5.3.0
+### Changed
+
+- Move some GUI functionality into a main menu and separate windows.
+- Use PySide6 instead of PyQt6 such that the whole project is under the MIT licence again.
+
+## [5.8.1] - 2022-06-01
+
+### Added
+
+- Allow setting a start date and time in the GUI.
+
+## [5.8.0] - 2022-06-01
+
+### Added
+
+- Logo added to the GUI window.
+- The GUI now shows a system tray icon and can send notifications.
+
+### Changed
+
+- All triggers now need to have an explicit name set in the configuration.
+- Before a trigger is executed, the balance will be checked.
+- The GUI has an improved status and about screen.
+
+## [5.7.0] - 2022-05-29
+
+### Added
+
+- A completely new GUI using Qt is now part of the project.
+
+### Fixed
+
+- The trigger `start` attribute used to discard the time part, if it was given.
+
+## [5.6.0] - 2022-05-07
+
+### Added
+
+- Add support for notifications via notify.run to provide an alternative to Telegram.
+
+### Fixed
+
+- Also catch `HTTPError` in the krakenex wrapper.
+
+## [5.5.0] - 2022-02-25
+
+### Added
+
+- The CCXT library is now supported and gives access to more over a 100 more exchanges.
+- Add an asset pair selector in the trade overview panel in the evaluation interface.
+
+### Changed
+
+- It is now an error when either drop percentage or delay is given, but not both at the same time.
+- The `--marketplace` command line option has been removed, the marketplace is now chosen via an entry in the configuration file.
+
+## [5.4.4] - 2022-02-11
+
+### Fixed
+
+- The `krakenex` library would sometimes also raise a `requests.exceptions.ReadTimeout`, which was not caught.
+
+## [5.4.3] - 2022-01-29
+
+### Fixed
+
+- The database cleaning trigger would always clean all historic prices which were two hours in the past.
+- The Fear and Greed index sometimes doesn't deliver a value for the current day. In this case we will try the value from yesterday.
+
+## [5.4.2] - 2022-01-16
+
+### Fixed
+
+- Fix path handling to database on Windows.
+
+## [5.4.1] - 2022-01-16
+
+### Added
+
+- Restore Windows support by only adding syslog on Linux.
+
+### Changed
+
+- Split usage documentation onto multiple pages.
+
+### Removed
+
+- Remove the telemetry stuff again.
+
+## [5.4.0] - 2022-01-15
+
+### Added
+
+- Add optional and voluntary telemetry sending via Sentry.
+- Add a dark mode to the documentation.
+- Split configuration documentation onto multiple pages.
+
+## [5.3.1] - 2022-01-15
+
+### Fixed
+
+- Fix bug in trade report with `KeyError: 'coin'`.
+
+## [5.3.0] - 2022-01-14
+
+### Added
 
 - Add a report page about user trades into the evaluation interface.
 - Link to download statistics within documentation.
 - Add GitHub funding.
+
+### Changed
+
 - Connection errors are not reported all the time, instead they are just logged as debug output.
 - Create `AssetPair` data structure so better structure the code internally.
-- Remove usage of `Protocol` such that Python 3.7 is still supported.
 - Update developer documentation a bit.
 - Update Pillow for security.
 
-### Version 5.3.1
+### Removed
 
-- Fix bug in trade report with `KeyError: 'coin'`.
+- Remove usage of `Protocol` such that Python 3.7 is still supported.
 
-## Version 5.4.0
+## [5.2.1] - 2022-01-14
 
-- Add optional and voluntary telemetry sending via Sentry. See the configuration for details and how to enable it, if you want to.
-- Add a dark mode to the documentation.
-- Split configuration documentation onto multiple pages.
+### Changed
 
-### Version 5.4.1
+- Allow any log level for Telegram, including `debug`.
+- Attempt withdrawal after the trade has been noted in the database.
+- Output full exception traceback for every caught exception into the debug logging channel.
+- Pause triggers for 24 hours when they have insufficient funds.
 
-- Remove the telemetry stuff again.
-- Split usage documentation onto multiple pages.
-- Restore Windows support by only adding syslog on Linux.
+## [5.2.0] - 2021-12-22
 
-### Version 5.4.2
+### Added
 
-- Fix path handling to database on Windows.
+- Fear & Greed is now included in the evaluation interface.
+- Developer documentation includes a component diagram.
 
-### Version 5.4.3
+### Changed
 
-- The database cleaning trigger would always clean all historic prices which were two hours in the past. Therefore all old prices would vanish and a lot of calls to CryptoCompare were done. This depleted the API volume needlessly.
-- The Fear and Greed index sometimes doesn't deliver a value for the current day. In this case we will try the value from yesterday. If that doesn't exist as well, the failure will just be logged, without crashing the program.
+- More refactoring, more test coverage.
 
-### Version 5.4.4
+## [5.1.0] - 2021-12-20
 
-- The `krakenex` library would sometimes also raise a `requests.exceptions.ReadTimeout`, which was not caught. The program would crash. This exception type is now caught as well.
+### Added
 
-## Version 5.5.0
+- Print out version number during startup.
+- Add trigger option `fear_and_greed_index_below`.
 
-- The CCXT library is now supported and gives access to more over a 100 more exchanges.
-- Add an asset pair selector in the trade overview panel in the evaluation interface. Also add documentation for the trade overview.
-- It is now an error when either drop percentage or delay is given, but not both at the same time. Previously this would have lead to a simple delay trigger, although the user likely wanted to have a drop trigger. The error message will make it clear that users have to update their configuration.
-- The `--marketplace` command line option has been removed, the marketplace is now chosen via an entry in the configuration file.
+## [5.0.3] - 2021-12-17
 
-## Version 5.6.0
+### Fixed
 
-- Add support for notifications via notify.run to provide an alternative to Telegram.
-- Also catch `HTTPError` in the krakenex wrapper.
+- Catch `requests.exceptions.ConnectionError`, which wasn't caught by the krakenex library.
 
-## Version 5.7.0
+## [5.0.2] - 2021-12-05
 
-- A completely new GUI using Qt is now part of the project.
-- The trigger `start` attribute used to discard the time part, if it was given. The start was always taken to start from midnight. This is fixed in this version.
+### Fixed
 
-## Version 5.8.0
+- The Telegram connector would hang during shutdown, I have fixed that again.
 
-- All triggers now need to have an explicit name set in the configuration.
-- Before a trigger is executed, the balance will be checked. Only if sufficient balance is on the marketplace, an attempt to buy is made. It may still fail because there is insufficient balance depending on the way that fees are computed.
-- The GUI has an improved status and about screen.
-- The GUI now shows a system tray icon and can send notifications.
-- Logo added to the GUI window.
+## [5.0.1] - 2021-12-03
 
-### Version 5.8.1
+### Fixed
 
-- Allow setting a start date and time in the GUI.
+- Fix bug with marketplace factory function.
 
-## Version 5.9.0
+## [5.0.0] - 2021-12-03
 
-This release features a lot of work on the GUI:
+### Changed
 
-- Move some functionality into a main menu and separate windows.
-- Add a separate window to see log messages.
-- Add the trigger simulation functionality previously only available in the Streamlit interface.
-- Use PySide6 instead of PyQt6 such that the whole project is under the MIT licence again.
-- Add drop percentage to the trigger edit window.
-- Add test buttons for each tab of the configuration, such that one can test each thing independently of the others.
-- Add CCXT configuration to GUI.
+- Refactor a lot more.
 
-### Version 5.9.1
+### Removed
 
-- Try to support both versions of Streamlit, the one with the old `streamlit.cli` and the one with the new `streamlit.web.cli` module.
-
-### Version 5.9.2
-
-- Remove check for `st._is_running_with_streamlit`. This used a private attribute of the module, therefore it was just a question of time until it was removed or renamed.
+- Remove `--keepalive` feature, this is on by default now.
+- Remove `--dry-run` feature, use the `test-drive` command instead.
+- Remove `--one-shot` feature, use the loop instead.
