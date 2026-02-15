@@ -2081,7 +2081,7 @@ wheels = [
 
 [[package]]
 name = "vigilant-crypto-snatch"
-version = "5.9.3"
+version = "5.9.4"
 source = { editable = "." }
 dependencies = [
     { name = "altair" },

@@ -1,6 +1,6 @@
 [project]
 name = "vigilant-crypto-snatch"
-version = "5.9.3"
+version = "5.9.4"
 description = "Crypto currency buying agent"
 authors = [{ name = "Martin Ueding", email = "mu@martin-ueding.de" }]
 requires-python = ">=3.12,<3.15"
