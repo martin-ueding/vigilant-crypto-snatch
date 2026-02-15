@@ -20,7 +20,7 @@ Types of changes
 - Update dependencies completely.
 - Restructure the changelog according to [Keep a Changelog](https://keepachangelog.com/).
 
-## [5.9.3] - 2023-11-18
+## 5.9.3 - 2023-11-18
 
 ### Changed
 
@@ -31,19 +31,19 @@ Types of changes
 - Fix typing issues.
 - Fix duplicate Streamlit key.
 
-## [5.9.2] - 2022-11-07
+## 5.9.2 - 2022-11-07
 
 ### Removed
 
 - Remove check for `st._is_running_with_streamlit`.
 
-## [5.9.1] - 2022-11-07
+## 5.9.1 - 2022-11-07
 
 ### Changed
 
 - Try to support both versions of Streamlit, the one with the old `streamlit.cli` and the one with the new `streamlit.web.cli` module.
 
-## [5.9.0] - 2022-06-05
+## 5.9.0 - 2022-06-05
 
 ### Added
 
@@ -58,13 +58,13 @@ Types of changes
 - Move some GUI functionality into a main menu and separate windows.
 - Use PySide6 instead of PyQt6 such that the whole project is under the MIT licence again.
 
-## [5.8.1] - 2022-06-01
+## 5.8.1 - 2022-06-01
 
 ### Added
 
 - Allow setting a start date and time in the GUI.
 
-## [5.8.0] - 2022-06-01
+## 5.8.0 - 2022-06-01
 
 ### Added
 
@@ -77,7 +77,7 @@ Types of changes
 - Before a trigger is executed, the balance will be checked.
 - The GUI has an improved status and about screen.
 
-## [5.7.0] - 2022-05-29
+## 5.7.0 - 2022-05-29
 
 ### Added
 
@@ -87,7 +87,7 @@ Types of changes
 
 - The trigger `start` attribute used to discard the time part, if it was given.
 
-## [5.6.0] - 2022-05-07
+## 5.6.0 - 2022-05-07
 
 ### Added
 
@@ -97,7 +97,7 @@ Types of changes
 
 - Also catch `HTTPError` in the krakenex wrapper.
 
-## [5.5.0] - 2022-02-25
+## 5.5.0 - 2022-02-25
 
 ### Added
 
@@ -109,26 +109,26 @@ Types of changes
 - It is now an error when either drop percentage or delay is given, but not both at the same time.
 - The `--marketplace` command line option has been removed, the marketplace is now chosen via an entry in the configuration file.
 
-## [5.4.4] - 2022-02-11
+## 5.4.4 - 2022-02-11
 
 ### Fixed
 
 - The `krakenex` library would sometimes also raise a `requests.exceptions.ReadTimeout`, which was not caught.
 
-## [5.4.3] - 2022-01-29
+## 5.4.3 - 2022-01-29
 
 ### Fixed
 
 - The database cleaning trigger would always clean all historic prices which were two hours in the past.
 - The Fear and Greed index sometimes doesn't deliver a value for the current day. In this case we will try the value from yesterday.
 
-## [5.4.2] - 2022-01-16
+## 5.4.2 - 2022-01-16
 
 ### Fixed
 
 - Fix path handling to database on Windows.
 
-## [5.4.1] - 2022-01-16
+## 5.4.1 - 2022-01-16
 
 ### Added
 
@@ -142,7 +142,7 @@ Types of changes
 
 - Remove the telemetry stuff again.
 
-## [5.4.0] - 2022-01-15
+## 5.4.0 - 2022-01-15
 
 ### Added
 
@@ -150,13 +150,13 @@ Types of changes
 - Add a dark mode to the documentation.
 - Split configuration documentation onto multiple pages.
 
-## [5.3.1] - 2022-01-15
+## 5.3.1 - 2022-01-15
 
 ### Fixed
 
 - Fix bug in trade report with `KeyError: 'coin'`.
 
-## [5.3.0] - 2022-01-14
+## 5.3.0 - 2022-01-14
 
 ### Added
 
@@ -175,7 +175,7 @@ Types of changes
 
 - Remove usage of `Protocol` such that Python 3.7 is still supported.
 
-## [5.2.1] - 2022-01-14
+## 5.2.1 - 2022-01-14
 
 ### Changed
 
@@ -184,7 +184,7 @@ Types of changes
 - Output full exception traceback for every caught exception into the debug logging channel.
 - Pause triggers for 24 hours when they have insufficient funds.
 
-## [5.2.0] - 2021-12-22
+## 5.2.0 - 2021-12-22
 
 ### Added
 
@@ -195,32 +195,32 @@ Types of changes
 
 - More refactoring, more test coverage.
 
-## [5.1.0] - 2021-12-20
+## 5.1.0 - 2021-12-20
 
 ### Added
 
 - Print out version number during startup.
 - Add trigger option `fear_and_greed_index_below`.
 
-## [5.0.3] - 2021-12-17
+## 5.0.3 - 2021-12-17
 
 ### Fixed
 
 - Catch `requests.exceptions.ConnectionError`, which wasn't caught by the krakenex library.
 
-## [5.0.2] - 2021-12-05
+## 5.0.2 - 2021-12-05
 
 ### Fixed
 
 - The Telegram connector would hang during shutdown, I have fixed that again.
 
-## [5.0.1] - 2021-12-03
+## 5.0.1 - 2021-12-03
 
 ### Fixed
 
 - Fix bug with marketplace factory function.
 
-## [5.0.0] - 2021-12-03
+## 5.0.0 - 2021-12-03
 
 ### Changed
 
@@ -232,7 +232,7 @@ Types of changes
 - Remove `--dry-run` feature, use the `test-drive` command instead.
 - Remove `--one-shot` feature, use the loop instead.
 
-## [4.4.4] - 2021-11-16
+## 4.4.4 - 2021-11-16
 
 ### Added
 
@@ -242,25 +242,25 @@ Types of changes
 
 - The Telegram sender would not shut down gracefully. I have fixed that now.
 
-## [4.4.3] - 2021-11-15
+## 4.4.3 - 2021-11-15
 
 ### Fixed
 
 - I've accidentally deleted the source code. This should be fixed now.
 
-## [4.4.2] - 2021-11-15
+## 4.4.2 - 2021-11-15
 
 ### Changed
 
 - Streamlit doesn't easily work on the Raspberry Pi due to issues with py-arrow and the ARM CPU. I have therefore reverted these dependencies to be an extra again.
 
-## [4.4.1] - 2021-11-15
+## 4.4.1 - 2021-11-15
 
 ### Changed
 
 - More refactoring. Also update the versions of various dependencies. The Streamlit interface is now part of the main dependencies.
 
-## [4.4.0] - 2021-11-05
+## 4.4.0 - 2021-11-05
 
 ### Added
 
@@ -270,13 +270,13 @@ Types of changes
 
 - Major architectural change, without changes to the user.
 
-## [4.3.5] - 2021-09-20
+## 4.3.5 - 2021-09-20
 
 ### Fixed
 
 - When the balance on the marketplace is zero, withdrawals would fail and therefore crash the whole program. This is now fixed.
 
-## [4.3.4] - 2021-08-26
+## 4.3.4 - 2021-08-26
 
 ### Added
 
@@ -286,13 +286,13 @@ Types of changes
 
 - The `--dry-run` option would write buys into the database, although it would not buy anything on the market. Now the database should now be changed.
 
-## [4.3.3] - 2021-08-12
+## 4.3.3 - 2021-08-12
 
 ### Fixed
 
 - Due to an incomplete refactoring the program would crash whenever there was a non-fatal exception regarding the marketplace. This should be fixed now.
 
-## [4.3.2] - 2021-08-02
+## 4.3.2 - 2021-08-02
 
 ### Changed
 
@@ -304,13 +304,13 @@ Types of changes
 - Do not crash when there is no balance at Kraken.
 - Also handle `requests.exceptions.HTTPError`.
 
-## [4.3.1] - 2021-07-19
+## 4.3.1 - 2021-07-19
 
 ### Fixed
 
 - Apparently all Kraken trades were sent in the validation mode. I have tried to fix that.
 
-## [4.3.0] - 2021-07-16
+## 4.3.0 - 2021-07-16
 
 ### Added
 
@@ -327,13 +327,13 @@ Types of changes
 - Handle `requests.exceptions.ConnectionError` without crashing.
 - Fix `--one-shot` mode. It would previously sleep for another interval and not shut down the Telegram logger, preventing the program from a clean exit.
 
-## [4.2.4] - 2021-06-18
+## 4.2.4 - 2021-06-18
 
 ### Fixed
 
 - Also handle `ReadTimeout` errors that can happen when the API doesn't answer before the connection breaks. These have been ignored previously, but now the error message is a bit cleaner.
 
-## [4.2.3] - 2021-06-18
+## 4.2.3 - 2021-06-18
 
 ### Added
 
@@ -348,19 +348,19 @@ Types of changes
 
 - Crashes have been reported when the Telegram message was longer than their limit of 4096 characters. Messages are now chunked to prevent this from happening.
 
-## [4.2.2] - 2021-05-25
+## 4.2.2 - 2021-05-25
 
 ### Fixed
 
 - Another warning message would use a constant that was moved to another place in the meantime. The program crashed when the message was going to be emitted. It has been removed now.
 
-## [4.2.1] - 2021-05-23
+## 4.2.1 - 2021-05-23
 
 ### Fixed
 
 - When a trigger was disabled after three consecutive failures, a message stating that would be shown every time the trigger was processed. In this way the user got the same amount of messages. This message is now removed.
 
-## [4.2.0] - 2021-05-21
+## 4.2.0 - 2021-05-21
 
 ### Added
 
@@ -386,7 +386,7 @@ Types of changes
 - Do not use Markdown with Telegram as parsing errors prevent messages from being sent.
 - Errors from the historical price source have been silently ignored. They now issue a warning.
 
-## [4.1.0] - 2021-05-05
+## 4.1.0 - 2021-05-05
 
 ### Added
 
@@ -396,19 +396,19 @@ Types of changes
 
 - Use `krakenex` instead of `clikraken` to communicate with Kraken. The old implementation is deprecated but retained with `--marketplace clikraken`.
 
-## [4.0.0] - 2021-05-04
+## 4.0.0 - 2021-05-04
 
 ### Changed
 
 - The trigger specification is significantly changed. Consult the documentation to learn about the new format.
 
-## [3.5.1] - 2021-05-03
+## 3.5.1 - 2021-05-03
 
 ### Fixed
 
 - Fix drop trigger with percentage such that `volume_fiat` is actually a percentage and not a ratio (between 0 and 1).
 
-## [3.5.0] - 2021-05-03
+## 3.5.0 - 2021-05-03
 
 ### Added
 
@@ -419,7 +419,7 @@ Types of changes
 
 - Update documentation and state paths to the configuration file on various platforms.
 
-## [3.4.0] - 2021-04-27
+## 3.4.0 - 2021-04-27
 
 ### Added
 
@@ -433,7 +433,7 @@ Types of changes
 - In the trigger evaluation, triggers are moved to multiple rows if there are more than three of them.
 - Present trigger evaluation summary as a table.
 
-## [3.3.0] - 2021-04-23
+## 3.3.0 - 2021-04-23
 
 ### Added
 
@@ -446,13 +446,13 @@ Types of changes
 
 - Fix axes label in plot.
 
-## [3.2.0] - 2021-04-22
+## 3.2.0 - 2021-04-22
 
 ### Added
 
 - Add a summary table for the drop evaluation interface.
 
-## [3.1.0] - 2021-04-19
+## 3.1.0 - 2021-04-19
 
 ### Added
 
@@ -460,7 +460,7 @@ Types of changes
 - More documentation in general.
 - Add installation instructions for the evaluation feature.
 
-## [3.0.3] - 2021-04-05
+## 3.0.3 - 2021-04-05
 
 ### Changed
 
@@ -473,19 +473,19 @@ Types of changes
 - Fix cool-off for 06:00 checkin.
 - Fix some test code.
 
-## [3.0.2] - 2021-04-01
+## 3.0.2 - 2021-04-01
 
 ### Fixed
 
 - Buxfixes.
 
-## [3.0.1] - 2021-03-28
+## 3.0.1 - 2021-03-28
 
 ### Added
 
 - Perform evaluation with actual trigger implementations.
 
-## [3.0.0] - 2021-03-27
+## 3.0.0 - 2021-03-27
 
 ### Added
 
@@ -502,13 +502,13 @@ Types of changes
 - Use the *Black* code formatter.
 - Implement command line interface with Click.
 
-## [2.1.0] - 2021-03-13
+## 2.1.0 - 2021-03-13
 
 ### Added
 
 - Add regular Telegram messages to let user know that the program is still running.
 
-## [2.0.0] - 2021-03-13
+## 2.0.0 - 2021-03-13
 
 ### Added
 
